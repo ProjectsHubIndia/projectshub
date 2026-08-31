@@ -440,8 +440,7 @@ Main content
       <ol>
         <li><a href="/">Home</a></li>
         <li><a href="/workshop/">Workshop</a></li>
-        <li><a href="{% url 'workshop_detail' workshop.id %}" title="{{ workshop.title }}">{{
-            workshop.title|truncatechars:30 }}</a></li>
+        <li><a href="{% url 'workshop_detail' workshop.id %}" title="{{ workshop.title }}">{{ workshop.title|truncatechars:30 }}</a></li>
         <li aria-current="page">Day {{ day.day_number }}</li>
       </ol>
     </nav>

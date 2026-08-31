@@ -166,7 +166,7 @@
       </div>
       {% elif project.get_image_src %}
       <div class="pd-hero__video-wrapper" style="position:relative;overflow:hidden;border-radius:1rem;">
-        <img src="{% if '/media/' in project.get_image_src %}/static/image/{{ project.get_image_src|cut:'/media/' }}{% else %}{{ project.get_image_src }}{% endif %}"
+        <img src="{{ project.get_image_src }}"
              alt="{{ project.title }} — AI project by ProjectsHub"
              style="width:100%;height:100%;object-fit:cover;display:block;"
              width="1280"
@@ -539,7 +539,7 @@
         {% for rel in related_projects %}
         <a href="{% url 'project_detail' rel.id %}" class="pd-related-card">
           {% if rel.get_image_src %}
-          <img src="{% if '/media/' in rel.get_image_src %}/static/image/{{ rel.get_image_src|cut:'/media/' }}{% else %}{{ rel.get_image_src }}{% endif %}"
+          <img src="{{ rel.get_image_src }}"
                alt="{{ rel.title }} — AI project by ProjectsHub"
                class="pd-related-card__img"
                loading="lazy"

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.utils.html import format_html
+from django.utils.html import format_html, format_html_join
 from .models import (
     Project, ProjectImage, ProjectHighlight, ProjectDiagram,
     ProjectTimelinePhase, ProjectFeature,
@@ -123,13 +123,11 @@ class ProjectAdmin(admin.ModelAdmin):
     )
 
     def tag_list(self, obj):
-        tags = obj.get_tags_list()
-        pills = ''.join(
-            f'<span style="background:#1e293b;color:#94a3b8;padding:2px 8px;border-radius:99px;'
-            f'font-size:11px;margin-right:4px;">{t}</span>'
-            for t in tags[:3]
-        )
-        return format_html(pills)
+        return format_html_join(
+            '', '<span style="background:#1e293b;color:#94a3b8;padding:2px 8px;'
+                'border-radius:99px;font-size:11px;margin-right:4px;">{}</span>',
+            ((t,) for t in obj.get_tags_list()[:3])
+        ) or '—'
     tag_list.short_description = 'Tags'
 
     def has_detailed_content(self, obj):
@@ -162,7 +160,7 @@ class ProjectAdmin(admin.ModelAdmin):
 class WorkshopDayInline(admin.TabularInline):
     model = WorkshopDay
     extra = 4
-    fields = ('day_number', 'title', 'date_label', 'description', 'outcome')
+    fields = ('day_number', 'title', 'date_label', 'description', 'topics', 'outcome')
 
 
 @admin.register(WorkshopCard)

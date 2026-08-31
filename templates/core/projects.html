@@ -147,7 +147,7 @@ Built for students and businesses. Explore free.{% endblock %}
                         aria-label="View project: {{ project.title }}">
 
                         <div class="project-card__img-wrap">
-                            <img src="{% if '/media/' in project.get_image_src %}/static/image/{{ project.get_image_src|cut:'/media/' }}{% else %}{{ project.get_image_src }}{% endif %}"
+                            <img src="{{ project.get_image_src }}"
                                 alt="{{ project.title }} — AI project by ProjectsHub" class="project-card__img"
                                 loading="lazy" width="400" height="220" itemprop="image"
                                 onerror="this.onerror=null; this.src='/static/image/projects/5cce966bbfd0773ff7f37f60210e23c9.jpg';" />

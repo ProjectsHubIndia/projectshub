@@ -7,8 +7,7 @@ SEO — Workshop day detail page
 
 {% block title %}Day {{ day.day_number }}: {{ day.title }} | {{ workshop.title }} — ProjectsHub{% endblock %}
 
-{% block meta_description %}Day {{ day.day_number }} of the {{ workshop.title }}: {{ day.description|truncatechars:150
-}} {% if day.outcome %}Outcome: {{ day.outcome|truncatechars:80 }}{% endif %}{% endblock %}
+{% block meta_description %}Day {{ day.day_number }} of the {{ workshop.title }}: {{ day.description|truncatechars:150 }} {% if day.outcome %}Outcome: {{ day.outcome|truncatechars:80 }}{% endif %}{% endblock %}
 
 {% block meta_keywords %}{{ day.title }}, {{ workshop.title }}, AI workshop day {{ day.day_number }}, machine learning
 training, ProjectsHub workshop, hands-on AI{% endblock %}
@@ -16,8 +15,7 @@ training, ProjectsHub workshop, hands-on AI{% endblock %}
 {% block canonical %}https://projectshub.co.in{% url 'workshop_day_detail' workshop.id day.day_number %}{% endblock %}
 
 {% block og_title %}Day {{ day.day_number }}: {{ day.title }} — {{ workshop.title }} | ProjectsHub{% endblock %}
-{% block og_description %}{% if day.outcome %}{{ day.outcome }}{% else %}{{ day.description|truncatechars:160 }}{% endif
-%}{% endblock %}
+{% block og_description %}{% if day.outcome %}{{ day.outcome }}{% else %}{{ day.description|truncatechars:160 }}{% endif %}{% endblock %}
 {% block og_url %}https://projectshub.co.in{% url 'workshop_day_detail' workshop.id day.day_number %}{% endblock %}
 
 {% block schema %}
@@ -121,8 +119,7 @@ Main content
       <ol>
         <li><a href="/">Home</a></li>
         <li><a href="/workshop/">Workshop</a></li>
-        <li><a href="{% url 'workshop_detail' workshop.id %}" title="{{ workshop.title }}">{{
-            workshop.title|truncatechars:30 }}</a></li>
+        <li><a href="{% url 'workshop_detail' workshop.id %}" title="{{ workshop.title }}">{{ workshop.title|truncatechars:30 }}</a></li>
         <li aria-current="page">Day {{ day.day_number }}</li>
       </ol>
     </nav>
@@ -297,8 +294,7 @@ Main content
           <nav class="wd-progress-list" aria-label="Workshop days">
             {% for d in days %}
             <a href="{% url 'workshop_day_detail' workshop.id d.day_number %}"
-              class="wd-progress-item{% if d.day_number == day.day_number %} wd-progress-item--active{% endif %}" {% if
-              d.day_number==day.day_number %}aria-current="page" {% endif %}>
+              class="wd-progress-item{% if d.day_number == day.day_number %} wd-progress-item--active{% endif %}" {% if d.day_number == day.day_number %}aria-current="page" {% endif %}>
               <div
                 class="wd-progress-item__num{% if d.day_number == day.day_number %} wd-progress-item__num--active{% endif %}"
                 aria-hidden="true">{{ d.day_number }}</div>
