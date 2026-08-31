@@ -29,7 +29,7 @@ urlpatterns = [
 
     # Blog
     path('blog/', views.blog_page, name='blog'),
-    path('blog/<int:blog_id>/', views.blog_detail, name='blog_detail'),
+    path('blog/<slug:slug>/', views.blog_detail, name='blog_detail'),
 
     # Form endpoints
     path('contact/', views.contact_submit, name='contact_submit'),
@@ -41,6 +41,7 @@ urlpatterns = [
     path('api/projects/', views.api_projects, name='api_projects'),
     path('api/pricing/', views.api_pricing, name='api_pricing'),
     path('api/workshops/', views.api_workshops, name='api_workshops'),
+    path('api/blog/', views.api_blog, name='api_blog'),
     
     #Legal
     path('terms/', views.terms, name='terms'),
