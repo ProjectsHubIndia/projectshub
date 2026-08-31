@@ -6,6 +6,7 @@ from .models import (
     WorkshopCard, WorkshopDay, PricingPlan,
     PricingFeature, ContactMessage, ProjectGateLead,
     IdeaSubmission, WorkshopEnrollment,
+    BlogPost, BlogSection,
 )
 
 
@@ -340,3 +341,69 @@ class WorkshopEnrollmentAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return False
+
+
+# ── Blog ───────────────────────────────────────────────────────────────────────
+
+class BlogSectionInline(admin.StackedInline):
+    model = BlogSection
+    extra = 3
+    fields = ('heading', 'body', 'code', 'order')
+
+
+@admin.register(BlogPost)
+class BlogPostAdmin(admin.ModelAdmin):
+    list_display = (
+        'title', 'category', 'published_at', 'read_time',
+        'section_count', 'is_featured', 'is_active', 'order', 'swatch'
+    )
+    list_display_links = ('title',)
+    list_editable = ('is_featured', 'is_active', 'order')
+    list_filter = ('category', 'is_active', 'is_featured', 'published_at')
+    search_fields = ('title', 'excerpt', 'lead')
+    prepopulated_fields = {'slug': ('title',)}
+    date_hierarchy = 'published_at'
+    ordering = ('order', '-published_at')
+    inlines = [BlogSectionInline]
+    fieldsets = (
+        ('Content', {
+            'fields': ('title', 'slug', 'category', 'excerpt', 'lead'),
+            'description': (
+                'The excerpt is the card summary. The lead is the opening '
+                'paragraph on the post page — leave it blank to reuse the excerpt. '
+                'Write the body of the post in the Sections below.'
+            ),
+        }),
+        ('Appearance', {
+            'fields': (
+                'emoji', 'gradient_from', 'gradient_to', 'accent',
+                'image', 'image_url',
+            ),
+            'description': (
+                'The card and hero use the emoji on a gradient. Upload an image '
+                '(or paste a URL) to use a picture instead.'
+            ),
+        }),
+        ('Meta', {
+            'fields': (
+                'read_time', 'published_at',
+                'author_name', 'author_role', 'author_initials',
+            ),
+        }),
+        ('Display Settings', {
+            'fields': ('is_active', 'is_featured', 'order'),
+        }),
+    )
+
+    def section_count(self, obj):
+        return obj.sections.count()
+    section_count.short_description = 'Sections'
+
+    def swatch(self, obj):
+        return format_html(
+            '<span style="display:inline-block;width:54px;height:24px;'
+            'border-radius:6px;background:linear-gradient(135deg,{},{});'
+            'text-align:center;line-height:24px;">{}</span>',
+            obj.gradient_from, obj.gradient_to, obj.emoji
+        )
+    swatch.short_description = 'Card'

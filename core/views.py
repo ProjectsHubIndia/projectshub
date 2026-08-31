@@ -4,7 +4,8 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from .models import (
     Project, WorkshopCard, PricingPlan,
-    ContactMessage, ProjectGateLead, IdeaSubmission, WorkshopEnrollment
+    ContactMessage, ProjectGateLead, IdeaSubmission, WorkshopEnrollment,
+    BlogPost
 )
 
 def error_404(request, exception):
@@ -35,10 +36,26 @@ def tools_page(request):
     return redirect('https://tools.projectshub.co.in/')
 
 def blog_page(request):
-    return render(request, 'core/blog.html')
+    """Blog listing page."""
+    posts = BlogPost.objects.filter(is_active=True)
+    return render(request, 'core/blog.html', {'posts': posts})
 
-def blog_detail(request, blog_id):
-    return render(request, 'core/blog_detail.html', {'blog_id': blog_id})
+
+def blog_detail(request, slug):
+    """Blog post detail page."""
+    post = get_object_or_404(
+        BlogPost.objects.prefetch_related('sections'),
+        slug=slug, is_active=True
+    )
+    related_posts = (
+        BlogPost.objects
+        .filter(is_active=True, category=post.category)
+        .exclude(pk=post.pk)[:3]
+    )
+    return render(request, 'core/blog_detail.html', {
+        'post': post,
+        'related_posts': related_posts,
+    })
     
 def terms(request):
     return render(request, 'core/terms.html')
@@ -451,3 +468,27 @@ def api_workshops(request):
             'days': days,
         })
     return JsonResponse({'workshops': data})
+
+
+def api_blog(request):
+    """JSON endpoint — returns active blog posts."""
+    posts = BlogPost.objects.filter(is_active=True)
+    data = [
+        {
+            'id': p.id,
+            'title': p.title,
+            'slug': p.slug,
+            'category': p.category,
+            'category_label': p.get_category_display(),
+            'excerpt': p.excerpt,
+            'image': p.get_image_src(),
+            'emoji': p.emoji,
+            'read_time': p.read_time,
+            'published_at': p.published_at.isoformat(),
+            'author': p.author_name,
+            'is_featured': p.is_featured,
+            'detail_url': f'/blog/{p.slug}/',
+        }
+        for p in posts
+    ]
+    return JsonResponse({'posts': data})

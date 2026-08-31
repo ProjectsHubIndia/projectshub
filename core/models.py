@@ -557,3 +557,131 @@ class WorkshopEnrollment(models.Model):
     def __str__(self):
         workshop_title = self.workshop.title if self.workshop else 'General'
         return f"{self.full_name} → {workshop_title} ({self.created_at.strftime('%d %b %Y')})"
+
+
+# ── Blog ──────────────────────────────────────────────────────────────────────
+
+class BlogPost(models.Model):
+    """Blog articles managed from the admin, mirroring the Project pattern."""
+    CATEGORY_CHOICES = [
+        ('ai-tutorials', 'AI Tutorials'),
+        ('career', 'Career Advice'),
+        ('case-study', 'Case Study'),
+        ('engineering', 'Engineering'),
+        ('news', 'News'),
+    ]
+
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(
+        max_length=220, unique=True,
+        help_text="URL for the post, e.g. building-your-first-llm-app"
+    )
+    category = models.CharField(
+        max_length=30, choices=CATEGORY_CHOICES, default='ai-tutorials'
+    )
+    excerpt = models.TextField(
+        help_text="Short summary shown on the blog card"
+    )
+    lead = models.TextField(
+        blank=True,
+        help_text="Opening paragraph on the post page (shown larger). "
+                  "Falls back to the excerpt if left blank."
+    )
+
+    # ── Card / hero appearance ────────────────────────────────────────────────
+    emoji = models.CharField(
+        max_length=8, blank=True, default='📝',
+        help_text="Emoji shown on the card and hero when there is no image"
+    )
+    gradient_from = models.CharField(
+        max_length=7, default='#2563eb',
+        help_text="Hero gradient start colour, e.g. #2563eb"
+    )
+    gradient_to = models.CharField(
+        max_length=7, default='#3b82f6',
+        help_text="Hero gradient end colour, e.g. #3b82f6"
+    )
+    accent = models.CharField(
+        max_length=7, default='#3b82f6',
+        help_text="Category badge colour, e.g. #3b82f6"
+    )
+    image = models.ImageField(upload_to='blog/', blank=True, null=True)
+    image_url = models.URLField(
+        blank=True,
+        help_text="External image URL (used if no uploaded image). "
+                  "An image replaces the gradient + emoji hero."
+    )
+
+    # ── Meta ──────────────────────────────────────────────────────────────────
+    read_time = models.CharField(
+        max_length=30, blank=True, default='5 min read',
+        help_text="e.g. 5 min read"
+    )
+    published_at = models.DateField(help_text="Date shown on the post")
+    author_name = models.CharField(max_length=100, default='Raj Makhijani')
+    author_role = models.CharField(
+        max_length=150, blank=True, default='Founder, ProjectsHub'
+    )
+    author_initials = models.CharField(
+        max_length=4, blank=True, default='RM',
+        help_text="Shown in the author avatar circle"
+    )
+
+    is_active = models.BooleanField(
+        default=True, help_text="Show on the blog page"
+    )
+    is_featured = models.BooleanField(
+        default=False, help_text="Highlight this post"
+    )
+    order = models.PositiveIntegerField(
+        default=0, help_text="Display order (lower = first)"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['order', '-published_at', '-created_at']
+        verbose_name = 'Blog Post'
+        verbose_name_plural = 'Blog Posts'
+
+    def __str__(self):
+        return self.title
+
+    def get_image_src(self):
+        if self.image:
+            return self.image.url
+        return self.image_url or ''
+
+    def get_lead(self):
+        return self.lead or self.excerpt
+
+    def get_gradient(self):
+        return f'linear-gradient(135deg, {self.gradient_from}, {self.gradient_to})'
+
+
+class BlogSection(models.Model):
+    """A heading + body (+ optional code block) within a post."""
+    post = models.ForeignKey(
+        BlogPost, on_delete=models.CASCADE, related_name='sections'
+    )
+    heading = models.CharField(
+        max_length=200, blank=True,
+        help_text="Section heading, e.g. 1. Setting up the Environment"
+    )
+    body = models.TextField(
+        blank=True,
+        help_text="Section text. One paragraph per line."
+    )
+    code = models.TextField(
+        blank=True,
+        help_text="Optional code block shown after the text"
+    )
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order']
+        verbose_name = 'Section'
+        verbose_name_plural = 'Sections'
+
+    def __str__(self):
+        return f"{self.post.title} — {self.heading or 'section'}"

@@ -93,47 +93,37 @@
 
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; padding: 2rem 5%;">
 
-    <!-- Card 1 -->
-    <a href="{% url 'blog_detail' 1 %}" class="blog-card">
-      <div class="blog-card__img" style="background: linear-gradient(135deg, #2563eb, #3b82f6);">
-        <span class="blog-card__badge">AI Tutorials</span>
-        🤖
+    {% for post in posts %}
+    <a href="{% url 'blog_detail' post.slug %}" class="blog-card">
+      {% if post.get_image_src %}
+      <div class="blog-card__img" style="padding:0;">
+        <span class="blog-card__badge">{{ post.get_category_display }}</span>
+        <img src="{{ post.get_image_src }}" alt="{{ post.title }}"
+             style="width:100%;height:100%;object-fit:cover;" loading="lazy" />
       </div>
+      {% else %}
+      <div class="blog-card__img" style="background: {{ post.get_gradient }};">
+        <span class="blog-card__badge">{{ post.get_category_display }}</span>
+        {{ post.emoji }}
+      </div>
+      {% endif %}
       <div class="blog-card__body">
-        <div class="blog-card__date">July 13, 2026 &bull; 5 min read</div>
-        <h3 class="blog-card__title">Building Your First LLM App with Python</h3>
-        <p class="blog-card__desc">Learn step-by-step how to integrate the OpenAI API into a Django web application and create a smart chatbot.</p>
+        <div class="blog-card__date">
+          {{ post.published_at|date:"F d, Y" }}{% if post.read_time %} &bull; {{ post.read_time }}{% endif %}
+        </div>
+        <h3 class="blog-card__title">{{ post.title }}</h3>
+        <p class="blog-card__desc">{{ post.excerpt }}</p>
         <span class="blog-card__read">Read More &rarr;</span>
       </div>
     </a>
 
-    <!-- Card 2 -->
-    <a href="{% url 'blog_detail' 2 %}" class="blog-card">
-      <div class="blog-card__img" style="background: linear-gradient(135deg, #10b981, #34d399);">
-        <span class="blog-card__badge">Career Advice</span>
-        💼
-      </div>
-      <div class="blog-card__body">
-        <div class="blog-card__date">July 10, 2026 &bull; 7 min read</div>
-        <h3 class="blog-card__title">How to Stand Out in Tech Interviews</h3>
-        <p class="blog-card__desc">Stop grinding LeetCode all day. Here is what engineering managers are actually looking for when hiring new developers.</p>
-        <span class="blog-card__read">Read More &rarr;</span>
-      </div>
-    </a>
-
-    <!-- Card 3 -->
-    <a href="{% url 'blog_detail' 3 %}" class="blog-card">
-      <div class="blog-card__img" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
-        <span class="blog-card__badge">Case Study</span>
-        🚀
-      </div>
-      <div class="blog-card__body">
-        <div class="blog-card__date">July 05, 2026 &bull; 4 min read</div>
-        <h3 class="blog-card__title">From Zero to MVP in 3 Weeks</h3>
-        <p class="blog-card__desc">A deep dive into how we helped a startup launch their AI-powered SaaS product and acquire their first 100 users.</p>
-        <span class="blog-card__read">Read More &rarr;</span>
-      </div>
-    </a>
+    {% empty %}
+    <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem;">
+      <p style="font-size: 1.1rem; color: #9ca3af;">
+        No posts published yet. Check back soon!
+      </p>
+    </div>
+    {% endfor %}
 
   </div>
 </div>

@@ -1,13 +1,38 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-{% block title %}
-  {% if blog_id == 1 %}Building Your First LLM App with Python
-  {% elif blog_id == 2 %}How to Stand Out in Tech Interviews
-  {% elif blog_id == 3 %}From Zero to MVP in 3 Weeks
-  {% else %}Blog{% endif %} | ProjectsHub
-{% endblock %}
+{% block title %}{{ post.title }} | ProjectsHub{% endblock %}
+{% block meta_description %}{{ post.excerpt|truncatechars:160 }}{% endblock %}
+{% block canonical %}https://projectshub.co.in{% url 'blog_detail' post.slug %}{% endblock %}
+{% block og_title %}{{ post.title }} | ProjectsHub{% endblock %}
+{% block og_description %}{{ post.excerpt|truncatechars:160 }}{% endblock %}
+{% block og_url %}https://projectshub.co.in{% url 'blog_detail' post.slug %}{% endblock %}
+{% if post.get_image_src %}{% block og_image %}{{ post.get_image_src }}{% endblock %}{% endif %}
 {% block nav_resources %}active{% endblock %}
+
+{% block schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ post.title|escapejs }}",
+  "description": "{{ post.excerpt|truncatechars:160|escapejs }}",
+  "datePublished": "{{ post.published_at|date:'Y-m-d' }}",
+  "dateModified": "{{ post.updated_at|date:'Y-m-d' }}",
+  "url": "https://projectshub.co.in{% url 'blog_detail' post.slug %}",
+  {% if post.get_image_src %}"image": "{{ post.get_image_src }}",{% endif %}
+  "author": {"@type": "Person", "name": "{{ post.author_name|escapejs }}"},
+  "publisher": {
+    "@type": "Organization",
+    "name": "ProjectsHub",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://projectshub.co.in/static/image/favicon_io/logo.png"
+    }
+  }
+}
+</script>
+{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -34,6 +59,17 @@
   .bd-hero { width: 100%; height: 400px; border-radius: 24px; display: flex; align-items: center; justify-content: center; font-size: 6rem; margin-bottom: 3rem; }
   .bd-tag { padding: 0.4rem 1rem; border-radius: 99px; font-weight: 600; font-size: 0.85rem; }
 
+  /* Related-post cards (same look as the blog listing) */
+  .blog-card { border-radius: 20px; overflow: hidden; display: block; text-decoration: none; color: inherit; border: 1px solid rgba(255,255,255,0.08); }
+  body.light .blog-card { border-color: rgba(0,0,0,0.08); box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
+  .blog-card__img { display: flex; align-items: center; justify-content: center; position: relative; }
+  .blog-card__body { background: #1a2236; }
+  body.light .blog-card__body { background: #ffffff; }
+  .blog-card__title { margin: 0 0 0.7rem; font-weight: 700; line-height: 1.45; color: #f1f5f9; }
+  body.light .blog-card__title { color: #0f172a; }
+  .blog-card__date { font-size: 0.82rem; color: #9ca3af; }
+  body.light .blog-card__date { color: #64748b; }
+
   @media (max-width: 480px) {
     .bd-code { padding: 1rem; font-size: 0.85rem; }
     .bd-hero { height: 240px; font-size: 4rem; margin-bottom: 2rem; }
@@ -48,104 +84,53 @@
     &larr; Back to all posts
   </a>
 
-  {% if blog_id == 1 %}
+  <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap;">
+    <span class="bd-tag" style="background: {{ post.accent }}1f; color: {{ post.accent }};">{{ post.get_category_display }}</span>
+    <span class="bd-muted" style="font-size: 0.9rem;">
+      {{ post.published_at|date:"F d, Y" }}{% if post.read_time %} &bull; {{ post.read_time }}{% endif %}
+    </span>
+  </div>
 
-    <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem;">
-      <span class="bd-tag" style="background: rgba(37,99,235,0.12); color: #3b82f6;">AI Tutorials</span>
-      <span class="bd-muted" style="font-size: 0.9rem;">July 13, 2026 &bull; 5 min read</span>
-    </div>
-    <h1>Building Your First LLM App with Python</h1>
-    <div class="bd-hero" style="background: linear-gradient(135deg, #2563eb, #3b82f6); box-shadow: 0 20px 40px rgba(37,99,235,0.2);">🤖</div>
-    <p class="bd-lead">Large Language Models (LLMs) have revolutionized the way we build software. In this tutorial, we will explore how to set up your environment, connect to the OpenAI API, and build your very first AI-powered application using Django.</p>
-    <h2>1. Setting up the Environment</h2>
-    <p>Before we start writing code, we need to ensure our Python environment is ready. It is highly recommended to use a virtual environment to manage dependencies.</p>
-    <div class="bd-code">
-      python -m venv venv<br>
-      source venv/bin/activate<br>
-      pip install django openai
-    </div>
-    <h2>2. Writing the Integration Code</h2>
-    <p>Once the dependencies are installed, you can create a simple utility function that interacts with the OpenAI ChatCompletion endpoint. Keep your API keys secure!</p>
-    <div class="bd-code">
-      import openai<br><br>
-      def get_ai_response(prompt):<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;response = openai.ChatCompletion.create(<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;model="gpt-4",<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;messages=[{"role": "user", "content": prompt}]<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;)<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;return response.choices[0].message.content
-    </div>
-    <h2>Conclusion</h2>
-    <p>Building AI applications is easier than ever. With just a few lines of code, you can unlock incredible capabilities. Stay tuned for our next post where we'll discuss deploying your Django app to production!</p>
-    <div class="bd-divider" style="margin-top: 4rem; padding-top: 2rem; display: flex; align-items: center; gap: 1rem;">
-      <div style="width: 50px; height: 50px; border-radius: 50%; background: #3b82f6; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">RM</div>
-      <div>
-        <div class="bd-author-name">Raj Makhijani</div>
-        <div class="bd-author-role">Founder, ProjectsHub</div>
-      </div>
-    </div>
+  <h1>{{ post.title }}</h1>
 
-  {% elif blog_id == 2 %}
-
-    <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem;">
-      <span class="bd-tag" style="background: rgba(16,185,129,0.12); color: #10b981;">Career Advice</span>
-      <span class="bd-muted" style="font-size: 0.9rem;">July 10, 2026 &bull; 7 min read</span>
-    </div>
-    <h1>How to Stand Out in Tech Interviews</h1>
-    <div class="bd-hero" style="background: linear-gradient(135deg, #10b981, #34d399); box-shadow: 0 20px 40px rgba(16,185,129,0.2);">💼</div>
-    <p class="bd-lead">Stop grinding LeetCode all day. Here is what engineering managers are actually looking for when hiring new developers — and how you can stand out in every round.</p>
-    <h2>1. Show Your Thinking, Not Just Your Answer</h2>
-    <p>Interviewers care far more about how you approach a problem than whether you get the perfect solution. Talk through your thought process out loud. Ask clarifying questions before jumping to code.</p>
-    <h2>2. Build Real Projects</h2>
-    <p>A GitHub with 3 strong, complete projects beats 100 half-finished repos. Pick projects that solve a real problem and explain the business impact in your README and resume. Recruiters notice.</p>
-    <div class="bd-code">
-      # Good README structure<br>
-      ## Problem Statement<br>
-      ## Solution &amp; Architecture<br>
-      ## Demo / Screenshots<br>
-      ## How to Run
-    </div>
-    <h2>3. Prepare Behavioral Questions</h2>
-    <p>Most interviews fail not on the technical side but on soft skills. Prepare 5–7 strong STAR (Situation, Task, Action, Result) stories that you can adapt to different questions about teamwork, failure, and leadership.</p>
-    <h2>Conclusion</h2>
-    <p>Tech interviews are a skill you can learn. Focus on communication, real projects, and consistent practice — and you will land the offer.</p>
-    <div class="bd-divider" style="margin-top: 4rem; padding-top: 2rem; display: flex; align-items: center; gap: 1rem;">
-      <div style="width: 50px; height: 50px; border-radius: 50%; background: #10b981; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">RM</div>
-      <div>
-        <div class="bd-author-name">Raj Makhijani</div>
-        <div class="bd-author-role">Founder, ProjectsHub</div>
-      </div>
-    </div>
-
-  {% elif blog_id == 3 %}
-
-    <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem;">
-      <span class="bd-tag" style="background: rgba(245,158,11,0.12); color: #f59e0b;">Case Study</span>
-      <span class="bd-muted" style="font-size: 0.9rem;">July 05, 2026 &bull; 4 min read</span>
-    </div>
-    <h1>From Zero to MVP in 3 Weeks</h1>
-    <div class="bd-hero" style="background: linear-gradient(135deg, #f59e0b, #fbbf24); box-shadow: 0 20px 40px rgba(245,158,11,0.2);">🚀</div>
-    <p class="bd-lead">A deep dive into how we helped a startup launch their AI-powered SaaS product and acquire their first 100 users — all within 3 weeks of kickoff.</p>
-    <h2>The Challenge</h2>
-    <p>Our client had a great idea for an AI document summarizer for law firms. They had no technical team, a tight budget, and a demo deadline set by a potential investor in 3 weeks.</p>
-    <h2>Week 1 — Design &amp; Architecture</h2>
-    <p>We spent the first week defining the core feature set, designing the UI in Figma, and setting up the Django + OpenAI backend. Scope discipline was critical — we said no to 80% of the initial feature wishlist.</p>
-    <h2>Week 2 — Build &amp; Integrate</h2>
-    <p>Core development: PDF upload, OpenAI GPT-4 integration for summarization, user authentication, and a clean results dashboard. We shipped to a staging URL at the end of Day 12.</p>
-    <h2>Week 3 — Launch &amp; First Users</h2>
-    <p>We deployed to production, ran a soft launch on LinkedIn, and helped the client acquire their first 100 beta users. The investor demo went ahead — and they closed a seed round the following month.</p>
-    <h2>Key Takeaway</h2>
-    <p>Speed wins when you have discipline. A focused MVP with one killer feature beats a bloated product every time. If you have an idea, start small and ship fast.</p>
-    <div class="bd-divider" style="margin-top: 4rem; padding-top: 2rem; display: flex; align-items: center; gap: 1rem;">
-      <div style="width: 50px; height: 50px; border-radius: 50%; background: #f59e0b; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">RM</div>
-      <div>
-        <div class="bd-author-name">Raj Makhijani</div>
-        <div class="bd-author-role">Founder, ProjectsHub</div>
-      </div>
-    </div>
-
+  {% if post.get_image_src %}
+  <img src="{{ post.get_image_src }}" alt="{{ post.title }}" class="bd-hero"
+       style="object-fit: cover; display: block;" />
   {% else %}
-    <p class="bd-muted">Blog post not found. <a href="{% url 'blog' %}" style="color: #3b82f6;">Back to blog</a></p>
+  <div class="bd-hero" style="background: {{ post.get_gradient }}; box-shadow: 0 20px 40px {{ post.accent }}33;">{{ post.emoji }}</div>
+  {% endif %}
+
+  <p class="bd-lead">{{ post.get_lead }}</p>
+
+  {% for section in post.sections.all %}
+    {% if section.heading %}<h2>{{ section.heading }}</h2>{% endif %}
+    {% for para in section.body.splitlines %}{% if para.strip %}<p>{{ para }}</p>{% endif %}{% endfor %}
+    {% if section.code %}<div class="bd-code"><pre style="margin:0;font:inherit;white-space:pre-wrap;">{{ section.code }}</pre></div>{% endif %}
+  {% endfor %}
+
+  <div class="bd-divider" style="margin-top: 4rem; padding-top: 2rem; display: flex; align-items: center; gap: 1rem;">
+    <div style="width: 50px; height: 50px; border-radius: 50%; background: {{ post.accent }}; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">{{ post.author_initials }}</div>
+    <div>
+      <div class="bd-author-name">{{ post.author_name }}</div>
+      <div class="bd-author-role">{{ post.author_role }}</div>
+    </div>
+  </div>
+
+  {% if related_posts %}
+  <div class="bd-divider" style="margin-top: 3rem; padding-top: 2rem;">
+    <h2 style="margin-top:0;">More in {{ post.get_category_display }}</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem;">
+      {% for rel in related_posts %}
+      <a href="{% url 'blog_detail' rel.slug %}" class="blog-card">
+        <div class="blog-card__img" style="height: 120px; font-size: 2.5rem; background: {{ rel.get_gradient }};">{{ rel.emoji }}</div>
+        <div class="blog-card__body" style="padding: 1rem 1.15rem 1.25rem;">
+          <h3 class="blog-card__title" style="font-size: 1rem; margin-bottom: 0.35rem;">{{ rel.title }}</h3>
+          <div class="blog-card__date" style="margin: 0;">{{ rel.published_at|date:"F d, Y" }}</div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
   {% endif %}
 
 </div>
