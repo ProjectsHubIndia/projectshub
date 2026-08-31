@@ -4,7 +4,8 @@ Run with: python manage.py seed_data
 """
 from django.core.management.base import BaseCommand
 from core.models import (
-    Project, WorkshopCard, WorkshopDay,
+    Project, ProjectHighlight, ProjectTimelinePhase, ProjectFeature,
+    WorkshopCard, WorkshopDay,
     PricingPlan, PricingFeature
 )
 
@@ -610,9 +611,43 @@ class Command(BaseCommand):
         updated = 0
         created = 0
         for data in projects:
-            _, is_new = Project.objects.update_or_create(
+            data = dict(data)
+
+            # These are related rows, not Project columns — pull them out
+            # before update_or_create, which would otherwise try to assign
+            # to the reverse side of the relation and raise TypeError.
+            highlights = data.pop('highlights', [])
+            timeline_phases = data.pop('timeline_phases', [])
+            price_features = data.pop('price_features', [])
+            # detail_images / diagrams are ImageFields backed by real uploaded
+            # files, so the sample external URLs here cannot be seeded. Add
+            # them from the admin instead.
+            data.pop('detail_images', None)
+            data.pop('diagrams', None)
+
+            project, is_new = Project.objects.update_or_create(
                 title=data['title'], defaults=data
             )
+
+            # Re-seed children so repeated runs stay idempotent
+            project.highlights.all().delete()
+            ProjectHighlight.objects.bulk_create([
+                ProjectHighlight(project=project, order=i, **h)
+                for i, h in enumerate(highlights)
+            ])
+
+            project.timeline_phases.all().delete()
+            ProjectTimelinePhase.objects.bulk_create([
+                ProjectTimelinePhase(project=project, order=i, **t)
+                for i, t in enumerate(timeline_phases)
+            ])
+
+            project.price_features.all().delete()
+            ProjectFeature.objects.bulk_create([
+                ProjectFeature(project=project, text=text, order=i)
+                for i, text in enumerate(price_features)
+            ])
+
             if is_new:
                 created += 1
             else:

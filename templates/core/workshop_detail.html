@@ -105,10 +105,7 @@
       <div class="pd-hero__below pd-reveal" data-delay="1">
         <div class="pd-tags">
           <span class="pd-tag"><span class="pd-tag__dot"></span>Workshop</span>
-          {% if workshop.mode %}<span class="pd-tag"><span class="pd-tag__dot"></span>{{ workshop.mode }}</span>{% endif
-          %} {% if workshop.is_featured %}<span class="pd-tag"><span class="pd-tag__dot"></span>Featured</span>{% endif
-          %} {% if workshop.price_label %}<span class="pd-tag"><span class="pd-tag__dot"></span>{{ workshop.price_label
-            }}</span>{% endif %}
+          {% if workshop.mode %}<span class="pd-tag"><span class="pd-tag__dot"></span>{{ workshop.mode }}</span>{% endif %} {% if workshop.is_featured %}<span class="pd-tag"><span class="pd-tag__dot"></span>Featured</span>{% endif %} {% if workshop.price_label %}<span class="pd-tag"><span class="pd-tag__dot"></span>{{ workshop.price_label }}</span>{% endif %}
         </div>
         <h1 class="pd-hero__title">{{ workshop.title }}</h1>
         {% if workshop.subtitle %}
@@ -237,8 +234,7 @@
             <h2 class="pd-section-title">
               About this <span class="gradient-word">Workshop</span>
             </h2>
-            {% for para in workshop.description.splitlines %} {% if para.strip
-            %}
+            {% for para in workshop.description.splitlines %} {% if para.strip %}
             <p>{{ para }}</p>
             {% endif %} {% endfor %}
           </div>
@@ -275,8 +271,7 @@
                   </p>
                   {% if day.topics %}
                   <ul class="wd-curriculum-item__topics">
-                    {% for topic in day.topics.splitlines %} {% if topic.strip
-                    %}
+                    {% for topic in day.topics.splitlines %} {% if topic.strip %}
                     <li>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
