@@ -1,0 +1,597 @@
+/* ─── SHARED ─────────────────────────────── */
+.aip-wrap { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+
+.aip-eyebrow {
+  font-size: 0.72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.15em;
+  color: #5b8af5; text-align: center; margin-bottom: 0.5rem;
+}
+.aip-h2 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 800; text-align: center;
+  letter-spacing: -0.02em; line-height: 1.2;
+  margin-bottom: 0.6rem;
+}
+.aip-sub {
+  text-align: center; font-size: 0.95rem;
+  max-width: 560px; margin: 0 auto 3rem;
+  line-height: 1.7;
+}
+
+/* ─── DARK SECTIONS ──────────────────────── */
+.aip-dark {
+  background: #060b18;
+  padding: 80px 0;
+  position: relative;
+}
+.aip-dark .aip-h2  { color: #f1f5f9; }
+.aip-dark .aip-sub { color: #64748b; }
+
+/* ─── LIGHT SECTIONS ─────────────────────── */
+.aip-light {
+  background: #f7f9fc;
+  padding: 80px 0;
+  position: relative;
+}
+.aip-light .aip-h2  { color: #0f172a; }
+.aip-light .aip-sub { color: #64748b; }
+
+
+/* ════════════════════════════════════════════
+   1. HERO — dark
+════════════════════════════════════════════ */
+.aip-hero {
+  background: #060b18;
+  padding: 120px 0 70px;
+  position: relative;
+  overflow: hidden;
+}
+.aip-hero::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 55%; height: 100%;
+  background: radial-gradient(ellipse at 25% 55%, rgba(91,138,245,0.14) 0%, transparent 65%);
+  pointer-events: none;
+}
+.aip-hero-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 5%;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 3rem; align-items: center;
+}
+@media (max-width: 900px) {
+  .aip-hero-inner { grid-template-columns: 1fr; text-align: center; }
+  .aip-hero-right { display: none; }
+  .aip-hero-btns  { justify-content: center; }
+}
+
+.aip-hero-label {
+  font-size: 0.72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.15em;
+  color: #5b8af5; margin-bottom: 1rem; display: block;
+}
+.aip-hero h1 {
+  font-size: clamp(2rem, 4.2vw, 3.1rem);
+  font-weight: 800; color: #f1f5f9;
+  line-height: 1.12; letter-spacing: -0.03em;
+  margin-bottom: 1.2rem;
+}
+.aip-hero h1 .grad-text {
+  background: linear-gradient(90deg, #0242cd, #096dfc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.aip-hero-desc { color: #94a3b8; font-size: 0.97rem; line-height: 1.8; margin-bottom: 2rem; }
+.aip-hero-btns  { display: flex; flex-direction: row; gap: 1rem; flex-wrap: nowrap; align-items: center; }
+
+/* Buttons */
+.aip-btn-primary {
+  background: linear-gradient(135deg, #0242cd, #096dfc);
+  color: #fff !important; border: none; border-radius: 8px;
+  padding: 0.62rem 1.3rem; font-size: 0.82rem; font-weight: 700;
+  white-space: nowrap;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;
+  box-shadow: 0 4px 18px rgba(2,66,205,0.4);
+  transition: opacity 0.2s, transform 0.2s;
+}
+.aip-btn-primary:hover { opacity: 0.9; transform: translateY(-2px); }
+.aip-btn-outline {
+  background: transparent; color: #94a3b8;
+  border: 1.5px solid rgba(148,163,184,0.3); border-radius: 8px;
+  padding: 0.62rem 1.3rem; font-size: 0.82rem; font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;
+  transition: border-color 0.2s, color 0.2s, transform 0.2s;
+}
+.aip-btn-outline:hover { border-color: #5b8af5; color: #5b8af5; transform: translateY(-2px); }
+
+/* Hero right image */
+.aip-hero-right {
+  position: relative; display: flex;
+  justify-content: center; align-items: center;
+}
+.aip-hero-glow-ring {
+  position: absolute;
+  width: 380px; height: 380px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(91,138,245,0.18) 0%, transparent 70%);
+}
+.aip-hero-img {
+  position: relative; z-index: 1; width: 100%; max-width: 560px;
+}
+.aip-hero-img img {
+  width: 100%; height: 480px; object-fit: cover;
+  border: none; border-radius: 0; box-shadow: none;
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, black 18%, black 82%, transparent),
+    linear-gradient(to bottom, transparent, black 18%, black 82%, transparent);
+  -webkit-mask-composite: destination-in;
+  mask-image:
+    linear-gradient(to right, transparent, black 18%, black 82%, transparent),
+    linear-gradient(to bottom, transparent, black 18%, black 82%, transparent);
+  mask-composite: intersect;
+}
+@keyframes aip-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+/* Floating icon badges around brain */
+.aip-fi {
+  position: absolute; z-index: 2;
+  background: rgba(13,21,53,0.85);
+  border: 1px solid rgba(91,138,245,0.35);
+  border-radius: 12px;
+  width: 46px; height: 46px;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(6px);
+}
+.aip-fi svg { width: 22px; height: 22px; color: #7aa6f8; }
+.aip-fi:nth-child(1) { top: 8%;  right: 4%;  animation: aip-fi1 3.2s ease-in-out infinite; }
+.aip-fi:nth-child(2) { top: 22%; left: 0%;   animation: aip-fi1 2.8s ease-in-out infinite -1s; }
+.aip-fi:nth-child(3) { bottom: 22%; right: 2%; animation: aip-fi1 3.5s ease-in-out infinite -0.5s; }
+.aip-fi:nth-child(4) { bottom: 8%; left: 8%;  animation: aip-fi1 3s ease-in-out infinite -1.5s; }
+@keyframes aip-fi1 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+
+/* ════════════════════════════════════════════
+   2. SERVICES — light
+════════════════════════════════════════════ */
+.aip-svc-grid {
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+  gap: 1.2rem;
+}
+@media(max-width:1100px){ .aip-svc-grid{grid-template-columns:repeat(3,1fr);} }
+@media(max-width:640px) { .aip-svc-grid{grid-template-columns:repeat(2,1fr);} }
+
+.aip-svc-card {
+  background: #ffffff;
+  border: 1px solid #e8edf5;
+  border-radius: 16px; padding: 1.8rem 1.3rem;
+  text-align: center;
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+}
+.aip-svc-card:hover { transform: translateY(-6px); box-shadow: 0 14px 36px rgba(91,138,245,0.12); border-color: #bed0ff; }
+.aip-svc-ico {
+  width: 62px; height: 62px;
+  background: linear-gradient(135deg,#eef2ff,#e0e8ff);
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 1.2rem;
+}
+.aip-svc-ico svg { width: 30px; height: 30px; color: #5b8af5; }
+.aip-svc-card h3 { font-size: 0.9rem; font-weight: 700; color: #0f172a; margin-bottom: 0.55rem; }
+.aip-svc-card p  { font-size: 0.8rem;  color: #64748b; line-height: 1.6; margin: 0; }
+
+
+/* ════════════════════════════════════════════
+   3. AI APPS — dark
+════════════════════════════════════════════ */
+.aip-apps-grid {
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+  gap: 1.2rem;
+}
+@media(max-width:1100px){ .aip-apps-grid{grid-template-columns:repeat(4,1fr);} }
+@media(max-width:700px) { .aip-apps-grid{grid-template-columns:repeat(3,1fr);} }
+@media(max-width:440px) { .aip-apps-grid{grid-template-columns:repeat(2,1fr);} }
+
+.aip-app-card {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 0.7rem;
+  padding: 1.4rem 0.8rem;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+  cursor: default;
+}
+.aip-app-card:hover { border-color: rgba(91,138,245,0.45); background: rgba(91,138,245,0.07); transform: translateY(-4px); }
+.aip-app-ico {
+  width: 52px; height: 52px;
+  background: rgba(91,138,245,0.13);
+  border: 1px solid rgba(91,138,245,0.25);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+}
+.aip-app-ico svg { width: 26px; height: 26px; color: #7aa6f8; }
+.aip-app-card span { font-size: 0.78rem; font-weight: 600; color: #94a3b8; text-align: center; line-height: 1.4; }
+
+
+/* ════════════════════════════════════════════
+   4. TECH — light
+════════════════════════════════════════════ */
+.aip-tech-grid {
+  display: grid;
+  grid-template-columns: repeat(8,1fr);
+  gap: 1rem; margin-bottom: 2rem;
+}
+@media(max-width:1100px){ .aip-tech-grid{grid-template-columns:repeat(6,1fr);} }
+@media(max-width:700px) { .aip-tech-grid{grid-template-columns:repeat(4,1fr);} }
+@media(max-width:400px) { .aip-tech-grid{grid-template-columns:repeat(3,1fr);} }
+
+.aip-tech-card {
+  background: #ffffff;
+  border: 1px solid #e8edf5;
+  border-radius: 12px;
+  padding: 1.1rem 0.5rem;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 0.55rem;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  cursor: default;
+}
+.aip-tech-card:hover { border-color: #bed0ff; box-shadow: 0 4px 16px rgba(91,138,245,0.1); transform: translateY(-4px); }
+.aip-tech-logo-box {
+  width: 52px; height: 52px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; flex-shrink: 0;
+}
+.aip-tech-logo-box img { width: 30px; height: 30px; object-fit: contain; display: block; }
+.aip-tech-card span { font-size: 0.72rem; font-weight: 700; color: #374151; text-align: center; }
+.aip-tech-note {
+  text-align: center; font-size: 0.92rem; color: #64748b;
+  max-width: 580px; margin: 0 auto; line-height: 1.7;
+}
+
+
+/* ════════════════════════════════════════════
+   5. PROCESS — dark, horizontal timeline
+════════════════════════════════════════════ */
+.aip-proc-row {
+  display: flex; position: relative;
+  align-items: flex-start;
+}
+.aip-proc-row::before {
+  content: '';
+  position: absolute;
+  top: 25px;
+  left: calc(100%/12);
+  right: calc(100%/12);
+  height: 0;
+  border-top: 2px dashed rgba(91,138,245,0.3);
+  z-index: 0;
+}
+@media(max-width:768px){
+  .aip-proc-row { flex-direction: column; gap: 2rem; align-items: flex-start; }
+  .aip-proc-row::before { display: none; }
+}
+.aip-proc-step {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+  padding: 0 0.6rem; position: relative; z-index: 1;
+}
+.aip-proc-ring {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: #0d1535;
+  border: 2px solid rgba(91,138,245,0.35);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1rem;
+}
+.aip-proc-inner {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg,#5b8af5,#8b5cf6);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 800; color: #fff;
+}
+.aip-proc-step h4 { font-size: 0.88rem; font-weight: 700; color: #e2e8f0; margin-bottom: 0.4rem; }
+.aip-proc-step p  { font-size: 0.78rem; color: #64748b; line-height: 1.6; margin: 0; }
+
+@media(max-width:768px){
+  .aip-proc-step { flex-direction: row; text-align: left; gap: 1rem; align-items: flex-start; }
+  .aip-proc-ring  { flex-shrink: 0; margin-bottom: 0; }
+  .aip-proc-step h4 { margin-top: 0.2rem; }
+}
+
+
+/* ════════════════════════════════════════════
+   6. INDUSTRIES + WHY US — light, side by side
+════════════════════════════════════════════ */
+.aip-ind-why {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4rem; align-items: start;
+}
+@media(max-width:900px){ .aip-ind-why{grid-template-columns:1fr; gap:3rem;} }
+
+.aip-col-title {
+  font-size: 1.25rem; font-weight: 800; color: #0f172a;
+  margin-bottom: 0.4rem;
+}
+.aip-col-sub { font-size: 0.88rem; color: #64748b; margin-bottom: 1.6rem; line-height: 1.6; }
+
+/* Industries grid */
+.aip-ind-grid {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 0.85rem;
+}
+@media(max-width:640px){ .aip-ind-grid{grid-template-columns:repeat(3,1fr);} }
+.aip-ind-card {
+  background: #ffffff; border: 1px solid #e8edf5;
+  border-radius: 12px; padding: 1rem 0.6rem;
+  text-align: center; font-size: 0.76rem; font-weight: 600; color: #374151;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s, color 0.2s;
+  cursor: default;
+}
+.aip-ind-card:hover { border-color: #bed0ff; box-shadow: 0 4px 14px rgba(91,138,245,0.1); transform: translateY(-3px); color: #4f8ef7; }
+.aip-ind-icon { font-size: 1.5rem; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; }
+
+/* Why Us */
+.aip-why-wrap { display: block; }
+.aip-why-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem 2rem; }
+.aip-why-row {
+  display: flex; align-items: center; gap: 0.75rem;
+  font-size: 0.88rem; font-weight: 600; color: #374151;
+}
+.aip-why-tick {
+  width: 22px; height: 22px; flex-shrink: 0;
+  background: #eef2ff; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.aip-why-tick svg { width: 12px; height: 12px; color: #5b8af5; }
+.aip-why-side { display: none; }
+@media(max-width:640px){ .aip-why-list { grid-template-columns: 1fr; } }
+
+
+/* ════════════════════════════════════════════
+   7. FAQ — light, 2-col grid + side deco
+════════════════════════════════════════════ */
+.aip-faq-layout {
+  display: grid; grid-template-columns: 1fr 260px;
+  gap: 3rem; align-items: center;
+}
+@media(max-width:900px){
+  .aip-faq-layout{ grid-template-columns:1fr; }
+  .aip-faq-deco  { display: none; }
+}
+.aip-faq-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;
+}
+@media(max-width:640px){ .aip-faq-grid{grid-template-columns:1fr;} }
+
+.aip-faq-item {
+  background: #ffffff; border: 1px solid #e8edf5;
+  border-radius: 12px; overflow: hidden;
+  transition: border-color 0.2s;
+}
+.aip-faq-item.open { border-color: #bed0ff; }
+.aip-faq-btn {
+  width: 100%; background: none; border: none;
+  padding: 1rem 1.2rem;
+  text-align: left; font-size: 0.88rem; font-weight: 700;
+  color: #0f172a; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center; gap: 0.8rem;
+  transition: color 0.2s;
+}
+.aip-faq-item.open .aip-faq-btn { color: #5b8af5; }
+.aip-faq-plus {
+  width: 24px; height: 24px; flex-shrink: 0;
+  background: #eef2ff; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, transform 0.3s;
+}
+.aip-faq-item.open .aip-faq-plus { transform: rotate(45deg); background: #dde6ff; }
+.aip-faq-plus svg { width: 12px; height: 12px; color: #5b8af5; }
+.aip-faq-ans {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.35s;
+  font-size: 0.83rem; color: #64748b;
+  line-height: 1.65; padding: 0 1.2rem;
+}
+.aip-faq-item.open .aip-faq-ans { max-height: 200px; padding: 0 1.2rem 1rem; }
+
+/* FAQ side decoration */
+.aip-faq-deco { display: flex; flex-direction: column; align-items: center; gap: 0.8rem; }
+.aip-faq-qmark { display: none; }
+.aip-faq-deco-img {
+  width: 270px; height: 270px; object-fit: contain;
+  border-radius: 0; box-shadow: none; background: transparent;
+}
+.aip-faq-deco p {
+  font-size: 0.82rem; color: #94a3b8;
+  text-align: center; line-height: 1.6; max-width: 200px;
+}
+
+
+/* ════════════════════════════════════════════
+   8. CTA — gradient
+════════════════════════════════════════════ */
+.aip-cta {
+  background: linear-gradient(135deg,#1e3a8a 0%,#4f46e5 50%,#7c3aed 100%);
+  padding: 44px 0; position: relative; overflow: hidden;
+}
+.aip-cta::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("/static/image/projectshub-ai-developer-workspace.webp") center/cover;
+  opacity: 0.07; pointer-events: none;
+}
+.aip-cta-inner {
+  max-width: 1100px; margin: 0 auto; padding: 0 5%;
+  display: flex; align-items: center; justify-content: space-between; gap: 3rem;
+  position: relative; z-index: 1;
+}
+.aip-cta-left { flex: 1; }
+.aip-cta-right { flex-shrink: 0; }
+.aip-cta h2 {
+  font-size: clamp(1.6rem,3vw,2.4rem); font-weight: 800;
+  color: #fff; margin-bottom: 1rem; letter-spacing: -0.02em; text-align: left;
+}
+.aip-cta p { color: rgba(255,255,255,0.78); font-size: 0.97rem; line-height: 1.75; margin: 0 0 0.5rem; text-align: left; }
+.aip-cta-hl { color: #a5b4fc !important; font-weight: 700; margin-bottom: 0 !important; }
+.aip-cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+@media(max-width:700px){ .aip-cta-inner { flex-direction: column; } .aip-cta h2, .aip-cta p { text-align: center; } }
+.aip-btn-white {
+  background: #fff; color: #4338ca !important; border: none; border-radius: 8px;
+  padding: 0.85rem 2rem; font-size: 0.92rem; font-weight: 700;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2); transition: transform 0.2s, box-shadow 0.2s;
+}
+.aip-btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.3); }
+.aip-btn-ghost-w {
+  background: rgba(255,255,255,0.12); color: #fff !important;
+  border: 1.5px solid rgba(255,255,255,0.4); border-radius: 8px;
+  padding: 0.85rem 2rem; font-size: 0.92rem; font-weight: 600;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
+  backdrop-filter: blur(8px); transition: background 0.2s, transform 0.2s;
+}
+.aip-btn-ghost-w:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+
+
+/* ════════════════════════════════════════════
+   DARK MODE OVERRIDES  (body without .light)
+════════════════════════════════════════════ */
+body:not(.light) .aip-light {
+  background: #0d1117;
+}
+body:not(.light) .aip-light .aip-h2  { color: #f1f5f9; }
+body:not(.light) .aip-light .aip-sub { color: #94a3b8; }
+
+/* Services section */
+body:not(.light) .aip-svc-card {
+  background: #161b27; border-color: rgba(255,255,255,0.07);
+}
+body:not(.light) .aip-svc-card:hover { border-color: rgba(91,138,245,0.5); }
+body:not(.light) .aip-svc-ico {
+  background: linear-gradient(135deg, rgba(91,138,245,0.15), rgba(139,92,246,0.15));
+}
+body:not(.light) .aip-svc-card h3 { color: #e2e8f0; }
+body:not(.light) .aip-svc-card p  { color: #64748b; }
+
+/* Tech section */
+body:not(.light) .aip-tech-card {
+  background: #161b27; border-color: rgba(255,255,255,0.07);
+}
+body:not(.light) .aip-tech-card:hover { border-color: rgba(91,138,245,0.45); }
+body:not(.light) .aip-tech-card span { color: #cbd5e1; }
+body:not(.light) .aip-tech-note    { color: #64748b; }
+
+/* Industries section */
+body:not(.light) .aip-ind-card {
+  background: #161b27; border-color: rgba(255,255,255,0.07); color: #cbd5e1;
+}
+body:not(.light) .aip-ind-card:hover { border-color: rgba(91,138,245,0.45); color: #7aa6f8; }
+
+/* Why Us section */
+body:not(.light) .aip-col-title { color: #f1f5f9; }
+body:not(.light) .aip-col-sub   { color: #94a3b8; }
+body:not(.light) .aip-why-row   { color: #cbd5e1; }
+body:not(.light) .aip-why-tick  { background: rgba(91,138,245,0.15); }
+
+/* FAQ section */
+body:not(.light) .aip-faq-item {
+  background: #161b27; border-color: rgba(255,255,255,0.07);
+}
+body:not(.light) .aip-faq-item.open { border-color: rgba(91,138,245,0.5); }
+body:not(.light) .aip-faq-btn  { color: #e2e8f0; }
+body:not(.light) .aip-faq-item.open .aip-faq-btn { color: #7aa6f8; }
+body:not(.light) .aip-faq-plus { background: rgba(91,138,245,0.15); }
+body:not(.light) .aip-faq-item.open .aip-faq-plus { background: rgba(91,138,245,0.25); }
+body:not(.light) .aip-faq-ans  { color: #94a3b8; }
+
+
+/* ════════════════════════════════════════════
+   RESPONSIVE — full breakpoint coverage
+   (additive only — no existing rules changed)
+════════════════════════════════════════════ */
+
+/* ── ≤ 1024px  tablet ────────────────────── */
+@media (max-width: 1024px) {
+  .aip-dark, .aip-light  { padding: 64px 0; }
+  .aip-hero              { padding: 100px 0 56px; }
+  .aip-svc-grid          { grid-template-columns: repeat(3,1fr); }
+  .aip-tech-grid         { grid-template-columns: repeat(6,1fr); }
+}
+
+/* ── ≤ 768px  large phone / small tablet ─── */
+@media (max-width: 768px) {
+  .aip-dark, .aip-light  { padding: 52px 0; }
+  .aip-hero              { padding: 88px 0 48px; }
+  .aip-sub               { margin-bottom: 1.8rem; }
+  .aip-cta               { padding: 36px 0; }
+
+  .aip-ind-grid .aip-ind-card:last-child {
+    grid-column: auto !important;
+    max-width: none !important;
+  }
+
+  .aip-col-title { font-size: 1.1rem; }
+}
+
+/* ── ≤ 640px  phone landscape ─────────────── */
+@media (max-width: 640px) {
+  .aip-dark, .aip-light  { padding: 48px 0; }
+  .aip-hero              { padding: 82px 0 44px; }
+  .aip-sub               { font-size: 0.9rem; margin-bottom: 1.5rem; }
+
+  .aip-svc-card          { padding: 1.4rem 1rem; }
+  .aip-svc-ico           { width: 52px; height: 52px; }
+  .aip-svc-ico svg       { width: 24px; height: 24px; }
+  .aip-svc-card h3       { font-size: 0.85rem; }
+
+  .aip-tech-card         { padding: 0.9rem 0.3rem; }
+  .aip-tech-card span    { font-size: 0.68rem; }
+  .aip-tech-logo-box     { width: 44px; height: 44px; border-radius: 10px; }
+
+  .aip-app-ico           { width: 44px; height: 44px; border-radius: 10px; }
+  .aip-app-ico svg       { width: 20px; height: 20px; }
+  .aip-app-card span     { font-size: 0.72rem; }
+
+  .aip-faq-btn           { font-size: 0.84rem; padding: 0.9rem 1rem; }
+  .aip-faq-ans           { padding: 0 1rem; }
+  .aip-faq-item.open .aip-faq-ans { padding: 0 1rem 0.85rem; }
+
+  .aip-cta               { padding: 32px 0; }
+  .aip-cta-inner         { gap: 1.5rem; }
+  .aip-btn-white         { width: 100%; justify-content: center; padding: 0.75rem 1.5rem; font-size: 0.88rem; }
+}
+
+/* ── ≤ 480px  phone portrait ───────────────── */
+@media (max-width: 480px) {
+  .aip-dark, .aip-light  { padding: 40px 0; }
+  .aip-hero              { padding: 76px 0 40px; }
+  .aip-sub               { font-size: 0.86rem; margin-bottom: 1.2rem; }
+
+  .aip-hero-btns         { flex-wrap: wrap; justify-content: center; }
+
+  .aip-svc-grid          { grid-template-columns: repeat(2,1fr); gap: 0.75rem; }
+
+  .aip-apps-grid         { grid-template-columns: repeat(2,1fr) !important; gap: 0.75rem; }
+
+  .aip-tech-grid         { grid-template-columns: repeat(3,1fr) !important; gap: 0.55rem; }
+  .aip-tech-logo-box     { width: 38px; height: 38px; border-radius: 8px; }
+
+  .aip-ind-grid          { grid-template-columns: repeat(2,1fr) !important; }
+  .aip-ind-card:last-child { grid-column: auto !important; max-width: none !important; }
+
+  .aip-proc-step h4      { font-size: 0.8rem; }
+  .aip-proc-step p       { font-size: 0.72rem; }
+  .aip-proc-ring         { width: 44px; height: 44px; }
+  .aip-proc-inner        { width: 30px; height: 30px; font-size: 0.68rem; }
+}
+
+/* ── ≤ 380px  very small phones (Galaxy A, iPhone SE) ── */
+@media (max-width: 380px) {
+  .aip-hero-btns         { flex-direction: column; align-items: stretch; }
+  .aip-btn-primary, .aip-btn-outline { justify-content: center; text-align: center; white-space: normal; }
+  .aip-svc-grid          { grid-template-columns: 1fr !important; }
+  .aip-tech-grid         { grid-template-columns: repeat(2,1fr) !important; }
+  .aip-apps-grid         { grid-template-columns: repeat(2,1fr) !important; }
+  .aip-ind-grid          { grid-template-columns: repeat(2,1fr) !important; }
+  .aip-h2                { font-size: 1.45rem; }
+  .aip-faq-btn           { font-size: 0.8rem; }
+}

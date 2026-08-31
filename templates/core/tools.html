@@ -1,0 +1,351 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Free AI Tools | ProjectsHub{% endblock %}
+{% block nav_projects %}active{% endblock %}
+
+{% block extra_css %}
+<style>
+  .tools-hero {
+    text-align: center;
+    padding: 140px 5% 60px;
+  }
+  .tools-hero__label {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #f28c28;
+    margin-bottom: 1rem;
+  }
+  .tools-hero__title {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    color: #f1f5f9;
+    margin-bottom: 1rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+  body.light .tools-hero__title { color: #0f172a; }
+  .tools-hero__sub {
+    color: #94a3b8;
+    font-size: 1.1rem;
+    max-width: 580px;
+    margin: 0 auto 2.5rem;
+  }
+  body.light .tools-hero__sub { color: #475569; }
+  .tools-hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(59,130,246,0.12);
+    border: 1px solid rgba(59,130,246,0.25);
+    color: #60a5fa;
+    padding: 0.45rem 1.2rem;
+    border-radius: 99px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Category tabs */
+  .tools-tabs {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 3rem;
+    padding: 0 5%;
+  }
+  .tools-tab {
+    padding: 0.5rem 1.25rem;
+    border-radius: 99px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #94a3b8;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  body.light .tools-tab {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    color: #475569;
+  }
+  .tools-tab.active, .tools-tab:hover {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #fff;
+  }
+
+  /* Grid */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5% 80px;
+  }
+
+  /* Tool Card */
+  .tool-card {
+    border-radius: 16px;
+    background: #111827;
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    text-decoration: none;
+    color: inherit;
+  }
+  body.light .tool-card {
+    background: #ffffff;
+    border-color: rgba(0,0,0,0.08);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  }
+  .tool-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.22);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .tool-card__icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.7rem;
+    flex-shrink: 0;
+  }
+  .tool-card__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .tool-card__name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin: 0;
+  }
+  body.light .tool-card__name { color: #0f172a; }
+  .tool-card__tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.2rem 0.65rem;
+    border-radius: 99px;
+    background: rgba(59,130,246,0.12);
+    color: #60a5fa;
+    margin-top: 0.2rem;
+    display: inline-block;
+  }
+  .tool-card__desc {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    flex: 1;
+  }
+  body.light .tool-card__desc { color: #475569; }
+  .tool-card__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: #3b82f6;
+    font-weight: 600;
+    font-size: 0.88rem;
+    margin-top: auto;
+  }
+  body.light .tool-card__cta { color: #2563eb; }
+
+  /* Banner CTA */
+  .tools-banner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5% 100px;
+  }
+  .tools-banner__inner {
+    background: linear-gradient(135deg, #1e3a5f 0%, #1e1b4b 60%, #312e81 100%);
+    border-radius: 24px;
+    padding: 3.5rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .tools-banner__inner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 70% 50%, rgba(99,102,241,0.3) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .tools-banner__emoji { font-size: 3rem; margin-bottom: 1rem; display: block; }
+  .tools-banner__title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 800;
+    color: #f1f5f9;
+    margin-bottom: 0.75rem;
+  }
+  .tools-banner__sub { color: rgba(255,255,255,0.65); margin-bottom: 2rem; font-size: 1rem; }
+  .tools-banner__btn {
+    display: inline-block;
+    background: #fff;
+    color: #1e1b4b;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 0.9rem 2.5rem;
+    border-radius: 99px;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+  }
+  .tools-banner__btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.35); color: #1e1b4b; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<div class="tools-hero">
+  <div class="tools-hero__badge">
+    <span>⚡</span> 50+ Tools — No Signup Needed
+  </div>
+  <h1 class="tools-hero__title">Free AI Tools</h1>
+  <p class="tools-hero__sub">Powerful, ready-to-use AI tools built for students and businesses. Generate, analyze, and automate — instantly.</p>
+</div>
+
+<!-- Tool Cards Grid -->
+<div class="tools-grid">
+
+  <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer" class="tool-card">
+    <div class="tool-card__header">
+      <div class="tool-card__icon" style="background: linear-gradient(135deg, #1e40af, #3b82f6);">🤖</div>
+      <div>
+        <p class="tool-card__name">AI Text Generator</p>
+        <span class="tool-card__tag">Text</span>
+      </div>
+    </div>
+    <p class="tool-card__desc">Generate high-quality blog posts, product descriptions, emails, and more in seconds using GPT-powered AI.</p>
+    <span class="tool-card__cta">Try Free &rarr;</span>
+  </a>
+
+  <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer" class="tool-card">
+    <div class="tool-card__header">
+      <div class="tool-card__icon" style="background: linear-gradient(135deg, #065f46, #10b981);">📄</div>
+      <div>
+        <p class="tool-card__name">Resume Builder</p>
+        <span class="tool-card__tag">Career</span>
+      </div>
+    </div>
+    <p class="tool-card__desc">Create an ATS-friendly, professional resume in minutes. Enter your details and get a polished PDF instantly.</p>
+    <span class="tool-card__cta">Try Free &rarr;</span>
+  </a>
+
+  <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer" class="tool-card">
+    <div class="tool-card__header">
+      <div class="tool-card__icon" style="background: linear-gradient(135deg, #6b21a8, #a855f7);">🖼️</div>
+      <div>
+        <p class="tool-card__name">AI Image Caption Generator</p>
+        <span class="tool-card__tag">Vision</span>
+      </div>
+    </div>
+    <p class="tool-card__desc">Upload any image and get accurate, descriptive captions for social media, accessibility, or content creation.</p>
+    <span class="tool-card__cta">Try Free &rarr;</span>
+  </a>
+
+  <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer" class="tool-card">
+    <div class="tool-card__header">
+      <div class="tool-card__icon" style="background: linear-gradient(135deg, #7c2d12, #f97316);">📊</div>
+      <div>
+        <p class="tool-card__name">Data Summarizer</p>
+        <span class="tool-card__tag">Analytics</span>
+      </div>
+    </div>
+    <p class="tool-card__desc">Paste any CSV or table data and get an instant AI-generated summary with key insights and trends.</p>
+    <span class="tool-card__cta">Try Free &rarr;</span>
+  </a>
+
+  <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer" class="tool-card">
+    <div class="tool-card__header">
+      <div class="tool-card__icon" style="background: linear-gradient(135deg, #0c4a6e, #0ea5e9);">💬</div>
+      <div>
+        <p class="tool-card__name">AI Chatbot Builder</p>
+        <span class="tool-card__tag">Chat</span>
+      </div>
+    </div>
+    <p class="tool-card__desc">Create a custom AI chatbot for your website in minutes. No coding required — just define your bot's persona.</p>
+    <span class="tool-card__cta">Try Free &rarr;</span>
+  </a>
+
+  <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer" class="tool-card">
+    <div class="tool-card__header">
+      <div class="tool-card__icon" style="background: linear-gradient(135deg, #4c1d95, #7c3aed);">🔍</div>
+      <div>
+        <p class="tool-card__name">SEO Keyword Analyzer</p>
+        <span class="tool-card__tag">SEO</span>
+      </div>
+    </div>
+    <p class="tool-card__desc">Analyze any content for SEO strength. Get keyword density, readability score, and AI-powered improvement tips.</p>
+    <span class="tool-card__cta">Try Free &rarr;</span>
+  </a>
+
+  <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer" class="tool-card">
+    <div class="tool-card__header">
+      <div class="tool-card__icon" style="background: linear-gradient(135deg, #134e4a, #14b8a6);">✉️</div>
+      <div>
+        <p class="tool-card__name">Cold Email Writer</p>
+        <span class="tool-card__tag">Outreach</span>
+      </div>
+    </div>
+    <p class="tool-card__desc">Write high-converting cold emails for sales, job applications, or partnerships — personalized by AI in one click.</p>
+    <span class="tool-card__cta">Try Free &rarr;</span>
+  </a>
+
+  <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer" class="tool-card">
+    <div class="tool-card__header">
+      <div class="tool-card__icon" style="background: linear-gradient(135deg, #881337, #f43f5e);">🎙️</div>
+      <div>
+        <p class="tool-card__name">Interview Question Generator</p>
+        <span class="tool-card__tag">Career</span>
+      </div>
+    </div>
+    <p class="tool-card__desc">Enter a job role and get 20 tailored technical + behavioral interview questions with ideal answer frameworks.</p>
+    <span class="tool-card__cta">Try Free &rarr;</span>
+  </a>
+
+  <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer" class="tool-card">
+    <div class="tool-card__header">
+      <div class="tool-card__icon" style="background: linear-gradient(135deg, #1e3a5f, #6366f1);">🧠</div>
+      <div>
+        <p class="tool-card__name">Code Explainer</p>
+        <span class="tool-card__tag">Dev</span>
+      </div>
+    </div>
+    <p class="tool-card__desc">Paste any code snippet and get a plain-English explanation. Perfect for beginners learning to code or debugging.</p>
+    <span class="tool-card__cta">Try Free &rarr;</span>
+  </a>
+
+</div>
+
+<!-- CTA Banner -->
+<div class="tools-banner">
+  <div class="tools-banner__inner">
+    <span class="tools-banner__emoji">🚀</span>
+    <h2 class="tools-banner__title">50+ More Tools Available at tools.projectshub.co.in</h2>
+    <p class="tools-banner__sub">All tools are free, no account needed. Built with Django, Python & OpenAI.</p>
+    <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer" class="tools-banner__btn">
+      Explore All Free Tools &rarr;
+    </a>
+  </div>
+</div>
+
+{% endblock %}

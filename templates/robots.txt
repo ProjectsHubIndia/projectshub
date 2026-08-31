@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /contact/
+Disallow: /gate/
+Disallow: /idea/
+Disallow: /enroll/
+Disallow: /api/
+
+Sitemap: https://projectshub.co.in/sitemap.xml

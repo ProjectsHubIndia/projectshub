@@ -1,0 +1,1303 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{# ═══════════════════════════════════════
+SEO — Workshop day detail page
+═══════════════════════════════════════ #}
+
+{% block title %}Day {{ day.day_number }}: {{ day.title }} | {{ workshop.title }} — ProjectsHub{% endblock %}
+
+{% block meta_description %}Day {{ day.day_number }} of the {{ workshop.title }}: {{ day.description|truncatechars:150 }} {% if day.outcome %}Outcome: {{ day.outcome|truncatechars:80 }}{% endif %}{% endblock %}
+
+{% block meta_keywords %}{{ day.title }}, {{ workshop.title }}, AI workshop day {{ day.day_number }}, machine learning training, ProjectsHub workshop, hands-on AI{% endblock %}
+
+{% block canonical %}https://projectshub.co.in{% url 'workshop_day_detail' workshop.id day.day_number %}{% endblock %}
+
+{% block og_title %}Day {{ day.day_number }}: {{ day.title }} — {{ workshop.title }} | ProjectsHub{% endblock %}
+{% block og_description %}{% if day.outcome %}{{ day.outcome }}{% else %}{{ day.description|truncatechars:160 }}{% endif %}{% endblock %}
+{% block og_url %}https://projectshub.co.in{% url 'workshop_day_detail' workshop.id day.day_number %}{% endblock %}
+
+{% block schema %}
+{# BreadcrumbList — shows "ProjectsHub > Day N" in Google results #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://projectshub.co.in/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Workshop",
+      "item": "https://projectshub.co.in/workshop/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ workshop.title|escapejs }}",
+      "item": "https://projectshub.co.in{% url 'workshop_detail' workshop.id %}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "Day {{ day.day_number }}: {{ day.title|escapejs }}",
+      "item": "https://projectshub.co.in{% url 'workshop_day_detail' workshop.id day.day_number %}"
+    }
+  ]
+}
+</script>
+
+{# Course — this specific day as a learning unit #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "Day {{ day.day_number }}: {{ day.title|escapejs }}",
+  "description": "{{ day.description|truncatechars:300|escapejs }}",
+  "url": "https://projectshub.co.in{% url 'workshop_day_detail' workshop.id day.day_number %}",
+  "provider": {
+    "@type": "Organization",
+    "name": "ProjectsHub",
+    "url": "https://projectshub.co.in",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://projectshub.co.in/static/image/favicon_io/logo.png"
+    }
+  },
+  "isPartOf": {
+    "@type": "EducationEvent",
+    "name": "{{ workshop.title|escapejs }}",
+    "url": "https://projectshub.co.in/workshop/"{% if workshop.date %},
+    "startDate": "{{ workshop.date }}"{% endif %}
+  },
+  "hasCourseInstance": {
+    "@type": "CourseInstance",
+    "courseMode": "{% if workshop.mode and 'online' in workshop.mode|lower %}online{% else %}onsite{% endif %}",
+    "courseWorkload": "PT7H"{% if workshop.date %},
+    "startDate": "{{ workshop.date }}"{% endif %}
+  }
+}
+</script>
+{% endblock %}
+
+{# ══════════════════════════════════
+Page-specific CSS
+══════════════════════════════════ #}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/workshop.css' %}" />
+<link rel="stylesheet" href="{% static 'css/project-detail.css' %}" />
+<link rel="stylesheet" href="{% static 'css/workshop-day.css' %}?v=2" />
+<link rel="stylesheet" href="{% static 'css/ai-chatbot.css' %}" />
+<link rel="stylesheet" href="{% static 'css/social-share.css' %}" />
+<link rel="stylesheet" href="{% static 'css/idea-modal.css' %}" />
+
+{# JOURNEY / TREASURE-MAP redesign for .pd-main — scoped, inline. NOTE: Django {# #} comments must stay on ONE line. #}
+<style>
+  /* ── Map header note above the trail ── */
+  .jrny-mapnote {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    font-size: .74rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 2.75rem;
+  }
+
+  .jrny-mapnote svg {
+    color: var(--blue-400);
+    flex-shrink: 0;
+  }
+
+  body.light .jrny-mapnote {
+    color: #64748b;
+  }
+
+  /* ── Wrapper ── */
+  .jrny {
+    position: relative;
+  }
+
+  /* ── The winding trail — a single SVG overlay covering the whole journey.
+        The serpentine path is generated in JS from the real marker positions,
+        so it always lines up no matter how many "stops" the day has. ── */
+  .jrny-trail {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .jrny-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    /* let the glow/comet bleed past edges */
+  }
+
+  /* faint dotted "treasure-map" path — the whole route, always visible */
+  .jrny-svg__track {
+    fill: none;
+    stroke: var(--border-glass);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-dasharray: 0.1 13;
+    /* round dots */
+  }
+
+  body.light .jrny-svg__track {
+    stroke: rgba(15, 23, 42, .16);
+  }
+
+  /* soft wide under-glow of the travelled portion */
+  .jrny-svg__glow {
+    fill: none;
+    stroke: url(#jrnyGrad);
+    stroke-width: 10;
+    stroke-linecap: round;
+    filter: url(#jrnyGlowBlur);
+    opacity: .5;
+  }
+
+  /* bright thin core of the travelled portion */
+  .jrny-svg__core {
+    fill: none;
+    stroke: url(#jrnyGrad);
+    stroke-width: 3;
+    stroke-linecap: round;
+  }
+
+  /* comet head that rides the leading edge */
+  .jrny-svg__comet {
+    fill: #ffffff;
+    filter: drop-shadow(0 0 5px #93c5fd) drop-shadow(0 0 12px rgba(168, 85, 247, .9));
+    opacity: 0;
+    transition: opacity .35s;
+  }
+
+  .jrny-svg__comet-ring {
+    fill: none;
+    stroke: #bfdbfe;
+    stroke-width: 1.5;
+    opacity: 0;
+  }
+
+  .jrny.is-rolling .jrny-svg__comet {
+    opacity: 1;
+  }
+
+  .jrny.is-rolling .jrny-svg__comet-ring {
+    animation: jrnyPing 1.6s ease-out infinite;
+  }
+
+  @keyframes jrnyPing {
+    0% {
+      opacity: .7;
+      r: 6;
+    }
+
+    100% {
+      opacity: 0;
+      r: 20;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .jrny-svg__comet-ring {
+      animation: none;
+    }
+  }
+
+  /* ── Steps column ── */
+  .jrny-steps {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3.25rem;
+  }
+
+  /* ── Single step ── */
+  .jrny-step {
+    position: relative;
+    width: 50%;
+    box-sizing: border-box;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity .65s var(--ease-out-expo),
+      transform .65s var(--ease-out-expo);
+  }
+
+  .jrny-step.is-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  .jrny-step:nth-child(odd) {
+    left: 0;
+    padding-right: 64px;
+    text-align: right;
+  }
+
+  .jrny-step:nth-child(even) {
+    margin-left: 50%;
+    padding-left: 64px;
+    text-align: left;
+  }
+
+  /* ── Round milestone marker that sits on the trail ── */
+  .jrny-step__marker {
+    position: absolute;
+    top: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.05rem;
+    color: var(--text-bright);
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 3;
+    box-shadow: 0 0 0 6px var(--bg-dark);
+    transition: transform .45s var(--ease-out-expo),
+      box-shadow .45s, border-color .45s, background .45s;
+  }
+
+  body.light .jrny-step__marker {
+    box-shadow: 0 0 0 6px var(--bg-light);
+  }
+
+  .jrny-step:nth-child(odd) .jrny-step__marker {
+    right: -28px;
+  }
+
+  .jrny-step:nth-child(even) .jrny-step__marker {
+    left: -28px;
+  }
+
+  .jrny-step.is-in .jrny-step__marker {
+    border-color: rgba(96, 165, 250, .6);
+    background: linear-gradient(135deg, rgba(59, 130, 246, .28), rgba(168, 85, 247, .28));
+    box-shadow: 0 0 0 6px var(--bg-dark), 0 0 26px rgba(96, 165, 250, .55);
+    transform: scale(1.06);
+  }
+
+  body.light .jrny-step.is-in .jrny-step__marker {
+    box-shadow: 0 0 0 6px var(--bg-light), 0 0 26px rgba(96, 165, 250, .45);
+  }
+
+  /* start marker (green compass) */
+  .jrny-step--start .jrny-step__marker {
+    border-color: rgba(34, 197, 94, .5);
+    background: linear-gradient(135deg, rgba(34, 197, 94, .28), rgba(59, 130, 246, .22));
+    color: #86efac;
+  }
+
+  body.light .jrny-step--start .jrny-step__marker {
+    color: #15803d;
+  }
+
+  .jrny-step--start.is-in .jrny-step__marker {
+    box-shadow: 0 0 0 6px var(--bg-dark), 0 0 26px rgba(34, 197, 94, .5);
+  }
+
+  /* treasure marker (gold chest) */
+  .jrny-step--treasure .jrny-step__marker {
+    width: 62px;
+    height: 62px;
+    border-color: rgba(234, 179, 8, .55);
+    background: linear-gradient(135deg, rgba(234, 179, 8, .30), rgba(168, 85, 247, .28));
+    color: #fde68a;
+  }
+
+  body.light .jrny-step--treasure .jrny-step__marker {
+    color: #b45309;
+  }
+
+  .jrny-step:nth-child(odd).jrny-step--treasure .jrny-step__marker {
+    right: -31px;
+  }
+
+  .jrny-step:nth-child(even).jrny-step--treasure .jrny-step__marker {
+    left: -31px;
+  }
+
+  .jrny-step--treasure.is-in .jrny-step__marker {
+    box-shadow: 0 0 0 6px var(--bg-dark), 0 0 30px rgba(234, 179, 8, .6);
+  }
+
+  body.light .jrny-step--treasure.is-in .jrny-step__marker {
+    box-shadow: 0 0 0 6px var(--bg-light), 0 0 30px rgba(234, 179, 8, .45);
+  }
+
+  /* ── Card body for each stop ── */
+  .jrny-card {
+    position: relative;
+    text-align: left;
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-card);
+    padding: 1.5rem 1.6rem;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    transition: border-color .3s, transform .3s, box-shadow .3s;
+  }
+
+  .jrny-card:hover {
+    border-color: rgba(96, 165, 250, .3);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, .28);
+  }
+
+  body.light .jrny-card {
+    background: rgba(255, 255, 255, .72);
+    border-color: rgba(0, 0, 0, .08);
+  }
+
+  /* dotted connector from card to the trail */
+  .jrny-card::before {
+    content: '';
+    position: absolute;
+    top: 26px;
+    width: 46px;
+    height: 2px;
+    background: repeating-linear-gradient(to right,
+        var(--border-glass) 0 4px, transparent 4px 8px);
+  }
+
+  .jrny-step:nth-child(odd) .jrny-card::before {
+    right: -46px;
+  }
+
+  .jrny-step:nth-child(even) .jrny-card::before {
+    left: -46px;
+  }
+
+  /* little tag at the top of each card */
+  .jrny-step__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--blue-300);
+    background: rgba(96, 165, 250, .1);
+    border: 1px solid rgba(96, 165, 250, .22);
+    padding: .28rem .7rem;
+    border-radius: var(--radius-pill);
+    margin-bottom: .85rem;
+  }
+
+  body.light .jrny-step__tag {
+    color: var(--blue-500);
+    background: rgba(59, 130, 246, .08);
+    border-color: rgba(59, 130, 246, .2);
+  }
+
+  .jrny-step--start .jrny-step__tag {
+    color: #4ade80;
+    background: rgba(34, 197, 94, .1);
+    border-color: rgba(34, 197, 94, .25);
+  }
+
+  .jrny-step--treasure .jrny-step__tag {
+    color: #fcd34d;
+    background: rgba(234, 179, 8, .1);
+    border-color: rgba(234, 179, 8, .28);
+  }
+
+  body.light .jrny-step--treasure .jrny-step__tag {
+    color: #b45309;
+  }
+
+  .jrny-card__title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text-bright);
+    margin: 0 0 .35rem;
+    letter-spacing: -.01em;
+  }
+
+  body.light .jrny-card__title {
+    color: #0f172a;
+  }
+
+  .jrny-card__title .gradient-word {
+    background: linear-gradient(135deg, var(--blue-400), var(--purple-light), var(--indigo-300));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .jrny-card__text {
+    font-size: .9rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  body.light .jrny-card__text {
+    color: #475569;
+  }
+
+  /* overview list inside the trailhead card */
+  .jrny-list {
+    list-style: none;
+    margin: .4rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .7rem;
+  }
+
+  .jrny-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: .6rem;
+    font-size: .88rem;
+    line-height: 1.55;
+    color: var(--text-body);
+  }
+
+  body.light .jrny-list li {
+    color: #475569;
+  }
+
+  .jrny-list__dot {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(34, 197, 94, .14);
+    color: #4ade80;
+  }
+
+  body.light .jrny-list__dot {
+    background: rgba(34, 197, 94, .12);
+    color: #16a34a;
+  }
+
+  /* outcome highlight */
+  .jrny-outcome {
+    margin-top: .9rem;
+    padding: .9rem 1rem;
+    background: rgba(234, 179, 8, .06);
+    border-left: 3px solid rgba(234, 179, 8, .6);
+    border-radius: 0 10px 10px 0;
+  }
+
+  .jrny-outcome__label {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: .78rem;
+    font-weight: 600;
+    color: #fcd34d;
+    margin: 0 0 .4rem;
+  }
+
+  body.light .jrny-outcome__label {
+    color: #b45309;
+  }
+
+  .jrny-outcome__text {
+    font-size: .9rem;
+    line-height: 1.7;
+    color: var(--text-body);
+    margin: 0;
+  }
+
+  body.light .jrny-outcome__text {
+    color: #475569;
+  }
+
+  /* ── Continue-journey navigation header ── */
+  .jrny-nav-head {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    margin: 3.25rem 0 1.25rem;
+    font-size: .74rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .jrny-nav-head svg {
+    color: var(--blue-400);
+  }
+
+  body.light .jrny-nav-head {
+    color: #64748b;
+  }
+
+  /* ── Mobile: shift trail to the left, stack everything ── */
+  @media (max-width:768px) {
+    .jrny-steps {
+      gap: 2.4rem;
+    }
+
+    .jrny-step,
+    .jrny-step:nth-child(odd),
+    .jrny-step:nth-child(even) {
+      width: 100%;
+      margin-left: 0;
+      left: 0;
+      padding: 0 0 0 74px;
+      text-align: left;
+    }
+
+    .jrny-step__marker,
+    .jrny-step:nth-child(odd) .jrny-step__marker,
+    .jrny-step:nth-child(even) .jrny-step__marker {
+      left: 0;
+      right: auto;
+      width: 52px;
+      height: 52px;
+    }
+
+    .jrny-step--treasure .jrny-step__marker,
+    .jrny-step:nth-child(odd).jrny-step--treasure .jrny-step__marker,
+    .jrny-step:nth-child(even).jrny-step--treasure .jrny-step__marker {
+      left: -2px;
+      right: auto;
+    }
+
+    .jrny-card::before,
+    .jrny-step:nth-child(odd) .jrny-card::before,
+    .jrny-step:nth-child(even) .jrny-card::before {
+      left: -22px;
+      right: auto;
+      width: 22px;
+    }
+  }
+
+  /* ── Reduced motion / no-JS safety ── */
+  @media (prefers-reduced-motion: reduce) {
+    .jrny-step {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+{% endblock extra_css %}
+
+{% block nav_how_we_help %}active{% endblock %}
+
+{# ══════════════════════════════════
+Main content
+══════════════════════════════════ #}
+{% block content %}
+
+{# Scroll progress bar #}
+<div class="pd-progress" id="progressBar" role="progressbar" aria-label="Reading progress" aria-valuenow="0"
+  aria-valuemin="0" aria-valuemax="100"></div>
+
+<div class="aurora-section" style="position:fixed;inset:0;z-index:0;pointer-events:none;" aria-hidden="true"></div>
+
+<div class="main-body" style="position:relative;z-index:1;">
+  <div class="pd-wrapper wd-page-wrap">
+
+    {# ── Visible breadcrumb ── #}
+    <nav class="projects-breadcrumb" aria-label="Breadcrumb" style="margin-bottom: 1.5rem">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li><a href="/workshop/">Workshop</a></li>
+        <li><a href="/workshop/" title="{{ workshop.title }}">{{ workshop.title|truncatechars:30 }}</a></li>
+        <li aria-current="page">Day {{ day.day_number }}</li>
+      </ol>
+    </nav>
+
+    {# ── Hero Card ── #}
+    <div class="wd-hero pd-reveal" data-day="{{ day.day_number }}" data-delay="1">
+      <div class="wd-hero__accent" aria-hidden="true"></div>
+      <span class="wd-hero__num" aria-hidden="true">{{ day.day_number }}</span>
+      <div class="wd-hero__inner">
+        <div class="wd-hero__tags">
+          <span class="wd-hero__tag"><span class="wd-hero__tag-dot"></span>Day {{ day.day_number }} of {{ total_days }}</span>
+          {% if day.date_label %}<span class="wd-hero__tag"><span class="wd-hero__tag-dot"></span>{{ day.date_label }}</span>{% endif %}
+          {% if workshop.mode %}<span class="wd-hero__tag"><span class="wd-hero__tag-dot"></span>{{ workshop.mode }}</span>{% endif %}
+        </div>
+        <h1 class="wd-hero__title">{{ day.title }}</h1>
+        <p class="wd-hero__sub">
+          {{ workshop.title }}
+          <span class="wd-hero__sub-dot">·</span>
+          <span>Day {{ day.day_number }} Detail</span>
+        </p>
+      </div>
+    </div>
+
+    {# ── MAIN LAYOUT ── #}
+    <div class="pd-layout">
+
+      {# LEFT COLUMN — redesigned as a JOURNEY / TREASURE MAP #}
+      <div class="pd-main">
+
+        <div class="jrny pd-reveal" id="journey" data-delay="2">
+
+          {# map header note #}
+          <div class="jrny-mapnote">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21 3 6" />
+              <line x1="9" y1="3" x2="9" y2="18" />
+              <line x1="15" y1="6" x2="15" y2="21" />
+            </svg>
+            Your Day {{ day.day_number }} Journey · follow the trail
+          </div>
+
+          {# winding trail #}
+          <div class="jrny-trail" aria-hidden="true">
+            <svg class="jrny-svg" id="jrnySvg" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="jrnyGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#22c55e" />
+                  <stop offset="0.28" stop-color="#60a5fa" />
+                  <stop offset="0.70" stop-color="#a855f7" />
+                  <stop offset="1" stop-color="#eab308" />
+                </linearGradient>
+                <filter id="jrnyGlowBlur" x="-60%" y="-60%" width="220%" height="220%">
+                  <feGaussianBlur stdDeviation="4" />
+                </filter>
+              </defs>
+              <path class="jrny-svg__track" id="jrnyTrack" d=""></path>
+              <path class="jrny-svg__glow" id="jrnyGlow" d=""></path>
+              <path class="jrny-svg__core" id="jrnyCore" d=""></path>
+              <circle class="jrny-svg__comet-ring" id="jrnyCometRing" r="6"></circle>
+              <circle class="jrny-svg__comet" id="jrnyComet" r="5"></circle>
+            </svg>
+          </div>
+
+          {# steps #}
+          <div class="jrny-steps">
+
+            {# ── START / TRAILHEAD (Overview) ── #}
+            <div class="jrny-step jrny-step--start">
+              <div class="jrny-step__marker" aria-hidden="true">
+                {# compass icon #}
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+                </svg>
+              </div>
+              <div class="jrny-card">
+                <span class="jrny-step__tag">Trailhead · Start here</span>
+                <h2 class="jrny-card__title">What You'll <span class="gradient-word">Cover</span></h2>
+                <ul class="jrny-list">
+                  {% for para in day.description.splitlines %}
+                  {% if para.strip %}
+                  <li>
+                    <span class="jrny-list__dot" aria-hidden="true">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    </span>
+                    <span>{{ para }}</span>
+                  </li>
+                  {% endif %}
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+
+            {# ── TOPICS as waypoints ── #}
+            {% if day.topics %}
+            {% for topic in day.topics.splitlines %}
+            {% if topic.strip %}
+            {% with forloop.counter as i %}
+            <div class="jrny-step jrny-step--stop">
+              <div class="jrny-step__marker" aria-hidden="true">{{ i }}</div>
+              <div class="jrny-card">
+                <span class="jrny-step__tag">Stop {{ i }}</span>
+                <p class="jrny-card__text">{{ topic.strip }}</p>
+              </div>
+            </div>
+            {% endwith %}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+
+            {# ── TREASURE / DESTINATION (Outcome) ── #}
+            {% if day.outcome %}
+            <div class="jrny-step jrny-step--treasure">
+              <div class="jrny-step__marker" aria-hidden="true">
+                {# treasure chest icon #}
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="8" width="18" height="12" rx="2" />
+                  <path d="M3 12h18" />
+                  <path d="M5 8a7 7 0 0 1 14 0" />
+                  <rect x="10.5" y="11" width="3" height="3" rx="1" />
+                </svg>
+              </div>
+              <div class="jrny-card">
+                <span class="jrny-step__tag">X marks the spot · The reward</span>
+                <h2 class="jrny-card__title">Day <span class="gradient-word">Outcome</span></h2>
+                <div class="jrny-outcome">
+                  <p class="jrny-outcome__label">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                      <polyline points="22 4 12 14.01 9 11.01" />
+                    </svg>
+                    By the end of Day {{ day.day_number }}, you will:
+                  </p>
+                  <p class="jrny-outcome__text">{{ day.outcome }}</p>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+
+          </div><!-- /jrny-steps -->
+        </div><!-- /jrny -->
+
+        {# ── DAY NAVIGATION (continue the journey) ── #}
+        <nav class="wd-day-prev-next pd-reveal" data-delay="5" aria-label="Day navigation">
+          <div class="jrny-nav-head">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+            Continue the journey
+          </div>
+          <div class="wd-day-prev-next__row">
+
+            {% if prev_day %}
+            <a href="{% url 'workshop_day_detail' workshop.id prev_day.day_number %}" class="wd-day-prev-next__btn"
+              aria-label="Previous: Day {{ prev_day.day_number }}, {{ prev_day.title }}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m15 18-6-6 6-6" />
+              </svg>
+              <div>
+                <div class="wd-day-prev-next__label">Previous</div>
+                <div class="wd-day-prev-next__title">Day {{ prev_day.day_number }}: {{ prev_day.title|truncatechars:35 }}</div>
+              </div>
+            </a>
+            {% else %}<div></div>{% endif %}
+
+            {% if next_day %}
+            <a href="{% url 'workshop_day_detail' workshop.id next_day.day_number %}"
+              class="wd-day-prev-next__btn wd-day-prev-next__btn--next"
+              aria-label="Next: Day {{ next_day.day_number }}, {{ next_day.title }}">
+              <div style="text-align:right;">
+                <div class="wd-day-prev-next__label">Next</div>
+                <div class="wd-day-prev-next__title">Day {{ next_day.day_number }}: {{ next_day.title|truncatechars:35 }}</div>
+              </div>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </a>
+            {% else %}
+            {# Last day — CTA to enroll #}
+            <button type="button" class="wd-day-prev-next__btn wd-day-prev-next__btn--enroll open-enroll-modal"
+              data-workshop-id="{{ workshop.id }}" aria-label="Finished browsing? Enroll in the workshop">
+              <div style="text-align:right;">
+                <div class="wd-day-prev-next__label">Finished browsing?</div>
+                <div class="wd-day-prev-next__title">Enroll in the workshop</div>
+              </div>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 13l4 4L19 7" />
+              </svg>
+            </button>
+            {% endif %}
+
+          </div>
+        </nav>
+
+      </div><!-- /pd-main -->
+
+      {# SIDEBAR (unchanged) #}
+      <aside class="pd-sidebar">
+
+        {# Day Progress — all days listed #}
+        <div class="pd-glass pd-reveal" data-delay="2">
+          <div class="pd-section-badge" style="margin-bottom:1rem">
+            <span class="pd-section-badge__dot" aria-hidden="true"></span>All Days
+          </div>
+          <nav class="wd-progress-list" aria-label="Workshop days">
+            {% for d in days %}
+            <a href="{% url 'workshop_day_detail' workshop.id d.day_number %}"
+              class="wd-progress-item{% if d.day_number == day.day_number %} wd-progress-item--active{% endif %}" {% if d.day_number == day.day_number %}aria-current="page"{% endif %}>
+              <div
+                class="wd-progress-item__num{% if d.day_number == day.day_number %} wd-progress-item__num--active{% endif %}"
+                aria-hidden="true">{{ d.day_number }}</div>
+              <div class="wd-progress-item__info">
+                <div class="wd-progress-item__day">Day {{ d.day_number }}</div>
+                <div class="wd-progress-item__title">{{ d.title|truncatechars:36 }}</div>
+              </div>
+            </a>
+            {% endfor %}
+          </nav>
+        </div>
+
+        {# Workshop Info #}
+        <div class="pd-glass pd-reveal" data-delay="3">
+          <div class="pd-section-badge" style="margin-bottom:1.25rem">
+            <span class="pd-section-badge__dot" aria-hidden="true"></span>Workshop
+          </div>
+          <ul class="pd-meta-list">
+            {% if workshop.date %}
+            <li class="pd-meta-item">
+              <div class="pd-meta-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </div>
+              <div>
+                <div class="pd-meta-label">Format</div>
+                <div class="pd-meta-value">{{ workshop.date }}</div>
+              </div>
+            </li>
+            {% endif %}
+            {% if workshop.time %}
+            <li class="pd-meta-item">
+              <div class="pd-meta-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <div class="pd-meta-label">Daily Session</div>
+                <div class="pd-meta-value">{{ workshop.time }}</div>
+              </div>
+            </li>
+            {% endif %}
+            {% if workshop.mode %}
+            <li class="pd-meta-item">
+              <div class="pd-meta-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+              </div>
+              <div>
+                <div class="pd-meta-label">Mode</div>
+                <div class="pd-meta-value">{{ workshop.mode }}</div>
+              </div>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+
+        {# Enroll CTA #}
+        <div class="pd-glass pd-reveal" data-delay="4">
+
+          <button type="button" class="wd-reserve-btn open-enroll-modal" data-workshop-id="{{ workshop.id }}"
+            aria-label="Reserve your spot in {{ workshop.title }}">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+              stroke-width="2.5" width="18" height="18" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            Reserve My Spot
+          </button>
+        </div>
+
+      </aside><!-- /pd-sidebar -->
+
+    </div><!-- /pd-layout -->
+
+  </div><!-- /pd-wrapper -->
+</div><!-- /main-body -->
+
+{# ── Enrollment Modal (matches workshop listing page) ── #}
+<div class="enroll-modal" id="enrollModal" role="dialog" aria-modal="true" aria-labelledby="enrollModalTitle">
+  <div class="enroll-modal__backdrop" id="enrollBackdrop"></div>
+
+  <div class="enroll-modal__content">
+
+    <button class="enroll-modal__close" id="enrollClose" aria-label="Close enrollment form">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+
+    <div class="enroll-modal__header">
+      <!--<div class="enroll-modal__badge">-->
+      <!--  <span class="enroll-modal__badge-dot" aria-hidden="true"></span>-->
+      <!--  Limited Seats: {{ workshop.seats|default:"30" }} Only-->
+      <!--</div>-->
+      <h2 class="enroll-modal__title" id="enrollModalTitle">
+        Reserve Your <span class="gradient-word">Spot</span>
+      </h2>
+      <p class="enroll-modal__subtitle">
+        Fill in your details below. We'll send you payment and access details within 24 hours.
+      </p>
+    </div>
+
+    <form class="enroll-form" id="enrollForm" novalidate>
+
+      <div class="d-md-flex gap-3 d-block">
+        {# Name #}
+        <div class="enroll-field">
+          <label class="enroll-field__label" for="enrollName">
+            Your Name <span class="enroll-field__required">*</span>
+          </label>
+          <div class="enroll-field__input-wrap">
+            <svg class="enroll-field__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            <input type="text" id="enrollName" name="fullName" class="enroll-field__input"
+              placeholder="What should we call you?" required minlength="2" autocomplete="name" />
+          </div>
+          <span class="enroll-field__error" id="errorName">Please enter your name</span>
+        </div>
+
+        {# WhatsApp #}
+        <div class="enroll-field">
+          <label class="enroll-field__label" for="enrollPhone">
+            WhatsApp Number <span class="enroll-field__required">*</span>
+          </label>
+          <div class="enroll-field__input-wrap">
+            <svg class="enroll-field__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+            <input type="tel" id="enrollPhone" name="phone" class="enroll-field__input" placeholder="+91 98765 43210"
+              required autocomplete="tel" />
+          </div>
+          <span class="enroll-field__error" id="errorPhone">Please enter your WhatsApp number</span>
+        </div>
+      </div>
+
+      <div class="d-md-flex gap-3 d-block">
+        {# Email #}
+        <div class="enroll-field">
+          <label class="enroll-field__label" for="enrollEmail">
+            Email Address <span class="enroll-field__required">*</span>
+          </label>
+          <div class="enroll-field__input-wrap">
+            <svg class="enroll-field__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+            </svg>
+            <input type="email" id="enrollEmail" name="email" class="enroll-field__input"
+              placeholder="We'll send details here" required autocomplete="email" />
+          </div>
+          <span class="enroll-field__error" id="errorEmail">Please enter a valid email</span>
+        </div>
+
+        {# Experience #}
+        <div class="enroll-field">
+          <label class="enroll-field__label" for="enrollExperience">
+            Your Background <span class="enroll-field__required">*</span>
+          </label>
+          <div class="enroll-field__input-wrap">
+            <svg class="enroll-field__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            </svg>
+            <select id="enrollExperience" name="experience" class="enroll-field__input enroll-field__select" required>
+              <option value="" disabled selected>Where are you right now?</option>
+              <option value="beginner">🌱 Beginner — Just starting out</option>
+              <option value="intermediate">⚡ Intermediate — Know some coding</option>
+              <option value="advanced">🚀 Advanced — Comfortable with Python</option>
+              <option value="professional">💼 Professional — Working in tech</option>
+            </select>
+            <svg class="enroll-field__chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </div>
+          <span class="enroll-field__error" id="errorExperience">Please select your background</span>
+        </div>
+      </div>
+
+      {# Goal #}
+      <div class="enroll-field w-100">
+        <label class="enroll-field__label" for="enrollMessage">
+          What's your goal with AI? <span class="enroll-field__optional">(helps us personalise your training)</span>
+        </label>
+        <textarea id="enrollMessage" name="message" class="enroll-field__input enroll-field__textarea" rows="3"
+          maxlength="300"
+          placeholder="e.g. Build an AI project for final year, get a job in ML, automate my business..."></textarea>
+        <span class="enroll-field__char-count" id="charCount">0 / 300</span>
+      </div>
+
+      {# Submit #}
+      <button type="submit" class="enroll-submit" id="enrollSubmit">
+        <span class="enroll-submit__text">Reserve My Spot Now</span>
+        <svg class="enroll-submit__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14" />
+          <path d="m12 5 7 7-7 7" />
+        </svg>
+        <span class="enroll-submit__loader" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+          </svg>
+        </span>
+      </button>
+
+      <p class="enroll-form__note">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </svg>
+        Free to register — we'll reach you on WhatsApp within 24 hours. No spam, ever.
+      </p>
+
+    </form>
+
+    {# Success state — shown by enroll-modal.js after successful submit #}
+    <div class="enroll-success" id="enrollSuccess" aria-live="polite">
+      <div class="enroll-success__icon" aria-hidden="true">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+          <polyline points="22 4 12 14.01 9 11.01" />
+        </svg>
+      </div>
+      <h3 class="enroll-success__title">Request Received</h3>
+      <p class="enroll-success__message" style="text-align:center; line-height:1.7;">
+        Thank you, <strong id="successName">there</strong>. We've received your enrollment request and will reach out to
+        you on WhatsApp within <strong>24 hours</strong> to confirm your spot.
+      </p>
+      <button type="button" class="enroll-success__btn" id="enrollSuccessClose">
+        Got it, thanks!
+      </button>
+      <span id="successEmail" style="display:none;"></span>
+    </div>
+
+  </div><!-- /.enroll-modal__content -->
+</div><!-- /.enroll-modal -->
+
+{% endblock content %}
+
+{# ══════════════════════════════════
+Page-specific JS
+══════════════════════════════════ #}
+{% block extra_js %}
+<script src="{% static 'js/project-details.js' %}"></script>
+<script src="{% static 'js/quantum-pulse-loader.js' %}"></script>
+<!--<script src="{% static 'js/ai-chatbot.js' %}"></script>-->
+<!--<script src="{% static 'js/social-share.js' %}"></script>-->
+<script src="{% static 'js/idea-modal.js' %}"></script>
+<script src="{% static 'js/enroll-modal.js' %}"></script>
+
+{# ── Journey trail: reveal stops + draw a serpentine dotted/glow trail with a comet ── #}
+<script>
+  (function () {
+    function initJourney() {
+      var journey = document.getElementById('journey');
+      if (!journey) return;
+
+      var steps = journey.querySelectorAll('.jrny-step');
+      var svg = document.getElementById('jrnySvg');
+      var track = document.getElementById('jrnyTrack');
+      var glow = document.getElementById('jrnyGlow');
+      var core = document.getElementById('jrnyCore');
+      var comet = document.getElementById('jrnyComet');
+      var cometRing = document.getElementById('jrnyCometRing');
+
+      if (!steps.length || !svg || !core) return;
+
+      var reduceMotion = window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* 1) Reveal each stop as it scrolls into view */
+      if ('IntersectionObserver' in window && !reduceMotion) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.25, rootMargin: '0px 0px -8% 0px' });
+        steps.forEach(function (s) { io.observe(s); });
+      } else {
+        steps.forEach(function (s) { s.classList.add('is-in'); });
+      }
+
+      var pathLen = 0;
+
+      /* 2) Build the serpentine path.
+            Real markers (start, every topic stop, treasure) are anchors. Between
+            each pair we INSERT phantom waypoints that sit off-centre on alternating
+            sides — that's what creates multiple S-bends instead of one big arc.
+            A Catmull-Rom-to-bezier conversion threads a smooth curve through them. */
+      function buildPath() {
+        var jr = journey.getBoundingClientRect();
+        var markers = journey.querySelectorAll('.jrny-step__marker');
+        if (markers.length < 2) return;
+
+        // Set min-height to ensure the container spans down to the last marker
+        var last = journey.querySelector('.jrny-step:last-child');
+        var lastRect = last.getBoundingClientRect();
+        var jrnyRect = journey.getBoundingClientRect();
+        var extraH = 50; 
+        var totalH = lastRect.top - jrnyRect.top + lastRect.height + extraH;
+        journey.style.minHeight = totalH + 'px';
+
+        /* real anchors from actual marker centres */
+        var real = [];
+        markers.forEach(function (m) {
+          var r = m.getBoundingClientRect();
+          real.push({
+            x: (r.left + r.width / 2) - jr.left,
+            y: (r.top + r.height / 2) - jr.top,
+            anchor: true
+          });
+        });
+
+        var narrow = window.innerWidth <= 768;
+        var amp = narrow ? 22 : Math.min(64, jr.width * 0.09);
+
+        /* centre line = average of real marker x positions (they should all
+           sit on the same vertical, but averaging is safe) */
+        var sumX = 0;
+        for (var i = 0; i < real.length; i++) sumX += real[i].x;
+        var centerX = sumX / real.length;
+
+        /* decide how many phantoms a gap deserves */
+        function phantomsFor(gap) {
+          if (gap < 110) return 0;
+          if (gap < 260) return 1;
+          if (gap < 520) return 2;
+          if (gap < 820) return 3;
+          return 4;
+        }
+
+        /* build full point list: anchor → phantoms → anchor → … */
+        var pts = [real[0]];
+        var sideToggle = 1;            // first phantom bows right
+        for (var s = 0; s < real.length - 1; s++) {
+          var a = real[s], b = real[s + 1];
+          var gap = b.y - a.y;
+          var n = phantomsFor(gap);
+          for (var k = 1; k <= n; k++) {
+            var t = k / (n + 1);
+            var side = narrow ? 1 : sideToggle;  // mobile: bow right only
+            pts.push({
+              x: centerX + amp * side,
+              y: a.y + gap * t
+            });
+            sideToggle = -sideToggle;
+          }
+          pts.push(b);
+          /* flip starting side for next gap so the wave keeps oscillating
+             across anchors, not just within them */
+          if (n === 0) sideToggle = -sideToggle;
+        }
+
+        /* Catmull-Rom → cubic bezier; tension 0.18 = smooth but not slack */
+        var d = 'M ' + pts[0].x.toFixed(1) + ' ' + pts[0].y.toFixed(1);
+        var tension = 0.18;
+        for (var i = 0; i < pts.length - 1; i++) {
+          var p0 = pts[i - 1] || pts[i];
+          var p1 = pts[i];
+          var p2 = pts[i + 1];
+          var p3 = pts[i + 2] || p2;
+          var c1x = p1.x + (p2.x - p0.x) * tension;
+          var c1y = p1.y + (p2.y - p0.y) * tension;
+          var c2x = p2.x - (p3.x - p1.x) * tension;
+          var c2y = p2.y - (p3.y - p1.y) * tension;
+          d += ' C ' + c1x.toFixed(1) + ' ' + c1y.toFixed(1) + ', ' +
+            c2x.toFixed(1) + ' ' + c2y.toFixed(1) + ', ' +
+            p2.x.toFixed(1) + ' ' + p2.y.toFixed(1);
+        }
+
+        svg.setAttribute('viewBox', '0 0 ' + jr.width + ' ' + jr.height);
+        track.setAttribute('d', d);
+        glow.setAttribute('d', d);
+        core.setAttribute('d', d);
+
+        pathLen = core.getTotalLength();
+        [glow, core].forEach(function (p) {
+          p.style.strokeDasharray = pathLen;
+          p.style.strokeDashoffset = pathLen;   // start fully hidden
+        });
+      }
+
+      /* 3) Reveal the glow/core + move the comet based on scroll progress */
+      function drawTrail() {
+        if (!pathLen) return;
+        var jr = journey.getBoundingClientRect();
+        var vh = window.innerHeight || document.documentElement.clientHeight;
+        var anchor = vh * 0.55;                       // "you are here" line
+        var progress = (anchor - jr.top) / jr.height;
+        progress = Math.max(0, Math.min(1, progress));
+
+        var drawn = pathLen * progress;
+        glow.style.strokeDashoffset = pathLen - drawn;
+        core.style.strokeDashoffset = pathLen - drawn;
+
+        if (comet && !reduceMotion) {
+          var pt = core.getPointAtLength(drawn);
+          comet.setAttribute('cx', pt.x); comet.setAttribute('cy', pt.y);
+          if (cometRing) { cometRing.setAttribute('cx', pt.x); cometRing.setAttribute('cy', pt.y); }
+        }
+        journey.classList.toggle('is-rolling', progress > 0.002 && progress < 0.998);
+      }
+
+      /* rAF-throttled scroll */
+      var ticking = false;
+      function onScroll() {
+        if (!ticking) { window.requestAnimationFrame(function () { drawTrail(); ticking = false; }); ticking = true; }
+      }
+
+      /* debounced rebuild on resize */
+      var rzT;
+      function onResize() {
+        clearTimeout(rzT);
+        rzT = setTimeout(function () { buildPath(); drawTrail(); }, 150);
+      }
+
+      buildPath();
+      drawTrail();
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onResize);
+      window.addEventListener('load', function () { buildPath(); drawTrail(); });
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function () { buildPath(); drawTrail(); });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initJourney);
+    } else {
+      initJourney();
+    }
+  })();
+</script>
+{% endblock extra_js %}

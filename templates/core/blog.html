@@ -1,0 +1,140 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Our Blog | ProjectsHub{% endblock %}
+{% block nav_resources %}active{% endblock %}
+
+{% block extra_css %}
+<style>
+  .blog-card {
+    border-radius: 20px;
+    overflow: hidden;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  body.light .blog-card {
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+  }
+
+  .blog-card__img {
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    position: relative;
+  }
+  .blog-card__badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: rgba(0, 0, 0, 0.45);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    border-radius: 99px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .blog-card__body {
+    padding: 1.4rem 1.5rem 1.6rem;
+    background: #1a2236;
+  }
+  body.light .blog-card__body {
+    background: #ffffff;
+  }
+
+  .blog-card__date {
+    font-size: 0.82rem;
+    color: #9ca3af;
+    margin-bottom: 0.55rem;
+  }
+  body.light .blog-card__date { color: #64748b; }
+
+  .blog-card__title {
+    margin: 0 0 0.7rem;
+    font-size: 1.15rem;
+    line-height: 1.45;
+    font-weight: 700;
+    color: #f1f5f9;
+  }
+  body.light .blog-card__title { color: #0f172a; }
+
+  .blog-card__desc {
+    color: #94a3b8;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    margin-bottom: 1.2rem;
+  }
+  body.light .blog-card__desc { color: #475569; }
+
+  .blog-card__read {
+    color: #3b82f6;
+    font-weight: 600;
+    font-size: 0.92rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  body.light .blog-card__read { color: #2563eb; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="projects-container" style="padding-top: 120px; padding-bottom: 60px;">
+  <div class="projects-header text-center">
+    <h1 class="projects-title">Our Blog</h1>
+    <p class="projects-subtitle">Insights, tutorials, and success stories to accelerate your tech journey.</p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; padding: 2rem 5%;">
+
+    <!-- Card 1 -->
+    <a href="{% url 'blog_detail' 1 %}" class="blog-card">
+      <div class="blog-card__img" style="background: linear-gradient(135deg, #2563eb, #3b82f6);">
+        <span class="blog-card__badge">AI Tutorials</span>
+        🤖
+      </div>
+      <div class="blog-card__body">
+        <div class="blog-card__date">July 13, 2026 &bull; 5 min read</div>
+        <h3 class="blog-card__title">Building Your First LLM App with Python</h3>
+        <p class="blog-card__desc">Learn step-by-step how to integrate the OpenAI API into a Django web application and create a smart chatbot.</p>
+        <span class="blog-card__read">Read More &rarr;</span>
+      </div>
+    </a>
+
+    <!-- Card 2 -->
+    <a href="{% url 'blog_detail' 2 %}" class="blog-card">
+      <div class="blog-card__img" style="background: linear-gradient(135deg, #10b981, #34d399);">
+        <span class="blog-card__badge">Career Advice</span>
+        💼
+      </div>
+      <div class="blog-card__body">
+        <div class="blog-card__date">July 10, 2026 &bull; 7 min read</div>
+        <h3 class="blog-card__title">How to Stand Out in Tech Interviews</h3>
+        <p class="blog-card__desc">Stop grinding LeetCode all day. Here is what engineering managers are actually looking for when hiring new developers.</p>
+        <span class="blog-card__read">Read More &rarr;</span>
+      </div>
+    </a>
+
+    <!-- Card 3 -->
+    <a href="{% url 'blog_detail' 3 %}" class="blog-card">
+      <div class="blog-card__img" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
+        <span class="blog-card__badge">Case Study</span>
+        🚀
+      </div>
+      <div class="blog-card__body">
+        <div class="blog-card__date">July 05, 2026 &bull; 4 min read</div>
+        <h3 class="blog-card__title">From Zero to MVP in 3 Weeks</h3>
+        <p class="blog-card__desc">A deep dive into how we helped a startup launch their AI-powered SaaS product and acquire their first 100 users.</p>
+        <span class="blog-card__read">Read More &rarr;</span>
+      </div>
+    </a>
+
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,501 @@
+.testimonials-section {
+  background: linear-gradient(135deg, rgba(237, 233, 254, 0.55) 0%, #ffffff 45%, rgba(224, 231, 255, 0.45) 100%) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+/* ── Left lavender blob ── */
+.trs-blob-left {
+  position: absolute;
+  top: -80px;
+  left: -100px;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.18) 0%, rgba(167, 139, 250, 0.10) 50%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Right dot grid ── */
+.trs-dot-grid {
+  position: absolute;
+  top: 0;
+  right: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.65;
+}
+
+/* ── Quote badge ── */
+.trs-quote-badge {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.2rem;
+  color: #fff;
+  font-size: 1.6rem;
+  font-family: Georgia, serif;
+  font-weight: 900;
+  line-height: 1;
+  padding-top: 4px;
+}
+
+/* ── Sparkle decorators on header ── */
+.testimonials-header {
+  position: relative !important;
+}
+
+.trs-sparkle-header {
+  position: absolute;
+  color: #a78bfa;
+  font-size: 1.3rem;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.trs-sparkle-header--left {
+  left: 12%;
+  top: 55%;
+}
+
+.trs-sparkle-header--right {
+  right: 8%;
+  top: 18%;
+}
+
+/* ── Title ── */
+.testimonials-title {
+  font-size: clamp(2rem, 4vw, 3rem) !important;
+  font-weight: 800 !important;
+  color: #0f172a !important;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  -webkit-text-fill-color: initial !important;
+  background-clip: initial !important;
+}
+
+.trs-title-accent {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Diamond divider ── */
+.trs-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0.75rem auto 1rem;
+}
+
+.trs-divider::before,
+.trs-divider::after {
+  content: '';
+  width: 64px;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.55), transparent);
+}
+
+/* ── Description ── */
+.testimonials-desc {
+  color: #64748b !important;
+  font-size: 1rem !important;
+}
+
+/* ── Cards ── */
+.testimonial-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 4px 24px rgba(99, 102, 241, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  padding: 1.75rem 1.6rem 1.5rem !important;
+}
+
+/* ── Top-right rounded accent blob ── */
+.testimonial-card::after {
+  content: '';
+  position: absolute;
+  top: -28px;
+  right: -28px;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.trs-card--purple::after {
+  background: rgba(99, 102, 241, 0.10);
+}
+
+.trs-card--blue::after {
+  background: rgba(59, 130, 246, 0.10);
+}
+
+.trs-card--green::after {
+  background: rgba(16, 185, 129, 0.10);
+}
+
+/* ── Card large quote mark ── */
+.trs-card-quote {
+  display: block;
+  font-size: 3.8rem;
+  font-family: Georgia, serif;
+  font-weight: 900;
+  line-height: 0.75;
+  margin-bottom: 1rem;
+  padding-top: 4px;
+}
+
+.trs-card-quote--purple {
+  color: #6366f1;
+}
+
+.trs-card-quote--blue {
+  color: #3b82f6;
+}
+
+.trs-card-quote--green {
+  color: #10b981;
+}
+
+/* ── Stars + sparkle row ── */
+.trs-stars-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.9rem;
+}
+
+.t-stars {
+  font-size: 1.05rem !important;
+  letter-spacing: 2px !important;
+  color: #fbbf24 !important;
+}
+
+.trs-sparkle-sm {
+  color: #a78bfa;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* ── Review text ── */
+.t-text {
+  color: #334155 !important;
+  font-size: 0.92rem !important;
+  font-style: italic !important;
+  line-height: 1.72 !important;
+  margin-bottom: 1.4rem !important;
+}
+
+/* ── Author divider ── */
+.trs-author-divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.07);
+  margin-bottom: 1.1rem;
+}
+
+/* ── Avatar ── */
+.t-avatar {
+  width: 46px !important;
+  height: 46px !important;
+  border-radius: 50% !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  position: relative !important;
+}
+
+.trs-avatar--purple {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+  color: #fff !important;
+}
+
+.trs-avatar--blue {
+  background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
+  color: #fff !important;
+}
+
+.trs-avatar--green {
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+  color: #fff !important;
+}
+
+.trs-avatar--orange {
+  background: linear-gradient(135deg, #f59e0b, #ef4444) !important;
+  color: #fff !important;
+}
+
+.trs-avatar--cyan {
+  background: linear-gradient(135deg, #06b6d4, #3b82f6) !important;
+  color: #fff !important;
+}
+
+.trs-avatar--pink {
+  background: linear-gradient(135deg, #ec4899, #8b5cf6) !important;
+  color: #fff !important;
+}
+
+/* ── Online dot ── */
+.trs-online-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #10b981;
+  border: 2px solid #fff;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+/* ── Author info ── */
+.t-info strong {
+  color: #0f172a !important;
+  font-size: 0.92rem !important;
+}
+
+.t-info span {
+  color: #64748b !important;
+  font-size: 0.76rem !important;
+}
+
+/* ── Card dot grid decoration ── */
+.trs-card-dots {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  display: grid;
+  grid-template-columns: repeat(5, 5px);
+  gap: 5px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.trs-card-dots span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(99, 102, 241, 0.16);
+  display: block;
+}
+
+/* ── Scroll arrows ── */
+.scroll-arrow {
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 50% !important;
+  border: 1.5px solid rgba(0, 0, 0, 0.14) !important;
+  background: #ffffff !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
+  color: #475569 !important;
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: border-color 0.2s, color 0.2s, box-shadow 0.2s !important;
+}
+
+.scroll-arrow:hover {
+  border-color: #6366f1 !important;
+  color: #6366f1 !important;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.22) !important;
+}
+
+/* ── Pagination dots ── */
+.trs-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.trs-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(99, 102, 241, 0.22);
+  display: block;
+}
+
+.trs-dot.active {
+  background: #6366f1;
+  transform: scale(1.2);
+}
+
+body:not(.light) .testimonials-section {
+  background: linear-gradient(135deg, rgba(17, 16, 40, 0.98) 0%, rgba(30, 27, 60, 0.95) 50%, rgba(20, 18, 48, 0.98) 100%) !important;
+}
+
+body:not(.light) .trs-blob-left {
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, rgba(167, 139, 250, 0.12) 50%, transparent 70%);
+}
+
+body:not(.light) .testimonials-title {
+  color: #f1f5f9 !important;
+}
+
+body:not(.light) .testimonials-desc {
+  color: rgba(148, 163, 184, 0.85) !important;
+}
+
+body:not(.light) .testimonial-card {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35), 0 1px 4px rgba(0, 0, 0, 0.20) !important;
+}
+
+body:not(.light) .t-text {
+  color: rgba(203, 213, 225, 0.85) !important;
+}
+
+body:not(.light) .t-info strong {
+  color: #e2e8f0 !important;
+}
+
+body:not(.light) .t-info span {
+  color: rgba(148, 163, 184, 0.80) !important;
+}
+
+body:not(.light) .trs-author-divider {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+body:not(.light) .trs-card-dots span {
+  background: rgba(99, 102, 241, 0.25);
+}
+
+body:not(.light) .scroll-arrow {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  color: #cbd5e1 !important;
+}
+
+body:not(.light) .scroll-arrow:hover {
+  border-color: #6366f1 !important;
+  color: #818cf8 !important;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.30) !important;
+}
+
+body:not(.light) .trs-dot {
+  background: rgba(99, 102, 241, 0.28);
+}
+
+body:not(.light) .trs-dot.active {
+  background: #818cf8;
+}
+
+/* ── Responsive ── */
+
+/* Large tablet */
+@media (max-width: 1024px) {
+  .testimonials-title {
+    font-size: clamp(1.7rem, 3.5vw, 2.5rem) !important;
+  }
+
+  .testimonial-card {
+    padding: 1.5rem 1.35rem 1.25rem !important;
+  }
+}
+
+/* Tablet (768px–1023px) */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .trs-card-quote {
+    font-size: 3rem;
+  }
+
+  .t-text {
+    font-size: 0.88rem !important;
+  }
+
+  .t-avatar {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+/* Mobile (767px and below) */
+@media (max-width: 767px) {
+  .trs-blob-left {
+    width: 220px;
+    height: 220px;
+    top: -40px;
+    left: -60px;
+  }
+
+  .trs-sparkle-header {
+    display: none;
+  }
+
+  .trs-card-dots {
+    display: none;
+  }
+
+  .testimonials-title {
+    font-size: clamp(1.5rem, 6vw, 2rem) !important;
+  }
+
+  .testimonial-card {
+    padding: 1.35rem 1.2rem 1.1rem !important;
+  }
+
+  .trs-card-quote {
+    font-size: 2.8rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .t-text {
+    font-size: 0.86rem !important;
+    line-height: 1.65 !important;
+  }
+
+  .trs-quote-badge {
+    width: 46px;
+    height: 46px;
+    font-size: 1.35rem;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .testimonials-title {
+    font-size: clamp(1.3rem, 7vw, 1.7rem) !important;
+  }
+
+  .trs-divider::before,
+  .trs-divider::after {
+    width: 40px;
+  }
+
+  .t-info strong {
+    font-size: 0.85rem !important;
+  }
+
+  .scroll-arrow {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+/* ── Container for content limits ── */
+.trs-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .trs-container {
+    padding: 0 0.5rem;
+  }
+}

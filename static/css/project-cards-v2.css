@@ -1,0 +1,505 @@
+.pcard2 {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.04),
+    0 12px 36px rgba(0, 0, 0, 0.1),
+    0 1px 0 rgba(255, 255, 255, 0.9) inset !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  position: relative;
+  /* GPU layer promotion — prevents scroll flash on mobile */
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* ── Gradient accent bar at top ── */
+.pcard2::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 16px 16px 0 0;
+  z-index: 3;
+  pointer-events: none;
+  will-change: background-position;
+  transform: translateZ(0);
+}
+
+.pcard2--projects::before {
+  background: linear-gradient(90deg, #6366f1 0%, #a78bfa 50%, #6366f1 100%);
+  background-size: 200% 100%;
+  animation: pcard2-bar-slide 3.5s linear infinite;
+}
+
+.pcard2--tools::before {
+  background: linear-gradient(90deg, #3b82f6 0%, #818cf8 50%, #3b82f6 100%);
+  background-size: 200% 100%;
+  animation: pcard2-bar-slide 3.5s linear infinite;
+}
+
+@keyframes pcard2-bar-slide {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+.pcard2:hover {
+  border-color: rgba(99, 102, 241, 0.28) !important;
+  box-shadow:
+    0 20px 52px rgba(99, 102, 241, 0.13),
+    0 4px 12px rgba(0, 0, 0, 0.06) !important;
+  transform: translateY(-4px);
+}
+
+/* ── Laptop mockup — lift on hover ── */
+.pcard2 .laptop-mockup {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.pcard2:hover .laptop-mockup {
+  transform: translateY(-7px) scale(1.015);
+}
+
+/* ── Laptop screen — subtle colour-matched inner glow, image unchanged ── */
+.pcard2--projects .laptop-screen {
+  box-shadow:
+    inset 0 0 60px rgba(99, 102, 241, 0.2),
+    inset 0 0 4px rgba(0, 0, 0, 0.8) !important;
+  border-color: rgba(80, 80, 120, 0.85) !important;
+  transition: box-shadow 0.4s ease;
+}
+
+.pcard2--projects:hover .laptop-screen {
+  box-shadow:
+    inset 0 0 90px rgba(99, 102, 241, 0.35),
+    inset 0 0 4px rgba(0, 0, 0, 0.8),
+    0 0 36px rgba(99, 102, 241, 0.18) !important;
+}
+
+.pcard2--tools .laptop-screen {
+  box-shadow:
+    inset 0 0 60px rgba(59, 130, 246, 0.18),
+    inset 0 0 4px rgba(0, 0, 0, 0.8) !important;
+  border-color: rgba(60, 90, 140, 0.85) !important;
+  transition: box-shadow 0.4s ease;
+}
+
+.pcard2--tools:hover .laptop-screen {
+  box-shadow:
+    inset 0 0 90px rgba(59, 130, 246, 0.32),
+    inset 0 0 4px rgba(0, 0, 0, 0.8),
+    0 0 36px rgba(59, 130, 246, 0.18) !important;
+}
+
+/* ── Card body — coloured top divider line + dot-grid bg ── */
+.pcard2 .project-card__body {
+  position: relative;
+  overflow: hidden;
+  transform: translateZ(0);
+  /* creates stacking context + GPU layer, replaces isolation */
+  padding-top: 1.2rem !important;
+}
+
+/* Dot grid per card theme */
+.pcard2--projects .project-card__body {
+  background-image:
+    radial-gradient(circle, rgba(99, 102, 241, 0.18) 1px, transparent 1px),
+    linear-gradient(175deg, rgba(99, 102, 241, 0.03) 0%, transparent 55%);
+  background-size:
+    18px 18px,
+    100% 100%;
+}
+
+.pcard2--tools .project-card__body {
+  background-image:
+    radial-gradient(circle, rgba(59, 130, 246, 0.18) 1px, transparent 1px),
+    linear-gradient(175deg, rgba(59, 130, 246, 0.03) 0%, transparent 55%);
+  background-size:
+    18px 18px,
+    100% 100%;
+}
+
+.pcard2--case-study .project-card__body {
+  background-image:
+    radial-gradient(circle, rgba(16, 185, 129, 0.18) 1px, transparent 1px),
+    linear-gradient(175deg, rgba(16, 185, 129, 0.03) 0%, transparent 55%);
+  background-size:
+    18px 18px,
+    100% 100%;
+}
+
+/* Deco SVG — bottom-right corner */
+.pcard2__deco-svg {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 200px;
+  height: 160px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.pcard2--projects .pcard2__deco-svg {
+  color: #6366f1;
+}
+
+.pcard2--tools .pcard2__deco-svg {
+  color: #3b82f6;
+}
+
+.pcard2--case-study .pcard2__deco-svg {
+  color: #10b981;
+}
+
+.pcard2 .project-card__body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 1.5rem;
+  right: 1.5rem;
+  height: 2px;
+  border-radius: 2px;
+  opacity: 0.55;
+}
+
+.pcard2--projects .project-card__body::before {
+  background: linear-gradient(90deg, #6366f1, #a78bfa, transparent);
+}
+
+.pcard2--tools .project-card__body::before {
+  background: linear-gradient(90deg, #3b82f6, #818cf8, transparent);
+}
+
+.pcard2--case-study .project-card__body::before {
+  background: linear-gradient(90deg, #10b981, #0ea5e9, transparent);
+}
+
+/* ── Tags ── */
+.pcard2 .project-tag {
+  background: rgba(99, 102, 241, 0.08) !important;
+  color: #6366f1 !important;
+  border: 1.5px solid rgba(99, 102, 241, 0.22) !important;
+  font-size: 0.64rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.18rem 0.6rem !important;
+  border-radius: 6px !important;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+
+.pcard2 .project-tag:hover {
+  background: rgba(99, 102, 241, 0.15) !important;
+}
+
+.pcard2--tools .project-tag {
+  background: rgba(59, 130, 246, 0.08) !important;
+  color: #3b82f6 !important;
+  border-color: rgba(59, 130, 246, 0.22) !important;
+}
+
+.pcard2--case-study .project-tag {
+  background: rgba(16, 185, 129, 0.08) !important;
+  color: #10b981 !important;
+  border-color: rgba(16, 185, 129, 0.22) !important;
+}
+
+/* ── Title ── */
+.pcard2 .project-card__title {
+  color: #0f172a !important;
+  font-size: 1.3rem !important;
+  font-weight: 800 !important;
+  line-height: 1.35;
+  margin-bottom: 0.4rem !important;
+}
+
+.pcard2__accent {
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent;
+  font-weight: 900 !important;
+}
+
+.pcard2__accent--purple {
+  background-image: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
+}
+
+.pcard2__accent--blue {
+  background-image: linear-gradient(135deg, #60a5fa 0%, #818cf8 100%);
+}
+
+/* ── Description ── */
+.pcard2 .project-card__desc {
+  color: #64748b !important;
+  font-size: 0.875rem !important;
+  line-height: 1.65 !important;
+}
+
+/* ── Read more link (replaces old Browse/Explore text link) ── */
+.pcard2__readmore {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  color: #818cf8 !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+.pcard2--tools .pcard2__readmore {
+  color: #60a5fa !important;
+}
+
+.pcard2__readmore:hover {
+  color: #c4b5fd !important;
+}
+
+/* ── CTA row  (button + vector illustration) ── */
+.pcard2__cta-wrap {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1.1rem;
+}
+
+/* ── CTA button ── */
+.pcard2__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.75rem 1.4rem;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.15px;
+  border: none;
+  cursor: pointer;
+  transition:
+    box-shadow 0.22s ease,
+    transform 0.15s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer sweep on hover */
+.pcard2__cta::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 55%;
+  height: 100%;
+  background: linear-gradient(110deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.28) 50%,
+      transparent 80%);
+  transform: skewX(-18deg);
+  transition: left 0.55s ease;
+  pointer-events: none;
+}
+
+.pcard2__cta:hover::after {
+  left: 130%;
+}
+
+.pcard2__cta--purple {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 18px rgba(99, 102, 241, 0.4);
+}
+
+.pcard2__cta--purple:hover {
+  box-shadow: 0 8px 28px rgba(99, 102, 241, 0.58);
+  transform: translateY(-2px);
+  color: #ffffff;
+}
+
+.pcard2__cta--blue {
+  background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 18px rgba(59, 130, 246, 0.4);
+}
+
+.pcard2__cta--blue:hover {
+  box-shadow: 0 8px 28px rgba(59, 130, 246, 0.58);
+  transform: translateY(-2px);
+  color: #ffffff;
+}
+
+/* ── Vector illustration ── */
+.pcard2__vector {
+  flex-shrink: 0;
+  opacity: 0.85;
+  align-self: flex-end;
+  pointer-events: none;
+}
+
+/* ── Case Studies colour variant ── */
+.pcard2--case-study .laptop-screen {
+  box-shadow:
+    inset 0 0 60px rgba(16, 185, 129, 0.18),
+    inset 0 0 4px rgba(0, 0, 0, 0.8) !important;
+  border-color: rgba(16, 90, 80, 0.85) !important;
+}
+
+.pcard2--case-study::before {
+  background: linear-gradient(90deg, #10b981 0%, #0ea5e9 50%, #10b981 100%);
+  background-size: 200% 100%;
+  animation: pcard2-bar-slide 3.5s linear infinite;
+}
+
+.pcard2__accent--teal {
+  background-image: linear-gradient(135deg, #10b981 0%, #0ea5e9 100%);
+}
+
+.pcard2__cta--teal {
+  background: linear-gradient(135deg, #10b981 0%, #0ea5e9 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 18px rgba(16, 185, 129, 0.4);
+  text-decoration: none !important;
+  display: inline-flex;
+  align-items: center;
+}
+
+.pcard2__cta--teal:hover {
+  box-shadow: 0 8px 28px rgba(16, 185, 129, 0.58);
+  transform: translateY(-2px);
+  color: #ffffff !important;
+}
+
+body:not(.light) .pcard2 {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.35),
+    0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+body:not(.light) .pcard2:hover {
+  border-color: rgba(99, 102, 241, 0.35) !important;
+  box-shadow:
+    0 20px 52px rgba(99, 102, 241, 0.22),
+    0 4px 12px rgba(0, 0, 0, 0.25) !important;
+  transform: translateY(-4px);
+}
+
+body:not(.light) .pcard2--projects {
+  background: linear-gradient(148deg,
+      rgba(20, 18, 50, 0.92) 60%,
+      rgba(99, 102, 241, 0.12) 100%) !important;
+}
+
+body:not(.light) .pcard2--tools {
+  background: linear-gradient(148deg,
+      rgba(20, 18, 50, 0.92) 60%,
+      rgba(59, 130, 246, 0.12) 100%) !important;
+}
+
+body:not(.light) .pcard2--case-study {
+  background: linear-gradient(148deg,
+      rgba(20, 18, 50, 0.92) 60%,
+      rgba(16, 185, 129, 0.1) 100%) !important;
+}
+
+body:not(.light) .pcard2 .project-card__title {
+  color: #f1f5f9 !important;
+}
+
+body:not(.light) .pcard2 .project-card__desc {
+  color: rgba(148, 163, 184, 0.85) !important;
+}
+
+/* ── Responsive ── */
+
+/* Large tablet */
+@media (max-width: 1024px) {
+  .pcard2 .project-card__title {
+    font-size: 1.15rem !important;
+  }
+}
+
+/* Tablet portrait (768px and below — single column via main.css) */
+@media (max-width: 767px) {
+  .pcard2 .project-card__title {
+    font-size: 1.2rem !important;
+  }
+
+  .pcard2 .project-card__desc {
+    font-size: 0.85rem !important;
+  }
+
+  .pcard2__cta {
+    padding: 0.65rem 1.1rem;
+    font-size: 0.83rem;
+  }
+
+  .pcard2__vector {
+    opacity: 0.6;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .pcard2__cta-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pcard2__vector {
+    display: none;
+  }
+
+  .pcard2 .project-card__title {
+    font-size: 1.1rem !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .pcard2 {
+    will-change: auto !important;
+  }
+
+  .pcard2:hover,
+  body:not(.light) .pcard2:hover {
+    transform: none !important;
+    border-color: rgba(255, 255, 255, 0.09) !important;
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.35),
+      0 2px 8px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  body.light .pcard2:hover {
+    border-color: rgba(0, 0, 0, 0.08) !important;
+    box-shadow:
+      0 4px 6px rgba(0, 0, 0, 0.04),
+      0 12px 36px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .pcard2:hover .laptop-mockup {
+    transform: none !important;
+  }
+
+  .pcard2:hover .laptop-screen,
+  .pcard2--projects:hover .laptop-screen,
+  .pcard2--tools:hover .laptop-screen,
+  .pcard2--case-study:hover .laptop-screen {
+    box-shadow:
+      inset 0 0 60px rgba(99, 102, 241, 0.2),
+      inset 0 0 4px rgba(0, 0, 0, 0.8) !important;
+  }
+}

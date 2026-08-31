@@ -1,0 +1,510 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Sitemap | ProjectsHub{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* ── Hero ── */
+  .sm-hero {
+    text-align: center;
+    padding: 130px 5% 60px;
+    position: relative;
+  }
+
+  .sm-hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(242, 140, 40, 0.12);
+    border: 1px solid rgba(242, 140, 40, 0.3);
+    color: #f28c28;
+    padding: 0.4rem 1.1rem;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+  }
+
+  .sm-hero__title {
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 900;
+    color: #f1f5f9;
+    margin: 0 0 1rem;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  body.light .sm-hero__title {
+    color: #0f172a;
+  }
+
+  .sm-hero__sub {
+    color: #64748b;
+    font-size: 1.05rem;
+    max-width: 480px;
+    margin: 0 auto 2.5rem;
+  }
+
+  /* Stats row */
+  .sm-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 3.5rem;
+  }
+
+  .sm-stat {
+    text-align: center;
+  }
+
+  .sm-stat__num {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #f1f5f9;
+    line-height: 1;
+  }
+
+  body.light .sm-stat__num {
+    color: #0f172a;
+  }
+
+  .sm-stat__lbl {
+    font-size: 0.78rem;
+    color: #64748b;
+    margin-top: 0.25rem;
+    letter-spacing: 0.04em;
+  }
+
+  .sm-stat-div {
+    width: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    align-self: stretch;
+  }
+
+  body.light .sm-stat-div {
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  /* ── Grid ── */
+  .sm-wrap {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 5% 100px;
+  }
+
+  .sm-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .sm-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .sm-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ── Card ── */
+  .sm-card {
+    border-radius: 20px;
+    padding: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  body.light .sm-card {
+    background: #fff;
+    border-color: rgba(0, 0, 0, 0.07);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  }
+
+  .sm-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  }
+
+  body.light .sm-card:hover {
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Subtle glow blob on card */
+  .sm-card::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    opacity: 0.08;
+    pointer-events: none;
+  }
+
+  .sm-card--blue::before {
+    background: #3b82f6;
+  }
+
+  .sm-card--purple::before {
+    background: #a855f7;
+  }
+
+  .sm-card--green::before {
+    background: #10b981;
+  }
+
+  .sm-card--orange::before {
+    background: #f97316;
+  }
+
+  .sm-card--slate::before {
+    background: #94a3b8;
+  }
+
+  /* Card top bar accent */
+  .sm-card__bar {
+    height: 3px;
+    border-radius: 99px;
+    width: 48px;
+    margin-bottom: 1.4rem;
+  }
+
+  .sm-card--blue .sm-card__bar {
+    background: linear-gradient(90deg, #3b82f6, #6366f1);
+  }
+
+  .sm-card--purple .sm-card__bar {
+    background: linear-gradient(90deg, #a855f7, #ec4899);
+  }
+
+  .sm-card--green .sm-card__bar {
+    background: linear-gradient(90deg, #10b981, #06b6d4);
+  }
+
+  .sm-card--orange .sm-card__bar {
+    background: linear-gradient(90deg, #f97316, #eab308);
+  }
+
+  .sm-card--slate .sm-card__bar {
+    background: linear-gradient(90deg, #64748b, #94a3b8);
+  }
+
+  /* Card header */
+  .sm-card__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .sm-card__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .sm-card--blue .sm-card__icon {
+    background: rgba(59, 130, 246, 0.15);
+  }
+
+  .sm-card--purple .sm-card__icon {
+    background: rgba(168, 85, 247, 0.15);
+  }
+
+  .sm-card--green .sm-card__icon {
+    background: rgba(16, 185, 129, 0.15);
+  }
+
+  .sm-card--orange .sm-card__icon {
+    background: rgba(249, 115, 22, 0.15);
+  }
+
+  .sm-card--slate .sm-card__icon {
+    background: rgba(100, 116, 139, 0.15);
+  }
+
+  body.light .sm-card--blue .sm-card__icon {
+    background: rgba(59, 130, 246, 0.1);
+  }
+
+  body.light .sm-card--purple .sm-card__icon {
+    background: rgba(168, 85, 247, 0.1);
+  }
+
+  body.light .sm-card--green .sm-card__icon {
+    background: rgba(16, 185, 129, 0.1);
+  }
+
+  body.light .sm-card--orange .sm-card__icon {
+    background: rgba(249, 115, 22, 0.1);
+  }
+
+  body.light .sm-card--slate .sm-card__icon {
+    background: rgba(100, 116, 139, 0.1);
+  }
+
+
+
+  .sm-card__name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin: 0 0 0.2rem;
+  }
+
+  body.light .sm-card__name {
+    color: #0f172a;
+  }
+
+  .sm-card__count {
+    font-size: 0.72rem;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.04em;
+  }
+
+  .sm-card--blue .sm-card__count {
+    color: #60a5fa;
+  }
+
+  .sm-card--purple .sm-card__count {
+    color: #c084fc;
+  }
+
+  .sm-card--green .sm-card__count {
+    color: #34d399;
+  }
+
+  .sm-card--orange .sm-card__count {
+    color: #fb923c;
+  }
+
+  .sm-card--slate .sm-card__count {
+    color: #94a3b8;
+  }
+
+  /* Divider */
+  .sm-card__divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.06);
+    margin-bottom: 1.2rem;
+  }
+
+  body.light .sm-card__divider {
+    background: rgba(0, 0, 0, 0.07);
+  }
+
+  /* Links */
+  .sm-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .sm-links a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.88rem;
+    color: #94a3b8;
+    text-decoration: none;
+    padding: 0.5rem 0.7rem;
+    border-radius: 8px;
+    transition: background 0.18s, color 0.18s, padding-left 0.18s;
+  }
+
+  body.light .sm-links a {
+    color: #475569;
+  }
+
+  .sm-links a:hover {
+    padding-left: 1rem;
+    background: rgba(255, 255, 255, 0.04);
+    color: #f1f5f9;
+  }
+
+  body.light .sm-links a:hover {
+    background: rgba(0, 0, 0, 0.04);
+    color: #0f172a;
+  }
+
+  .sm-card--blue .sm-links a:hover {
+    color: #60a5fa;
+  }
+
+  .sm-card--purple .sm-links a:hover {
+    color: #c084fc;
+  }
+
+  .sm-card--green .sm-links a:hover {
+    color: #34d399;
+  }
+
+  .sm-card--orange .sm-links a:hover {
+    color: #fb923c;
+  }
+
+  .sm-card--slate .sm-links a:hover {
+    color: #cbd5e1;
+  }
+
+  .sm-link__arrow {
+    opacity: 0;
+    font-size: 0.8rem;
+    transition: opacity 0.18s;
+  }
+
+  .sm-links a:hover .sm-link__arrow {
+    opacity: 1;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<div class="sm-hero">
+  <div class="sm-hero__badge">🗺 HTML Sitemap</div>
+  <h1 class="sm-hero__title">Site Navigation</h1>
+  <p class="sm-hero__sub">A complete map of every page on ProjectsHub — find anything instantly.</p>
+
+  <div class="sm-stats">
+    <div class="sm-stat">
+      <div class="sm-stat__num">5</div>
+      <div class="sm-stat__lbl">Sections</div>
+    </div>
+    <div class="sm-stat-div"></div>
+    <div class="sm-stat">
+      <div class="sm-stat__num">14</div>
+      <div class="sm-stat__lbl">Total Pages</div>
+    </div>
+    <div class="sm-stat-div"></div>
+    <div class="sm-stat">
+      <div class="sm-stat__num">100%</div>
+      <div class="sm-stat__lbl">Free to Access</div>
+    </div>
+  </div>
+</div>
+
+<!-- Cards Grid -->
+<div class="sm-wrap">
+  <div class="sm-grid">
+
+    <!-- Main Pages -->
+    <div class="sm-card sm-card--blue">
+      <div class="sm-card__bar"></div>
+      <div class="sm-card__header">
+        <div class="sm-card__icon">🏠</div>
+        <div class="sm-card__info">
+          <p class="sm-card__name">Main Pages</p>
+          <p class="sm-card__count">4 pages</p>
+        </div>
+      </div>
+      <div class="sm-card__divider"></div>
+      <ul class="sm-links">
+        <li><a href="/"><span>Home</span><span class="sm-link__arrow">→</span></a></li>
+        <li><a href="/#about"><span>Who We Help</span><span class="sm-link__arrow">→</span></a></li>
+        <li><a href="/#why-projectshub"><span>Why Projects Hub</span><span class="sm-link__arrow">→</span></a></li>
+        <li><a href="/#contact"><span>Contact Us</span><span class="sm-link__arrow">→</span></a></li>
+      </ul>
+    </div>
+
+    <!-- Our Work -->
+    <div class="sm-card sm-card--purple">
+      <div class="sm-card__bar"></div>
+      <div class="sm-card__header">
+        <div class="sm-card__icon">💼</div>
+        <div class="sm-card__info">
+          <p class="sm-card__name">Our Work</p>
+          <p class="sm-card__count">3 pages</p>
+        </div>
+      </div>
+      <div class="sm-card__divider"></div>
+      <ul class="sm-links">
+        <li><a href="{% url 'projects' %}"><span>Client Projects</span><span class="sm-link__arrow">→</span></a></li>
+        <li><a href="{% url 'case_studies' %}"><span>Case Studies</span><span class="sm-link__arrow">→</span></a></li>
+        <li><a href="https://tools.projectshub.co.in/"><span>Free AI Tools</span><span
+              class="sm-link__arrow">→</span></a></li>
+      </ul>
+    </div>
+
+    <!-- How We Help -->
+    <div class="sm-card sm-card--green">
+      <div class="sm-card__bar"></div>
+      <div class="sm-card__header">
+        <div class="sm-card__icon">🎓</div>
+        <div class="sm-card__info">
+          <p class="sm-card__name">How We Help</p>
+          <p class="sm-card__count">2 pages</p>
+        </div>
+      </div>
+      <div class="sm-card__divider"></div>
+      <ul class="sm-links">
+        <li><a href="{% url 'workshop' %}"><span>Workshops</span><span class="sm-link__arrow">→</span></a></li>
+        <li><a href="{% url 'projects' %}"><span>Capstone Projects</span><span class="sm-link__arrow">→</span></a></li>
+      </ul>
+    </div>
+
+    <!-- Blog & Resources -->
+    <div class="sm-card sm-card--orange">
+      <div class="sm-card__bar"></div>
+      <div class="sm-card__header">
+        <div class="sm-card__icon">📚</div>
+        <div class="sm-card__info">
+          <p class="sm-card__name">Blog &amp; Resources</p>
+          <p class="sm-card__count">2 pages</p>
+        </div>
+      </div>
+      <div class="sm-card__divider"></div>
+      <ul class="sm-links">
+        <li><a href="{% url 'blog' %}"><span>AI Learning Blog</span><span class="sm-link__arrow">→</span></a></li>
+        <li><a href="{% url 'case_studies' %}"><span>AI Case Studies</span><span class="sm-link__arrow">→</span></a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Legal -->
+    <div class="sm-card sm-card--slate">
+      <div class="sm-card__bar"></div>
+      <div class="sm-card__header">
+        <div class="sm-card__icon">📄</div>
+        <div class="sm-card__info">
+          <p class="sm-card__name">Legal</p>
+          <p class="sm-card__count">3 pages</p>
+        </div>
+      </div>
+      <div class="sm-card__divider"></div>
+      <ul class="sm-links">
+        <li><a href="{% url 'privacy' %}"><span>Privacy Policy</span><span class="sm-link__arrow">→</span></a></li>
+        <li><a href="{% url 'terms' %}"><span>Terms of Service</span><span class="sm-link__arrow">→</span></a></li>
+        <li><a href="{% url 'refund' %}"><span>Refund Policy</span><span class="sm-link__arrow">→</span></a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
