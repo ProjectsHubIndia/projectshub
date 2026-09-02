@@ -81,6 +81,23 @@
     gap: 0.35rem;
   }
   body.light .blog-card__read { color: #2563eb; }
+
+  .blog-card--featured {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 1px #3b82f6, 0 8px 28px rgba(59, 130, 246, 0.25);
+  }
+  .blog-card__featured-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #3b82f6;
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    border-radius: 99px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
 </style>
 {% endblock %}
 
@@ -94,7 +111,8 @@
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; padding: 2rem 5%;">
 
     {% for post in posts %}
-    <a href="{% url 'blog_detail' post.slug %}" class="blog-card">
+    <a href="{% url 'blog_detail' post.slug %}" class="blog-card{% if post.is_featured %} blog-card--featured{% endif %}" style="position:relative;">
+      {% if post.is_featured %}<span class="blog-card__featured-badge">★ Featured</span>{% endif %}
       {% if post.get_image_src %}
       <div class="blog-card__img" style="padding:0;">
         <span class="blog-card__badge">{{ post.get_category_display }}</span>

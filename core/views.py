@@ -37,7 +37,9 @@ def tools_page(request):
 
 def blog_page(request):
     """Blog listing page."""
-    posts = BlogPost.objects.filter(is_active=True)
+    posts = BlogPost.objects.filter(is_active=True).order_by(
+        '-is_featured', 'order', '-published_at', '-created_at'
+    )
     return render(request, 'core/blog.html', {'posts': posts})
 
 
