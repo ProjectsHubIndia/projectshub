@@ -1,0 +1,1958 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}AI Integration & Consulting Services | ProjectsHub{% endblock %}
+{% block meta_description %}Strategic AI consulting and seamless API integration services. We help businesses unlock the full potential of AI by connecting it with your existing systems for real impact.{% endblock %}
+{% block canonical %}https://projectshub.co.in/services/ai-integration/{% endblock %}
+{% block nav_how_we_help %}active{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/ai_integration.css' %}?v=3">
+{% endblock %} {% block content %}
+
+<!-- ══════════════════════════════════════
+   1. HERO
+══════════════════════════════════════ -->
+<section class="aic-hero">
+  <div class="aic-hero-inner">
+    <div>
+      <h1>
+        <span class="g1">Strategic AI Consulting.</span>
+        <span class="g2">Seamless AI Integration.</span>
+        <span class="g3">Powerful Business Outcomes.</span>
+      </h1>
+      <p class="aic-hero-desc">
+        From strategy and planning to seamless API integration, we help
+        businesses unlock the full potential of AI and connect it with your
+        existing systems for real impact.
+      </p>
+      <div class="aic-hero-btns">
+        <a href="/#contact" class="aic-btn-primary">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+          Book Free Consultation
+        </a>
+        <a href="#services" class="aic-btn-outline">
+          Explore Our Services
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div class="aic-hero-right">
+      <div class="aic-hero-glow"></div>
+      <span class="aic-float aic-float-crm">📊 CRM</span>
+      <span class="aic-float aic-float-erp">🏭 ERP</span>
+      <span class="aic-float aic-float-api">&lt;/&gt; API</span>
+      <span class="aic-float aic-float-code">🤖 AI</span>
+      <img
+        src="{% static 'image/ai-integration-hero.webp' %}"
+        alt="AI Integration"
+        loading="eager"
+      />
+    </div>
+  </div>
+  <div class="aic-hero-bar">
+    <div class="aic-hero-bar-inner">
+      <div class="aic-stat">
+        <div class="aic-stat-dot">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v4l3 3" />
+          </svg>
+        </div>
+        AI Strategy
+      </div>
+      <div class="aic-stat">
+        <div class="aic-stat-dot">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+        </div>
+        Secure Integration
+      </div>
+      <div class="aic-stat">
+        <div class="aic-stat-dot">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg>
+        </div>
+        Scalable Solutions
+      </div>
+      <div class="aic-stat">
+        <div class="aic-stat-dot">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="18" y1="20" x2="18" y2="10" />
+            <line x1="12" y1="20" x2="12" y2="4" />
+            <line x1="6" y1="20" x2="6" y2="14" />
+          </svg>
+        </div>
+        Business Growth
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+   2. WHAT WE OFFER
+══════════════════════════════════════ -->
+<section class="aic-light">
+  <div class="aic-wrap">
+    <div class="aic-offer-wrap">
+      <img
+        src="{% static 'image/AI_Brain-removebg-preview.webp' %}"
+        alt=""
+        class="aic-offer-deco"
+        loading="lazy"
+        decoding="async"
+        aria-hidden="true"
+      />
+      <div class="aic-offer-grid">
+        <!-- Panel 1: AI Consulting -->
+        <div class="aic-panel">
+          <!-- Decorative: lightbulb / strategy SVG -->
+          <svg
+            class="aic-panel-deco"
+            viewBox="0 0 80 80"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <!-- bulb glow -->
+            <circle cx="40" cy="28" r="18" fill="#818cf8" opacity="0.25" />
+            <!-- bulb body -->
+            <circle cx="40" cy="28" r="13" fill="#6366f1" />
+            <!-- inner shine -->
+            <circle cx="36" cy="23" r="4" fill="#a5b4fc" opacity="0.6" />
+            <!-- bulb base lines -->
+            <rect x="34" y="42" width="12" height="3" rx="1.5" fill="#818cf8" />
+            <rect x="35" y="47" width="10" height="3" rx="1.5" fill="#818cf8" />
+            <rect x="37" y="52" width="6" height="3" rx="1.5" fill="#818cf8" />
+            <!-- spark rays -->
+            <line
+              x1="40"
+              y1="8"
+              x2="40"
+              y2="3"
+              stroke="#fbbf24"
+              stroke-width="2.5"
+              stroke-linecap="round"
+            />
+            <line
+              x1="55"
+              y1="13"
+              x2="58"
+              y2="10"
+              stroke="#fbbf24"
+              stroke-width="2.5"
+              stroke-linecap="round"
+            />
+            <line
+              x1="25"
+              y1="13"
+              x2="22"
+              y2="10"
+              stroke="#fbbf24"
+              stroke-width="2.5"
+              stroke-linecap="round"
+            />
+            <line
+              x1="61"
+              y1="28"
+              x2="66"
+              y2="28"
+              stroke="#fbbf24"
+              stroke-width="2.5"
+              stroke-linecap="round"
+            />
+            <line
+              x1="19"
+              y1="28"
+              x2="14"
+              y2="28"
+              stroke="#fbbf24"
+              stroke-width="2.5"
+              stroke-linecap="round"
+            />
+            <!-- bar chart -->
+            <rect x="6" y="62" width="9" height="12" rx="2" fill="#34d399" />
+            <rect x="18" y="55" width="9" height="19" rx="2" fill="#6366f1" />
+            <rect x="30" y="48" width="9" height="26" rx="2" fill="#f59e0b" />
+            <rect x="42" y="40" width="9" height="34" rx="2" fill="#6366f1" />
+            <!-- trend arrow -->
+            <polyline
+              points="8,68 20,60 32,53 44,45 56,36"
+              stroke="#f43f5e"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              fill="none"
+            />
+            <polygon points="56,36 52,40 60,41" fill="#f43f5e" />
+          </svg>
+          <span class="aic-panel-badge blue">AI Consulting Services</span>
+          <h2 class="aic-panel-h3">Turn AI Ideas into<br />Business Success</h2>
+          <p class="aic-panel-desc">
+            We help you identify opportunities, create AI roadmaps, and
+            implement strategies that deliver measurable business value.
+          </p>
+          <ul class="aic-panel-list">
+            <li>
+              <span class="aic-check blue"
+                ><svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" /></svg></span
+              >AI Strategy Development
+            </li>
+            <li>
+              <span class="aic-check blue"
+                ><svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" /></svg></span
+              >AI Opportunity Assessment
+            </li>
+            <li>
+              <span class="aic-check blue"
+                ><svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" /></svg></span
+              >AI Readiness Assessment
+            </li>
+            <li>
+              <span class="aic-check blue"
+                ><svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" /></svg></span
+              >Digital Transformation Consulting
+            </li>
+            <li>
+              <span class="aic-check blue"
+                ><svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" /></svg></span
+              >AI Solution Planning
+            </li>
+            <li>
+              <span class="aic-check blue"
+                ><svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" /></svg></span
+              >AI Implementation Guidance
+            </li>
+          </ul>
+        </div>
+
+        <!-- Panel 2: AI Integration -->
+        <div class="aic-panel">
+          <!-- Decorative: network / connection SVG -->
+          <svg
+            class="aic-panel-deco"
+            viewBox="0 0 80 80"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <!-- connection lines -->
+            <line
+              x1="40"
+              y1="40"
+              x2="12"
+              y2="40"
+              stroke="#2dd4bf"
+              stroke-width="2"
+              stroke-dasharray="4 3"
+            />
+            <line
+              x1="40"
+              y1="40"
+              x2="68"
+              y2="40"
+              stroke="#2dd4bf"
+              stroke-width="2"
+              stroke-dasharray="4 3"
+            />
+            <line
+              x1="40"
+              y1="40"
+              x2="40"
+              y2="12"
+              stroke="#6366f1"
+              stroke-width="2"
+              stroke-dasharray="4 3"
+            />
+            <line
+              x1="40"
+              y1="40"
+              x2="40"
+              y2="68"
+              stroke="#6366f1"
+              stroke-width="2"
+              stroke-dasharray="4 3"
+            />
+            <line
+              x1="40"
+              y1="40"
+              x2="18"
+              y2="18"
+              stroke="#f59e0b"
+              stroke-width="1.8"
+              stroke-dasharray="4 3"
+            />
+            <line
+              x1="40"
+              y1="40"
+              x2="62"
+              y2="18"
+              stroke="#f59e0b"
+              stroke-width="1.8"
+              stroke-dasharray="4 3"
+            />
+            <line
+              x1="40"
+              y1="40"
+              x2="18"
+              y2="62"
+              stroke="#f43f5e"
+              stroke-width="1.8"
+              stroke-dasharray="4 3"
+            />
+            <line
+              x1="40"
+              y1="40"
+              x2="62"
+              y2="62"
+              stroke="#f43f5e"
+              stroke-width="1.8"
+              stroke-dasharray="4 3"
+            />
+            <!-- center hub glow -->
+            <circle cx="40" cy="40" r="12" fill="#0d9488" opacity="0.2" />
+            <!-- center hub -->
+            <circle cx="40" cy="40" r="8" fill="#0d9488" />
+            <circle cx="37" cy="37" r="2.5" fill="#5eead4" opacity="0.7" />
+            <!-- satellite nodes -->
+            <circle cx="12" cy="40" r="6" fill="#6366f1" />
+            <circle cx="68" cy="40" r="6" fill="#6366f1" />
+            <circle cx="40" cy="12" r="6" fill="#f59e0b" />
+            <circle cx="40" cy="68" r="6" fill="#f59e0b" />
+            <circle cx="18" cy="18" r="5" fill="#f43f5e" />
+            <circle cx="62" cy="18" r="5" fill="#34d399" />
+            <circle cx="18" cy="62" r="5" fill="#34d399" />
+            <circle cx="62" cy="62" r="5" fill="#f43f5e" />
+            <!-- inner dots on satellites -->
+            <circle cx="12" cy="40" r="2.5" fill="#a5b4fc" />
+            <circle cx="68" cy="40" r="2.5" fill="#a5b4fc" />
+            <circle cx="40" cy="12" r="2.5" fill="#fde68a" />
+            <circle cx="40" cy="68" r="2.5" fill="#fde68a" />
+          </svg>
+          <span class="aic-panel-badge teal">AI Integration Services</span>
+          <h2 class="aic-panel-h3">
+            Connect AI with Your<br />Business Ecosystem
+          </h2>
+          <p class="aic-panel-desc">
+            Integrate AI capabilities with your existing tools and platforms
+            through secure and scalable API integrations.
+          </p>
+          <ul class="aic-panel-list">
+            <li>
+              <span class="aic-check teal"
+                ><svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" /></svg></span
+              >AI API Integration
+            </li>
+            <li>
+              <span class="aic-check teal"
+                ><svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" /></svg></span
+              >CRM Integration
+            </li>
+            <li>
+              <span class="aic-check teal"
+                ><svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" /></svg></span
+              >ERP Integration
+            </li>
+            <li>
+              <span class="aic-check teal"
+                ><svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" /></svg></span
+              >Cloud Platform Integration
+            </li>
+            <li>
+              <span class="aic-check teal"
+                ><svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" /></svg></span
+              >Third-party API Integration
+            </li>
+            <li>
+              <span class="aic-check teal"
+                ><svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" /></svg></span
+              >Custom API Development
+            </li>
+          </ul>
+        </div>
+      </div>
+      {# end aic-offer-grid #}
+    </div>
+    {# end aic-offer-wrap #}
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+   3. SERVICES GRID
+══════════════════════════════════════ -->
+<section class="aic-light" id="services" style="padding-top: 0">
+  <div class="aic-wrap">
+    <h2 class="aic-h2">Our AI Consulting &amp; Integration Services</h2>
+    <div class="aic-divider"><span></span></div>
+
+    <div class="aic-svc-grid">
+      <div class="aic-svc-card">
+        <div class="aic-svc-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+            />
+          </svg>
+        </div>
+        <span>AI Strategy Development</span>
+      </div>
+      <div class="aic-svc-card">
+        <div class="aic-svc-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+          </svg>
+        </div>
+        <span>AI Readiness Assessment</span>
+      </div>
+      <div class="aic-svc-card">
+        <div class="aic-svc-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </div>
+        <span>AI Opportunity Assessment</span>
+      </div>
+      <div class="aic-svc-card">
+        <div class="aic-svc-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+            />
+            <path
+              d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+            />
+          </svg>
+        </div>
+        <span>AI API Integration</span>
+      </div>
+      <div class="aic-svc-card">
+        <div class="aic-svc-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+        </div>
+        <span>CRM Integration</span>
+      </div>
+      <div class="aic-svc-card">
+        <div class="aic-svc-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M3 9h18M9 21V9" />
+          </svg>
+        </div>
+        <span>ERP Integration</span>
+      </div>
+      <div class="aic-svc-card">
+        <div class="aic-svc-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
+          </svg>
+        </div>
+        <span>Cloud Integration</span>
+      </div>
+      <div class="aic-svc-card">
+        <div class="aic-svc-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="18" cy="5" r="3" />
+            <circle cx="6" cy="12" r="3" />
+            <circle cx="18" cy="19" r="3" />
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+          </svg>
+        </div>
+        <span>Third-party APIs</span>
+      </div>
+      <div class="aic-svc-card">
+        <div class="aic-svc-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="2" y="3" width="20" height="14" rx="2" />
+            <path d="M8 21h8M12 17v4" />
+          </svg>
+        </div>
+        <span>LLM Model Integration</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+   4. PROCESS
+══════════════════════════════════════ -->
+<section class="aic-light" style="padding-top: 0">
+  <div class="aic-wrap">
+    <h2 class="aic-h2">Our Consulting &amp; Integration Process</h2>
+    <div class="aic-divider"><span></span></div>
+
+    <div class="aic-process-grid">
+      <div class="aic-step-card">
+        <div class="aic-step-num">01</div>
+        <div class="aic-step-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </div>
+        <h3>Discovery</h3>
+        <p>
+          Understand your business objectives, challenges, and current systems.
+        </p>
+        <div class="aic-step-bg-num">01</div>
+      </div>
+
+      <div class="aic-step-card">
+        <div class="aic-step-num">02</div>
+        <div class="aic-step-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="18" y1="20" x2="18" y2="10" />
+            <line x1="12" y1="20" x2="12" y2="4" />
+            <line x1="6" y1="20" x2="6" y2="14" />
+          </svg>
+        </div>
+        <h3>Business Analysis</h3>
+        <p>Evaluate workflows, data availability and existing systems.</p>
+        <div class="aic-step-bg-num">02</div>
+      </div>
+
+      <div class="aic-step-card">
+        <div class="aic-step-num">03</div>
+        <div class="aic-step-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+            />
+          </svg>
+        </div>
+        <h3>AI Strategy &amp; Roadmap</h3>
+        <p>Develop practical AI strategy with clear priorities.</p>
+        <div class="aic-step-bg-num">03</div>
+      </div>
+
+      <div class="aic-step-card">
+        <div class="aic-step-num">04</div>
+        <div class="aic-step-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+          </svg>
+        </div>
+        <h3>AI Readiness Assessment</h3>
+        <p>Assess data, infrastructure, team capabilities and readiness.</p>
+        <div class="aic-step-bg-num">04</div>
+      </div>
+
+      <div class="aic-step-card">
+        <div class="aic-step-num">05</div>
+        <div class="aic-step-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+            />
+            <path
+              d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+            />
+          </svg>
+        </div>
+        <h3>API Assessment &amp; Planning</h3>
+        <p>Identify integration points and plan the right API strategy.</p>
+        <div class="aic-step-bg-num">05</div>
+      </div>
+
+      <div class="aic-step-card">
+        <div class="aic-step-num">06</div>
+        <div class="aic-step-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="16 18 22 12 16 6" />
+            <polyline points="8 6 2 12 8 18" />
+          </svg>
+        </div>
+        <h3>Development &amp; Integration</h3>
+        <p>
+          Build secure integrations and connect AI with your business systems.
+        </p>
+        <div class="aic-step-bg-num">06</div>
+      </div>
+
+      <div class="aic-step-card">
+        <div class="aic-step-num">07</div>
+        <div class="aic-step-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+          </svg>
+        </div>
+        <h3>Testing &amp; Deployment</h3>
+        <p>
+          Test integrations, ensure security, and deploy with minimal
+          disruption.
+        </p>
+        <div class="aic-step-bg-num">07</div>
+      </div>
+
+      <div class="aic-step-card">
+        <div class="aic-step-num">08</div>
+        <div class="aic-step-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg>
+        </div>
+        <h3>Optimization &amp; Support</h3>
+        <p>Monitor performance and provide continuous optimization.</p>
+        <div class="aic-step-bg-num">08</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+   5. TECH STACK
+══════════════════════════════════════ -->
+<section class="aic-light" style="padding-top: 0">
+  <div class="aic-wrap">
+    <h2 class="aic-h2">AI Platforms &amp; Tools We Integrate With</h2>
+    <div class="aic-divider"><span></span></div>
+
+    <div class="aic-tech-grid" id="aicTechGrid">
+      <!-- visible: 16 cards -->
+      <div class="aic-tech-card">
+        <div class="aic-tech-box" style="background: #000">
+          <img
+            src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/openai.svg"
+            alt="OpenAI"
+            style="width: 28px; height: 28px; filter: brightness(0) invert(1)"
+          />
+        </div>
+        <span>OpenAI</span>
+      </div>
+      <div class="aic-tech-card">
+        <div class="aic-tech-box" style="background: #d97757">
+          <img
+            src="https://cdn.simpleicons.org/claude/ffffff"
+            alt="Claude"
+            style="width: 28px; height: 28px"
+          />
+        </div>
+        <span>Claude</span>
+      </div>
+      <div class="aic-tech-card">
+        <div class="aic-tech-box" style="background: #fff">
+          <img
+            src="{% static 'image/Tech/gemini.webp' %}"
+            alt="Gemini"
+            style="width: 48px; height: 48px; object-fit: cover"
+          />
+        </div>
+        <span>Gemini</span>
+      </div>
+      <div class="aic-tech-card">
+        <div class="aic-tech-box" style="background: #1c3c3c">
+          <img
+            src="https://cdn.simpleicons.org/langchain/ffffff"
+            alt="LangChain"
+            style="width: 28px; height: 28px"
+          />
+        </div>
+        <span>LangChain</span>
+      </div>
+      <div class="aic-tech-card">
+        <div class="aic-tech-box" style="background: #fff">
+          <img
+            src="{% static 'image/Tech/python.webp' %}"
+            alt="Python"
+            style="width: 48px; height: 48px; object-fit: cover"
+          />
+        </div>
+        <span>Python</span>
+      </div>
+      <div class="aic-tech-card">
+        <div class="aic-tech-box" style="background: #009688">
+          <img
+            src="https://cdn.simpleicons.org/fastapi/ffffff"
+            alt="FastAPI"
+            style="width: 28px; height: 28px"
+          />
+        </div>
+        <span>FastAPI</span>
+      </div>
+      <div class="aic-tech-card">
+        <div class="aic-tech-box" style="background: #ff6f00">
+          <img
+            src="https://cdn.simpleicons.org/tensorflow/ffffff"
+            alt="TensorFlow"
+            style="width: 28px; height: 28px"
+          />
+        </div>
+        <span>TensorFlow</span>
+      </div>
+      <div class="aic-tech-card">
+        <div class="aic-tech-box" style="background: #ee4c2c">
+          <img
+            src="https://cdn.simpleicons.org/pytorch/ffffff"
+            alt="PyTorch"
+            style="width: 28px; height: 28px"
+          />
+        </div>
+        <span>PyTorch</span>
+      </div>
+      <div class="aic-tech-card">
+        <div class="aic-tech-box" style="background: #fff">
+          <img
+            src="{% static 'image/Tech/aws.webp' %}"
+            alt="AWS"
+            style="width: 48px; height: 48px; object-fit: cover"
+          />
+        </div>
+        <span>AWS</span>
+      </div>
+      <div class="aic-tech-card">
+        <div class="aic-tech-box" style="background: #fff">
+          <img
+            src="{% static 'image/Tech/azure.webp' %}"
+            alt="Azure"
+            style="width: 48px; height: 48px; object-fit: cover"
+          />
+        </div>
+        <span>Azure</span>
+      </div>
+      <div class="aic-tech-card">
+        <div class="aic-tech-box" style="background: #fff">
+          <img
+            src="{% static 'image/Tech/GoogleCloudpng.webp' %}"
+            alt="Google Cloud"
+            style="width: 48px; height: 48px; object-fit: cover"
+          />
+        </div>
+        <span>Google Cloud</span>
+      </div>
+      <div class="aic-tech-card">
+        <div class="aic-tech-box" style="background: #2496ed">
+          <img
+            src="https://cdn.simpleicons.org/docker/ffffff"
+            alt="Docker"
+            style="width: 28px; height: 28px"
+          />
+        </div>
+        <span>Docker</span>
+      </div>
+      <div class="aic-tech-card">
+        <div class="aic-tech-box" style="background: #336791">
+          <img
+            src="https://cdn.simpleicons.org/postgresql/ffffff"
+            alt="PostgreSQL"
+            style="width: 28px; height: 28px"
+          />
+        </div>
+        <span>PostgreSQL</span>
+      </div>
+      <div class="aic-tech-card">
+        <div class="aic-tech-box" style="background: #4479a1">
+          <img
+            src="https://cdn.simpleicons.org/mysql/ffffff"
+            alt="MySQL"
+            style="width: 28px; height: 28px"
+          />
+        </div>
+        <span>MySQL</span>
+      </div>
+      <div class="aic-tech-card">
+        <div class="aic-tech-box" style="background: #47a248">
+          <img
+            src="https://cdn.simpleicons.org/mongodb/ffffff"
+            alt="MongoDB"
+            style="width: 28px; height: 28px"
+          />
+        </div>
+        <span>MongoDB</span>
+      </div>
+      <div class="aic-tech-card">
+        <div class="aic-tech-box" style="background: #fff">
+          <img
+            src="{% static 'image/Tech/Salesforce.webp' %}"
+            alt="Salesforce"
+            style="width: 48px; height: 48px; object-fit: cover"
+          />
+        </div>
+        <span>Salesforce</span>
+      </div>
+    </div>
+
+    <!-- hidden extra cards -->
+    <div class="aic-tech-extra" id="aicTechExtra">
+      <div class="aic-tech-grid" style="margin-top: 0.9rem">
+        <div class="aic-tech-card">
+          <div class="aic-tech-box" style="background: #ff7a59">
+            <img
+              src="https://cdn.simpleicons.org/hubspot/ffffff"
+              alt="HubSpot"
+              style="width: 28px; height: 28px"
+            />
+          </div>
+          <span>HubSpot</span>
+        </div>
+        <div class="aic-tech-card">
+          <div class="aic-tech-box" style="background: #e42527">
+            <img
+              src="https://cdn.simpleicons.org/zoho/ffffff"
+              alt="Zoho CRM"
+              style="width: 28px; height: 28px"
+            />
+          </div>
+          <span>Zoho CRM</span>
+        </div>
+        <div class="aic-tech-card">
+          <div class="aic-tech-box" style="background: #fff">
+            <img
+              src="{% static 'image/Tech/Microsoft Dynamics 365.webp' %}"
+              alt="Microsoft Dynamics 365"
+              style="width: 48px; height: 48px; object-fit: cover"
+            />
+          </div>
+          <span>Microsoft Dynamics 365</span>
+        </div>
+        <div class="aic-tech-card">
+          <div class="aic-tech-box" style="background: #0faaff">
+            <img
+              src="https://cdn.simpleicons.org/sap/ffffff"
+              alt="SAP"
+              style="width: 28px; height: 28px"
+            />
+          </div>
+          <span>SAP</span>
+        </div>
+        <div class="aic-tech-card">
+          <div class="aic-tech-box" style="background: #f80000">
+            <img
+              src="https://cdn.simpleicons.org/oracle/ffffff"
+              alt="Oracle ERP"
+              style="width: 28px; height: 28px"
+            />
+          </div>
+          <span>Oracle ERP</span>
+        </div>
+        <div class="aic-tech-card">
+          <div class="aic-tech-box" style="background: #fff">
+            <img
+              src="{% static 'image/Tech/Odoo.webp' %}"
+              alt="Odoo"
+              style="width: 48px; height: 48px; object-fit: cover"
+            />
+          </div>
+          <span>Odoo</span>
+        </div>
+        <div class="aic-tech-card">
+          <div class="aic-tech-box" style="background: #fff">
+            <img
+              src="{% static 'image/Tech/Slack.webp' %}"
+              alt="Slack"
+              style="width: 48px; height: 48px; object-fit: cover"
+            />
+          </div>
+          <span>Slack</span>
+        </div>
+        <div class="aic-tech-card">
+          <div class="aic-tech-box" style="background: #fff">
+            <img
+              src="{% static 'image/Tech/Microsoft Teams.webp' %}"
+              alt="Microsoft Teams"
+              style="width: 48px; height: 48px; object-fit: cover"
+            />
+          </div>
+          <span>Microsoft Teams</span>
+        </div>
+        <div class="aic-tech-card">
+          <div class="aic-tech-box" style="background: #25d366">
+            <img
+              src="https://cdn.simpleicons.org/whatsapp/ffffff"
+              alt="WhatsApp Business"
+              style="width: 28px; height: 28px"
+            />
+          </div>
+          <span>WhatsApp Business</span>
+        </div>
+        <div class="aic-tech-card">
+          <div class="aic-tech-box" style="background: #fff">
+            <img
+              src="{% static 'image/Tech/Twilio.webp' %}"
+              alt="Twilio"
+              style="width: 48px; height: 48px; object-fit: cover"
+            />
+          </div>
+          <span>Twilio</span>
+        </div>
+        <div class="aic-tech-card">
+          <div class="aic-tech-box" style="background: #fff">
+            <img
+              src="{% static 'image/Tech/Google Workspace.webp' %}"
+              alt="Google Workspace"
+              style="width: 48px; height: 48px; object-fit: cover"
+            />
+          </div>
+          <span>Google Workspace</span>
+        </div>
+        <div class="aic-tech-card">
+          <div class="aic-tech-box" style="background: #fff">
+            <img
+              src="{% static 'image/Tech/Microsoft 365.webp' %}"
+              alt="Microsoft 365"
+              style="width: 48px; height: 48px; object-fit: cover"
+            />
+          </div>
+          <span>Microsoft 365</span>
+        </div>
+        <div class="aic-tech-card">
+          <div class="aic-tech-box" style="background: #000">
+            <img
+              src="https://cdn.simpleicons.org/notion/ffffff"
+              alt="Notion"
+              style="width: 28px; height: 28px"
+            />
+          </div>
+          <span>Notion</span>
+        </div>
+        <div class="aic-tech-card">
+          <div class="aic-tech-box" style="background: #0052cc">
+            <img
+              src="https://cdn.simpleicons.org/trello/ffffff"
+              alt="Trello"
+              style="width: 28px; height: 28px"
+            />
+          </div>
+          <span>Trello</span>
+        </div>
+        <div class="aic-tech-card">
+          <div class="aic-tech-box" style="background: #0052cc">
+            <img
+              src="https://cdn.simpleicons.org/jira/ffffff"
+              alt="Jira"
+              style="width: 28px; height: 28px"
+            />
+          </div>
+          <span>Jira</span>
+        </div>
+        <div class="aic-tech-card">
+          <div class="aic-tech-box" style="background: #6d00cc">
+            <img
+              src="https://cdn.simpleicons.org/make/ffffff"
+              alt="Make"
+              style="width: 28px; height: 28px"
+            />
+          </div>
+          <span>Make</span>
+        </div>
+        <div class="aic-tech-card">
+          <div class="aic-tech-box" style="background: #ff4a00">
+            <img
+              src="https://cdn.simpleicons.org/zapier/ffffff"
+              alt="Zapier"
+              style="width: 28px; height: 28px"
+            />
+          </div>
+          <span>Zapier</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- toggle buttons -->
+    <div class="aic-tech-toggle-wrap">
+      <button
+        class="aic-tech-toggle-btn"
+        id="aicMoreBtn"
+        onclick="aicToggleTech()"
+      >
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+        + More Technologies
+      </button>
+      <button
+        class="aic-tech-toggle-btn aic-tech-less-btn"
+        id="aicLessBtn"
+        onclick="aicToggleTech()"
+        style="display: none"
+      >
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="18 15 12 9 6 15" />
+        </svg>
+        Show Less
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+   6. BENEFITS + INDUSTRIES
+══════════════════════════════════════ -->
+<section class="aic-light" style="padding-top: 0">
+  <div class="aic-wrap">
+    <div class="aic-bi2-grid">
+      <!-- Key Benefits Card -->
+      <div class="aic-bencard">
+        <h2 class="aic-bencard-h">Key Benefits for Your Business</h2>
+        <div class="aic-ben-inner">
+          <!-- Left column -->
+          <div class="aic-ben-col">
+            <div class="aic-ben-item">
+              <div class="aic-ben-ico">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+              </div>
+              <h3>Reduce Implementation Risks</h3>
+              <p>Make informed AI decisions.</p>
+            </div>
+            <div class="aic-ben-item">
+              <div class="aic-ben-ico">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                </svg>
+              </div>
+              <h3>Improve Operational Efficiency</h3>
+              <p>Automate processes and boost productivity.</p>
+            </div>
+            <div class="aic-ben-item">
+              <div class="aic-ben-ico">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="12" y1="1" x2="12" y2="23" />
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                </svg>
+              </div>
+              <h3>Maximize ROI</h3>
+              <p>Achieve measurable results.</p>
+            </div>
+          </div>
+
+          <!-- Right column -->
+          <div class="aic-ben-col">
+            <div class="aic-ben-item">
+              <div class="aic-ben-ico">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <path d="M3 9h18M9 21V9" />
+                </svg>
+              </div>
+              <h3>Centralized &amp; Connected Systems</h3>
+              <p>Integrate AI with your existing ecosystem.</p>
+            </div>
+            <div class="aic-ben-item">
+              <div class="aic-ben-ico">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="3" y="11" width="18" height="11" rx="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+              </div>
+              <h3>Secure &amp; Scalable Integrations</h3>
+              <p>Enterprise-grade security with APIs.</p>
+            </div>
+            <div class="aic-ben-item">
+              <div class="aic-ben-ico">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+              </div>
+              <h3>Faster Decisions</h3>
+              <p>Leverage AI insights for data-driven decision making.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Industries Card -->
+      <div class="aic-indcard">
+        <p class="aic-indcard-h">Industries We Support</p>
+        <div class="aic-indgrid">
+          <div class="aic-inditem">
+            <div class="aic-indico" style="background: #fee2e2">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#e05a77"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+              </svg>
+            </div>
+            Healthcare
+          </div>
+          <div class="aic-inditem">
+            <div class="aic-indico" style="background: #dbeafe">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#3b82f6"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="9" cy="21" r="1" />
+                <circle cx="20" cy="21" r="1" />
+                <path
+                  d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                />
+              </svg>
+            </div>
+            Retail &amp; E-commerce
+          </div>
+          <div class="aic-inditem">
+            <div class="aic-indico" style="background: #ede9fe">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#8b5cf6"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                <path d="M6 12v5c3 3 9 3 12 0v-5" />
+              </svg>
+            </div>
+            Education
+          </div>
+          <div class="aic-inditem">
+            <div class="aic-indico" style="background: #fef3c7">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#d97706"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="1" x2="12" y2="23" />
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+              </svg>
+            </div>
+            Finance
+          </div>
+          <div class="aic-inditem">
+            <div class="aic-indico" style="background: #ffedd5">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#f97316"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M2 20h20M4 20V10l8-6 8 6v10M10 20v-6h4v6" />
+              </svg>
+            </div>
+            Manufacturing
+          </div>
+          <div class="aic-inditem">
+            <div class="aic-indico" style="background: #d1fae5">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#10b981"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="1" y="3" width="15" height="13" rx="2" />
+                <path d="M16 8h4l3 3v3h-7V8z" />
+                <circle cx="5.5" cy="18.5" r="2.5" />
+                <circle cx="18.5" cy="18.5" r="2.5" />
+              </svg>
+            </div>
+            Logistics &amp; Supply Chain
+          </div>
+          <div class="aic-inditem">
+            <div class="aic-indico" style="background: #dbeafe">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#3b82f6"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+              </svg>
+            </div>
+            Real Estate
+          </div>
+          <div class="aic-inditem">
+            <div class="aic-indico" style="background: #e0e7ff">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#6366f1"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
+              </svg>
+            </div>
+            SaaS &amp; Technology
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+   7. WHY US
+══════════════════════════════════════ -->
+<section class="aic-light" style="padding-top: 0">
+  <div class="aic-wrap">
+    <h2 class="aic-h2">Why Choose ProjectsHub?</h2>
+    <div class="aic-divider"><span></span></div>
+
+    <div class="aic-why-grid">
+      <div class="aic-why-card2">
+        <div class="aic-why-ico2">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+        </div>
+        <h3>Experienced AI Consultants</h3>
+        <p>Skilled AI experts with deep industry knowledge.</p>
+      </div>
+      <div class="aic-why-card2">
+        <div class="aic-why-ico2">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="2" y="7" width="20" height="14" rx="2" />
+            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+          </svg>
+        </div>
+        <h3>Business-First Approach</h3>
+        <p>We focus on real business value, not just technology.</p>
+      </div>
+      <div class="aic-why-card2">
+        <div class="aic-why-ico2">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+            />
+          </svg>
+        </div>
+        <h3>Customized Strategies</h3>
+        <p>Tailored AI strategies for your unique needs.</p>
+      </div>
+      <div class="aic-why-card2">
+        <div class="aic-why-ico2">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg>
+        </div>
+        <h3>End-to-End Support</h3>
+        <p>From strategy to implementation and ongoing optimization.</p>
+      </div>
+      <div class="aic-why-card2">
+        <div class="aic-why-ico2">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+        </div>
+        <h3>Transparent Process</h3>
+        <p>Clear communication and complete transparency.</p>
+      </div>
+      <div class="aic-why-card2">
+        <div class="aic-why-ico2">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+          </svg>
+        </div>
+        <h3>Long-Term Partnership</h3>
+        <p>Dedicated partnership for sustainable business growth.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+   8. FAQ
+══════════════════════════════════════ -->
+<section class="aic-light" style="padding-top: 0">
+  <div class="aic-wrap">
+    <h2 class="aic-h2">Frequently Asked Questions</h2>
+    <div class="aic-divider"><span></span></div>
+
+    <div class="aic-faq-layout">
+      <!-- Left column -->
+      <div class="aic-faq-col">
+        <div class="aic-faq-item">
+          <button class="aic-faq-btn">
+            What is AI consulting?
+            <div class="aic-faq-plus">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+          </button>
+          <div class="aic-faq-ans">
+            AI consulting helps businesses identify AI opportunities, create a
+            roadmap, and implement strategies that deliver measurable value and
+            competitive advantage.
+          </div>
+        </div>
+        <div class="aic-faq-item">
+          <button class="aic-faq-btn">
+            Is AI consulting suitable for small businesses?
+            <div class="aic-faq-plus">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+          </button>
+          <div class="aic-faq-ans">
+            Absolutely. We work with businesses of all sizes — from startups to
+            enterprises — providing cost-effective AI strategies scaled to your
+            budget and goals.
+          </div>
+        </div>
+        <div class="aic-faq-item">
+          <button class="aic-faq-btn">
+            Do you help with AI implementation after consulting?
+            <div class="aic-faq-plus">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+          </button>
+          <div class="aic-faq-ans">
+            Yes. We provide end-to-end services — from strategy to full
+            implementation, integration, deployment, and ongoing support.
+          </div>
+        </div>
+        <div class="aic-faq-item">
+          <button class="aic-faq-btn">
+            How long does an AI consulting engagement take?
+            <div class="aic-faq-plus">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+          </button>
+          <div class="aic-faq-ans">
+            Initial consulting typically takes 2–4 weeks. Full implementation
+            projects vary from 4 weeks to 6 months depending on complexity.
+          </div>
+        </div>
+        <div class="aic-faq-item">
+          <button class="aic-faq-btn">
+            Can you work with our existing technology stack?
+            <div class="aic-faq-plus">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+          </button>
+          <div class="aic-faq-ans">
+            Yes. We design AI solutions that integrate seamlessly with your
+            existing tools, databases, CRMs, ERPs, and cloud platforms.
+          </div>
+        </div>
+      </div>
+
+      <!-- Right column -->
+      <div class="aic-faq-col">
+        <div class="aic-faq-item">
+          <button class="aic-faq-btn">
+            What types of integrations do you support?
+            <div class="aic-faq-plus">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+          </button>
+          <div class="aic-faq-ans">
+            We support REST API, GraphQL, webhook, CRM, ERP, cloud platform,
+            database, and third-party SaaS integrations.
+          </div>
+        </div>
+        <div class="aic-faq-item">
+          <button class="aic-faq-btn">
+            Is API integration secure?
+            <div class="aic-faq-plus">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+          </button>
+          <div class="aic-faq-ans">
+            Yes. We follow industry best practices including OAuth, API key
+            management, data encryption, and secure token handling for all
+            integrations.
+          </div>
+        </div>
+        <div class="aic-faq-item">
+          <button class="aic-faq-btn">
+            Can you integrate AI with our CRM or ERP?
+            <div class="aic-faq-plus">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+          </button>
+          <div class="aic-faq-ans">
+            Yes. We have experience integrating AI with Salesforce, HubSpot,
+            Zoho, SAP, Odoo, and other major CRM/ERP platforms.
+          </div>
+        </div>
+        <div class="aic-faq-item">
+          <button class="aic-faq-btn">
+            Do you provide ongoing support after integration?
+            <div class="aic-faq-plus">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+          </button>
+          <div class="aic-faq-ans">
+            Yes. We offer post-launch maintenance, monitoring, performance
+            optimization, and retainer support packages.
+          </div>
+        </div>
+        <div class="aic-faq-item">
+          <button class="aic-faq-btn">
+            How long does API integration take?
+            <div class="aic-faq-plus">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+          </button>
+          <div class="aic-faq-ans">
+            Simple integrations take 1–2 weeks. Complex multi-system
+            integrations typically take 4–8 weeks depending on scope.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+   9. CTA
+══════════════════════════════════════ -->
+<section class="aic-cta">
+  <div class="aic-cta-inner">
+    <div>
+      <h2>
+        Ready to Transform Your Business<br />with AI Consulting &amp;
+        Integration?
+      </h2>
+      <p>
+        Let's build a strategic AI roadmap and integrate intelligent solutions
+        that drive efficiency, innovation, and long-term growth.
+      </p>
+    </div>
+    <div class="aic-cta-btns">
+      <a href="/#contact" class="aic-btn-white">
+        <svg
+          width="15"
+          height="15"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+        Book Free Consultation
+      </a>
+      <a href="/#contact" class="aic-btn-ghost">
+        Let's Discuss Your Project
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endblock %} {% block extra_js %}
+<script>
+  function aicToggleTech() {
+    var extra = document.getElementById("aicTechExtra");
+    var moreBtn = document.getElementById("aicMoreBtn");
+    var lessBtn = document.getElementById("aicLessBtn");
+    var isOpen = extra.classList.contains("open");
+    if (isOpen) {
+      extra.classList.remove("open");
+      moreBtn.style.display = "";
+      lessBtn.style.display = "none";
+    } else {
+      extra.classList.add("open");
+      moreBtn.style.display = "none";
+      lessBtn.style.display = "";
+    }
+  }
+
+  (function () {
+    document.querySelectorAll(".aic-faq-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var item = this.closest(".aic-faq-item");
+        var isOpen = item.classList.contains("open");
+        document.querySelectorAll(".aic-faq-item.open").forEach(function (el) {
+          el.classList.remove("open");
+        });
+        if (!isOpen) item.classList.add("open");
+      });
+    });
+  })();
+</script>
+{% endblock %}

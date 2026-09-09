@@ -1,0 +1,113 @@
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block title %}Log In | ProjectsHub Administrator{% endblock %}
+{% block bodyclass %}login wp-core-ui{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+{{ form.media }}
+{% endblock %}
+
+{% block content %}
+<div class="login-page-container">
+  <div id="login">
+    
+    <!-- Brand Logo Header -->
+    <div class="login-brand">
+      <a href="/" title="Go to ProjectsHub Homepage" class="login-logo-link">
+        <div class="login-brand-badge">
+          <span class="login-bolt">⚡</span>
+        </div>
+        <h1 class="login-brand-title">ProjectsHub</h1>
+      </a>
+      <p class="login-brand-subtitle">Management Console &amp; Admin Dashboard</p>
+    </div>
+
+    <!-- Error Notice if any -->
+    {% if form.errors and not form.non_field_errors %}
+    <div id="login_error" class="notice notice-error" role="alert">
+      <strong>Error:</strong> {% blocktranslate count counter=form.errors.items|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktranslate %}
+    </div>
+    {% endif %}
+
+    {% if form.non_field_errors %}
+    <div id="login_error" class="notice notice-error" role="alert">
+      {% for error in form.non_field_errors %}
+        <strong>Error:</strong> {{ error }}<br>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main Login Card -->
+    <form name="loginform" id="loginform" action="{{ app_path }}" method="post" novalidate>
+      {% csrf_token %}
+      
+      <div class="login-form-group">
+        <label for="id_username">Username or Email Address</label>
+        <div class="login-input-wrap">
+          <input type="text" name="username" id="id_username" class="input" value="{{ form.username.value|default:'' }}" size="20" autocapitalize="off" autocomplete="username" required autofocus placeholder="Enter your username">
+          <span class="login-input-icon">👤</span>
+        </div>
+      </div>
+
+      <div class="login-form-group user-pass-wrap">
+        <div class="login-label-row">
+          <label for="id_password">Password</label>
+        </div>
+        <div class="login-input-wrap wp-pwd">
+          <input type="password" name="password" id="id_password" class="input password-input" value="" size="20" autocomplete="current-password" spellcheck="false" required placeholder="••••••••">
+          <button type="button" class="wp-hide-pw-btn" id="pwToggleBtn" aria-label="Toggle password visibility" onclick="togglePasswordVisibility()">
+            <span id="pwToggleIcon">👁️</span>
+          </button>
+        </div>
+        <input type="hidden" name="next" value="{{ next }}">
+      </div>
+
+      <div class="login-options-row">
+        <label class="rememberme-label" for="rememberme">
+          <input name="rememberme" type="checkbox" id="rememberme" value="forever" checked>
+          <span>Remember Me</span>
+        </label>
+      </div>
+
+      <div class="login-submit-row">
+        <button type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large button-login-full">
+          <span>Sign In to Dashboard</span>
+          <span class="login-btn-arrow">&rarr;</span>
+        </button>
+      </div>
+
+      <div class="login-security-pill">
+        <span>🔒 Secure 256-Bit SSL Encrypted Gateway</span>
+      </div>
+    </form>
+
+    <!-- Bottom Navigation Links -->
+    <div class="login-extra-links">
+      <p id="nav">
+        <a href="/">&larr; Go to ProjectsHub Live Website</a>
+      </p>
+      <p id="backtoblog">
+        <a href="/privacy/">Privacy Policy</a> &middot; <a href="/terms/">Terms of Service</a> &middot; <a href="mailto:admin@projectshub.co.in">Need Help?</a>
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function togglePasswordVisibility() {
+    var pwInput = document.getElementById('id_password');
+    var icon = document.getElementById('pwToggleIcon');
+    if (!pwInput) return;
+    if (pwInput.type === 'password') {
+      pwInput.type = 'text';
+      if (icon) icon.textContent = '🙈';
+    } else {
+      pwInput.type = 'password';
+      if (icon) icon.textContent = '👁️';
+    }
+  }
+</script>
+{% endblock %}

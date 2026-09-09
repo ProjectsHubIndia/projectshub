@@ -1,0 +1,180 @@
+@media (max-width: 992px) {
+
+  .timeline::before,
+  .timeline::after {
+    left: 40px;
+  }
+
+  .timeline-icon {
+    left: 40px;
+  }
+
+  .timeline-item,
+  .timeline-item:nth-child(odd),
+  .timeline-item:nth-child(even) {
+    justify-content: flex-end;
+    padding-left: 80px;
+    padding-right: 20px;
+    box-sizing: border-box;
+  }
+
+  .timeline-content {
+    width: 100%;
+    text-align: left;
+  }
+
+  .connecting-line {
+    display: none;
+  }
+
+  .timeline-item:nth-child(odd) .tags-container,
+  .timeline-item:nth-child(even) .tags-container {
+    justify-content: flex-start;
+  }
+
+  .header-section h1 {
+    font-size: 3.5rem;
+  }
+}
+
+/* Mobile Devices */
+@media (max-width: 768px) {
+
+  /* Hide the central vertical timeline line on mobile */
+  .timeline::before,
+  .timeline::after {
+    display: none;
+  }
+
+  /* Hide timeline icons on mobile */
+  .timeline-icon {
+    display: none;
+  }
+
+  /* Hide the scroll percentage badge on mobile */
+  #timelineProgressBadge {
+    display: none !important;
+  }
+
+  .timeline-item,
+  .timeline-item:nth-child(odd),
+  .timeline-item:nth-child(even) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .timeline-content {
+    padding: 25px 20px;
+  }
+
+  .header-section {
+    padding: 100px 15px 40px;
+  }
+
+  .header-section h1 {
+    font-size: 2.5rem;
+  }
+
+  .header-section p {
+    font-size: 1.1rem;
+  }
+
+  .offcanvas {
+    width: 100% !important;
+    border-radius: 0;
+  }
+
+  .stepper-nav-outer {
+    margin: 0 10px 20px;
+    top: 10px;
+    gap: 4px;
+  }
+
+  .stepper-arrow {
+    width: 28px;
+    height: 28px;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .stepper-wrapper {
+    padding: 10px;
+    border-radius: 20px;
+  }
+
+  .timeline-content h2,
+  .timeline-content h3 {
+    font-size: 1.4rem;
+  }
+}
+
+.mobile-border-trace {
+  display: none;
+  /* hidden on desktop */
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-border-trace {
+    display: block;
+  }
+
+  /* Base styles for all 4 border lines */
+  .border-line {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    border-radius: 2px;
+    transition:
+      width 0.08s ease-out,
+      height 0.08s ease-out;
+  }
+
+  /* TOP — grows left → right */
+  .border-top {
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    box-shadow:
+      0 0 10px var(--primary),
+      0 0 20px var(--secondary);
+  }
+
+  /* RIGHT — grows top → bottom */
+  .border-right {
+    top: 0;
+    right: 0;
+    width: 3px;
+    height: 0;
+    background: linear-gradient(to bottom, var(--secondary), var(--accent));
+    box-shadow:
+      0 0 10px var(--secondary),
+      0 0 20px var(--accent);
+  }
+
+  /* BOTTOM — grows right → left */
+  .border-bottom {
+    bottom: 0;
+    right: 0;
+    height: 3px;
+    width: 0;
+    background: linear-gradient(to left, var(--accent), var(--primary));
+    box-shadow:
+      0 0 10px var(--accent),
+      0 0 20px var(--primary);
+  }
+
+  /* LEFT — grows bottom → top */
+  .border-left {
+    bottom: 0;
+    left: 0;
+    width: 3px;
+    height: 0;
+    background: linear-gradient(to top, var(--primary), var(--secondary));
+    box-shadow:
+      0 0 10px var(--primary),
+      0 0 20px var(--secondary);
+  }
+}

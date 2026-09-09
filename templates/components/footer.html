@@ -1,0 +1,215 @@
+{% load static %}
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-container">
+    <div class="footer-grid">
+      
+      <!-- Column 1: Brand, Tagline, Trust Badge & Socials -->
+      <div class="footer-brand-col">
+        <a href="/" class="footer-brand-logo-wrap" aria-label="ProjectsHub Home">
+          <img src="{% static 'image/logo/projectshub-logo-dark.png' %}"
+               srcset="{% static 'image/logo/projectshub-logo-dark.webp' %}"
+               alt="ProjectsHub" 
+               class="footer-brand-logo footer-brand-logo--dark" width="168" height="56" />
+          <img src="{% static 'image/logo/projectshub-logo-light.png' %}"
+               srcset="{% static 'image/logo/projectshub-logo-light.webp' %}"
+               alt="ProjectsHub" 
+               class="footer-brand-logo footer-brand-logo--light" width="168" height="56" />
+        </a>
+        
+        <p class="footer-tagline">
+          From Ideas to AI-Powered Products
+        </p>
+
+        <p class="footer-bio">
+          Empowering developers, students, and businesses with production-grade AI systems, real-world architectures, and expert 1-on-1 mentorship.
+        </p>
+
+        <!-- Trust / Status Pill -->
+        <div class="footer-status-pill">
+          <span class="footer-pulse-dot" aria-hidden="true"></span>
+          <span>500+ Innovators Guided • &lt; 2h SLA</span>
+        </div>
+
+        <!-- Social Action Links with Hover Glows -->
+        <div class="footer-social-wrap">
+          <span class="footer-social-label">Official Channels</span>
+          <div class="footer-social-row" aria-label="ProjectsHub Social Profiles">
+          {% for link in social_links %}
+            {% if link.platform == 'github' %}
+            <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="footer-social-btn footer-social-btn--github" aria-label="ProjectsHub on GitHub">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </a>
+            {% elif link.platform == 'linkedin' %}
+            <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="footer-social-btn footer-social-btn--linkedin" aria-label="ProjectsHub on LinkedIn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+            {% elif link.platform == 'whatsapp' %}
+            <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="footer-social-btn footer-social-btn--whatsapp" aria-label="Chat with ProjectsHub on WhatsApp">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#25d366" aria-hidden="true"><path d="M20.52 3.48A11.82 11.82 0 0 0 12.07 0C5.5 0 .15 5.35.15 11.92c0 2.1.55 4.15 1.6 5.97L0 24l6.29-1.65a11.9 11.9 0 0 0 5.78 1.47h.01c6.57 0 11.92-5.35 11.92-11.92 0-3.18-1.24-6.17-3.48-8.42zM12.08 21.8a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.73.98 1-3.63-.24-.37a9.88 9.88 0 0 1-1.52-5.28c0-5.46 4.44-9.9 9.9-9.9a9.83 9.83 0 0 1 7.01 2.9 9.83 9.83 0 0 1 2.89 7c0 5.46-4.44 9.9-9.9 9.9z"/></svg>
+            </a>
+            {% elif link.platform == 'instagram' %}
+            <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="footer-social-btn footer-social-btn--instagram" aria-label="ProjectsHub on Instagram">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            {% endif %}
+          {% empty %}
+            <a href="https://github.com/ProjectsHub" target="_blank" rel="noopener noreferrer" class="footer-social-btn footer-social-btn--github" aria-label="GitHub">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </a>
+            <a href="https://linkedin.com/company/projectshub" target="_blank" rel="noopener noreferrer" class="footer-social-btn footer-social-btn--linkedin" aria-label="LinkedIn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+            <a href="https://wa.me/919213472954" target="_blank" rel="noopener noreferrer" class="footer-social-btn footer-social-btn--whatsapp" aria-label="WhatsApp">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#25d366"><path d="M20.52 3.48A11.82 11.82 0 0 0 12.07 0C5.5 0 .15 5.35.15 11.92c0 2.1.55 4.15 1.6 5.97L0 24l6.29-1.65a11.9 11.9 0 0 0 5.78 1.47h.01c6.57 0 11.92-5.35 11.92-11.92 0-3.18-1.24-6.17-3.48-8.42zM12.08 21.8a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.73.98 1-3.63-.24-.37a9.88 9.88 0 0 1-1.52-5.28c0-5.46 4.44-9.9 9.9-9.9a9.83 9.83 0 0 1 7.01 2.9 9.83 9.83 0 0 1 2.89 7c0 5.46-4.44 9.9-9.9 9.9z"/></svg>
+            </a>
+            <a href="https://instagram.com/projectshub.ai" target="_blank" rel="noopener noreferrer" class="footer-social-btn footer-social-btn--instagram" aria-label="Instagram">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+          {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Column 2: Our Work -->
+      <div class="footer-nav-col">
+        <h4 class="footer-col-header">Our Work</h4>
+        <ul class="footer-link-list">
+          <li>
+            <a href="/projects/" class="footer-nav-link">
+              All Projects
+              <span class="footer-link-badge footer-link-badge--cyan">50+</span>
+            </a>
+          </li>
+          <li>
+            <a href="/projects/?category=machine-learning" class="footer-nav-link">Machine Learning</a>
+          </li>
+          <li>
+            <a href="/projects/?category=backend" class="footer-nav-link">Django &amp; FastAPI</a>
+          </li>
+          <li>
+            <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer" class="footer-nav-link">
+              Free AI Tools
+              <span class="footer-link-badge footer-link-badge--emerald">Free</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'case_studies' %}" class="footer-nav-link">Case Studies</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Column 3: Solutions -->
+      <div class="footer-nav-col">
+        <h4 class="footer-col-header">Solutions</h4>
+        <ul class="footer-link-list">
+          <li>
+            <a href="/workshop/" class="footer-nav-link">1-on-1 Mentorship</a>
+          </li>
+          <li>
+            <a href="/projects/" class="footer-nav-link">Capstone Projects</a>
+          </li>
+          <li>
+            <a href="/workshop/" class="footer-nav-link">
+              Live Workshops
+              <span class="footer-link-badge footer-link-badge--purple">Live</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'ai_roadmap' %}" class="footer-nav-link">AI Career Roadmap</a>
+          </li>
+          <li>
+            <a href="{% url 'ai_development' %}" class="footer-nav-link">AI Development</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Column 4: Company -->
+      <div class="footer-nav-col">
+        <h4 class="footer-col-header">Company</h4>
+        <ul class="footer-link-list">
+          <li>
+            <a href="/#about" class="footer-nav-link">Who We Help</a>
+          </li>
+          <li>
+            <a href="/#about" class="footer-nav-link">Why ProjectsHub</a>
+          </li>
+          <li>
+            <a href="{% url 'blog' %}" class="footer-nav-link">Blog &amp; Insights</a>
+          </li>
+          <li>
+            <a href="/#faq-section" class="footer-nav-link">Frequently Asked</a>
+          </li>
+          <li>
+            <a href="/#contact" class="footer-nav-link">Contact Support</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Column 5: Direct Reach (Contact) -->
+      <div class="footer-nav-col">
+        <h4 class="footer-col-header">Direct Reach</h4>
+        <ul class="footer-link-list">
+          <li>
+            <a href="tel:{{ site_settings.phone|default:'+919213472954' }}" class="footer-contact-item" aria-label="Call ProjectsHub directly">
+              <svg class="footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <span>{{ site_settings.phone|default:'+91 92134 72954' }}</span>
+            </a>
+          </li>
+          <li>
+            <a href="mailto:{{ site_settings.primary_email|default:'support@projectshub.co.in' }}" class="footer-contact-item" aria-label="Email ProjectsHub Support">
+              <svg class="footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <span>{{ site_settings.primary_email|default:'support@projectshub.co.in' }}</span>
+            </a>
+          </li>
+          <li>
+            <div class="footer-contact-item">
+              <svg class="footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>{{ site_settings.location|default:'New Delhi & Gujarat, India' }}</span>
+            </div>
+          </li>
+          <li class="footer-cta-li">
+            <a href="https://wa.me/919213472954?text=Hi%20ProjectsHub!%20I'd%20like%20to%20know%20more%20about%20your%20projects" target="_blank" rel="noopener noreferrer" class="footer-whatsapp-cta" aria-label="Chat with ProjectsHub Mentors on WhatsApp">
+              <span class="footer-wa-left">
+                <svg class="footer-wa-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.53c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.25-.02-.39.11-.51.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.16 0-.43.06-.66.31-.22.25-.86.84-.86 2.05s.88 2.38 1 2.54c.13.17 1.73 2.64 4.19 3.7.59.25 1.04.41 1.4.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.3z"/>
+                </svg>
+                <span class="footer-wa-text">Chat on WhatsApp</span>
+              </span>
+              <span class="footer-wa-arrow-pill" aria-hidden="true">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
+            </a>
+          </li>
+          <li class="footer-tag-li">
+            <div class="footer-response-tag">
+              <span class="footer-bolt" aria-hidden="true">⚡</span>
+              <span class="footer-response-text">Rapid response &bull; Typically &lt; 2 hrs</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Bottom Bar: Copyright, Legal Navigation & Back to Top -->
+    <div class="footer-bottom-bar">
+      <p class="footer-copy-text">
+        &copy; {% now "Y" %} {{ site_settings.site_name|default:'ProjectsHub' }}. All rights reserved. Built for learners &amp; innovators.
+      </p>
+      
+      <div class="footer-legal-links">
+        <a href="{% url 'privacy' %}" class="footer-legal-link">Privacy Policy</a>
+        <a href="{% url 'terms' %}" class="footer-legal-link">Terms of Service</a>
+        <a href="{% url 'refund' %}" class="footer-legal-link">Refund Policy</a>
+        <a href="{% url 'html_sitemap' %}" class="footer-legal-link">Sitemap</a>
+        <button type="button" class="footer-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Scroll back to top of page">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
+          Top
+        </button>
+      </div>
+    </div>
+  </div>
+</footer>

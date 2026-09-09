@@ -1,0 +1,1883 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{# ═══════════════════════════════════════ SEO — Workshop listing page ═══════════════════════════════════════ #}
+{% block title %} Python to AI Workshop — ProjectsHub | 5-Day Intensive Hands-On Training {% endblock %}
+
+{% block meta_description %} Join ProjectsHub's Python to AI Workshop — 5 days from Python basics to AI deployment. 4 days of hands-on building + 1 day of live Q&A and career guidance. Limited seats. {% endblock %}
+
+{% block meta_keywords %} Python to AI workshop, AI workshop India, machine learning workshop, Python AI training, deep learning course, ProjectsHub workshop, data science bootcamp, ML hands-on training, 5 day AI workshop {% endblock %}
+
+{% block canonical %} https://projectshub.co.in/workshop/ {% endblock %}
+
+{% block og_title %} 5-Day Python to AI Workshop — ProjectsHub {% endblock %}
+{% block og_description %} Hands-on 1-on-1 Python to AI workshop — 4 days building real projects from Python basics to AI deployment, plus a Q&A and career-guidance day. Limited seats. {% endblock %}
+
+{% block og_url %} https://projectshub.co.in/workshop/ {% endblock %}
+
+{% block schema %}
+{# BreadcrumbList — shows "ProjectsHub > Workshop" in Google results #}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://projectshub.co.in/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Workshop",
+        "item": "https://projectshub.co.in/workshop/"
+      }
+    ]
+  }
+</script>
+
+{# EducationEvent — tells Google this is a real, schedulable event #}
+{% if workshop %}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationEvent",
+    "name": "{{ workshop.days.count }}-Day Intensive {{ workshop.title|escapejs }}",
+    "description": "{% if workshop.subtitle %}{{ workshop.subtitle|escapejs }}{% else %}{{ workshop.description|truncatechars:300|escapejs }}{% endif %}",
+    "url": "https://projectshub.co.in/workshop/",
+    "eventStatus": "https://schema.org/EventScheduled",
+    "eventAttendanceMode": "https://schema.org/{% if workshop.mode and 'online' in workshop.mode|lower %}OnlineEventAttendanceMode{% else %}OfflineEventAttendanceMode{% endif %}",
+    {% if workshop.date %}
+    "startDate": "{{ workshop.date }}",
+    {% endif %}
+    "organizer": {
+      "@type": "Organization",
+      "name": "ProjectsHub",
+      "url": "https://projectshub.co.in",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://projectshub.co.in/static/image/favicon_io/logo.png"
+      }
+    },
+    "offers": {
+      "@type": "Offer",
+      "availability": "https://schema.org/{% if workshop.seats %}LimitedAvailability{% else %}InStock{% endif %}",
+      "url": "https://projectshub.co.in/workshop/",
+      "priceCurrency": "INR"
+    }{% if workshop.seats %},
+    "remainingAttendeeCapacity": {{ workshop.seats }}
+    {% endif %}
+  }
+</script>
+{% endif %}
+{% endblock %}
+
+{# ══════════════════════════════════ Page-specific CSS ══════════════════════════════════ #}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/workshop.css' %}" />
+<link rel="stylesheet" href="{% static 'css/ai-chatbot.css' %}" />
+<link rel="stylesheet" href="{% static 'css/social-share.css' %}" />
+<link rel="stylesheet" href="{% static 'css/idea-modal.css' %}" />
+<style>
+  /* ══════════════════════════════════════════════════════
+   Workshop — 5-Day Journey Cards  (v4)
+   Compact grid: Days 1-3 top row, Days 4-5 bottom row
+   No scroll needed, full light/dark support
+   ══════════════════════════════════════════════════════ */
+
+  /* ── Fix 1: push content below fixed navbar ─────────── */
+  .workshop-days {
+    padding-top: 100px; /* navbar is fixed ~70px + 24px top + breathing room */
+  }
+
+  /* ── Fix 2: ensure floating share button is always clickable ─ */
+  .aurora-section,
+  .main-body {
+    isolation: auto; /* don't create stacking context that traps fixed elements */
+  }
+  /* Force the global FAB above any workshop stacking contexts */
+  #socialShare {
+    z-index: 10000 !important;
+    pointer-events: auto !important;
+  }
+  #socialSharePill {
+    pointer-events: auto !important;
+  }
+
+  /* ── Grid layout: 3 cols top (Days 1-3), 2 cols bottom (Days 4-5) ── */
+  .ws-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+  }
+  .ws-tcard {
+    grid-column: span 2;
+  }
+  .ws-tcard:nth-child(4),
+  .ws-tcard:nth-child(5) {
+    grid-column: span 3;
+  }
+
+  /* ── Step dots strip ────────────────────────────────── */
+  .ws-steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin: 0 auto 2rem;
+    max-width: 640px;
+    padding: 0 1rem;
+  }
+  .ws-steps__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    position: relative;
+    z-index: 1;
+  }
+  .ws-steps__item:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 24px;
+    left: calc(50% + 24px);
+    width: calc(100% - 48px);
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      rgba(139, 92, 246, 0.6),
+      rgba(236, 72, 153, 0.1)
+    );
+    border-radius: 2px;
+  }
+  .ws-steps__dot {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Lexend Deca", sans-serif;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #fff;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .ws-steps__dot::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.4s;
+    filter: blur(8px);
+  }
+  .ws-steps__dot:hover {
+    transform: scale(1.15) translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.8);
+    background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+    box-shadow: 0 15px 35px rgba(139, 92, 246, 0.4);
+  }
+  .ws-steps__dot:hover::before {
+    opacity: 1;
+  }
+  .ws-steps__dot[data-day="5"] {
+    border-color: rgba(16, 185, 129, 0.4);
+    background: rgba(16, 185, 129, 0.05);
+    color: #34d399;
+  }
+  .ws-steps__dot[data-day="5"]::before {
+    background: linear-gradient(135deg, #10b981, #34d399);
+  }
+  .ws-steps__dot[data-day="5"]:hover {
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-color: rgba(255, 255, 255, 0.8);
+    color: #fff;
+    box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+  }
+  .ws-steps__label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+    margin-top: 0.8rem;
+    line-height: 1.4;
+    word-break: break-word;
+    width: 100%;
+    padding: 0 0.2rem;
+    transition: color 0.3s;
+  }
+  .ws-steps__item:hover .ws-steps__label {
+    color: rgba(255, 255, 255, 0.95);
+  }
+  body.light .ws-steps__label {
+    color: rgba(30, 20, 60, 0.6);
+  }
+  body.light .ws-steps__item:hover .ws-steps__label {
+    color: rgba(30, 20, 60, 0.95);
+  }
+  body.light .ws-steps__dot {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #8b5cf6;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+  }
+  body.light .ws-steps__dot:hover {
+    color: #fff;
+  }
+  body.light .ws-steps__dot[data-day="5"] {
+    color: #10b981;
+  }
+  body.light .ws-steps__dot[data-day="5"]:hover {
+    color: #fff;
+  }
+  body.light .ws-steps__item:not(:last-child)::after {
+    background: linear-gradient(
+      90deg,
+      rgba(139, 92, 246, 0.5),
+      rgba(139, 92, 246, 0.1)
+    );
+  }
+
+  /* ── Card: common base (Glassmorphism) ──────────────── */
+  .ws-tcard {
+    border-radius: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .ws-tcard:hover {
+    transform: translateY(-8px);
+  }
+  .ws-tcard[data-day="1"]:hover {
+    box-shadow: 0 20px 50px rgba(124, 58, 237, 0.25);
+    border-color: rgba(124, 58, 237, 0.4);
+  }
+  .ws-tcard[data-day="2"]:hover {
+    box-shadow: 0 20px 50px rgba(99, 102, 241, 0.25);
+    border-color: rgba(99, 102, 241, 0.4);
+  }
+  .ws-tcard[data-day="3"]:hover {
+    box-shadow: 0 20px 50px rgba(59, 130, 246, 0.25);
+    border-color: rgba(59, 130, 246, 0.4);
+  }
+  .ws-tcard[data-day="4"]:hover {
+    box-shadow: 0 20px 50px rgba(6, 182, 212, 0.25);
+    border-color: rgba(6, 182, 212, 0.4);
+  }
+  .ws-tcard[data-day="5"]:hover {
+    box-shadow: 0 20px 50px rgba(16, 185, 129, 0.25);
+    border-color: rgba(16, 185, 129, 0.4);
+  }
+  .ws-tcard[data-day="5"] {
+    background: rgba(16, 185, 129, 0.05);
+    border-color: rgba(16, 185, 129, 0.2);
+  }
+
+  /* Top gradient accent bar - Removed as per request */
+  .ws-tcard__topbar {
+    display: none;
+  }
+
+  /* Inner wrapper */
+  .ws-tcard__inner {
+    padding: 1.1rem 1.15rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    flex: 1;
+  }
+
+  /* Header: big faded number + text block */
+  .ws-tcard__hrow {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .ws-tcard__num {
+    font-family: "Lexend Deca", sans-serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 0.05rem;
+    opacity: 0.55;
+    transition: opacity 0.2s;
+    user-select: none;
+  }
+  .ws-tcard:hover .ws-tcard__num {
+    opacity: 0.75;
+  }
+  .ws-tcard[data-day="1"] .ws-tcard__num {
+    color: #a78bfa;
+  }
+  .ws-tcard[data-day="2"] .ws-tcard__num {
+    color: #818cf8;
+  }
+  .ws-tcard[data-day="3"] .ws-tcard__num {
+    color: #60a5fa;
+  }
+  .ws-tcard[data-day="4"] .ws-tcard__num {
+    color: #22d3ee;
+  }
+  .ws-tcard[data-day="5"] .ws-tcard__num {
+    color: #34d399;
+    opacity: 0.6;
+  }
+  body.light .ws-tcard__num {
+    opacity: 0.35;
+  }
+  body.light .ws-tcard:hover .ws-tcard__num {
+    opacity: 0.55;
+  }
+
+  .ws-tcard__text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Phase tag */
+  .ws-tcard__phase {
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 0.28rem;
+  }
+  .ws-tcard[data-day="1"] .ws-tcard__phase,
+  .ws-tcard[data-day="2"] .ws-tcard__phase,
+  .ws-tcard[data-day="3"] .ws-tcard__phase,
+  .ws-tcard[data-day="4"] .ws-tcard__phase {
+    background: rgba(139, 92, 246, 0.12);
+    color: #a78bfa;
+  }
+  .ws-tcard[data-day="5"] .ws-tcard__phase {
+    background: rgba(16, 185, 129, 0.12);
+    color: #34d399;
+  }
+  body.light .ws-tcard[data-day="1"] .ws-tcard__phase,
+  body.light .ws-tcard[data-day="2"] .ws-tcard__phase,
+  body.light .ws-tcard[data-day="3"] .ws-tcard__phase,
+  body.light .ws-tcard[data-day="4"] .ws-tcard__phase {
+    background: rgba(124, 58, 237, 0.1);
+    color: #6d28d9;
+  }
+  body.light .ws-tcard[data-day="5"] .ws-tcard__phase {
+    background: rgba(5, 150, 105, 0.1);
+    color: #059669;
+  }
+
+  /* Title */
+  .ws-tcard__title {
+    font-family: "Lexend Deca", sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.3;
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .ws-tcard[data-day="5"] .ws-tcard__title {
+    color: #d1fae5;
+  }
+  body.light .ws-tcard__title {
+    color: #1a1033;
+  }
+  body.light .ws-tcard[data-day="5"] .ws-tcard__title {
+    color: #065f46;
+  }
+
+  /* Outcome — flex:1 fills height so all cards align footer */
+  .ws-tcard__outcome {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    padding: 0.6rem 0.85rem;
+    border-radius: 0.6rem;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    flex: 1;
+    background: rgba(34, 197, 94, 0.05);
+    border: 1px solid rgba(34, 197, 94, 0.12);
+    color: rgba(134, 239, 172, 0.85);
+  }
+  .ws-tcard[data-day="5"] .ws-tcard__outcome {
+    background: rgba(16, 185, 129, 0.07);
+    border-color: rgba(16, 185, 129, 0.18);
+    color: rgba(110, 231, 183, 0.9);
+  }
+  .ws-tcard__outcome svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  body.light .ws-tcard__outcome {
+    background: rgba(16, 185, 129, 0.07);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    color: #047857;
+  }
+  body.light .ws-tcard[data-day="5"] .ws-tcard__outcome {
+    background: rgba(5, 150, 105, 0.08);
+    border-color: rgba(5, 150, 105, 0.22);
+    color: #065f46;
+  }
+
+  /* ── Merged bottom section ──────────────────────────── */
+  .workshop-bottom {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 4rem;
+  }
+  .workshop-features__title {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  /* Inline CTA strip — sits flush under the feature cards */
+  .workshop-bottom__cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-top: 2rem;
+    padding: 1.5rem 2rem;
+    border-radius: 1rem;
+    background: linear-gradient(
+      135deg,
+      rgba(109, 40, 217, 0.1) 0%,
+      rgba(59, 130, 246, 0.08) 100%
+    );
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    flex-wrap: wrap;
+  }
+  body.light .workshop-bottom__cta {
+    background: linear-gradient(
+      135deg,
+      rgba(109, 40, 217, 0.07) 0%,
+      rgba(59, 130, 246, 0.05) 100%
+    );
+    border-color: rgba(109, 40, 217, 0.15);
+  }
+  .workshop-bottom__cta-text {
+    flex: 1;
+    min-width: 0;
+  }
+  .workshop-bottom__cta-title {
+    font-family: "Lexend Deca", sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0 0 0.3rem;
+    color: var(--text-primary, #f0f0f0);
+  }
+  body.light .workshop-bottom__cta-title {
+    color: #1a1033;
+  }
+  .workshop-bottom__cta-desc {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+    line-height: 1.5;
+  }
+  body.light .workshop-bottom__cta-desc {
+    color: rgba(20, 10, 50, 0.55);
+  }
+  body.light .ws-seats-hint {
+    color: rgba(20, 10, 50, 0.45) !important;
+  }
+  @media (max-width: 600px) {
+    .workshop-bottom__cta {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1.2rem 1.2rem;
+    }
+  }
+
+  /* Footer — just the details link now */
+  .ws-tcard__foot {
+    padding-top: 0.7rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.055);
+  }
+  body.light .ws-tcard__foot {
+    border-top-color: rgba(0, 0, 0, 0.08);
+  }
+  .ws-tcard__link {
+    font-size: 0.79rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition:
+      gap 0.18s ease,
+      filter 0.18s ease;
+  }
+  .ws-tcard[data-day="1"] .ws-tcard__link {
+    color: #c4b5fd;
+  }
+  .ws-tcard[data-day="2"] .ws-tcard__link {
+    color: #a5b4fc;
+  }
+  .ws-tcard[data-day="3"] .ws-tcard__link {
+    color: #93c5fd;
+  }
+  .ws-tcard[data-day="4"] .ws-tcard__link {
+    color: #67e8f9;
+  }
+  .ws-tcard[data-day="5"] .ws-tcard__link {
+    color: #6ee7b7;
+  }
+  .ws-tcard__link:hover {
+    gap: 0.5rem;
+    filter: brightness(1.15);
+  }
+  body.light .ws-tcard[data-day="1"] .ws-tcard__link {
+    color: #6d28d9;
+  }
+  body.light .ws-tcard[data-day="2"] .ws-tcard__link {
+    color: #4338ca;
+  }
+  body.light .ws-tcard[data-day="3"] .ws-tcard__link {
+    color: #1d4ed8;
+  }
+  body.light .ws-tcard[data-day="4"] .ws-tcard__link {
+    color: #0891b2;
+  }
+  body.light .ws-tcard[data-day="5"] .ws-tcard__link {
+    color: #059669;
+  }
+
+  /* ── Light mode card base (Glassmorphism) ───────────── */
+  body.light .ws-tcard {
+    background: rgba(255, 255, 255, 0.35);
+    border-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  body.light .ws-tcard[data-day="5"] {
+    background: rgba(240, 253, 244, 0.45);
+    border-color: rgba(16, 185, 129, 0.3);
+  }
+  body.light .ws-tcard[data-day="1"]:hover {
+    box-shadow: 0 15px 40px rgba(109, 40, 217, 0.2);
+    border-color: rgba(109, 40, 217, 0.4);
+  }
+  body.light .ws-tcard[data-day="2"]:hover {
+    box-shadow: 0 15px 40px rgba(67, 56, 202, 0.2);
+    border-color: rgba(67, 56, 202, 0.4);
+  }
+  body.light .ws-tcard[data-day="3"]:hover {
+    box-shadow: 0 15px 40px rgba(29, 78, 216, 0.2);
+    border-color: rgba(29, 78, 216, 0.4);
+  }
+  body.light .ws-tcard[data-day="4"]:hover {
+    box-shadow: 0 15px 40px rgba(8, 145, 178, 0.2);
+    border-color: rgba(8, 145, 178, 0.4);
+  }
+  body.light .ws-tcard[data-day="5"]:hover {
+    box-shadow: 0 15px 40px rgba(5, 150, 105, 0.2);
+    border-color: rgba(5, 150, 105, 0.4);
+  }
+
+  /* ── Responsive ─────────────────────────────────────── */
+  @media (max-width: 960px) {
+    .ws-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .ws-tcard,
+    .ws-tcard:nth-child(4),
+    .ws-tcard:nth-child(5) {
+      grid-column: span 1;
+    }
+  }
+  @media (max-width: 640px) {
+    .ws-grid {
+      grid-template-columns: 1fr;
+    }
+    .ws-tcard,
+    .ws-tcard:nth-child(4),
+    .ws-tcard:nth-child(5) {
+      grid-column: span 1;
+    }
+  }
+  @media (max-width: 575px) {
+    .ws-grid {
+      grid-template-columns: 1fr;
+    }
+    .ws-tcard,
+    .ws-tcard:nth-child(4),
+    .ws-tcard:nth-child(5) {
+      grid-column: span 1;
+    }
+    .ws-tcard__num {
+      font-size: 1.6rem;
+    }
+    .ws-steps {
+      max-width: 100%;
+    }
+    .ws-steps__label {
+      font-size: 0.58rem;
+    }
+  }
+
+  /* ── Interactive Highlight State ── */
+  .ws-tcard.highlight-active {
+    transform: translateY(-8px) scale(1.02);
+    z-index: 10;
+  }
+  .ws-tcard[data-day="1"].highlight-active {
+    box-shadow: 0 25px 50px rgba(124, 58, 237, 0.3) !important;
+    border-color: rgba(124, 58, 237, 0.5) !important;
+  }
+  .ws-tcard[data-day="2"].highlight-active {
+    box-shadow: 0 25px 50px rgba(99, 102, 241, 0.3) !important;
+    border-color: rgba(99, 102, 241, 0.5) !important;
+  }
+  .ws-tcard[data-day="3"].highlight-active {
+    box-shadow: 0 25px 50px rgba(59, 130, 246, 0.3) !important;
+    border-color: rgba(59, 130, 246, 0.5) !important;
+  }
+  .ws-tcard[data-day="4"].highlight-active {
+    box-shadow: 0 25px 50px rgba(6, 182, 212, 0.3) !important;
+    border-color: rgba(6, 182, 212, 0.5) !important;
+  }
+  .ws-tcard[data-day="5"].highlight-active {
+    box-shadow: 0 25px 50px rgba(16, 185, 129, 0.3) !important;
+    border-color: rgba(16, 185, 129, 0.5) !important;
+  }
+
+  .ws-steps__dot {
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .ws-tcard {
+    cursor: pointer;
+  }
+
+  .ws-steps__dot.highlight-active {
+    transform: scale(1.15) translateY(-3px);
+    background: #a78bfa !important;
+    color: #fff !important;
+    box-shadow:
+      0 0 25px rgba(167, 139, 250, 0.8),
+      inset 0 0 10px rgba(255, 255, 255, 0.4);
+    border-color: transparent !important;
+  }
+  .ws-steps__dot[data-day="5"].highlight-active {
+    background: #34d399 !important;
+    box-shadow: 0 0 20px rgba(52, 211, 153, 0.6);
+  }
+  .ws-steps__item.highlight-active .ws-steps__label {
+    font-weight: 800;
+  }
+  body.light .ws-steps__item.highlight-active .ws-steps__label {
+    color: #0f172a;
+  }
+  body:not(.light) .ws-steps__item.highlight-active .ws-steps__label {
+    color: #f8fafc;
+  }
+
+  /* ── Light mode: logo blue for "5 Days" text ── */
+  body.light .ws-days-gradient {
+    background: linear-gradient(135deg, #0242cd, #096dfc) !important;
+    background-size: 100% !important;
+    animation: none !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+  }
+
+  /* ── Light mode: logo blue for Share This Workshop button ── */
+  body.light #shareWorkshopBtn {
+    background: linear-gradient(135deg, #0242cd, #096dfc) !important;
+    box-shadow: 0 4px 20px rgba(2, 66, 205, 0.4) !important;
+  }
+</style>
+{% endblock extra_css %}
+{% block nav_how_we_help %}active{% endblock %}
+{% block content %}
+<section class="aurora-section" style="min-height: auto">
+  <div class="main-body" style="min-height: auto">
+    {# ── Page header — compact, no full-screen hero ── #} {% if workshop %}
+    <section class="workshop-days" aria-labelledby="workshopDaysTitle">
+      {# ── Visible breadcrumb ── #}
+      <nav
+        class="projects-breadcrumb"
+        aria-label="Breadcrumb"
+        style="margin-bottom: 2rem"
+      >
+        <ol>
+          <li><a href="/">Home</a></li>
+          <li aria-current="page">Workshop</li>
+        </ol>
+      </nav>
+
+      <div
+        class="workshop-days__header"
+        style="text-align: center; max-width: 850px; margin: 0 auto 3.5rem auto"
+      >
+        {# Urgency badge #}
+        <div
+          class="premium-badge"
+          style="
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 18px;
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 50px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #4f46e5;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.05);
+            letter-spacing: 0.3px;
+          "
+        >
+          <span
+            style="position: relative; display: flex; width: 8px; height: 8px"
+          >
+            <span
+              style="
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background: #10b981;
+                border-radius: 50%;
+                opacity: 0.7;
+                animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+              "
+            ></span>
+            <span
+              style="
+                position: relative;
+                width: 8px;
+                height: 8px;
+                background: #10b981;
+                border-radius: 50%;
+              "
+            ></span>
+          </span>
+          🎯 Personal Mentorship — First Come, First Served
+        </div>
+
+        {# H1 #}
+        <h1
+          class="workshop-hero__title"
+          id="workshopDaysTitle"
+          style="
+            font-family: &quot;Lexend Deca&quot;, sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4.2rem);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1.2rem;
+            color: #0f172a;
+            letter-spacing: -0.02em;
+          "
+        >
+          Python to AI in
+          <span
+            class="ws-days-gradient"
+            style="
+              background: linear-gradient(
+                to right,
+                #6366f1,
+                #a855f7,
+                #ec4899,
+                #6366f1
+              );
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              display: inline-block;
+              animation: textShine 4s linear infinite;
+              background-size: 200% auto;
+            "
+            >{{ workshop.days.count }} Days</span
+          >
+        </h1>
+
+        {# One-on-One tag row #}
+        <div
+          class="workshop-hero__meta"
+          style="
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin: 1.5rem 0 2rem;
+          "
+        >
+          <div
+            class="premium-meta-item"
+            style="
+              display: flex;
+              align-items: center;
+              gap: 6px;
+              padding: 8px 18px;
+              background: #f8fafc;
+              border: 1px solid #e2e8f0;
+              border-radius: 50px;
+              font-size: 0.9rem;
+              font-weight: 500;
+              color: #475569;
+              transition: all 0.3s ease;
+              cursor: default;
+            "
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#6366f1"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              width="16"
+              height="16"
+            >
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+            1-on-1 Personal Training
+          </div>
+          <div
+            class="premium-meta-item"
+            style="
+              display: flex;
+              align-items: center;
+              gap: 6px;
+              padding: 8px 18px;
+              background: #f8fafc;
+              border: 1px solid #e2e8f0;
+              border-radius: 50px;
+              font-size: 0.9rem;
+              font-weight: 500;
+              color: #475569;
+              transition: all 0.3s ease;
+              cursor: default;
+            "
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#a855f7"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              width="16"
+              height="16"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 8v4l3 3" />
+            </svg>
+            Flexible Timing — You Decide
+          </div>
+          {% if workshop.mode %}
+          <div
+            class="premium-meta-item"
+            style="
+              display: flex;
+              align-items: center;
+              gap: 6px;
+              padding: 8px 18px;
+              background: #f8fafc;
+              border: 1px solid #e2e8f0;
+              border-radius: 50px;
+              font-size: 0.9rem;
+              font-weight: 500;
+              color: #475569;
+              transition: all 0.3s ease;
+              cursor: default;
+            "
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#ec4899"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              width="16"
+              height="16"
+            >
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            {{ workshop.mode }}
+          </div>
+          {% endif %}
+        </div>
+
+        <p
+          class="workshop-days__subtitle"
+          style="
+            font-size: 1.15rem;
+            color: #64748b;
+            line-height: 1.6;
+            max-width: 680px;
+            margin: 0 auto;
+          "
+        >
+          Exclusive <strong style="color: #334155">1-on-1 mentorship</strong> —
+          4 days of hands-on AI building tailored just for you, plus a dedicated
+          session for doubt-clearing and career guidance.
+        </p>
+
+        <style>
+          @keyframes ping {
+            75%,
+            100% {
+              transform: scale(2.5);
+              opacity: 0;
+            }
+          }
+          @keyframes textShine {
+            to {
+              background-position: 200% center;
+            }
+          }
+          .premium-meta-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06);
+            border-color: #cbd5e1 !important;
+          }
+          body.light .workshop-hero__title {
+            color: #0f172a !important;
+          }
+          body:not(.light) .workshop-hero__title {
+            color: #f8fafc !important;
+          }
+          body:not(.light) .premium-meta-item {
+            background: rgba(255, 255, 255, 0.03) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #e2e8f0 !important;
+          }
+          body:not(.light) .premium-meta-item:hover {
+            background: rgba(255, 255, 255, 0.08) !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+          }
+          body:not(.light) .premium-badge {
+            background: rgba(99, 102, 241, 0.15) !important;
+            color: #818cf8 !important;
+            border-color: rgba(99, 102, 241, 0.3) !important;
+          }
+          body:not(.light) .workshop-days__subtitle {
+            color: #94a3b8 !important;
+          }
+          body:not(.light) .workshop-days__subtitle strong {
+            color: #f1f5f9 !important;
+          }
+        </style>
+      </div>
+
+      {# ── 5-Step Progress Dots ── #}
+      <h2 class="visually-hidden">Workshop Daily Schedule</h2>
+      <div class="ws-steps" role="list" aria-label="Workshop day overview">
+        {% for day in workshop.days.all %}
+        <div class="ws-steps__item" role="listitem">
+          <div
+            class="ws-steps__dot"
+            data-day="{{ day.day_number }}"
+            title="Day {{ day.day_number }}: {{ day.title }}"
+          >
+            {{ day.day_number }}
+          </div>
+          <span class="ws-steps__label">{{ day.title|truncatechars:16 }}</span>
+        </div>
+        {% endfor %}
+      </div>
+
+      {# ── 5-Day Grid Cards — compact, no scrolling ── #}
+      <div class="ws-grid" role="list">
+        {% for day in workshop.days.all %}
+
+        <article
+          class="ws-tcard"
+          role="listitem"
+          data-day="{{ day.day_number }}"
+          data-title="{{ day.title }}"
+          data-date="{{ day.date_label }}"
+          data-desc="{{ day.description|truncatechars:150 }}"
+          data-outcome="{{ day.outcome }}"
+        >
+          {# Coloured top bar #}
+          <div class="ws-tcard__topbar" aria-hidden="true"></div>
+
+          {# Card inner #}
+          <div class="ws-tcard__inner">
+            {# Header: faded number + phase tag + title #}
+            <div class="ws-tcard__hrow">
+              <span class="ws-tcard__num" aria-hidden="true">
+                {% if day.day_number == 5 %}
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+                  <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+                  <path d="M4 22h16" />
+                  <path
+                    d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"
+                  />
+                  <path
+                    d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"
+                  />
+                  <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
+                </svg>
+                {% else %}{{ day.day_number }}{% endif %}
+              </span>
+              <div class="ws-tcard__text">
+                <span class="ws-tcard__phase">
+                  {% if day.day_number == 5 %}🎓 Q&amp;A &amp; Guidance{% else %}Day {{ day.day_number }} · Learning{% endif %}
+                </span>
+                <h3 class="ws-tcard__title">{{ day.title }}</h3>
+              </div>
+            </div>
+
+            {# Outcome — main content of the card #} {% if day.outcome %}
+            <div class="ws-tcard__outcome">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
+              </svg>
+              <span><strong>You'll build:</strong> {{ day.outcome }}</span>
+            </div>
+            {% endif %} {# Footer: details link only #}
+            <div class="ws-tcard__foot">
+              <a
+                href="{% url 'workshop_day_detail' workshop.id day.day_number %}"
+                class="ws-tcard__link"
+                aria-label="View Day {{ day.day_number }} details: {{ day.title }}"
+              >
+                Day {{ day.day_number }} Details
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M5 12h14" />
+                  <path d="m12 5 7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+          <!-- /.ws-tcard__inner -->
+        </article>
+
+        {% endfor %}
+      </div>
+      <!-- /.ws-grid -->
+
+      <div style="text-align: center; margin-top: 2rem">
+        <button
+          type="button"
+          id="shareWorkshopBtn"
+          style="
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: linear-gradient(135deg, #6366f1, #4f8ef7);
+            border: none;
+            color: #ffffff;
+            font-family: &quot;Figtree&quot;, sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            padding: 0.75rem 1.8rem;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.45);
+          "
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="18" cy="5" r="3" />
+            <circle cx="6" cy="12" r="3" />
+            <circle cx="18" cy="19" r="3" />
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+          </svg>
+          Share This Workshop
+        </button>
+      </div>
+    </section>
+
+    {% else %} {# Fallback: no workshop in DB yet #}
+    <section class="workshop-days">
+      <div class="workshop-days__header">
+        <h1 class="workshop-hero__title">
+          AI &amp; ML<br /><span>Workshops</span>
+        </h1>
+        <p class="workshop-days__subtitle">
+          This hands-on Python to AI workshop takes you from Python basics to building and
+    deploying real machine learning and AI projects — with 1-on-1 mentorship, ideal for
+    students, final-year projects, and beginners in India starting their AI career.
+        </p>
+      </div>
+    </section>
+    {% endif %} {# ── Everything Included + Enroll CTA — merged section ── #}
+    <section
+      class="workshop-bottom"
+      id="enroll"
+      aria-labelledby="workshopFeaturesTitle"
+    >
+      <h2 class="workshop-features__title" id="workshopFeaturesTitle">
+        Everything Included
+      </h2>
+
+      <div class="workshop-features__grid">
+        <div class="feature-item">
+          <div class="feature-item__icon" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+          </div>
+          <h3 class="feature-item__title">1-on-1 Daily Sessions</h3>
+          <p class="feature-item__desc">
+            1 focused hour every day — just you and your mentor. No
+            distractions, no batch, 100% attention on your progress.
+          </p>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-item__icon" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+              />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+          </div>
+          <h3 class="feature-item__title">Project-Based Learning</h3>
+          <p class="feature-item__desc">
+            You don't just watch — you build. Every session ends with a working
+            project you can show in your portfolio or final year submission.
+          </p>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-item__icon" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 8v4l3 3" />
+            </svg>
+          </div>
+          <h3 class="feature-item__title">Flexible Timing</h3>
+          <p class="feature-item__desc">
+            You pick the time, we show up. Morning, evening, or weekend —
+            sessions are scheduled entirely around your availability.
+          </p>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-item__icon" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+              <polyline points="22 4 12 14.01 9 11.01" />
+            </svg>
+          </div>
+          <h3 class="feature-item__title">Completion Certificate</h3>
+          <p class="feature-item__desc">
+            Walk away with a verified ProjectsHub certificate — ready to add to
+            your LinkedIn, resume, or university portfolio.
+          </p>
+        </div>
+      </div>
+
+      {# ── Inline CTA strip — no separate section, no gap ── #}
+      <div class="workshop-bottom__cta">
+        <div class="workshop-bottom__cta-text">
+          <h2 class="workshop-bottom__cta-title" id="workshopCtaTitle">
+            Your Learning. Your Pace.
+          </h2>
+          <p class="workshop-bottom__cta-desc">
+            100% personalised 1-on-1 mentorship — we build around your schedule,
+            your goals, and your level. No batch. No waiting.
+          </p>
+        </div>
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+          "
+        >
+          <button
+            type="button"
+            class="workshop-cta__btn open-enroll-modal"
+            {% if workshop %}
+            data-workshop-id="{{ workshop.id }}"
+            {% endif %}
+            aria-label="Enroll in this workshop"
+          >
+            Enroll Now
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+          </button>
+          <span
+            class="ws-seats-hint"
+            style="
+              font-size: 0.75rem;
+              color: rgba(255, 255, 255, 0.5);
+              display: flex;
+              align-items: center;
+              gap: 0.4rem;
+            "
+          >
+            <span
+              style="
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background: #22c55e;
+                box-shadow: 0 0 6px #22c55e80;
+                display: inline-block;
+              "
+            ></span>
+            Pricing discussed after registration — No spam, ever.
+          </span>
+        </div>
+      </div>
+    </section>
+  </div>
+  <!-- /.main-body -->
+</section>
+<!-- /.aurora-section -->
+
+{# ── Share Card Overlay ── #}
+<div
+  class="share-overlay"
+  id="shareOverlay"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Share this workshop day"
+>
+  <div class="share-card" id="shareCard">
+    <button
+      class="share-card__close"
+      id="shareClose"
+      aria-label="Close share panel"
+    >
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+    <div class="share-card__preview">
+      <div class="share-card__badge">ProjectsHub Workshop</div>
+      <div class="share-card__day" id="shareDay">Day 1</div>
+      <h3 class="share-card__title" id="shareTitle">Title</h3>
+      <p class="share-card__date" id="shareDate">Date</p>
+      <p class="share-card__desc" id="shareDesc">Desc</p>
+      <div class="share-card__outcome" id="shareOutcome">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+          <polyline points="22 4 12 14.01 9 11.01" />
+        </svg>
+        <span id="shareOutcomeText">Outcome</span>
+      </div>
+    </div>
+    <div class="share-card__actions">
+      <button
+        class="share-action-btn share-action-btn--copy"
+        id="shareCopyLink"
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+        </svg>
+        Copy Link
+      </button>
+      <button
+        class="share-action-btn share-action-btn--whatsapp"
+        id="shareWhatsApp"
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+          />
+        </svg>
+        WhatsApp
+      </button>
+      <button
+        class="share-action-btn share-action-btn--twitter"
+        id="shareTwitter"
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+          />
+        </svg>
+        Twitter
+      </button>
+    </div>
+  </div>
+</div>
+
+{# ── Enrollment Modal ── #}
+<div
+  class="enroll-modal"
+  id="enrollModal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="enrollModalTitle"
+>
+  <div class="enroll-modal__backdrop" id="enrollBackdrop"></div>
+
+  <div class="enroll-modal__content">
+    <button
+      class="enroll-modal__close"
+      id="enrollClose"
+      aria-label="Close enrollment form"
+    >
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+
+    <div class="enroll-modal__header">
+      <!--<div class="enroll-modal__badge">-->
+      <!--  <span class="enroll-modal__badge-dot" aria-hidden="true"></span>-->
+      <!--  Limited Seats: {{ workshop.seats|default:"30" }} Only-->
+      <!--</div>-->
+      <h2 class="enroll-modal__title" id="enrollModalTitle">
+        Reserve Your <span class="gradient-word">Spot</span>
+      </h2>
+      <p class="enroll-modal__subtitle">
+        Fill in your details below. We'll send you payment and access details
+        within 24 hours.
+      </p>
+    </div>
+
+    <form class="enroll-form" id="enrollForm" novalidate>
+      <div class="d-md-flex gap-3 d-block">
+        {# Name #}
+        <div class="enroll-field">
+          <label class="enroll-field__label" for="enrollName">
+            Your Name <span class="enroll-field__required">*</span>
+          </label>
+          <div class="enroll-field__input-wrap">
+            <svg
+              class="enroll-field__icon"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            <input
+              type="text"
+              id="enrollName"
+              name="fullName"
+              class="enroll-field__input"
+              placeholder="What should we call you?"
+              required
+              minlength="2"
+              autocomplete="name"
+            />
+          </div>
+          <span class="enroll-field__error" id="errorName"
+            >Please enter your name</span
+          >
+        </div>
+
+        {# WhatsApp #}
+        <div class="enroll-field">
+          <label class="enroll-field__label" for="enrollPhone">
+            WhatsApp Number <span class="enroll-field__required">*</span>
+          </label>
+          <div class="enroll-field__input-wrap">
+            <svg
+              class="enroll-field__icon"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+              />
+            </svg>
+            <input
+              type="tel"
+              id="enrollPhone"
+              name="phone"
+              class="enroll-field__input"
+              placeholder="+91 98765 43210"
+              required
+              autocomplete="tel"
+            />
+          </div>
+          <span class="enroll-field__error" id="errorPhone"
+            >Please enter your WhatsApp number</span
+          >
+        </div>
+      </div>
+
+      <div class="d-md-flex gap-3 d-block">
+        {# Email #}
+        <div class="enroll-field">
+          <label class="enroll-field__label" for="enrollEmail">
+            Email Address <span class="enroll-field__required">*</span>
+          </label>
+          <div class="enroll-field__input-wrap">
+            <svg
+              class="enroll-field__icon"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+            </svg>
+            <input
+              type="email"
+              id="enrollEmail"
+              name="email"
+              class="enroll-field__input"
+              placeholder="We'll send details here"
+              required
+              autocomplete="email"
+            />
+          </div>
+          <span class="enroll-field__error" id="errorEmail"
+            >Please enter a valid email</span
+          >
+        </div>
+
+        {# Experience #}
+        <div class="enroll-field">
+          <label class="enroll-field__label" for="enrollExperience">
+            Your Background <span class="enroll-field__required">*</span>
+          </label>
+          <div class="enroll-field__input-wrap">
+            <svg
+              class="enroll-field__icon"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            </svg>
+            <select
+              id="enrollExperience"
+              name="experience"
+              class="enroll-field__input enroll-field__select"
+              required
+            >
+              <option value="" disabled selected>
+                Where are you right now?
+              </option>
+              <option value="beginner">🌱 Beginner — Just starting out</option>
+              <option value="intermediate">
+                ⚡ Intermediate — Know some coding
+              </option>
+              <option value="advanced">
+                🚀 Advanced — Comfortable with Python
+              </option>
+              <option value="professional">
+                💼 Professional — Working in tech
+              </option>
+            </select>
+            <svg
+              class="enroll-field__chevron"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </div>
+          <span class="enroll-field__error" id="errorExperience"
+            >Please select your background</span
+          >
+        </div>
+      </div>
+
+      {# Goal #}
+      <div class="enroll-field w-100">
+        <label class="enroll-field__label" for="enrollMessage">
+          What's your goal with AI?
+          <span class="enroll-field__optional"
+            >(helps us personalise your training)</span
+          >
+        </label>
+        <textarea
+          id="enrollMessage"
+          name="message"
+          class="enroll-field__input enroll-field__textarea"
+          rows="3"
+          maxlength="300"
+          placeholder="e.g. Build an AI project for final year, get a job in ML, automate my business..."
+        ></textarea>
+        <span class="enroll-field__char-count" id="charCount">0 / 300</span>
+      </div>
+
+      {# Submit #}
+      <button type="submit" class="enroll-submit" id="enrollSubmit">
+        <span class="enroll-submit__text">Reserve My Spot Now</span>
+        <svg
+          class="enroll-submit__arrow"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M5 12h14" />
+          <path d="m12 5 7 7-7 7" />
+        </svg>
+        <span class="enroll-submit__loader" aria-hidden="true">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+          </svg>
+        </span>
+      </button>
+
+      <p class="enroll-form__note">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </svg>
+        Free to register — we'll reach you on WhatsApp within 24 hours. No spam,
+        ever.
+      </p>
+    </form>
+    {# Success state — shown by enroll-modal.js after successful submit #}
+    <div class="enroll-success" id="enrollSuccess" aria-live="polite">
+      <div class="enroll-success__icon" aria-hidden="true">
+        <svg
+          width="40"
+          height="40"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#6366f1"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+          <polyline points="22 4 12 14.01 9 11.01" />
+        </svg>
+      </div>
+      <h3 class="enroll-success__title">Request Received</h3>
+      <p
+        class="enroll-success__message"
+        style="text-align: center; line-height: 1.7"
+      >
+        Thank you, <strong id="successName">there</strong>. We've received your
+        enrollment request and will reach out to you on WhatsApp within
+        <strong>24 hours</strong> to confirm your spot.
+      </p>
+      <button type="button" class="enroll-success__btn" id="enrollSuccessClose">
+        Got it, thanks!
+      </button>
+      <span id="successEmail" style="display: none"></span>
+    </div>
+  </div>
+  <!-- /.enroll-modal__content -->
+</div>
+<!-- /.enroll-modal -->
+
+{% endblock content %}
+
+{# ══════════════════════════════════ Page-specific JS ══════════════════════════════════ #}
+{% block extra_js %}
+<script>
+  document
+    .getElementById("shareWorkshopBtn")
+    .addEventListener("click", function () {
+      const title =
+        document.querySelector(".workshop-hero__title")?.innerText ||
+        "AI Workshop";
+      const url = window.location.href;
+
+      if (navigator.share) {
+        navigator.share({
+          title: "ProjectsHub — " + title,
+          text: "Check out this AI Workshop by ProjectsHub 🚀",
+          url: url,
+        });
+      } else {
+        // Fallback — copy to clipboard
+        navigator.clipboard.writeText(url).then(() => {
+          const btn = document.getElementById("shareWorkshopBtn");
+          btn.innerHTML = `✅ Link Copied!`;
+          setTimeout(() => {
+            btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share This Workshop`;
+          }, 2500);
+        });
+      }
+    });
+<script src="{% static 'js/enroll-modal.js' %}" defer></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const dots = document.querySelectorAll(".ws-steps__dot");
+    const cards = document.querySelectorAll(".ws-tcard");
+
+    function clearHighlights() {
+      dots.forEach((d) => {
+        d.classList.remove("highlight-active");
+        d.closest(".ws-steps__item").classList.remove("highlight-active");
+      });
+      cards.forEach((c) => c.classList.remove("highlight-active"));
+    }
+
+    function highlightDay(dayStr) {
+      clearHighlights();
+      if (!dayStr) return;
+
+      const dot = document.querySelector(
+        `.ws-steps__dot[data-day="${dayStr}"]`,
+      );
+      const card = document.querySelector(`.ws-tcard[data-day="${dayStr}"]`);
+
+      if (dot) {
+        dot.classList.add("highlight-active");
+        dot.closest(".ws-steps__item").classList.add("highlight-active");
+      }
+      if (card) {
+        card.classList.add("highlight-active");
+        // Optional: smoothly scroll the card into view if it's mostly hidden
+        const rect = card.getBoundingClientRect();
+        if (rect.top < 0 || rect.bottom > window.innerHeight) {
+          card.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }
+    }
+
+    dots.forEach((dot) => {
+      dot.addEventListener("click", (e) => {
+        e.stopPropagation();
+        highlightDay(dot.getAttribute("data-day"));
+      });
+    });
+
+    cards.forEach((card) => {
+      card.addEventListener("click", (e) => {
+        // Ignore click if it's on a link (so details page can still be opened)
+        if (e.target.closest("a")) return;
+        e.stopPropagation();
+        highlightDay(card.getAttribute("data-day"));
+      });
+    });
+
+    // Clicking anywhere else clears the highlight
+    document.addEventListener("click", (e) => {
+      if (
+        !e.target.closest(".ws-steps__dot") &&
+        !e.target.closest(".ws-tcard")
+      ) {
+        clearHighlights();
+      }
+    });
+  });
+</script>
+
+{% endblock extra_js %}

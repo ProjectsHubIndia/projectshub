@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.venv/
+virtualenv/
+
+# Django database
+db.sqlite3
+*.sqlite3
+
+# Secrets / environment
+.env
+.env.*
+!.env.example
+
+# User-uploaded/generated files
+media/
+
+# Django generated static files
+staticfiles/
+
+# Archives / backups
+*.zip
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+*.tmp
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# QA, Scratch & Audit files
+.design-qa/
+scratch/
+vibe_images/
+*.csv
+

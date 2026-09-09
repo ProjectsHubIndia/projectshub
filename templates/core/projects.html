@@ -1,0 +1,362 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{# ════════════════════════════════════════
+   SEO — Projects listing page
+════════════════════════════════════════ #}
+{% block title %}AI & ML Projects — ProjectsHub | Real-World Projects for Students & Businesses{% endblock %}
+{% block meta_description %}Explore 50+ real-world AI, Machine Learning, Django, FastAPI and Data Science projects by ProjectsHub. Source code, documentation and mentorship included.{% endblock %}
+{% block meta_keywords %}AI projects, machine learning projects India, Django projects with source code, data science projects, NLP projects, final year AI projects, free ML projects, ProjectsHub{% endblock %}
+{% block canonical %}https://projectshub.co.in/projects/{% endblock %}
+{% block og_title %}50+ Real-World AI & ML Projects — ProjectsHub{% endblock %}
+{% block og_description %}Browse machine learning, Django, FastAPI and data science projects with full source code. Built for students and businesses. Explore free.{% endblock %}
+{% block og_url %}https://projectshub.co.in/projects/{% endblock %}
+
+{% block schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Home","item":"https://projectshub.co.in/"},
+    {"@type":"ListItem","position":2,"name":"Projects","item":"https://projectshub.co.in/projects/"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "AI & ML Projects — ProjectsHub",
+  "description": "Real-world AI, machine learning, Django, FastAPI and data science projects built by ProjectsHub.",
+  "url": "https://projectshub.co.in/projects/",
+  "publisher": {"@type":"Organization","name":"ProjectsHub","url":"https://projectshub.co.in","logo":{"@type":"ImageObject","url":"https://projectshub.co.in/static/image/favicon_io/logo.png"}}
+}
+</script>
+{% if projects %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "AI & ML Projects by ProjectsHub",
+  "url": "https://projectshub.co.in/projects/",
+  "numberOfItems": {{ projects|length }},
+  "itemListElement": [
+    {% for project in projects %}
+    {"@type":"ListItem","position":{{ forloop.counter }},"url":"https://projectshub.co.in{% url 'project_detail' project.id %}","name":"{{ project.title|escapejs }}","description":"{{ project.description|truncatechars:160|escapejs }}"}{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/project.css' %}?v=3" />
+{% endblock %}
+
+{% block nav_projects %}active{% endblock %}
+
+{% block content %}
+<div class="main-body" style="position:relative; z-index:1;">
+  <div class="project-body">
+
+    {# ── Page Header ── #}
+    <div class="projects-page-header">
+
+      <div class="projects-badge">
+        <span class="projects-badge__dot"></span>
+        50+ Real-World Projects
+      </div>
+
+      <h1 class="projects-page-title">
+        AI &amp; ML Projects with Source Code,<br>
+        <span class="projects-title__gradient">Built for the Real World</span>
+      </h1>
+
+      <p class="projects-page-desc">
+        Production-grade AI models, full-stack web applications, and data science pipelines.
+        Each project includes complete source code, architecture documentation, and setup instructions.
+      </p>
+
+      <!-- Search Bar -->
+      <div class="ph-search-wrapper">
+        <div class="ph-search-bar" id="projectSearchBar">
+          <svg class="ph-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="projectSearchInput" class="ph-search-input" placeholder="Search by title, tech stack (e.g. PyTorch, Django)..." aria-label="Search projects" autocomplete="off" />
+          <button type="button" id="clearProjectSearch" class="ph-search-clear" aria-label="Clear search">✕</button>
+          <kbd class="ph-search-kbd" title="Press / to focus">/</kbd>
+        </div>
+      </div>
+
+      {# Count badge — shows live project total #}
+      {% if projects %}
+      <div class="projects-count-badge" aria-live="polite" id="projectsCountBadge">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+          <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+        </svg>
+        <span>Showing <strong class="projects-count-badge__num" id="visibleCount">{{ projects|length }}</strong> curated projects</span>
+        <span id="filterLabel" style="opacity:0.7;font-weight:500;"></span>
+      </div>
+      {% endif %}
+
+      {# Filter tabs #}
+      <div class="filter-tabs" id="filterTabs" role="tablist" aria-label="Filter projects by category">
+        <button class="filter-tab active" data-filter="all" role="tab" aria-selected="true">
+          <span>All</span>
+          <span class="tab-count" id="countAll">{{ projects|length }}</span>
+        </button>
+        <button class="filter-tab" data-filter="ml" role="tab" aria-selected="false">
+          <span>Machine Learning</span>
+          <span class="tab-count" id="countMl">0</span>
+        </button>
+        <button class="filter-tab" data-filter="backend" role="tab" aria-selected="false">
+          <span>Backend</span>
+          <span class="tab-count" id="countBackend">0</span>
+        </button>
+        <button class="filter-tab" data-filter="data" role="tab" aria-selected="false">
+          <span>Data Science</span>
+          <span class="tab-count" id="countData">0</span>
+        </button>
+        <button class="filter-tab" data-filter="cloud" role="tab" aria-selected="false">
+          <span>Cloud &amp; DevOps</span>
+          <span class="tab-count" id="countCloud">0</span>
+        </button>
+      </div>
+
+    </div>
+    {# /.projects-page-header #}
+
+    {# ── Projects Grid ── #}
+    <div class="projects-full-grid" id="projectsGrid">
+
+      {% for project in projects %}
+      <article
+        class="project-card"
+        data-tags="{{ project.category }} {{ project.tags|lower }}"
+        data-title="{{ project.title|lower }}"
+        data-desc="{{ project.description|lower }}"
+        itemscope itemtype="https://schema.org/SoftwareApplication"
+      >
+        <a href="{% if project.slug %}{% url 'project_detail_slug' project.slug %}{% else %}{% url 'project_detail' project.id %}{% endif %}"
+           class="project-card-link-wrapper"
+           itemprop="url"
+           aria-label="View project: {{ project.title }}">
+
+          {# Image + overlays #}
+          <div class="project-card__img-wrap">
+            <img
+              src="{{ project.get_image_src }}"
+              alt="{{ project.title }} — AI project by ProjectsHub"
+              class="project-card__img"
+              loading="lazy"
+              width="400" height="210"
+              itemprop="image"
+              onerror="this.onerror=null; this.style.opacity='0.25';"
+            />
+            <div class="project-card__overlay" aria-hidden="true"></div>
+
+            {# Category pill — top-right corner #}
+            <span class="project-card__category project-card__category--{{ project.category }}" aria-label="Category: {{ project.get_category_display }}">
+              {{ project.get_category_display }}
+            </span>
+
+            {# Price badge — bottom-right corner #}
+            {% if project.price_label %}
+            <span class="project-card__price{% if project.price == 0 %} project-card__price--free{% endif %}">
+              {{ project.price_label }}
+            </span>
+            {% endif %}
+          </div>
+
+          {# Card body #}
+          <div class="project-card__body">
+
+            {# Tags row #}
+            <div class="project-card__tags" aria-label="Technologies">
+              {% for tag in project.get_tags_list %}
+              <span class="project-tag">{{ tag }}</span>
+              {% endfor %}
+            </div>
+
+            <h2 class="project-card__title" itemprop="name">{{ project.title }}</h2>
+
+            <p class="project-card__desc" itemprop="description">{{ project.description }}</p>
+
+            <span class="project-card__link">
+              View project
+              <span class="project-card__arrow" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </span>
+            </span>
+
+          </div>
+        </a>
+      </article>
+      {% empty %}
+
+      {# ── Empty state (no projects in DB) ── #}
+      <div class="projects-empty-state" role="status">
+        <div class="projects-empty-state__icon" aria-hidden="true">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+            <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+          </svg>
+        </div>
+        <p class="projects-empty-state__title">No projects yet</p>
+        <p class="projects-empty-state__desc">We're building something amazing. Check back soon for real-world AI and ML projects with full source code.</p>
+        <a href="/#contact" class="projects-empty-state__cta">
+          Get notified when we launch
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      </div>
+
+      {% endfor %}
+
+    </div>
+    {# /.projects-full-grid #}
+
+    {# No-filter-results state — JS controlled #}
+    <div id="projectsNoResults" class="ph-glass-card" style="display:none; text-align:center; padding:3.5rem 1.5rem; max-width: 520px; margin: 2.5rem auto;">
+      <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🔍</div>
+      <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--ph-text-primary);">No matching projects found</h3>
+      <p style="font-size: 0.95rem; color: var(--ph-text-secondary); margin-bottom: 1.5rem;">
+        Try refining your keyword search or select another category tab above.
+      </p>
+      <button type="button" class="btn-primary-glow" id="resetProjectFilterBtn" onclick="resetProjectFilter()">Reset Search &amp; Filters</button>
+    </div>
+
+    <div style="padding-bottom: 5rem;"></div>
+
+  </div>
+  {# /.project-body #}
+</div>
+{# /.main-body #}
+
+<script>
+(function () {
+  var grid        = document.getElementById('projectsGrid');
+  var cards       = grid ? Array.from(grid.querySelectorAll('.project-card')) : [];
+  var tabs        = Array.from(document.querySelectorAll('.filter-tab'));
+  var countEl     = document.getElementById('visibleCount');
+  var labelEl     = document.getElementById('filterLabel');
+  var noResults   = document.getElementById('projectsNoResults');
+  var searchInput = document.getElementById('projectSearchInput');
+  var clearBtn    = document.getElementById('clearProjectSearch');
+  var activeFilter = 'all';
+
+  // Compute category counts and update tab badges
+  tabs.forEach(function (tab) {
+    var f = tab.dataset.filter;
+    if (f === 'all') return;
+    var count = cards.filter(function (c) {
+      var tags = (c.dataset.tags || '').toLowerCase();
+      return tags.includes(f);
+    }).length;
+    var countBadge = tab.querySelector('.tab-count');
+    if (countBadge) countBadge.textContent = count;
+    if (count === 0) {
+      tab.style.display = 'none';
+    }
+  });
+
+  function applyFilter() {
+    var query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+    if (clearBtn) {
+      clearBtn.style.display = query.length > 0 ? 'inline-flex' : 'none';
+    }
+
+    var visible = 0;
+    cards.forEach(function (card) {
+      var tags = (card.dataset.tags || '').toLowerCase();
+      var matchesCategory = (activeFilter === 'all') || tags.includes(activeFilter);
+
+      var title = (card.dataset.title || '').toLowerCase();
+      var desc = (card.dataset.desc || '').toLowerCase();
+      var matchesQuery = !query || title.includes(query) || desc.includes(query) || tags.includes(query);
+
+      var show = matchesCategory && matchesQuery;
+      card.classList.toggle('hidden', !show);
+      if (show) visible++;
+    });
+
+    // Update count badge
+    if (countEl) countEl.textContent = visible;
+    if (labelEl) {
+      var tab = tabs.find(function(t){ return t.dataset.filter === activeFilter; });
+      var tabName = tab ? (tab.querySelector('span:first-child') ? tab.querySelector('span:first-child').textContent.trim() : tab.textContent.trim()) : '';
+      var parts = [];
+      if (activeFilter !== 'all' && tabName) parts.push(tabName);
+      if (query) parts.push('matching "' + query + '"');
+      labelEl.textContent = parts.length ? ('— ' + parts.join(' ')) : '';
+    }
+
+    // No-results state
+    if (noResults) noResults.style.display = (visible === 0 && cards.length > 0) ? 'block' : 'none';
+  }
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      activeFilter = tab.dataset.filter;
+      tabs.forEach(function (t) {
+        t.classList.toggle('active', t === tab);
+        t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+      });
+      applyFilter();
+    });
+  });
+
+  if (searchInput) {
+    searchInput.addEventListener('input', applyFilter);
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', function () {
+      searchInput.value = '';
+      applyFilter();
+      searchInput.focus();
+    });
+  }
+
+  // Keyboard shortcut '/' to focus search
+  window.addEventListener('keydown', function (e) {
+    if (e.key === '/' && document.activeElement !== searchInput) {
+      e.preventDefault();
+      if (searchInput) {
+        searchInput.focus();
+        searchInput.select();
+      }
+    } else if (e.key === 'Escape' && document.activeElement === searchInput) {
+      searchInput.blur();
+    }
+  });
+
+  window.resetProjectFilter = function () {
+    activeFilter = 'all';
+    if (searchInput) searchInput.value = '';
+    tabs.forEach(function (t) {
+      t.classList.toggle('active', t.dataset.filter === 'all');
+      t.setAttribute('aria-selected', t.dataset.filter === 'all' ? 'true' : 'false');
+    });
+    applyFilter();
+  };
+
+  var resetBtn = document.getElementById('resetProjectFilterBtn');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', window.resetProjectFilter);
+  }
+})();
+</script>
+{% endblock %}

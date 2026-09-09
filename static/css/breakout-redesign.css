@@ -1,0 +1,357 @@
+.about-bottom-grid .breakout-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.07) !important;
+  box-shadow: 0 8px 36px rgba(0, 0, 0, 0.09), 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* ── Logo icon box ── */
+.breakout-logo {
+  width: 58px !important;
+  height: 58px !important;
+  border-radius: 16px !important;
+  background: rgba(99, 102, 241, 0.10) !important;
+  border: 1px solid rgba(99, 102, 241, 0.18) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #6366f1 !important;
+}
+
+.breakout-logo svg {
+  stroke: #6366f1 !important;
+}
+
+/* ── Title ── */
+.breakout-title {
+  font-size: 1.85rem !important;
+  font-weight: 800 !important;
+  color: #0f172a !important;
+  line-height: 1.25 !important;
+  margin: 0 !important;
+  letter-spacing: -0.3px;
+}
+
+.bt-accent {
+  background: linear-gradient(135deg, #6366f1 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Body text ── */
+.breakout-body {
+  color: #475569 !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  line-height: 1.65 !important;
+}
+
+/* ── Checklist ── */
+.breakout-list__item {
+  font-size: 14px !important;
+  color: #1e293b !important;
+}
+
+.breakout-list__item strong {
+  color: #0f172a !important;
+}
+
+.breakout-list__icon {
+  width: 26px !important;
+  height: 26px !important;
+  border-radius: 8px !important;
+}
+
+.breakout-list__icon--purple {
+  background: rgba(99, 102, 241, 0.13) !important;
+  color: #6366f1 !important;
+}
+
+.breakout-list__icon--blue {
+  background: rgba(59, 130, 246, 0.13) !important;
+  color: #3b82f6 !important;
+}
+
+.breakout-list__icon--green {
+  background: rgba(34, 197, 94, 0.13) !important;
+  color: #16a34a !important;
+}
+
+.breakout-list__icon--orange {
+  background: rgba(249, 115, 22, 0.13) !important;
+  color: #ea580c !important;
+}
+
+/* ── Section header — centered label with side lines ── */
+.brd-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 2px 0 8px;
+}
+
+.brd-section-header::before,
+.brd-section-header::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(99, 102, 241, 0.18);
+}
+
+.brd-section-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6366f1;
+  white-space: nowrap;
+}
+
+/* ── Trust icon wraps — larger, solid color ── */
+.trust-icon-wrap--purple {
+  background: rgba(99, 102, 241, 0.12) !important;
+  color: #6366f1 !important;
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 14px !important;
+}
+
+.trust-icon-wrap--blue {
+  background: rgba(59, 130, 246, 0.12) !important;
+  color: #3b82f6 !important;
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 14px !important;
+}
+
+/* ── Trust icon labels — dark on white card ── */
+.about-bottom-grid .trust-icon-item span {
+  font-size: 12px !important;
+  color: #334155 !important;
+  font-weight: 600 !important;
+}
+
+/* ── Divider — softer on white ── */
+.about-bottom-grid .trust-divider {
+  background: rgba(99, 102, 241, 0.12) !important;
+  margin: 8px 0 !important;
+}
+
+/* ── Get in Touch button — full-width gradient pill ── */
+.breakout-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  padding: 1rem 1.5rem !important;
+  border-radius: 50px !important;
+  background: linear-gradient(135deg, #6366f1 0%, #3b82f6 100%) !important;
+  color: #ffffff !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+  border: none !important;
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.38) !important;
+  transition: box-shadow 0.22s ease, transform 0.15s ease !important;
+  text-align: center !important;
+  cursor: pointer !important;
+}
+
+.breakout-btn:hover {
+  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.52) !important;
+  transform: translateY(-2px) !important;
+  color: #ffffff !important;
+}
+
+/* ── Stat cards — white ── */
+.about-stat-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.07) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important;
+  padding: 24px 16px 18px !important;
+}
+
+.about-stat-card__value {
+  font-size: 36px !important;
+}
+
+.about-stat-card__label {
+  color: #64748b !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+}
+
+/* ── Stat icon circle ── */
+.brd-stat-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(99, 102, 241, 0.10);
+  border: 1px solid rgba(99, 102, 241, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+  color: #6366f1;
+}
+
+/* ── Stat decorative dots ── */
+.brd-stat-dots {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.brd-stat-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(99, 102, 241, 0.20);
+  display: block;
+}
+
+.brd-stat-dots span:nth-child(2) {
+  background: rgba(99, 102, 241, 0.48);
+}
+
+body:not(.light) .about-bottom-grid .breakout-card {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  box-shadow: 0 8px 36px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.20) !important;
+}
+
+body:not(.light) .breakout-title {
+  color: #f1f5f9 !important;
+}
+
+body:not(.light) .breakout-body {
+  color: rgba(203, 213, 225, 0.80) !important;
+}
+
+body:not(.light) .breakout-list__item {
+  color: rgba(203, 213, 225, 0.85) !important;
+}
+
+body:not(.light) .breakout-list__item strong {
+  color: #e2e8f0 !important;
+}
+
+body:not(.light) .about-bottom-grid .trust-icon-item span {
+  color: rgba(203, 213, 225, 0.80) !important;
+}
+
+body:not(.light) .about-bottom-grid .trust-divider {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+body:not(.light) .about-stat-card {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+body:not(.light) .about-stat-card__label {
+  color: rgba(148, 163, 184, 0.85) !important;
+}
+
+body:not(.light) .brd-section-header::before,
+body:not(.light) .brd-section-header::after {
+  background: rgba(255, 255, 255, 0.10);
+}
+
+/* ── Responsive ── */
+
+/* Large tablet */
+@media (max-width: 1024px) {
+  .breakout-title {
+    font-size: 1.6rem !important;
+  }
+
+  .breakout-body {
+    font-size: 0.86rem !important;
+  }
+}
+
+/* Mobile (767px and below) */
+@media (max-width: 767px) {
+  .breakout-title {
+    font-size: 1.35rem !important;
+  }
+
+  .breakout-body {
+    font-size: 0.84rem !important;
+  }
+
+  .breakout-list__item {
+    font-size: 13px !important;
+  }
+
+  .trust-icon-wrap--purple,
+  .trust-icon-wrap--blue {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .brd-stat-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .about-stat-card {
+    padding: 18px 12px 14px !important;
+  }
+
+  .about-stat-card__value {
+    font-size: 28px !important;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .breakout-title {
+    font-size: 1.2rem !important;
+  }
+
+  .breakout-logo {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .num-cards-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .trust-icons-row {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  .trust-icon-item {
+    min-width: 64px;
+  }
+}
+
+/* Very small mobile (360px and below) */
+@media (max-width: 360px) {
+
+  .trust-icon-wrap--purple,
+  .trust-icon-wrap--blue {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 10px !important;
+  }
+
+  .breakout-title {
+    font-size: 1.1rem !important;
+  }
+
+  .breakout-list__item {
+    font-size: 12px !important;
+  }
+}

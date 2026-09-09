@@ -1,0 +1,1404 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block nav_how_we_help %}active{% endblock %}
+
+{% block title %}Industries | AI Solutions for Every Industry | ProjectsHub{% endblock %}
+
+{% block meta_description %}Industry-specific AI solutions that drive real business impact. Custom AI solutions for Healthcare, Education, Finance, Retail, Logistics & more.{% endblock %}
+
+{% block canonical %}https://projectshub.co.in/industries/{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/industries.css' %}?v=3">
+{% endblock %}
+
+{% block content %}
+
+<!-- ══════════════════════════════════════
+   1. HERO
+══════════════════════════════════════ -->
+<section class="ind-hero">
+  <div class="ind-hero-inner">
+    <div>
+      <h1>
+        Industry-Specific AI Solutions<br />That Drive
+        <span class="highlight">Real Business Impact</span>
+      </h1>
+      <p class="ind-hero-desc">
+        We build custom AI solutions tailored to the unique challenges of your
+        industry—helping you automate, optimize, and grow.
+      </p>
+      <div class="ind-hero-btns">
+        <a href="/#contact" class="ind-btn-primary">
+          Book Free Consultation
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </a>
+        <a href="#industries" class="ind-btn-outline">
+          Explore Solutions
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </a>
+      </div>
+      <div class="ind-hero-badges">
+        <div class="ind-badge">
+          <div class="ind-badge-dot">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"
+              />
+            </svg>
+          </div>
+          Custom AI Solutions
+        </div>
+        <div class="ind-badge">
+          <div class="ind-badge-dot">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+          </div>
+          Scalable &amp; Secure
+        </div>
+        <div class="ind-badge">
+          <div class="ind-badge-dot">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="20" x2="18" y2="10" />
+              <line x1="12" y1="20" x2="12" y2="4" />
+              <line x1="6" y1="20" x2="6" y2="14" />
+            </svg>
+          </div>
+          Measurable Results
+        </div>
+      </div>
+    </div>
+    <div class="ind-hero-right">
+      <svg
+        class="ind-globe-svg"
+        viewBox="-55 0 575 420"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <radialGradient id="iglobeGrad" cx="38%" cy="32%" r="65%">
+            <stop offset="0%" stop-color="#c4b5fd" />
+            <stop offset="45%" stop-color="#5b21b6" />
+            <stop offset="100%" stop-color="#1e0a3c" />
+          </radialGradient>
+          <radialGradient id="iglobeGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.22" />
+            <stop offset="100%" stop-color="#7c3aed" stop-opacity="0" />
+          </radialGradient>
+        </defs>
+
+        <!-- Ambient glow -->
+        <circle cx="260" cy="210" r="148" fill="url(#iglobeGlow)" />
+
+        <!-- Connector dashed lines -->
+        <line
+          x1="260"
+          y1="115"
+          x2="260"
+          y2="62"
+          stroke="#f43f5e"
+          stroke-width="1.5"
+          stroke-dasharray="5 4"
+          opacity="0.55"
+        />
+        <line
+          x1="169"
+          y1="186"
+          x2="138"
+          y2="166"
+          stroke="#3b82f6"
+          stroke-width="1.5"
+          stroke-dasharray="5 4"
+          opacity="0.55"
+        />
+        <line
+          x1="344"
+          y1="165"
+          x2="358"
+          y2="126"
+          stroke="#f59e0b"
+          stroke-width="1.5"
+          stroke-dasharray="5 4"
+          opacity="0.55"
+        />
+        <line
+          x1="185"
+          y1="268"
+          x2="156"
+          y2="320"
+          stroke="#8b5cf6"
+          stroke-width="1.5"
+          stroke-dasharray="5 4"
+          opacity="0.55"
+        />
+        <line
+          x1="331"
+          y1="273"
+          x2="348"
+          y2="325"
+          stroke="#10b981"
+          stroke-width="1.5"
+          stroke-dasharray="5 4"
+          opacity="0.55"
+        />
+
+        <!-- Globe body -->
+        <circle cx="260" cy="210" r="95" fill="url(#iglobeGrad)" />
+
+        <!-- Globe latitude/longitude lines -->
+        <ellipse
+          cx="260"
+          cy="210"
+          rx="95"
+          ry="36"
+          stroke="rgba(255,255,255,0.13)"
+          stroke-width="1"
+          fill="none"
+        />
+        <ellipse
+          cx="260"
+          cy="210"
+          rx="95"
+          ry="65"
+          stroke="rgba(255,255,255,0.08)"
+          stroke-width="1"
+          fill="none"
+        />
+        <line
+          x1="260"
+          y1="115"
+          x2="260"
+          y2="305"
+          stroke="rgba(255,255,255,0.12)"
+          stroke-width="1"
+        />
+        <line
+          x1="165"
+          y1="210"
+          x2="355"
+          y2="210"
+          stroke="rgba(255,255,255,0.10)"
+          stroke-width="1"
+        />
+
+        <!-- Shine -->
+        <ellipse
+          cx="234"
+          cy="178"
+          rx="22"
+          ry="12"
+          fill="rgba(255,255,255,0.11)"
+          transform="rotate(-30 234 178)"
+        />
+
+        <!-- Orbit ring -->
+        <ellipse
+          cx="260"
+          cy="210"
+          rx="120"
+          ry="38"
+          stroke="rgba(124,58,237,0.38)"
+          stroke-width="1.5"
+          fill="none"
+          transform="rotate(-18 260 210)"
+          stroke-dasharray="7 5"
+        />
+
+        <!-- AI text -->
+        <text
+          x="260"
+          y="226"
+          text-anchor="middle"
+          font-size="44"
+          font-weight="900"
+          fill="#fff"
+          font-family="system-ui,-apple-system,sans-serif"
+          opacity="0.97"
+        >
+          AI
+        </text>
+
+        <!-- Tag: Healthcare (top) -->
+        <rect
+          x="188"
+          y="22"
+          width="144"
+          height="40"
+          rx="10"
+          fill="rgba(255,255,255,0.07)"
+          stroke="rgba(244,63,94,0.45)"
+          stroke-width="1.2"
+        />
+        <circle cx="210" cy="42" r="5.5" fill="#f43f5e" />
+        <text
+          x="224"
+          y="47"
+          font-size="12.5"
+          font-weight="700"
+          fill="#e2e8f0"
+          font-family="system-ui,-apple-system,sans-serif"
+        >
+          Healthcare
+        </text>
+
+        <!-- Tag: Retail & E-commerce (left) -->
+        <rect
+          x="-48"
+          y="146"
+          width="186"
+          height="40"
+          rx="10"
+          fill="rgba(255,255,255,0.07)"
+          stroke="rgba(59,130,246,0.45)"
+          stroke-width="1.2"
+        />
+        <circle cx="-28" cy="166" r="5.5" fill="#3b82f6" />
+        <text
+          x="-14"
+          y="171"
+          font-size="12.5"
+          font-weight="700"
+          fill="#e2e8f0"
+          font-family="system-ui,-apple-system,sans-serif"
+        >
+          Retail &amp; E-commerce
+        </text>
+
+        <!-- Tag: Finance (right) -->
+        <rect
+          x="356"
+          y="106"
+          width="118"
+          height="40"
+          rx="10"
+          fill="rgba(255,255,255,0.07)"
+          stroke="rgba(245,158,11,0.45)"
+          stroke-width="1.2"
+        />
+        <circle cx="376" cy="126" r="5.5" fill="#f59e0b" />
+        <text
+          x="390"
+          y="131"
+          font-size="12.5"
+          font-weight="700"
+          fill="#e2e8f0"
+          font-family="system-ui,-apple-system,sans-serif"
+        >
+          Finance
+        </text>
+
+        <!-- Tag: Education (bottom-left) -->
+        <rect
+          x="26"
+          y="320"
+          width="130"
+          height="40"
+          rx="10"
+          fill="rgba(255,255,255,0.07)"
+          stroke="rgba(139,92,246,0.45)"
+          stroke-width="1.2"
+        />
+        <circle cx="46" cy="340" r="5.5" fill="#8b5cf6" />
+        <text
+          x="60"
+          y="345"
+          font-size="12.5"
+          font-weight="700"
+          fill="#e2e8f0"
+          font-family="system-ui,-apple-system,sans-serif"
+        >
+          Education
+        </text>
+
+        <!-- Tag: Logistics (bottom-right) -->
+        <rect
+          x="346"
+          y="325"
+          width="128"
+          height="40"
+          rx="10"
+          fill="rgba(255,255,255,0.07)"
+          stroke="rgba(16,185,129,0.45)"
+          stroke-width="1.2"
+        />
+        <circle cx="366" cy="345" r="5.5" fill="#10b981" />
+        <text
+          x="380"
+          y="350"
+          font-size="12.5"
+          font-weight="700"
+          fill="#e2e8f0"
+          font-family="system-ui,-apple-system,sans-serif"
+        >
+          Logistics
+        </text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+   2. INDUSTRY CARDS
+══════════════════════════════════════ -->
+<section class="ind-light" id="industries">
+  <div class="ind-wrap">
+    <p class="ind-eyebrow">Industries We Serve</p>
+    <h2 class="ind-h2">AI Solutions Built for Your Industry</h2>
+    <div class="ind-divider"><span></span></div>
+
+    <div class="ind-slider-wrap">
+      <button
+        class="ind-arrow ind-arrow-prev"
+        id="indPrev"
+        aria-label="Previous"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+      </button>
+      <button class="ind-arrow ind-arrow-next" id="indNext" aria-label="Next">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+      </button>
+      <div class="ind-slider-track-outer">
+        <div class="ind-slider-track" id="indTrack">
+          <div class="ind-cards-grid">
+            <!-- Education -->
+            <div class="ind-card">
+              <div
+                class="ind-card-ico"
+                style="background: linear-gradient(135deg, #ede9fe, #ddd6fe)"
+              >
+                <svg
+                  viewBox="0 0 48 48"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M24 6L4 16l20 10 20-10L24 6z"
+                    fill="#7c3aed"
+                    opacity="0.9"
+                  />
+                  <path
+                    d="M4 16v12l20 10 20-10V16"
+                    stroke="#7c3aed"
+                    stroke-width="2.5"
+                    stroke-linejoin="round"
+                    fill="#a78bfa"
+                    opacity="0.5"
+                  />
+                  <rect
+                    x="18"
+                    y="28"
+                    width="12"
+                    height="10"
+                    rx="2"
+                    fill="#6d28d9"
+                  />
+                </svg>
+              </div>
+              <h3>Education</h3>
+              <p class="ind-section-label challenges">Challenges</p>
+              <ul class="ind-list challenges">
+                <li>Personalized learning at scale</li>
+                <li>Student engagement</li>
+                <li>Administrative workload</li>
+                <li>Performance tracking</li>
+              </ul>
+              <p class="ind-section-label solutions">AI Solutions</p>
+              <ul class="ind-list solutions">
+                <li>AI Learning Assistants</li>
+                <li>Personalized Learning Platforms</li>
+                <li>Automated Student Chatbots</li>
+                <li>Assignment Evaluation</li>
+                <li>Learning Analytics Dashboards</li>
+              </ul>
+              <p class="ind-section-label benefits">Benefits</p>
+              <ul class="ind-list benefits">
+                <li>Improved student outcomes</li>
+                <li>Reduced administrative effort</li>
+                <li>Better engagement</li>
+                <li>Smarter decision-making</li>
+              </ul>
+            </div>
+
+            <!-- Retail & E-commerce -->
+            <div class="ind-card">
+              <div
+                class="ind-card-ico"
+                style="background: linear-gradient(135deg, #dbeafe, #bfdbfe)"
+              >
+                <svg
+                  viewBox="0 0 48 48"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="18" cy="42" r="3" fill="#3b82f6" />
+                  <circle cx="36" cy="42" r="3" fill="#3b82f6" />
+                  <path
+                    d="M2 4h6l5 22h22l4-14H14"
+                    stroke="#3b82f6"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M14 10h24"
+                    stroke="#3b82f6"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    opacity="0.5"
+                  />
+                </svg>
+              </div>
+              <h3>Retail &amp; E-commerce</h3>
+              <p class="ind-section-label challenges">Challenges</p>
+              <ul class="ind-list challenges">
+                <li>Customer retention</li>
+                <li>Inventory management</li>
+                <li>Product recommendations</li>
+                <li>Demand forecasting</li>
+              </ul>
+              <p class="ind-section-label solutions">AI Solutions</p>
+              <ul class="ind-list solutions">
+                <li>AI Recommendation Engines</li>
+                <li>Customer Support Chatbots</li>
+                <li>Sales Forecasting</li>
+                <li>Inventory Optimization</li>
+                <li>Dynamic Pricing Solutions</li>
+              </ul>
+              <p class="ind-section-label benefits">Benefits</p>
+              <ul class="ind-list benefits">
+                <li>Increased sales</li>
+                <li>Better customer experience</li>
+                <li>Improved inventory planning</li>
+                <li>Higher operational efficiency</li>
+              </ul>
+            </div>
+
+            <!-- Healthcare -->
+            <div class="ind-card">
+              <div
+                class="ind-card-ico"
+                style="background: linear-gradient(135deg, #fee2e2, #fecaca)"
+              >
+                <svg
+                  viewBox="0 0 48 48"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M24 42s-18-9-18-22a12 12 0 0 1 18-10 12 12 0 0 1 18 10c0 13-18 22-18 22z"
+                    fill="#f43f5e"
+                    opacity="0.8"
+                  />
+                  <path
+                    d="M20 22h8M24 18v8"
+                    stroke="#fff"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </div>
+              <h3>Healthcare</h3>
+              <p class="ind-section-label challenges">Challenges</p>
+              <ul class="ind-list challenges">
+                <li>Patient management</li>
+                <li>Medical documentation</li>
+                <li>Appointment scheduling</li>
+                <li>Data analysis</li>
+              </ul>
+              <p class="ind-section-label solutions">AI Solutions</p>
+              <ul class="ind-list solutions">
+                <li>Virtual Health Assistants</li>
+                <li>Medical Document Processing</li>
+                <li>AI Appointment Scheduling</li>
+                <li>Predictive Healthcare Analytics</li>
+                <li>Clinical Decision Support</li>
+              </ul>
+              <p class="ind-section-label benefits">Benefits</p>
+              <ul class="ind-list benefits">
+                <li>Faster patient care</li>
+                <li>Reduced administrative tasks</li>
+                <li>Improved operational efficiency</li>
+                <li>Better patient experiences</li>
+              </ul>
+            </div>
+
+            <!-- Finance -->
+            <div class="ind-card">
+              <div
+                class="ind-card-ico"
+                style="background: linear-gradient(135deg, #fef3c7, #fde68a)"
+              >
+                <svg
+                  viewBox="0 0 48 48"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="24" cy="24" r="20" fill="#f59e0b" opacity="0.2" />
+                  <path
+                    d="M24 8v4M24 36v4M12 24H8M40 24h-4"
+                    stroke="#f59e0b"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M28 18H21a3 3 0 1 0 0 6h6a3 3 0 1 1 0 6H19"
+                    stroke="#d97706"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                  />
+                  <line
+                    x1="24"
+                    y1="14"
+                    x2="24"
+                    y2="34"
+                    stroke="#d97706"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </div>
+              <h3>Finance</h3>
+              <p class="ind-section-label challenges">Challenges</p>
+              <ul class="ind-list challenges">
+                <li>Fraud detection</li>
+                <li>Risk assessment</li>
+                <li>Customer service</li>
+                <li>Data compliance</li>
+              </ul>
+              <p class="ind-section-label solutions">AI Solutions</p>
+              <ul class="ind-list solutions">
+                <li>Fraud Detection Systems</li>
+                <li>AI Financial Assistants</li>
+                <li>Credit Risk Analysis</li>
+                <li>Automated Document Processing</li>
+                <li>Financial Forecasting</li>
+              </ul>
+              <p class="ind-section-label benefits">Benefits</p>
+              <ul class="ind-list benefits">
+                <li>Improved security</li>
+                <li>Faster decision-making</li>
+                <li>Enhanced customer service</li>
+                <li>Reduced operational costs</li>
+              </ul>
+            </div>
+
+            <!-- Logistics -->
+            <div class="ind-card">
+              <div
+                class="ind-card-ico"
+                style="background: linear-gradient(135deg, #d1fae5, #a7f3d0)"
+              >
+                <svg
+                  viewBox="0 0 48 48"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    x="2"
+                    y="14"
+                    width="28"
+                    height="20"
+                    rx="3"
+                    fill="#10b981"
+                    opacity="0.8"
+                  />
+                  <path d="M30 20h8l6 6v8h-14V20z" fill="#059669" />
+                  <circle cx="10" cy="38" r="4" fill="#065f46" />
+                  <circle cx="36" cy="38" r="4" fill="#065f46" />
+                  <circle cx="10" cy="38" r="2" fill="#d1fae5" />
+                  <circle cx="36" cy="38" r="2" fill="#d1fae5" />
+                </svg>
+              </div>
+              <h3>Logistics &amp; Supply Chain</h3>
+              <p class="ind-section-label challenges">Challenges</p>
+              <ul class="ind-list challenges">
+                <li>Route optimization</li>
+                <li>Inventory visibility</li>
+                <li>Delivery tracking</li>
+                <li>Warehouse management</li>
+              </ul>
+              <p class="ind-section-label solutions">AI Solutions</p>
+              <ul class="ind-list solutions">
+                <li>Predictive Demand Forecasting</li>
+                <li>Route Optimization</li>
+                <li>Warehouse Automation</li>
+                <li>Shipment Tracking</li>
+                <li>Inventory Management</li>
+              </ul>
+              <p class="ind-section-label benefits">Benefits</p>
+              <ul class="ind-list benefits">
+                <li>Lower transportation costs</li>
+                <li>Faster deliveries</li>
+                <li>Improved inventory control</li>
+                <li>Better supply chain visibility</li>
+              </ul>
+            </div>
+          </div>
+          <!-- /ind-cards-grid -->
+        </div>
+        <!-- /ind-slider-track -->
+      </div>
+      <!-- /ind-slider-track-outer -->
+      <div class="ind-dots" id="indDots"></div>
+    </div>
+    <!-- /ind-slider-wrap -->
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+   3. PROCESS
+══════════════════════════════════════ -->
+<section class="ind-light" style="padding-top: 0">
+  <div class="ind-wrap">
+    <p class="ind-eyebrow">Our Industry Expertise</p>
+    <h2 class="ind-h2">AI Expertise Meets Industry Knowledge</h2>
+    <div class="ind-divider"><span></span></div>
+    <p class="ind-sub">
+      We combine deep AI expertise with real-world industry understanding to
+      deliver practical, scalable, and business-focused solutions that create
+      measurable value.
+    </p>
+
+    <div class="ind-process-wrap">
+      <div class="ind-process-line"></div>
+      <div class="ind-process-grid">
+        <div class="ind-step">
+          <div class="ind-step-circle">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </div>
+          <h3>Understand Industry Needs</h3>
+        </div>
+
+        <div class="ind-step">
+          <div class="ind-step-circle">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="20" x2="18" y2="10" />
+              <line x1="12" y1="20" x2="12" y2="4" />
+              <line x1="6" y1="20" x2="6" y2="14" />
+            </svg>
+          </div>
+          <h3>Analyze Challenges</h3>
+        </div>
+
+        <div class="ind-step">
+          <div class="ind-step-circle">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="2" y="3" width="20" height="14" rx="2" />
+              <path d="M8 21h8M12 17v4" />
+            </svg>
+          </div>
+          <h3>Design Custom AI Solution</h3>
+        </div>
+
+        <div class="ind-step">
+          <div class="ind-step-circle">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+              />
+              <path
+                d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+              />
+            </svg>
+          </div>
+          <h3>Integrate With Your Systems</h3>
+        </div>
+
+        <div class="ind-step">
+          <div class="ind-step-circle">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+            </svg>
+          </div>
+          <h3>Deploy &amp; Optimize</h3>
+        </div>
+
+        <div class="ind-step">
+          <div class="ind-step-circle">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="20" x2="18" y2="10" />
+              <line x1="12" y1="20" x2="12" y2="4" />
+              <line x1="6" y1="20" x2="6" y2="14" />
+              <polyline points="4 17 8 13 12 17 16 11 20 14" />
+            </svg>
+          </div>
+          <h3>Measure &amp; Improve</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+   4. WHY US
+══════════════════════════════════════ -->
+<section class="ind-dark">
+  <div class="ind-wrap">
+    <p class="ind-eyebrow" style="color: #a78bfa">
+      Why Businesses Choose ProjectsHub
+    </p>
+    <h2 class="ind-h2">Your Partner for AI-Powered Growth</h2>
+    <div class="ind-why-grid">
+      <div class="ind-why-card">
+        <div class="ind-why-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+        </div>
+        <h3>Industry Expertise</h3>
+        <p>Deep understanding of industry challenges and opportunities.</p>
+      </div>
+      <div class="ind-why-card">
+        <div class="ind-why-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+            />
+          </svg>
+        </div>
+        <h3>Custom Solutions</h3>
+        <p>Tailored AI solutions built for your unique business needs.</p>
+      </div>
+      <div class="ind-why-card">
+        <div class="ind-why-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+        </div>
+        <h3>Scalable &amp; Secure</h3>
+        <p>Enterprise-grade architecture that grows with your business.</p>
+      </div>
+      <div class="ind-why-card">
+        <div class="ind-why-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg>
+        </div>
+        <h3>End-To-End Support</h3>
+        <p>From strategy to implementation and ongoing optimization.</p>
+      </div>
+      <div class="ind-why-card">
+        <div class="ind-why-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+            />
+            <path
+              d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+            />
+          </svg>
+        </div>
+        <h3>Seamless Integration</h3>
+        <p>Works perfectly with your existing tools and workflows.</p>
+      </div>
+      <div class="ind-why-card">
+        <div class="ind-why-ico">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
+        </div>
+        <h3>Ongoing Support</h3>
+        <p>
+          Continuous monitoring and technical support for long-term success.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+   5. STATS
+══════════════════════════════════════ -->
+<section class="ind-stats">
+  <div class="ind-stats-inner">
+    <div>
+      <p class="ind-stats-label">Success Stories</p>
+      <h2>Real Results. Real Impact.</h2>
+      <p class="ind-stats-desc">
+        We help businesses streamline operations, improve customer engagement,
+        and unlock new growth opportunities with AI.
+      </p>
+      <div class="ind-stats-nums">
+        <div class="ind-stat-item">
+          <span class="ind-stat-num">150+</span>
+          <span class="ind-stat-label">Projects Delivered</span>
+        </div>
+        <div class="ind-stat-item">
+          <span class="ind-stat-num">98%</span>
+          <span class="ind-stat-label">Client Satisfaction</span>
+        </div>
+        <div class="ind-stat-item">
+          <span class="ind-stat-num">40%</span>
+          <span class="ind-stat-label">Average Efficiency Gain</span>
+        </div>
+        <div class="ind-stat-item">
+          <span class="ind-stat-num">3x</span>
+          <span class="ind-stat-label">Faster Time to Value</span>
+        </div>
+      </div>
+      <div style="margin-top: 1.8rem">
+        <a href="/case-studies/" class="ind-btn-primary">
+          Explore Case Studies
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div class="ind-chart-side">
+      <img
+        src="{% static 'image/industries graph.jpg' %}"
+        alt="Growth Chart"
+        loading="lazy"
+      />
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+   6. FAQ
+══════════════════════════════════════ -->
+<section class="ind-light">
+  <div class="ind-wrap">
+    <p class="ind-eyebrow">Frequently Asked Questions</p>
+    <h2 class="ind-h2">Everything You Need to Know</h2>
+    <div class="ind-divider"><span></span></div>
+
+    <div class="ind-faq-grid">
+      <div class="ind-faq-col">
+        <div class="ind-faq-item">
+          <button class="ind-faq-btn">
+            Which industries can benefit from AI?
+            <div class="ind-faq-plus">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+          </button>
+          <div class="ind-faq-ans">
+            Almost every industry benefits — Healthcare, Education, Finance,
+            Retail, Logistics, Manufacturing, Real Estate, and more. AI helps
+            automate, optimize, and grow any business.
+          </div>
+        </div>
+        <div class="ind-faq-item">
+          <button class="ind-faq-btn">
+            Do you build custom AI solutions for specific industries?
+            <div class="ind-faq-plus">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+          </button>
+          <div class="ind-faq-ans">
+            Yes. We specialize in building industry-specific AI solutions
+            tailored to your unique challenges, workflows, and business goals.
+          </div>
+        </div>
+        <div class="ind-faq-item">
+          <button class="ind-faq-btn">
+            Can AI integrate with our existing systems?
+            <div class="ind-faq-plus">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+          </button>
+          <div class="ind-faq-ans">
+            Absolutely. We integrate AI seamlessly with your existing CRMs,
+            ERPs, databases, and tools using secure APIs and custom connectors.
+          </div>
+        </div>
+        <div class="ind-faq-item">
+          <button class="ind-faq-btn">
+            How do I know if AI is right for my business?
+            <div class="ind-faq-plus">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+          </button>
+          <div class="ind-faq-ans">
+            Book a free consultation. We assess your processes, data
+            availability, and goals to determine where AI can create the most
+            impact for your business.
+          </div>
+        </div>
+        <div class="ind-faq-item">
+          <button class="ind-faq-btn">
+            Do you provide support after implementation?
+            <div class="ind-faq-plus">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+          </button>
+          <div class="ind-faq-ans">
+            Yes. We provide ongoing monitoring, optimization, and technical
+            support to ensure your AI solution continues to deliver value long
+            after launch.
+          </div>
+        </div>
+      </div>
+
+      <div class="ind-faq-col">
+        <div class="ind-faq-item">
+          <button class="ind-faq-btn">
+            Which industries can benefit from AI?
+            <div class="ind-faq-plus">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+          </button>
+          <div class="ind-faq-ans">
+            Healthcare, Education, Finance, Retail, Logistics, Manufacturing,
+            Real Estate, and SaaS companies all see significant ROI from
+            well-implemented AI solutions.
+          </div>
+        </div>
+        <div class="ind-faq-item">
+          <button class="ind-faq-btn">
+            Do you build custom AI solutions for specific industries?
+            <div class="ind-faq-plus">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+          </button>
+          <div class="ind-faq-ans">
+            Yes. Every solution we build is customized to the specific needs,
+            compliance requirements, and workflows of your industry.
+          </div>
+        </div>
+        <div class="ind-faq-item">
+          <button class="ind-faq-btn">
+            Can AI integrate with our existing systems?
+            <div class="ind-faq-plus">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+          </button>
+          <div class="ind-faq-ans">
+            Yes — we support integration with over 50+ tools including
+            Salesforce, SAP, HubSpot, and cloud platforms like AWS, Azure, and
+            Google Cloud.
+          </div>
+        </div>
+        <div class="ind-faq-item">
+          <button class="ind-faq-btn">
+            How do I know if AI is right for my business?
+            <div class="ind-faq-plus">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+          </button>
+          <div class="ind-faq-ans">
+            If you have repetitive processes, large volumes of data, or
+            customer-facing operations — AI can likely help. Our free
+            consultation will clarify the best opportunities.
+          </div>
+        </div>
+        <div class="ind-faq-item">
+          <button class="ind-faq-btn">
+            Do you provide support after implementation?
+            <div class="ind-faq-plus">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+          </button>
+          <div class="ind-faq-ans">
+            We offer retainer support packages that include monitoring,
+            performance tuning, feature updates, and priority technical
+            assistance.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+   7. CTA
+══════════════════════════════════════ -->
+<section class="ind-cta">
+  <div class="ind-cta-inner">
+    <div>
+      <h2>Transform Your Industry with AI</h2>
+      <p>
+        AI can help you work smarter, automate repetitive tasks, improve
+        customer experiences, and drive sustainable growth.
+      </p>
+    </div>
+    <div class="ind-cta-btns">
+      <a href="/#contact" class="ind-btn-white">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+        Book Free Consultation
+      </a>
+      <a href="/#contact" class="ind-btn-ghost">
+        Let's Discuss Your Project
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endblock %} {% block extra_js %}
+<script>
+  (function () {
+    /* FAQ */
+    document.querySelectorAll(".ind-faq-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var item = this.closest(".ind-faq-item");
+        var isOpen = item.classList.contains("open");
+        document.querySelectorAll(".ind-faq-item.open").forEach(function (el) {
+          el.classList.remove("open");
+        });
+        if (!isOpen) item.classList.add("open");
+      });
+    });
+
+    /* Industry Cards Slider */
+    var track = document.getElementById("indTrack");
+    var prev = document.getElementById("indPrev");
+    var next = document.getElementById("indNext");
+    var dotsWrap = document.getElementById("indDots");
+    if (!track) return;
+
+    var cards = track.querySelectorAll(".ind-card");
+    var total = cards.length;
+    var current = 0;
+
+    function visibleCount() {
+      var w = track.parentElement.offsetWidth;
+      if (w < 600) return 1;
+      if (w < 1000) return 2;
+      return 3;
+    }
+
+    function maxIndex() {
+      return Math.max(0, total - visibleCount());
+    }
+
+    function cardWidth() {
+      var vc = visibleCount();
+      var gap = 19.2; /* 1.2rem at 16px base */
+      return (track.parentElement.offsetWidth - gap * (vc - 1)) / vc;
+    }
+
+    /* Build dots */
+    function buildDots() {
+      dotsWrap.innerHTML = "";
+      var steps = maxIndex() + 1;
+      for (var i = 0; i < steps; i++) {
+        var d = document.createElement("button");
+        d.className = "ind-dot" + (i === current ? " active" : "");
+        d.setAttribute("data-i", i);
+        d.addEventListener("click", function () {
+          goTo(+this.getAttribute("data-i"));
+        });
+        dotsWrap.appendChild(d);
+      }
+    }
+
+    function goTo(idx) {
+      current = Math.max(0, Math.min(idx, maxIndex()));
+      var offset = current * (cardWidth() + 19.2);
+      track.style.transform = "translateX(-" + offset + "px)";
+      prev.disabled = current === 0;
+      next.disabled = current >= maxIndex();
+      dotsWrap.querySelectorAll(".ind-dot").forEach(function (d, i) {
+        d.classList.toggle("active", i === current);
+      });
+    }
+
+    /* Set card widths dynamically */
+    function resizeCards() {
+      var cw = cardWidth();
+      cards.forEach(function (c) {
+        c.style.flex = "0 0 " + cw + "px";
+      });
+      buildDots();
+      goTo(Math.min(current, maxIndex()));
+    }
+
+    resizeCards();
+    window.addEventListener("resize", resizeCards);
+
+    prev.addEventListener("click", function () {
+      goTo(current - 1);
+    });
+    next.addEventListener("click", function () {
+      goTo(current + 1);
+    });
+  })();
+</script>
+{% endblock %}

@@ -1,0 +1,573 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Custom AI Development Services | AI Solutions for Businesses{% endblock %}
+{% block meta_description %}Build custom AI solutions for your business with our AI development services. We develop intelligent applications, automate workflows, and create scalable AI systems tailored to your needs.{% endblock %}
+{% block canonical %}https://projectshub.co.in/services/ai-development/{% endblock %}
+{% block nav_how_we_help %}active{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/ai_development.css' %}?v=5">
+{% endblock %}
+
+
+{% block content %}
+
+<!-- ══════════════════════════════════════
+   1. HERO
+══════════════════════════════════════ -->
+<section class="aip-hero">
+  <div class="aip-hero-inner">
+
+    <!-- LEFT -->
+    <div class="aip-hero-left">
+      <span class="aip-hero-label">Custom AI Development Services</span>
+      <h1>Build Intelligent AI Solutions<br><span class="grad-text">That Drive Business Growth</span></h1>
+      <p class="aip-hero-desc">
+        We design and develop custom AI solutions that solve real business challenges.
+        From automating workflows to creating intelligent applications, we help
+        businesses innovate and grow with AI.
+      </p>
+      <div class="aip-hero-btns">
+        <a href="/#contact" class="aip-btn-primary">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          Book Your Free AI Consultation
+        </a>
+        <a href="/projects/" class="aip-btn-outline">
+          Explore Services
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- RIGHT: AI Brain image -->
+    <div class="aip-hero-right">
+      <div class="aip-hero-glow-ring"></div>
+      <div class="aip-hero-img">
+        <img
+          src="{% static 'image/ai-development-hero.webp' %}"
+          alt="AI Development — Custom AI Solutions"
+          width="560" height="373" loading="eager" decoding="async"
+        />
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+   2. SERVICES — light
+══════════════════════════════════════ -->
+<section class="aip-light">
+  <div class="aip-wrap">
+    <p class="aip-eyebrow">Services We Offer</p>
+    <h2 class="aip-h2">Our AI Development Services</h2>
+    <p class="aip-sub">End-to-end AI solutions to help businesses adopt AI with confidence.</p>
+
+    <div class="aip-svc-grid">
+
+      <div class="aip-svc-card">
+        <div class="aip-svc-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/><line x1="8" y1="10" x2="8.01" y2="10"/><polyline points="11 10 13 10 11 14 13 14"/></svg>
+        </div>
+        <h3>Custom AI Applications</h3>
+        <p>Build intelligent software tailored to your business processes, workflows, and customer needs.</p>
+      </div>
+
+      <div class="aip-svc-card">
+        <div class="aip-svc-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z"/><path d="M19 14l.7 2.1 2.1.7-2.1.7L19 19.5l-.7-2.1-2.1-.7 2.1-.7z"/><path d="M5 18l.4 1.2 1.2.4-1.2.4L5 21.2l-.4-1.2-1.2-.4 1.2-.4z"/></svg>
+        </div>
+        <h3>Generative AI Solutions</h3>
+        <p>Develop AI-powered assistants, content generation tools, document processing systems, and knowledge management platforms using modern LLMs.</p>
+      </div>
+
+      <div class="aip-svc-card">
+        <div class="aip-svc-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 2a10 10 0 0 1 10 10"/><path d="M12 12l8.5 4.5M12 12l-5 8M12 12V2"/></svg>
+        </div>
+        <h3>Machine Learning Solutions</h3>
+        <p>Leverage predictive analytics, recommendation engines, forecasting models, and intelligent decision-making systems powered by machine learning.</p>
+      </div>
+
+      <div class="aip-svc-card">
+        <div class="aip-svc-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12m0 0V2m0 10H2m10 0h10"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <h3>AI Workflow Automation</h3>
+        <p>Automate repetitive business processes, reduce manual effort, improve operational efficiency, and increase productivity.</p>
+      </div>
+
+      <div class="aip-svc-card">
+        <div class="aip-svc-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        </div>
+        <h3>AI Integration</h3>
+        <p>Seamlessly integrate AI into your existing CRM, ERP, websites, mobile apps, and enterprise software.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+   3. AI APPS — dark
+══════════════════════════════════════ -->
+<section class="aip-dark">
+  <div class="aip-wrap">
+    <p class="aip-eyebrow">Solutions We Develop</p>
+    <h2 class="aip-h2">AI Applications We Build</h2>
+    <p class="aip-sub">Our team develops AI solutions for a wide range of business needs, including:</p>
+
+    <div class="aip-apps-grid">
+      <div class="aip-app-card">
+        <div class="aip-app-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><circle cx="12" cy="11" r="1"/><circle cx="8" cy="11" r="1"/><circle cx="16" cy="11" r="1"/></svg>
+        </div>
+        <span>AI Chatbots</span>
+      </div>
+      <div class="aip-app-card">
+        <div class="aip-app-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M8.5 11.5L12 14l3.5-2.5"/></svg>
+        </div>
+        <span>Virtual Assistants</span>
+      </div>
+      <div class="aip-app-card">
+        <div class="aip-app-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="9 15 11 17 15 13"/></svg>
+        </div>
+        <span>Document Processing</span>
+      </div>
+      <div class="aip-app-card">
+        <div class="aip-app-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><polyline points="3 8 9 2 15 8 21 2"/></svg>
+        </div>
+        <span>Predictive Analytics</span>
+      </div>
+      <div class="aip-app-card">
+        <div class="aip-app-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <span>Recommendation Systems</span>
+      </div>
+      <div class="aip-app-card">
+        <div class="aip-app-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M12 5c-3.87 0-7 2.69-7 6s3.13 6 7 6 7-2.69 7-6-3.13-6-7-6z"/><circle cx="12" cy="12" r="8"/></svg>
+        </div>
+        <span>Computer Vision Applications</span>
+      </div>
+      <div class="aip-app-card">
+        <div class="aip-app-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="13" y2="14"/></svg>
+        </div>
+        <span>Natural Language Processing (NLP)</span>
+      </div>
+      <div class="aip-app-card">
+        <div class="aip-app-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><path d="M11 8l1.5 3H9.5L11 14"/></svg>
+        </div>
+        <span>AI Search Solutions</span>
+      </div>
+      <div class="aip-app-card">
+        <div class="aip-app-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+        </div>
+        <span>Workflow Automation</span>
+      </div>
+      <div class="aip-app-card">
+        <div class="aip-app-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/><line x1="12" y1="15" x2="15" y2="15"/><line x1="12" y1="18" x2="14" y2="18"/></svg>
+        </div>
+        <span>Business Intelligence Dashboards</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+   4. TECH STACK — light
+══════════════════════════════════════ -->
+<section class="aip-light">
+  <div class="aip-wrap">
+    <p class="aip-eyebrow">Powered by Modern Technologies</p>
+    <h2 class="aip-h2">Technologies We Use</h2>
+    <p class="aip-sub">We build scalable, secure, and high-performing AI applications using industry-leading technologies.</p>
+
+    <div class="aip-tech-grid">
+
+      <div class="aip-tech-card">
+        <div class="aip-tech-logo-box" style="background:#000;">
+          <img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/openai.svg" alt="OpenAI" width="28" height="28" style="filter:brightness(0) invert(1);" />
+        </div>
+        <span>OpenAI</span>
+      </div>
+
+      <div class="aip-tech-card">
+        <div class="aip-tech-logo-box" style="background:#D97757;">
+          <img src="https://cdn.simpleicons.org/claude/ffffff" alt="Claude" width="28" height="28" />
+        </div>
+        <span>Claude</span>
+      </div>
+
+      <div class="aip-tech-card">
+        <div class="aip-tech-logo-box" style="background:#fff;">
+          <img src="{% static 'image/Tech/gemini.webp' %}" alt="Gemini" style="width:52px;height:52px;object-fit:cover;" />
+        </div>
+        <span>Gemini</span>
+      </div>
+
+      <div class="aip-tech-card">
+        <div class="aip-tech-logo-box" style="background:#fff;">
+          <img src="{% static 'image/Tech/python.webp' %}" alt="Python" style="width:52px;height:52px;object-fit:cover;" />
+        </div>
+        <span>Python</span>
+      </div>
+
+      <div class="aip-tech-card">
+        <div class="aip-tech-logo-box" style="background:#FF6F00;">
+          <img src="https://cdn.simpleicons.org/tensorflow/ffffff" alt="TensorFlow" width="28" height="28" />
+        </div>
+        <span>TensorFlow</span>
+      </div>
+
+      <div class="aip-tech-card">
+        <div class="aip-tech-logo-box" style="background:#EE4C2C;">
+          <img src="https://cdn.simpleicons.org/pytorch/ffffff" alt="PyTorch" width="28" height="28" />
+        </div>
+        <span>PyTorch</span>
+      </div>
+
+      <div class="aip-tech-card">
+        <div class="aip-tech-logo-box" style="background:#1C3C3C;">
+          <img src="https://cdn.simpleicons.org/langchain/ffffff" alt="LangChain" width="28" height="28" />
+        </div>
+        <span>LangChain</span>
+      </div>
+
+      <div class="aip-tech-card">
+        <div class="aip-tech-logo-box" style="background:#fff;">
+          <img src="{% static 'image/Tech/LlamaIndex.webp' %}" alt="LlamaIndex" style="width:52px;height:52px;object-fit:cover;" />
+        </div>
+        <span>LlamaIndex</span>
+      </div>
+
+      <div class="aip-tech-card">
+        <div class="aip-tech-logo-box" style="background:#fff;">
+          <img src="{% static 'image/Tech/pincone.webp' %}" alt="Pinecone" style="width:52px;height:52px;object-fit:cover;" />
+        </div>
+        <span>Pinecone</span>
+      </div>
+
+      <div class="aip-tech-card">
+        <div class="aip-tech-logo-box" style="background:#0057B7;">
+          <img src="https://cdn.simpleicons.org/meta/ffffff" alt="FAISS" width="28" height="28" />
+        </div>
+        <span>FAISS</span>
+      </div>
+
+      <div class="aip-tech-card">
+        <div class="aip-tech-logo-box" style="background:#009688;">
+          <img src="https://cdn.simpleicons.org/fastapi/ffffff" alt="FastAPI" width="28" height="28" />
+        </div>
+        <span>FastAPI</span>
+      </div>
+
+      <div class="aip-tech-card">
+        <div class="aip-tech-logo-box" style="background:#2496ED;">
+          <img src="https://cdn.simpleicons.org/docker/ffffff" alt="Docker" width="28" height="28" />
+        </div>
+        <span>Docker</span>
+      </div>
+
+      <div class="aip-tech-card">
+        <div class="aip-tech-logo-box" style="background:#fff;">
+          <img src="{% static 'image/Tech/aws.webp' %}" alt="AWS" style="width:52px;height:52px;object-fit:cover;" />
+        </div>
+        <span>AWS</span>
+      </div>
+
+      <div class="aip-tech-card">
+        <div class="aip-tech-logo-box" style="background:#fff;">
+          <img src="{% static 'image/Tech/azure.webp' %}" alt="Azure" style="width:52px;height:52px;object-fit:cover;" />
+        </div>
+        <span>Azure</span>
+      </div>
+
+      <div class="aip-tech-card">
+        <div class="aip-tech-logo-box" style="background:#fff;">
+          <img src="{% static 'image/Tech/GoogleCloudpng.webp' %}" alt="Google Cloud" style="width:52px;height:52px;object-fit:cover;" />
+        </div>
+        <span>Google Cloud</span>
+      </div>
+
+    </div>
+
+    <p class="aip-tech-note">Our technology stack enables us to build scalable, secure, and high-performing AI applications for businesses of all sizes.</p>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+   5. PROCESS — dark, horizontal timeline
+══════════════════════════════════════ -->
+<section class="aip-dark">
+  <div class="aip-wrap">
+    <p class="aip-eyebrow">Our Process</p>
+    <h2 class="aip-h2">Our AI Development Process</h2>
+    <p class="aip-sub">A structured approach to deliver reliable and effective AI solutions.</p>
+
+    <div class="aip-proc-row">
+      <div class="aip-proc-step">
+        <div class="aip-proc-ring"><div class="aip-proc-inner">01</div></div>
+        <h3>Discovery</h3>
+        <p>We understand your business objectives, workflows, and project requirements.</p>
+      </div>
+      <div class="aip-proc-step">
+        <div class="aip-proc-ring"><div class="aip-proc-inner">02</div></div>
+        <h3>Strategy</h3>
+        <p>Our experts identify the best AI technologies and implementation roadmap.</p>
+      </div>
+      <div class="aip-proc-step">
+        <div class="aip-proc-ring"><div class="aip-proc-inner">03</div></div>
+        <h3>Development</h3>
+        <p>We design, build, and train AI models tailored to your business.</p>
+      </div>
+      <div class="aip-proc-step">
+        <div class="aip-proc-ring"><div class="aip-proc-inner">04</div></div>
+        <h3>Testing</h3>
+        <p>Every solution undergoes rigorous performance, security, and quality testing.</p>
+      </div>
+      <div class="aip-proc-step">
+        <div class="aip-proc-ring"><div class="aip-proc-inner">05</div></div>
+        <h3>Deployment</h3>
+        <p>We deploy AI applications into your existing environment with minimal disruption.</p>
+      </div>
+      <div class="aip-proc-step">
+        <div class="aip-proc-ring"><div class="aip-proc-inner">06</div></div>
+        <h3>Support &amp; Optimization</h3>
+        <p>We provide continuous monitoring, updates, and improvements for long-term success.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+   6. INDUSTRIES + WHY US — light
+══════════════════════════════════════ -->
+<section class="aip-light">
+  <div class="aip-wrap">
+    <div class="aip-ind-why">
+
+      <!-- Industries -->
+      <div>
+        <p class="aip-eyebrow" style="text-align:left;">Industries</p>
+        <h3 class="aip-col-title">Industries We Serve</h3>
+        <p class="aip-col-sub">Our AI solutions support organizations across multiple industries.</p>
+        <div class="aip-ind-grid">
+          <div class="aip-ind-card">
+            <span class="aip-ind-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#e05a77" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </span>Healthcare
+          </div>
+          <div class="aip-ind-card">
+            <span class="aip-ind-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#5b8af5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            </span>Retail &amp; eCommerce
+          </div>
+          <div class="aip-ind-card">
+            <span class="aip-ind-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            </span>Education
+          </div>
+          <div class="aip-ind-card">
+            <span class="aip-ind-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </span>Finance
+          </div>
+          <div class="aip-ind-card">
+            <span class="aip-ind-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            </span>Logistics
+          </div>
+          <div class="aip-ind-card">
+            <span class="aip-ind-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20M4 20V10l8-6 8 6v10M10 20v-6h4v6"/><path d="M9 10h.01M15 10h.01"/></svg>
+            </span>Manufacturing
+          </div>
+          <div class="aip-ind-card">
+            <span class="aip-ind-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </span>Real Estate
+          </div>
+          <div class="aip-ind-card">
+            <span class="aip-ind-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+            </span>SaaS
+          </div>
+          <div class="aip-ind-card" style="grid-column:1/-1; max-width:calc(25% - 0.64rem);">
+            <span class="aip-ind-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+            </span>Professional Services
+          </div>
+        </div>
+      </div>
+
+      <!-- Why Us -->
+      <div>
+        <p class="aip-eyebrow" style="text-align:left;">Why Us?</p>
+        <h3 class="aip-col-title">Why Choose ProjectsHub?</h3>
+        <div class="aip-why-wrap">
+          <div class="aip-why-list">
+            <div class="aip-why-row">
+              <div class="aip-why-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              Experienced AI developers and consultants
+            </div>
+            <div class="aip-why-row">
+              <div class="aip-why-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              Custom solutions tailored to your business
+            </div>
+            <div class="aip-why-row">
+              <div class="aip-why-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              Modern AI and machine learning expertise
+            </div>
+            <div class="aip-why-row">
+              <div class="aip-why-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              Secure and scalable architecture
+            </div>
+            <div class="aip-why-row">
+              <div class="aip-why-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              Transparent development process
+            </div>
+            <div class="aip-why-row">
+              <div class="aip-why-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              Ongoing technical support
+            </div>
+            <div class="aip-why-row">
+              <div class="aip-why-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              Focus on measurable business outcomes
+            </div>
+          </div>
+          <div class="aip-why-side">
+            <img src="{% static 'image/projectshub-ai-developer-workspace.webp' %}" alt="Why Choose ProjectsHub for AI Development" loading="lazy" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+   7. FAQ — light
+══════════════════════════════════════ -->
+<section class="aip-light" style="padding-top:0;">
+  <div class="aip-wrap">
+    <p class="aip-eyebrow">FAQ</p>
+    <h2 class="aip-h2">Frequently Asked Questions</h2>
+    <p class="aip-sub">Find answers to common questions about our AI development services.</p>
+
+    <div class="aip-faq-layout">
+      <div class="aip-faq-grid">
+
+        <div class="aip-faq-item">
+          <button class="aip-faq-btn" aria-expanded="false">
+            How long does AI development take?
+            <div class="aip-faq-plus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+          </button>
+          <div class="aip-faq-ans">Project timelines vary depending on complexity, integrations, and business requirements. Most projects range from a few weeks to several months.</div>
+        </div>
+
+        <div class="aip-faq-item">
+          <button class="aip-faq-btn" aria-expanded="false">
+            Do you provide post-launch support?
+            <div class="aip-faq-plus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+          </button>
+          <div class="aip-faq-ans">Yes. We offer maintenance, monitoring, optimization, and feature enhancements after deployment.</div>
+        </div>
+
+        <div class="aip-faq-item">
+          <button class="aip-faq-btn" aria-expanded="false">
+            Can AI integrate with our existing software?
+            <div class="aip-faq-plus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+          </button>
+          <div class="aip-faq-ans">Yes. We integrate AI with CRMs, ERPs, websites, mobile apps, and third-party platforms.</div>
+        </div>
+
+        <div class="aip-faq-item">
+          <button class="aip-faq-btn" aria-expanded="false">
+            Do you build custom AI applications?
+            <div class="aip-faq-plus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+          </button>
+          <div class="aip-faq-ans">Absolutely. Every solution is designed around your business goals and operational needs.</div>
+        </div>
+
+      </div>
+
+      <!-- Side decoration -->
+      <div class="aip-faq-deco">
+        <img src="{% static 'image/AI_Brain-removebg-preview.webp' %}" alt="AI Development FAQ" class="aip-faq-deco-img" loading="lazy" decoding="async" />
+        <a href="/#contact" class="aip-btn-primary" style="font-size:0.82rem; padding:0.6rem 1.3rem;">Ask Us Anything</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+   8. CTA — gradient
+══════════════════════════════════════ -->
+<section class="aip-cta">
+  <div class="aip-cta-inner">
+    <div class="aip-cta-left">
+      <div class="aip-cta-pill">
+        <span class="aip-cta-pill-dot"></span>
+        <span>Enterprise &amp; Custom AI Solutions</span>
+      </div>
+      <h2 class="aip-cta-title" style="color: #ffffff !important;">Ready to Build Your <span class="aip-cta-accent">AI Solution?</span></h2>
+      <p class="aip-cta-desc" style="color: rgba(226, 232, 240, 0.92) !important;">Whether you're exploring AI for the first time or looking to scale your existing capabilities, our engineers and architects are here to guide you. Let's discuss your business goals and deliver measurable results.</p>
+      <div class="aip-cta-trust">
+        <span class="aip-cta-trust-item">
+          <svg class="aip-cta-trust-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg>
+          Free Discovery Session
+        </span>
+        <span class="aip-cta-trust-item">
+          <svg class="aip-cta-trust-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg>
+          100% NDA Protected
+        </span>
+        <span class="aip-cta-trust-item">
+          <svg class="aip-cta-trust-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg>
+          24h Response Guarantee
+        </span>
+      </div>
+    </div>
+    <div class="aip-cta-right">
+      <a href="/#contact" class="aip-btn-white">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        Book Your Free AI Consultation
+      </a>
+      <span class="aip-cta-subtext">No commitment required • Direct consultation with senior AI engineers</span>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+  (function () {
+    document.querySelectorAll('.aip-faq-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var item = btn.closest('.aip-faq-item');
+        var isOpen = item.classList.toggle('open');
+        btn.setAttribute('aria-expanded', isOpen);
+      });
+    });
+  })();
+</script>
+{% endblock %}

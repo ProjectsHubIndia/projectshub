@@ -1,0 +1,654 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Privacy Policy — ProjectsHub{% endblock %}
+
+{% block meta_description %}Read ProjectsHub's Privacy Policy to understand how we collect, use, and protect your personal information when you use our AI tools and services.{% endblock %}
+
+{% block meta_keywords %}ProjectsHub privacy policy, data protection, personal information, cookies policy, ProjectsHub legal{% endblock %}
+
+{% block canonical %}https://projectshub.co.in/privacy/{% endblock %}
+
+{% block og_title %}Privacy Policy — ProjectsHub{% endblock %}
+{% block og_description %}How ProjectsHub collects, uses, and protects your personal data.{% endblock %}
+{% block og_url %}https://projectshub.co.in/privacy/{% endblock %}
+
+{% block schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Privacy Policy",
+  "url": "https://projectshub.co.in/privacy/",
+  "description": "Privacy Policy for ProjectsHub AI tools and services.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "ProjectsHub",
+    "url": "https://projectshub.co.in/"
+  }
+}
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .legal-page {
+        position: relative;
+        z-index: 1;
+        padding: 120px 0 80px;
+        min-height: 100vh;
+    }
+
+    .legal-container {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 0 24px;
+    }
+
+    .legal-hero {
+        text-align: center;
+        margin-bottom: 56px;
+    }
+
+    .legal-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(99, 102, 241, 0.1);
+        border: 1px solid rgba(99, 102, 241, 0.25);
+        border-radius: 999px;
+        padding: 6px 16px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #6366f1;
+        margin-bottom: 20px;
+    }
+
+    .legal-badge__dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #6366f1;
+        animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
+    }
+
+    .legal-title {
+        font-family: 'Lexend Deca', sans-serif;
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 800;
+        line-height: 1.15;
+        margin-bottom: 16px;
+        color: #f0f0ff;
+    }
+
+    body.light .legal-title { color: #1a1a2e; }
+
+    .legal-title__gradient {
+        background: linear-gradient(135deg, #6366f1, #4f8ef7);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .legal-meta {
+        font-size: 13px;
+        color: rgba(255,255,255,0.45);
+        font-family: 'Figtree', sans-serif;
+    }
+
+    body.light .legal-meta { color: rgba(26,26,46,0.5); }
+
+    .legal-toc {
+        background: rgba(99, 102, 241, 0.06);
+        border: 1px solid rgba(99, 102, 241, 0.18);
+        border-radius: 16px;
+        padding: 24px 28px;
+        margin-bottom: 48px;
+    }
+
+    body.light .legal-toc {
+        background: rgba(99, 102, 241, 0.05);
+        border-color: rgba(99, 102, 241, 0.2);
+    }
+
+    .legal-toc__title {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #6366f1;
+        margin-bottom: 14px;
+        font-family: 'Lexend Deca', sans-serif;
+    }
+
+    .legal-toc__list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    @media (max-width: 991px) {
+        .legal-toc {
+            padding: 16px 20px;
+        }
+        .legal-toc__list {
+            flex-direction: row;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding-bottom: 4px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .legal-toc__list::-webkit-scrollbar {
+            display: none;
+        }
+        .legal-toc__item {
+            flex-shrink: 0;
+            padding-right: 16px;
+        }
+    }
+
+    .legal-toc__item a {
+        font-size: 13px;
+        color: rgba(255,255,255,0.6);
+        text-decoration: none;
+        font-family: 'Figtree', sans-serif;
+        transition: color 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    body.light .legal-toc__item a { color: rgba(26,26,46,0.6); }
+    .legal-toc__item a:hover { color: #6366f1; text-decoration: none; }
+
+    .legal-toc__item a::before {
+        content: '';
+        display: inline-block;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: #6366f1;
+        flex-shrink: 0;
+        opacity: 0.5;
+    }
+
+    .legal-toc__item a:hover::before { opacity: 1; }
+
+    .legal-card {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 20px;
+        padding: 48px 52px;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+
+    body.light .legal-card {
+        background: rgba(255,255,255,0.8);
+        border-color: rgba(0,0,0,0.07);
+        box-shadow: 0 4px 40px rgba(0,0,0,0.06);
+    }
+
+    @media (max-width: 640px) { .legal-card { padding: 32px 24px; } }
+
+    /* Layout updates for sidebar */
+    .legal-content-wrapper {
+        display: grid;
+        gap: 40px;
+        align-items: start;
+    }
+    
+    .legal-sidebar, .legal-main {
+        min-width: 0; /* Prevent grid blowout from horizontal scroll */
+    }
+    
+    @media (min-width: 992px) {
+        .legal-content-wrapper {
+            grid-template-columns: 260px 1fr;
+            gap: 60px;
+        }
+        .legal-sidebar {
+            position: sticky;
+            top: 100px;
+        }
+        .legal-toc {
+            margin-bottom: 0;
+        }
+    }
+
+    .legal-section {
+        margin-bottom: 44px;
+        padding-bottom: 44px;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    body.light .legal-section { border-bottom-color: rgba(0,0,0,0.07); }
+
+    .legal-section:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    .legal-section__number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: rgba(99, 102, 241, 0.15);
+        color: #6366f1;
+        font-size: 11px;
+        font-weight: 800;
+        font-family: 'Lexend Deca', sans-serif;
+        flex-shrink: 0;
+    }
+
+    .legal-section__heading {
+        font-family: 'Lexend Deca', sans-serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #f0f0ff;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        scroll-margin-top: 100px;
+    }
+
+    body.light .legal-section__heading { color: #1a1a2e; }
+
+    .legal-section p,
+    .legal-section li {
+        font-family: 'Figtree', sans-serif;
+        font-size: 14.5px;
+        line-height: 1.8;
+        color: rgba(255,255,255,0.65);
+        margin-bottom: 10px;
+    }
+
+    body.light .legal-section p,
+    body.light .legal-section li { color: rgba(26,26,46,0.7); }
+
+    .legal-section ul {
+        padding-left: 20px;
+        margin-bottom: 12px;
+    }
+
+    .legal-section ul li { list-style: disc; }
+
+    .legal-section strong {
+        color: rgba(255,255,255,0.9);
+        font-weight: 600;
+    }
+
+    body.light .legal-section strong { color: #1a1a2e; }
+
+    /* highlight pill list — for "how we use" bullets */
+    .legal-pill-list {
+        list-style: none;
+        padding: 0;
+        margin: 14px 0 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .legal-pill-list li {
+        position: relative;
+        padding-left: 18px;
+        display: block;
+        font-family: 'Figtree', sans-serif;
+        font-size: 14.5px;
+        line-height: 1.7;
+        color: rgba(255,255,255,0.65);
+        list-style: none !important;
+    }
+
+    body.light .legal-pill-list li { color: rgba(26,26,46,0.7); }
+
+    .legal-pill-list li::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 8px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #6366f1;
+    }
+
+    /* info block */
+    .legal-info {
+        background: rgba(79, 142, 247, 0.07);
+        border: 1px solid rgba(79, 142, 247, 0.2);
+        border-radius: 12px;
+        padding: 18px 20px;
+        margin: 18px 0;
+    }
+
+    .legal-info p {
+        color: rgba(79, 142, 247, 0.9) !important;
+        font-size: 13.5px !important;
+        margin: 0 !important;
+    }
+
+    /* rights grid */
+    .legal-rights-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 16px;
+    }
+
+    @media (max-width: 540px) { .legal-rights-grid { grid-template-columns: 1fr; } }
+
+    .legal-right-item {
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 12px;
+        padding: 14px 16px;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    body.light .legal-right-item {
+        background: rgba(0,0,0,0.02);
+        border-color: rgba(0,0,0,0.07);
+    }
+
+    .legal-right-item__icon {
+        font-size: 16px;
+        flex-shrink: 0;
+        margin-top: 1px;
+    }
+
+    .legal-right-item__text {
+        font-family: 'Figtree', sans-serif;
+        font-size: 13.5px;
+        line-height: 1.6;
+        color: rgba(255,255,255,0.65);
+    }
+
+    body.light .legal-right-item__text { color: rgba(26,26,46,0.7); }
+
+    /* contact grid */
+    .legal-contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 16px;
+    }
+
+    @media (max-width: 480px) { .legal-contact-grid { grid-template-columns: 1fr; } }
+
+    .legal-contact-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 12px;
+        padding: 14px 16px;
+        text-decoration: none;
+        transition: background 0.2s;
+    }
+
+    body.light .legal-contact-item {
+        background: rgba(0,0,0,0.03);
+        border-color: rgba(0,0,0,0.08);
+    }
+
+    .legal-contact-item:hover { background: rgba(99,102,241,0.08); text-decoration: none; }
+
+    .legal-contact-item__icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: rgba(99,102,241,0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 16px;
+    }
+
+    .legal-contact-item__label {
+        font-size: 11px;
+        color: rgba(255,255,255,0.4);
+        font-family: 'Figtree', sans-serif;
+        display: block;
+        margin-bottom: 2px;
+    }
+
+    body.light .legal-contact-item__label { color: rgba(26,26,46,0.45); }
+
+    .legal-contact-item__value {
+        font-size: 13px;
+        font-weight: 600;
+        color: rgba(255,255,255,0.85);
+        font-family: 'Figtree', sans-serif;
+        display: block;
+    }
+
+    body.light .legal-contact-item__value { color: #1a1a2e; }
+
+    .legal-back-top {
+        text-align: center;
+        margin-top: 40px;
+    }
+
+    .legal-back-top a {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #6366f1;
+        text-decoration: none;
+        font-family: 'Figtree', sans-serif;
+        transition: gap 0.2s;
+    }
+
+    .legal-back-top a:hover { gap: 10px; text-decoration: none; }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="legal-page aurora-section">
+    <div class="legal-container">
+
+        <!-- Hero -->
+        <div class="legal-hero">
+            <div class="legal-badge">
+                <span class="legal-badge__dot"></span>
+                Legal
+            </div>
+            <h1 class="legal-title">
+                Privacy <span class="legal-title__gradient">Policy</span>
+            </h1>
+            <p class="legal-meta">Last Updated: November 17, 2024</p>
+        </div>
+
+        <div class="legal-content-wrapper">
+            <!-- TOC Sidebar -->
+            <div class="legal-sidebar">
+                <div class="legal-toc">
+                    <p class="legal-toc__title">On this page</p>
+                    <ol class="legal-toc__list">
+                        <li class="legal-toc__item"><a href="#introduction">Introduction</a></li>
+                        <li class="legal-toc__item"><a href="#information">Information We Collect</a></li>
+                        <li class="legal-toc__item"><a href="#use">How We Use Your Information</a></li>
+                        <li class="legal-toc__item"><a href="#protection">How We Protect Your Data</a></li>
+                        <li class="legal-toc__item"><a href="#sharing">Sharing Your Information</a></li>
+                        <li class="legal-toc__item"><a href="#cookies">Cookies &amp; Tracking</a></li>
+                        <li class="legal-toc__item"><a href="#rights">Your Rights</a></li>
+                        <li class="legal-toc__item"><a href="#changes">Changes to This Policy</a></li>
+                        <li class="legal-toc__item"><a href="#contact">Contact Us</a></li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Content Card -->
+            <div class="legal-main">
+                <div class="legal-card">
+
+            <!-- 1 -->
+            <div class="legal-section" id="introduction">
+                <h2 class="legal-section__heading">
+                    <span class="legal-section__number">1</span>
+                    Introduction
+                </h2>
+                <p>Welcome to ProjectsHub, operated by ProjectsHub. We are committed to protecting your privacy and ensuring that your personal information is handled safely and responsibly. This Privacy Policy outlines how we collect, use, and protect your data when you access our website, tools, or services.</p>
+            </div>
+
+            <!-- 2 -->
+            <div class="legal-section" id="information">
+                <h2 class="legal-section__heading">
+                    <span class="legal-section__number">2</span>
+                    Information We Collect
+                </h2>
+                <p>We may collect the following types of information:</p>
+                <ul class="legal-pill-list">
+                    <li><strong>Personal Information</strong> — Name, email address, payment details, and any other information you provide during registration or purchase.</li>
+                    <li><strong>Usage Data</strong> — Information about how you use our website, including IP address, browser type, pages visited, and time spent on the site.</li>
+                    <li><strong>Cookies</strong> — Data collected through cookies to enhance your browsing experience (see Section 6).</li>
+                </ul>
+            </div>
+
+            <!-- 3 -->
+            <div class="legal-section" id="use">
+                <h2 class="legal-section__heading">
+                    <span class="legal-section__number">3</span>
+                    How We Use Your Information
+                </h2>
+                <p>We use the information we collect for the following purposes:</p>
+                <ul class="legal-pill-list">
+                    <li>To provide and improve our projects, tools, and services.</li>
+                    <li>To process payments and manage purchases.</li>
+                    <li>To send you updates, newsletters, and promotional materials (you can opt-out at any time).</li>
+                    <li>To monitor website usage and improve user experience.</li>
+                    <li>To ensure compliance with our Terms and Conditions.</li>
+                </ul>
+            </div>
+
+            <!-- 4 -->
+            <div class="legal-section" id="protection">
+                <h2 class="legal-section__heading">
+                    <span class="legal-section__number">4</span>
+                    How We Protect Your Data
+                </h2>
+                <p>We implement appropriate technical and organizational measures to protect your personal information from unauthorized access, alteration, or disclosure. These include secure servers, encrypted payment processing, and regular security assessments.</p>
+                <div class="legal-info">
+                    <p>🔒 All payment transactions are processed through trusted, PCI-compliant payment gateways. We never store your full card details on our servers.</p>
+                </div>
+            </div>
+
+            <!-- 5 -->
+            <div class="legal-section" id="sharing">
+                <h2 class="legal-section__heading">
+                    <span class="legal-section__number">5</span>
+                    Sharing Your Information
+                </h2>
+                <p>We do not sell, rent, or trade your personal information. However, we may share your data with trusted third parties for the following purposes:</p>
+                <ul class="legal-pill-list">
+                    <li>Payment processors to facilitate transactions.</li>
+                    <li>Service providers to help us deliver and improve our website.</li>
+                    <li>Legal authorities if required to comply with applicable laws or regulations.</li>
+                </ul>
+            </div>
+
+            <!-- 6 -->
+            <div class="legal-section" id="cookies">
+                <h2 class="legal-section__heading">
+                    <span class="legal-section__number">6</span>
+                    Cookies &amp; Tracking
+                </h2>
+                <p>We use cookies to improve your experience on our website. These cookies help us track your preferences, analyze website performance, and deliver personalized content. You can manage your cookie preferences in your browser settings at any time.</p>
+            </div>
+
+            <!-- 7 -->
+            <div class="legal-section" id="rights">
+                <h2 class="legal-section__heading">
+                    <span class="legal-section__number">7</span>
+                    Your Rights
+                </h2>
+                <p>You have the following rights regarding your personal data:</p>
+                <div class="legal-rights-grid">
+                    <div class="legal-right-item">
+                        <span class="legal-right-item__icon">👁️</span>
+                        <span class="legal-right-item__text">Access your personal data and information on how it is used.</span>
+                    </div>
+                    <div class="legal-right-item">
+                        <span class="legal-right-item__icon">✏️</span>
+                        <span class="legal-right-item__text">Request correction of any inaccuracies in your personal data.</span>
+                    </div>
+                    <div class="legal-right-item">
+                        <span class="legal-right-item__icon">🗑️</span>
+                        <span class="legal-right-item__text">Request deletion of your personal data, subject to legal obligations.</span>
+                    </div>
+                    <div class="legal-right-item">
+                        <span class="legal-right-item__icon">🔕</span>
+                        <span class="legal-right-item__text">Opt-out of receiving promotional communications at any time.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8 -->
+            <div class="legal-section" id="changes">
+                <h2 class="legal-section__heading">
+                    <span class="legal-section__number">8</span>
+                    Changes to This Privacy Policy
+                </h2>
+                <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with the updated date. Please review this page periodically to stay informed about how we are protecting your information.</p>
+            </div>
+
+            <!-- 9 -->
+            <div class="legal-section" id="contact">
+                <h2 class="legal-section__heading">
+                    <span class="legal-section__number">9</span>
+                    Contact Us
+                </h2>
+                <p>If you have any questions or concerns about this Privacy Policy, feel free to reach out:</p>
+                <div class="legal-contact-grid">
+                    <a href="mailto:support@projectshub.co.in" class="legal-contact-item">
+                        <div class="legal-contact-item__icon">📧</div>
+                        <div>
+                            <span class="legal-contact-item__label">Email</span>
+                            <span class="legal-contact-item__value">support@projectshub.co.in</span>
+                        </div>
+                    </a>
+                    <a href="https://wa.me/919213472954" target="_blank" rel="noopener noreferrer" class="legal-contact-item">
+                        <div class="legal-contact-item__icon">💬</div>
+                        <div>
+                            <span class="legal-contact-item__label">WhatsApp</span>
+                            <span class="legal-contact-item__value">+91 9213472954</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        </div><!-- /.legal-card -->
+        </div><!-- /.legal-main -->
+        </div><!-- /.legal-content-wrapper -->
+
+        <div class="legal-back-top">
+            <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑ Back to top</a>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

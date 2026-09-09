@@ -1,0 +1,700 @@
+{% load static %}
+<!doctype html>
+<html lang="en" class="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}{{ seo.meta_title|default:'ProjectsHub — AI Solutions' }}{% endblock %}</title>
+  <meta name="description"
+    content="{% block meta_description %}{{ seo.meta_description|default:'ProjectsHub — AI-powered solutions for modern businesses. Machine Learning, APIs, and Data Science.' }}{% endblock %}" />
+  <meta name="keywords"
+    content="{% block meta_keywords %}AI tools, machine learning projects, Django, FastAPI, ProjectsHub{% endblock %}" />
+  <meta name="robots"
+    content="{% block robots %}{{ seo.robots|default:'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' }}{% endblock %}" />
+
+  <!-- CSRF token for JS fetch calls -->
+  <meta name="csrf-token" content="{{ csrf_token }}" />
+
+  <!-- Canonical -->
+  <link rel="canonical" href="{% block canonical %}{{ seo.canonical_url|default:'https://projectshub.co.in/' }}{% endblock %}" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="{% block og_type %}{{ seo.og_type|default:'website' }}{% endblock %}" />
+  <meta property="og:title"
+    content="{% block og_title %}{{ seo.og_title|default:seo.meta_title|default:'ProjectsHub — Free AI Tools & Real-World Projects' }}{% endblock %}" />
+  <meta property="og:description"
+    content="{% block og_description %}{{ seo.og_description|default:seo.meta_description|default:'Explore 50+ AI & ML projects and free tools built for students and businesses.' }}{% endblock %}" />
+  <meta property="og:image" content="{% block og_image %}{{ seo.og_image|default:'https://projectshub.co.in/static/image/favicon_io/og-image.png' }}{% endblock %}" />
+  <meta property="og:url" content="{% block og_url %}{{ seo.canonical_url|default:'https://projectshub.co.in/' }}{% endblock %}" />
+  <meta property="og:site_name" content="ProjectsHub" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="{% block twitter_card %}summary_large_image{% endblock %}" />
+  <meta name="twitter:title"
+    content="{% block twitter_title %}{{ seo.og_title|default:seo.meta_title|default:'ProjectsHub — Free AI Tools & Real-World Projects' }}{% endblock %}" />
+  <meta name="twitter:description"
+    content="{% block twitter_description %}{{ seo.og_description|default:seo.meta_description|default:'Explore 50+ AI & ML projects and free tools built for students and businesses.' }}{% endblock %}" />
+  <meta name="twitter:image"
+    content="{% block twitter_image %}{{ seo.og_image|default:'https://projectshub.co.in/static/image/favicon_io/og-image.png' }}{% endblock %}" />
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'image/Favicon-new/favicon-32x32.png' %}?v=7" />
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'image/Favicon-new/favicon-16x16.png' %}?v=7" />
+  <link rel="shortcut icon" href="{% static 'image/Favicon-new/favicon.ico' %}?v=7" />
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'image/Favicon-new/apple-touch-icon.png' %}?v=7" />
+  <link rel="manifest" href="{% static 'image/Favicon-new/site.webmanifest' %}?v=7" />
+
+  <!-- Schema.org Automated JSON-LD -->
+  {% block schema %}
+    {% if seo.schema_json %}
+      {{ seo.schema_json|safe }}
+    {% else %}
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "ProjectsHub",
+        "url": "https://projectshub.co.in/",
+        "logo": "https://projectshub.co.in/static/image/favicon_io/logo.png",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+91-9213472954",
+          "contactType": "customer support",
+          "availableLanguage": ["English", "Hindi"]
+        },
+        "sameAs": [
+          "https://github.com/ProjectsHub",
+          "https://linkedin.com/company/projectshub",
+          "https://instagram.com/projectshub.ai"
+        ]
+      }
+      </script>
+    {% endif %}
+  {% endblock %}
+
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@300..900&family=Lexend+Deca:wght@100..900&family=Outfit:wght@300..800&display=swap" />
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+
+  <!-- Bundled & Minified Core Stylesheet -->
+  <link rel="stylesheet" href="{% static 'css/bundle.min.css' %}?v=24" />
+
+  <!-- AI Chatbot Stylesheet -->
+  <link rel="stylesheet" href="{% static 'css/ai-chatbot.css' %}?v=4" />
+
+  <!-- Modern Design System & Accessible Tokens -->
+  <link rel="stylesheet" href="{% static 'css/modern-design-system.css' %}?v=18" />
+
+  <script>
+    (function() {
+      try {
+        /* ProjectsHub Pure Light Theme (Standard Default) */
+        localStorage.removeItem('ph-theme-v3');
+        localStorage.removeItem('ph-theme');
+        localStorage.setItem('ph-theme', 'light');
+        document.documentElement.classList.add('light');
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- Per-page extra CSS -->
+  {% block extra_css %}{% endblock %}
+
+  <!-- Without JS the scroll-reveal observers never run; keep all content visible -->
+  <noscript>
+    <style>
+      .project-card, .pricing-card, .day-card, .feature-item, .tech-pill,
+      .stat-value, .contact-reveal, .reveal, .audience-card, .testimonial-card {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      img[loading="lazy"] { opacity: 1 !important; }
+    </style>
+  </noscript>
+
+  <!-- Graceful fallback for images that fail to load (e.g. dead icon CDN) -->
+  <script>
+    window.addEventListener("error", function (e) {
+      var img = e.target;
+      if (!img || img.tagName !== "IMG" || img.dataset.imgFailed) return;
+      var src = img.getAttribute("src") || "";
+      // Empty src = placeholder populated later by JS; not a broken asset
+      if (!src.trim()) return;
+      img.dataset.imgFailed = "1";
+      if (src.indexOf("cdn.simpleicons.org") !== -1) {
+        var chip = document.createElement("span");
+        chip.className = "icon-chip-fallback";
+        chip.textContent = (img.getAttribute("alt") || "Tool").trim();
+        img.replaceWith(chip);
+      } else {
+        img.classList.add("img-failed");
+      }
+    }, true);
+  </script>
+</head>
+
+<body class="light overflow-x-hidden bg-purple-left">
+  <!-- Skip to main content (accessibility) -->
+  <a href="#main-content-wrapper" class="skip-to-content">Skip to main content</a>
+
+  <!-- Scroll progress bar -->
+  <div class="scroll-progress-bar" id="scrollProgressBar" aria-hidden="true"></div>
+  <!-- Cursor glow -->
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+  <!-- Cursor particle trail -->
+  <canvas id="cursorParticles" aria-hidden="true"></canvas>
+
+  <!-- ── Global aurora background ── -->
+  <div class="aurora-section" style="position: fixed; inset: 0; z-index: 0; pointer-events: none"></div>
+
+  <!-- ── Fixed center logo watermark ── -->
+  <div class="bg-logo-watermark" aria-hidden="true">
+    <img src="{% static 'image/TREE LOGO ONLY/LOGO ONLY/ProjectsHub Logo SVG.svg' %}" alt="" width="300" height="384" />
+  </div>
+
+  <!-- Dynamic Accessible Navbar -->
+  {% include "components/navbar.html" %}
+
+  <!-- ── Call Dropdown Backdrop ── -->
+  <div class="call-backdrop" id="callBackdrop"></div>
+
+  <!-- ── Page Content ── -->
+  <main id="main-content-wrapper" style="position: relative; z-index: 2; flex: 1 0 auto; width: 100%;">
+    {% block content %}{% endblock %}
+    {% include 'core/topic_detail.html' %}
+  </main>
+
+  <!-- Dynamic Accessible Footer -->
+  {% include "components/footer.html" %}
+
+  <!-- ── Back to Top ── -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
+    </svg>
+  </button>
+
+  <!-- ── Share Your Idea Modal (per-page) ── -->
+  {% block idea_modal %}{% endblock %}
+
+  <!-- ── Scripts ── -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+  <script src="{% static 'js/quantum-pulse-loader.js' %}" defer></script>
+  <script src="{% static 'js/ai-chatbot.js' %}?v=3" defer></script>
+  <script src="{% static 'js/social-share.js' %}" defer></script>
+  <script src="{% static 'js/script.js' %}?v=3" defer></script>
+  <script src="{% static 'js/idea-modal.js' %}" defer></script>
+  <script>
+    // Book a Free Call dropdown toggle
+    (function () {
+      const btn = document.getElementById("bookCallBtn");
+      const dropdown = document.getElementById("callDropdown");
+      const backdrop = document.getElementById("callBackdrop");
+      const wrap = document.getElementById("callCtaWrap");
+
+      function open() {
+        dropdown.classList.add("open");
+        backdrop.classList.add("active");
+        btn.setAttribute("aria-expanded", "true");
+        dropdown.setAttribute("aria-hidden", "false");
+      }
+
+      function close() {
+        dropdown.classList.remove("open");
+        backdrop.classList.remove("active");
+        btn.setAttribute("aria-expanded", "false");
+        dropdown.setAttribute("aria-hidden", "true");
+      }
+
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        dropdown.classList.contains("open") ? close() : open();
+      });
+
+      backdrop.addEventListener("click", close);
+
+      // Close when clicking anywhere outside the dropdown / button (works on all screen sizes)
+      document.addEventListener("click", function (e) {
+        if (!dropdown.classList.contains("open")) return;
+        if (wrap.contains(e.target)) return; // click was inside the CTA wrap (button or dropdown)
+        close();
+      });
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") close();
+      });
+    })();
+  </script>
+  <!-- Mobile nav accordion -->
+  <script>
+    (function () {
+      document.querySelectorAll(".mob-btn--expand").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var item = btn.closest(".mob-item");
+          var isOpen = item.classList.toggle("is-open");
+          btn.setAttribute("aria-expanded", isOpen);
+        });
+      });
+    })();
+  </script>
+
+  <!-- Dropdown active link highlight based on current URL -->
+  <script>
+    (function () {
+      var path = window.location.pathname.replace(/\/$/, '') || '/';
+      document.querySelectorAll('.mega-menu-list li a').forEach(function (a) {
+        var href = a.getAttribute('href');
+        if (!href || href === '#' || href.startsWith('#') || href.startsWith('http')) return;
+        var linkPath = href.replace(/\/$/, '') || '/';
+        if (path === linkPath || (linkPath !== '/' && path.startsWith(linkPath))) {
+          a.classList.add('active');
+          // Also mark the parent nav-link (dropdown trigger) as active
+          var parentDropdown = a.closest('.nav-item-dropdown');
+          if (parentDropdown) {
+            var trigger = parentDropdown.querySelector('.nav-link');
+            if (trigger && !trigger.classList.contains('active')) {
+              trigger.classList.add('active');
+            }
+          }
+        }
+      });
+    })();
+  </script>
+
+  <!-- Per-page extra JS -->
+  {% block extra_js %}{% endblock %}
+
+  <script>
+    const topicData = {
+      "1-on-1-mentorship": {
+        title: "1-on-1 Mentorship Sessions",
+        icon: "",
+        image: "{% static 'image/mentoring.jpg' %}",
+        content: `
+        <p style="font-size: 1.2rem; margin-bottom: 1.5rem;">Fast-track your career in Tech and AI with personalized, 1-on-1 mentorship from industry experts who have been there and done that.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+          <div class="topic-detail-card-item" style="padding: 1.5rem; border-radius: 12px;">
+            <h3 style="color: var(--blue-500); margin-bottom: 0.5rem; font-size: 1.2rem;">🎯 Tailored Roadmaps</h3>
+            <p style="margin: 0; font-size: 1rem;">Stop guessing. Get a step-by-step career roadmap tailored to your specific goals and timeline.</p>
+          </div>
+          <div class="topic-detail-card-item" style="padding: 1.5rem; border-radius: 12px;">
+            <h3 style="color: var(--blue-500); margin-bottom: 0.5rem; font-size: 1.2rem;">🎤 Mock Interviews</h3>
+            <p style="margin: 0; font-size: 1rem;">Practice technical and behavioral rounds with actual engineering managers to eliminate interview anxiety.</p>
+          </div>
+          <div class="topic-detail-card-item" style="padding: 1.5rem; border-radius: 12px;">
+            <h3 style="color: var(--blue-500); margin-bottom: 0.5rem; font-size: 1.2rem;">🧠 Deep-Dive Sessions</h3>
+            <p style="margin: 0; font-size: 1rem;">Stuck on a machine learning concept? We'll break down complex algorithms and code together.</p>
+          </div>
+          <div class="topic-detail-card-item" style="padding: 1.5rem; border-radius: 12px;">
+            <h3 style="color: var(--blue-500); margin-bottom: 0.5rem; font-size: 1.2rem;">💼 Portfolio Building</h3>
+            <p style="margin: 0; font-size: 1rem;">Build projects that recruiters actually care about. We'll guide you on architecture and code quality.</p>
+          </div>
+        </div>
+        <p>Whether you're a student looking to land your first tech job, or a professional aiming to pivot into Machine Learning, our mentors provide the actionable insights and accountability you need to succeed.</p>
+      `,
+      },
+      "resume-review": {
+        title: "Career Support & Review",
+        icon: "",
+        image: "{% static 'image/careersupport.jpg' %}",
+        content: `
+        <p style="font-size: 1.2rem; margin-bottom: 1.5rem;">Your resume is your first impression. Make it count with our expert Career Support & Review services tailored specifically for tech roles.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+          <div class="topic-detail-card-item" style="padding: 1.5rem; border-radius: 12px;">
+            <h3 style="color: var(--blue-500); margin-bottom: 0.5rem; font-size: 1.2rem;">📝 ATS-Friendly Formatting</h3>
+            <p style="margin: 0; font-size: 1rem;">Beat the automated filters. We optimize your resume structure to ensure it reaches human eyes.</p>
+          </div>
+          <div class="topic-detail-card-item" style="padding: 1.5rem; border-radius: 12px;">
+            <h3 style="color: var(--blue-500); margin-bottom: 0.5rem; font-size: 1.2rem;">🚀 Impact-Driven Bullet Points</h3>
+            <p style="margin: 0; font-size: 1rem;">Transform passive descriptions into powerful, quantifiable achievements using the XYZ formula.</p>
+          </div>
+          <div class="topic-detail-card-item" style="padding: 1.5rem; border-radius: 12px;">
+            <h3 style="color: var(--blue-500); margin-bottom: 0.5rem; font-size: 1.2rem;">💻 GitHub Profile Optimization</h3>
+            <p style="margin: 0; font-size: 1rem;">Turn your GitHub into an impressive portfolio with tailored READMEs and pinned repositories.</p>
+          </div>
+          <div class="topic-detail-card-item" style="padding: 1.5rem; border-radius: 12px;">
+            <h3 style="color: var(--blue-500); margin-bottom: 0.5rem; font-size: 1.2rem;">🌐 LinkedIn Makeover</h3>
+            <p style="margin: 0; font-size: 1rem;">Optimize your LinkedIn profile to attract inbound opportunities from tech recruiters.</p>
+          </div>
+        </div>
+        <p>We don't just fix typos. We help you frame your projects, experiences, and skills in a way that engineering managers are actively looking for.</p>
+      `,
+      },
+    };
+
+    let originalActiveLinkId = null;
+    let isTopicDetailOpen = false;
+
+    function openTopicDetail(e, topicId) {
+      if (e) e.preventDefault();
+      const data = topicData[topicId];
+      if (data) {
+        // Track original active link
+        if (!isTopicDetailOpen) {
+          const currentActive = document.querySelector(".nav-link.active");
+          if (currentActive && currentActive.id !== "nav-how-we-help") {
+            originalActiveLinkId = currentActive.id;
+          }
+        }
+        isTopicDetailOpen = true;
+
+        // Highlight "How We Help"
+        document
+          .querySelectorAll(".nav-link")
+          .forEach((link) => link.classList.remove("active"));
+        const howWeHelpLink = document.getElementById("nav-how-we-help");
+        if (howWeHelpLink) howWeHelpLink.classList.add("active");
+
+        // Highlight clicked dropdown item
+        document.querySelectorAll(".mega-menu-list a").forEach((item) => {
+          item.style.color = "";
+          item.style.fontWeight = "";
+        });
+        if (e && e.currentTarget) {
+          e.currentTarget.style.color = "var(--blue-500)";
+          e.currentTarget.style.fontWeight = "700";
+        }
+
+        // Trigger pill slider update
+        window.dispatchEvent(new Event("updateNavPill"));
+
+        if (data.image) {
+          document.getElementById("topic-image-container").style.display =
+            "block";
+          document.getElementById("topic-image").src = data.image;
+        } else {
+          document.getElementById("topic-image-container").style.display =
+            "none";
+        }
+
+        if (data.icon) {
+          document.getElementById("topic-icon").style.display = "block";
+          document.getElementById("topic-icon").innerHTML = data.icon;
+        } else {
+          document.getElementById("topic-icon").style.display = "none";
+        }
+
+        document.getElementById("topic-title").innerText = data.title;
+        document.getElementById("topic-content").innerHTML = data.content;
+        document.getElementById("topic-breadcrumb-current").innerText =
+          data.title;
+
+        document.getElementById("main-content-wrapper").style.display =
+          "none";
+        document.getElementById("topic-detail-view").style.display = "block";
+        window.scrollTo(0, 0);
+
+        // Close mobile menu if open
+        const mobileNav = document.getElementById("mobileNav");
+        if (mobileNav && mobileNav.classList.contains("open")) {
+          mobileNav.classList.remove("open");
+          document.body.style.overflow = "auto";
+        }
+      }
+    }
+
+    function closeTopicDetail(e) {
+      if (e) e.preventDefault();
+      document.getElementById("topic-detail-view").style.display = "none";
+      document.getElementById("main-content-wrapper").style.display = "block";
+
+      isTopicDetailOpen = false;
+
+      // Remove mega menu highlights
+      document.querySelectorAll(".mega-menu-list a").forEach((item) => {
+        item.style.color = "";
+        item.style.fontWeight = "";
+      });
+
+      // Restore original active nav link
+      document
+        .querySelectorAll(".nav-link")
+        .forEach((link) => link.classList.remove("active"));
+      if (originalActiveLinkId) {
+        const original = document.getElementById(originalActiveLinkId);
+        if (original) original.classList.add("active");
+      }
+
+      // Trigger pill slider update
+      window.dispatchEvent(new Event("updateNavPill"));
+    }
+
+    function goToContact(e) {
+      if (e) e.preventDefault();
+      closeTopicDetail();
+      window.location.hash = "contact";
+    }
+  </script>
+
+
+  <!-- ── Cursor particle trail ── -->
+  <script>
+    (function () {
+      if (!window.matchMedia("(hover: hover)").matches) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var canvas = document.getElementById("cursorParticles");
+      if (!canvas) return;
+      var ctx = canvas.getContext("2d");
+      var pool = [];
+      var COLORS = ["99,102,241", "139,92,246", "34,211,238", "167,139,250"];
+      var MAX = 120;
+      var ticking = false;
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener("resize", resize, { passive: true });
+
+      function startTick() {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(tick);
+        }
+      }
+
+      document.addEventListener(
+        "mousemove",
+        function (e) {
+          if (pool.length >= MAX) return;
+          /* spawn 1–2 particles per event */
+          var count = Math.random() > 0.4 ? 2 : 1;
+          for (var i = 0; i < count; i++) {
+            pool.push({
+              x: e.clientX + (Math.random() - 0.5) * 6,
+              y: e.clientY + (Math.random() - 0.5) * 6,
+              r: Math.random() * 2.8 + 0.8,
+              alpha: 0.85 + Math.random() * 0.15,
+              vx: (Math.random() - 0.5) * 1.2,
+              vy: (Math.random() - 0.5) * 1.2 - 0.4,
+              decay: 0.03 + Math.random() * 0.025,
+              color: COLORS[Math.floor(Math.random() * COLORS.length)],
+            });
+          }
+          startTick();
+        },
+        { passive: true },
+      );
+
+      function tick() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (var i = pool.length - 1; i >= 0; i--) {
+          var p = pool[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.04; /* slight gravity */
+          p.alpha -= p.decay;
+          p.r *= 0.97;
+
+          if (p.alpha <= 0 || p.r < 0.15) {
+            pool.splice(i, 1);
+            continue;
+          }
+
+          /* glow: soft outer ring */
+          var grad = ctx.createRadialGradient(
+            p.x,
+            p.y,
+            0,
+            p.x,
+            p.y,
+            p.r * 2.5,
+          );
+          grad.addColorStop(
+            0,
+            "rgba(" + p.color + "," + p.alpha.toFixed(3) + ")",
+          );
+          grad.addColorStop(1, "rgba(" + p.color + ",0)");
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * 2.5, 0, Math.PI * 2);
+          ctx.fillStyle = grad;
+          ctx.fill();
+
+          /* solid core */
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle =
+            "rgba(" +
+            p.color +
+            "," +
+            Math.min(p.alpha * 1.3, 1).toFixed(3) +
+            ")";
+          ctx.fill();
+        }
+        if (pool.length > 0) {
+          requestAnimationFrame(tick);
+        } else {
+          ticking = false;
+        }
+      }
+
+      /* Pause when tab is hidden to save CPU */
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden) { ticking = false; }
+        else if (pool.length > 0) { startTick(); }
+      });
+    })();
+  </script>
+
+  <!-- ── Cursor glow + Scroll progress + Navbar blur + Active nav ── -->
+  <script>
+    (function () {
+      var glow = document.getElementById("cursorGlow");
+      var bar = document.getElementById("scrollProgressBar");
+      var navbar = document.getElementById("navbar");
+
+      /* ── Cursor glow ── */
+      if (glow && window.matchMedia("(hover: hover)").matches) {
+        document.addEventListener(
+          "mousemove",
+          function (e) {
+            glow.style.left = e.clientX + "px";
+            glow.style.top = e.clientY + "px";
+          },
+          { passive: true },
+        );
+      }
+
+      /* ── Scroll progress + Navbar blur ── */
+      function onScroll() {
+        var scrolled = window.scrollY || window.pageYOffset;
+        var docH = document.documentElement.scrollHeight - window.innerHeight;
+        if (bar) {
+          var pct = docH > 0 ? scrolled / docH : 0;
+          bar.style.transform = "scaleX(" + pct + ")";
+        }
+        if (navbar)
+          navbar.classList.toggle("scrolled", scrolled > 80);
+      }
+
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+
+      /* ── Scroll-based active nav highlight ── */
+      document.addEventListener("DOMContentLoaded", function () {
+        /* sections → nav href mapping */
+        var map = [
+          { id: "about", href: "/#about" },
+          { id: "why-projectshub", href: "/#why-projectshub" },
+          { id: "contact", href: "/#contact" },
+        ];
+
+        var allNavLinks = document.querySelectorAll(".nav-link");
+
+        /* build list of { el, link } pairs that exist on this page */
+        var pairs = [];
+        map.forEach(function (m) {
+          var el = document.getElementById(m.id);
+          var link = document.querySelector(
+            '.nav-link[href="' + m.href + '"]',
+          );
+          if (el && link) pairs.push({ el: el, link: link });
+        });
+
+        if (!pairs.length) return;
+
+        var lastActive = null;
+        var OFFSET = 130; /* navbar height + buffer */
+
+        function cacheSectionTops() {
+          var scrollY = window.scrollY || window.pageYOffset;
+          pairs.forEach(function (p) {
+            p.top = p.el.getBoundingClientRect().top + scrollY;
+          });
+        }
+
+        /* Initial cache calculation */
+        cacheSectionTops();
+
+        /* Recalculate on resize or when page fully loads */
+        window.addEventListener("resize", cacheSectionTops, {
+          passive: true,
+        });
+        window.addEventListener("load", cacheSectionTops, { passive: true });
+
+        function updateActiveNav() {
+          var scrollY = window.scrollY || window.pageYOffset;
+          var current = null;
+
+          /* walk from top: last section whose top edge has passed the offset wins */
+          pairs.forEach(function (p) {
+            if (typeof p.top === "number" && scrollY + OFFSET >= p.top) {
+              current = p;
+            }
+          });
+
+          /* at very top of page: clear all */
+          if (scrollY < 100) current = null;
+
+          if (current === lastActive) return;
+          lastActive = current;
+
+          /* update .active class */
+          allNavLinks.forEach(function (l) {
+            l.classList.remove("active");
+          });
+          if (current) current.link.classList.add("active");
+
+          /* tell the existing pill slider to reposition */
+          window.dispatchEvent(new CustomEvent("updateNavPill"));
+        }
+
+        window.addEventListener("scroll", updateActiveNav, { passive: true });
+        updateActiveNav();
+      });
+    })();
+  </script>
+
+  <!-- ── Back to top ── -->
+  <script>
+    (function () {
+      var btn = document.getElementById("backToTop");
+      if (!btn) return;
+
+      function onScroll() {
+        btn.classList.toggle("visible", (window.scrollY || window.pageYOffset) > 400);
+      }
+
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+
+      btn.addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    })();
+  </script>
+
+  <!-- ── Global lazy-image fade-in ── -->
+  <script>
+    (function () {
+      if (!("IntersectionObserver" in window)) return;
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            e.target.classList.add("loaded");
+            obs.unobserve(e.target);
+          }
+        });
+      }, { rootMargin: "120px" });
+      document.querySelectorAll('img[loading="lazy"]').forEach(function (img) {
+        if (img.complete) { img.classList.add("loaded"); }
+        else { obs.observe(img); }
+      });
+    })();
+  </script>
+
+  <!-- ── Global Toast Container ── -->
+  <div class="ph-toast-container" id="phToastContainer" aria-live="polite"></div>
+</body>
+
+</html>

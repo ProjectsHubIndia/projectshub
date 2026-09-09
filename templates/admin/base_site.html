@@ -1,0 +1,8 @@
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:'ProjectsHub Admin' }}{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+{% endblock %}

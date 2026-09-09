@@ -1,0 +1,712 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}{{ workshop.title }} | ProjectsHub Workshop{% endblock %}
+{% block meta_description %}{{ workshop.description|truncatechars:160 }}{% endblock %}
+{% block canonical %}https://projectshub.co.in{% url 'workshop_detail' workshop.id %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/workshop.css' %}" />
+<link rel="stylesheet" href="{% static 'css/project-detail.css' %}" />
+<link rel="stylesheet" href="{% static 'css/workshop-detail.css' %}?v=3" />
+{% endblock %}
+
+{% block nav_how_we_help %}active{% endblock %}
+
+{% block content %}
+<div class="main-body" style="position: relative; z-index: 1">
+  <div class="pd-wrapper">
+    <!-- Breadcrumb -->
+    <nav class="projects-breadcrumb" aria-label="Breadcrumb" style="margin-bottom: 1.5rem;">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li><a href="/workshop/">Workshops</a></li>
+        <li aria-current="page">{{ workshop.title }}</li>
+      </ol>
+    </nav>
+
+    <!-- HERO: tags + title + subtitle + meta -->
+    <div class="pd-hero__below pd-reveal" data-delay="1">
+      <div class="pd-tags">
+        <span class="pd-tag"><span class="pd-tag__dot"></span>Workshop</span>
+        {% if workshop.mode %}<span class="pd-tag"><span class="pd-tag__dot"></span>{{ workshop.mode }}</span>{% endif %}
+        {% if workshop.is_featured %}<span class="pd-tag"><span class="pd-tag__dot"></span>Featured</span>{% endif %}
+        {% if workshop.price_label %}<span class="pd-tag"><span class="pd-tag__dot"></span>{{ workshop.price_label }}</span>{% endif %}
+      </div>
+      <h1 class="pd-hero__title">{{ workshop.title }}</h1>
+      {% if workshop.subtitle %}
+      <p class="pd-hero__subtitle">{{ workshop.subtitle }}</p>
+      {% else %}
+      <p class="pd-hero__subtitle">
+        {{ workshop.description|truncatechars:200 }}
+      </p>
+      {% endif %}
+
+      <!-- Meta row -->
+      <div class="wd-hero-meta">
+        {% if workshop.date %}
+        <div class="wd-hero-meta__item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
+          {{ workshop.date }}
+        </div>
+        {% endif %}
+        {% if workshop.time %}
+        <div class="wd-hero-meta__item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
+          {{ workshop.time }}
+        </div>
+        {% endif %}
+        {% if workshop.seats %}
+        <div class="wd-hero-meta__item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+          {{ workshop.seats }} Seats
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- CTAs -->
+      <div class="wd-hero-ctas">
+        <button type="button" class="workshop-cta__btn open-enroll-modal" id="openEnrollModal"
+          data-workshop-id="{{ workshop.id }}">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2" width="18" height="18">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+          Reserve Your Spot
+        </button>
+        <a href="/workshop/" class="pd-btn-outline">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2" width="18" height="18">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+          All Workshops
+        </a>
+      </div>
+    </div>
+
+    <!-- MAIN LAYOUT -->
+    <div class="pd-layout">
+      <!-- LEFT COLUMN -->
+      <div class="pd-main">
+        <!-- KEY HIGHLIGHTS -->
+        <div class="pd-highlights pd-reveal" data-delay="2">
+          <div class="pd-highlight pd-glass">
+            <div class="pd-highlight__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div class="pd-highlight__value">{{ workshop.days.count }}</div>
+            <div class="pd-highlight__label">Days</div>
+          </div>
+          <div class="pd-highlight pd-glass">
+            <div class="pd-highlight__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div class="pd-highlight__value">28+</div>
+            <div class="pd-highlight__label">Live Hours</div>
+          </div>
+          <div class="pd-highlight pd-glass">
+            <div class="pd-highlight__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div class="pd-highlight__value">
+              {{ workshop.price_label|default:"Free" }}
+            </div>
+            <div class="pd-highlight__label">Investment</div>
+          </div>
+          <div class="pd-highlight pd-glass">
+            <div class="pd-highlight__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.768-.231-1.48-.631-2.072M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.768.231-1.48.631-2.072m0 0a5.002 5.002 0 019.738 0M13 7a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <div class="pd-highlight__value">{{ workshop.seats }}</div>
+            <div class="pd-highlight__label">Seats Only</div>
+          </div>
+        </div>
+
+        <!-- OVERVIEW -->
+        <div class="pd-description pd-reveal" data-delay="2">
+          <div class="pd-section-badge">
+            <span class="pd-section-badge__dot"></span>Overview
+          </div>
+          <h2 class="pd-section-title">
+            About this <span class="gradient-word">Workshop</span>
+          </h2>
+          {% for para in workshop.description.splitlines %} {% if para.strip %}
+          <p>{{ para }}</p>
+          {% endif %} {% endfor %}
+        </div>
+
+        <div class="pd-divider"></div>
+
+        <!-- CURRICULUM -->
+        {% if workshop.days.exists %}
+        <div class="pd-reveal" data-delay="3">
+          <div class="pd-section-badge">
+            <span class="pd-section-badge__dot"></span>Curriculum
+          </div>
+          <h2 class="pd-section-title">
+            Day-by-Day <span class="gradient-word">Breakdown</span>
+          </h2>
+          <div class="wd-curriculum">
+            {% for day in workshop.days.all %}
+            <div
+              class="wd-curriculum-item pd-glass{% if forloop.counter == 2 %} wd-curriculum-item--featured{% endif %}">
+              <div class="wd-curriculum-item__left">
+                <div class="wd-curriculum-item__day-badge">
+                  Day {{ day.day_number }}
+                </div>
+                {% if day.date_label %}
+                <div class="wd-curriculum-item__date">
+                  {{ day.date_label }}
+                </div>
+                {% endif %}
+              </div>
+              <div class="wd-curriculum-item__right">
+                <h3 class="wd-curriculum-item__title">{{ day.title }}</h3>
+                <p class="wd-curriculum-item__desc">
+                  {{ day.description|truncatechars:180 }}
+                </p>
+                {% if day.topics %}
+                <ul class="wd-curriculum-item__topics">
+                  {% for topic in day.topics.splitlines %} {% if topic.strip %}
+                  <li>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    {{ topic.strip }}
+                  </li>
+                  {% endif %} {% endfor %}
+                </ul>
+                {% endif %} {% if day.outcome %}
+                <div class="wd-curriculum-item__outcome">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
+                  Outcome: {{ day.outcome }}
+                </div>
+                {% endif %}
+                <a href="{% url 'workshop_day_detail' workshop.id day.day_number %}" class="wd-curriculum-item__link">
+                  View Full Curriculum
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14" />
+                    <path d="m12 5 7 7-7 7" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="pd-divider"></div>
+        {% endif %}
+
+        <!-- WHAT'S INCLUDED -->
+        <div class="pd-reveal" data-delay="4">
+          <div class="pd-section-badge">
+            <span class="pd-section-badge__dot"></span>Package
+          </div>
+          <h2 class="pd-section-title">
+            Everything <span class="gradient-word">Included</span>
+          </h2>
+          <div class="wd-features-grid">
+            <div class="wd-feature-card pd-glass">
+              <div class="wd-feature-card__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                </svg>
+              </div>
+              <h3 class="wd-feature-card__title">Course Materials</h3>
+              <p class="wd-feature-card__desc">
+                Notebooks, slides, and code repos — yours to keep forever.
+              </p>
+            </div>
+            <div class="wd-feature-card pd-glass">
+              <div class="wd-feature-card__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="2" y1="12" x2="22" y2="12" />
+                  <path
+                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                </svg>
+              </div>
+              <h3 class="wd-feature-card__title">Live Sessions</h3>
+              <p class="wd-feature-card__desc">
+                28+ hours of interactive instruction with Q&amp;A and pair coding.
+              </p>
+            </div>
+            <div class="wd-feature-card pd-glass">
+              <div class="wd-feature-card__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+              </div>
+              <h3 class="wd-feature-card__title">Certificate</h3>
+              <p class="wd-feature-card__desc">
+                Verified completion certificate to showcase on LinkedIn and portfolio.
+              </p>
+            </div>
+            <div class="wd-feature-card pd-glass">
+              <div class="wd-feature-card__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </div>
+              <h3 class="wd-feature-card__title">Community Access</h3>
+              <p class="wd-feature-card__desc">
+                Lifetime access to the private alumni Discord for networking &amp; help.
+              </p>
+            </div>
+          </div>
+
+          <!-- Big CTA -->
+          <div class="wd-enroll-cta pd-glass" style="margin-top: 2rem">
+            <div class="wd-enroll-cta__info">
+              <div class="wd-enroll-cta__price">
+                {{ workshop.price_label|default:"Free" }}
+              </div>
+              <div class="wd-enroll-cta__note">
+                per participant &middot; lifetime materials access
+              </div>
+            </div>
+            <button type="button" class="pd-btn-primary open-enroll-modal" data-workshop-id="{{ workshop.id }}"
+              style="white-space: nowrap">
+              Enroll Now →
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- /pd-main -->
+
+      <!-- SIDEBAR -->
+      <aside class="pd-sidebar">
+        <!-- Schedule -->
+        <div class="pd-glass pd-reveal" data-delay="2">
+          <div class="pd-section-badge" style="margin-bottom: 1.25rem">
+            <span class="pd-section-badge__dot"></span>Schedule
+          </div>
+          <ul class="pd-meta-list">
+            {% if workshop.date %}
+            <li class="pd-meta-item">
+              <div class="pd-meta-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <div class="pd-meta-label">Dates</div>
+                <div class="pd-meta-value">{{ workshop.date }}</div>
+              </div>
+            </li>
+            {% endif %}
+            {% if workshop.time %}
+            <li class="pd-meta-item">
+              <div class="pd-meta-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <div class="pd-meta-label">Time</div>
+                <div class="pd-meta-value">{{ workshop.time }}</div>
+              </div>
+            </li>
+            {% endif %}
+            {% if workshop.mode %}
+            <li class="pd-meta-item">
+              <div class="pd-meta-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+              </div>
+              <div>
+                <div class="pd-meta-label">Mode</div>
+                <div class="pd-meta-value">{{ workshop.mode }}</div>
+              </div>
+            </li>
+            {% endif %}
+            {% if workshop.seats %}
+            <li class="pd-meta-item">
+              <div class="pd-meta-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.768-.231-1.48-.631-2.072M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.768.231-1.48.631-2.072m0 0a5.002 5.002 0 019.738 0M13 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <div>
+                <div class="pd-meta-label">Seats</div>
+                <div class="pd-meta-value">{{ workshop.seats }} Available</div>
+              </div>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+
+        <!-- Price + Enroll CTA -->
+        <div class="pd-glass pd-reveal" data-delay="3">
+          <div class="pd-cta-group">
+            <button type="button" class="pd-btn-primary open-enroll-modal" data-workshop-id="{{ workshop.id }}">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                stroke-width="2" width="18" height="18">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              Enroll Now
+            </button>
+            {% if workshop.enroll_url %}
+            <a href="{{ workshop.enroll_url }}" target="_blank" rel="noopener noreferrer" class="pd-btn-outline">
+              External Registration
+            </a>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Day Quick Nav -->
+        {% if workshop.days.exists %}
+        <div class="pd-glass pd-reveal" data-delay="4">
+          <div class="pd-section-badge" style="margin-bottom: 1rem">
+            <span class="pd-section-badge__dot"></span>Curriculum
+          </div>
+          <div class="wd-day-nav-list">
+            {% for day in workshop.days.all %}
+            <a href="{% url 'workshop_day_detail' workshop.id day.day_number %}" class="wd-day-nav-link">
+              <span class="wd-day-nav-link__num">{{ day.day_number }}</span>
+              <span class="wd-day-nav-link__text">
+                <span class="wd-day-nav-link__label">Day {{ day.day_number }}</span>
+                <span class="wd-day-nav-link__title">{{ day.title|truncatechars:38 }}</span>
+              </span>
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </aside>
+      <!-- /pd-sidebar -->
+    </div>
+    <!-- /pd-layout -->
+
+    <!-- OTHER WORKSHOPS -->
+    {% if other_workshops %}
+    <div class="pd-related pd-reveal">
+      <div class="pd-related-header">
+        <div>
+          <div class="pd-section-badge">
+            <span class="pd-section-badge__dot"></span>More Workshops
+          </div>
+          <h2 class="pd-section-title" style="margin-bottom: 0">
+            Other <span class="gradient-word">Workshops</span>
+          </h2>
+        </div>
+        <a href="/workshop/" class="pd-btn-outline" style="white-space: nowrap">
+          View all
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2" style="width: 14px; height: 14px">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </div>
+      <div class="pd-related-grid">
+        {% for w in other_workshops %}
+        <a href="{% url 'workshop_detail' w.id %}" class="pd-related-card">
+          <div class="pd-related-card__body">
+            <div class="pd-related-card__tag">
+              {{ w.date }}{% if w.mode %} &middot; {{ w.mode }}{% endif %}
+            </div>
+            <div class="pd-related-card__title">{{ w.title }}</div>
+            <div class="pd-related-card__desc">
+              {{ w.description|truncatechars:120 }}
+            </div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <!-- /pd-wrapper -->
+</div>
+<!-- /main-body -->
+
+<!-- ═══════════════════════════════════════════
+   ENROLLMENT MODAL
+   ═══════════════════════════════════════════ -->
+<div class="enroll-modal" id="enrollModal" role="dialog" aria-modal="true" aria-labelledby="enrollModalTitle">
+  <div class="enroll-modal__backdrop" id="enrollBackdrop"></div>
+
+  <div class="enroll-modal__content">
+    <!-- Close Button -->
+    <button class="enroll-modal__close" id="enrollClose" aria-label="Close enrollment form">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+
+    <!-- Modal Header -->
+    <div class="enroll-modal__header">
+      <div class="enroll-badge">Live Workshop &middot; Limited Seats</div>
+      <h2 class="enroll-modal__title" id="enrollModalTitle">
+        Enroll in <span class="enroll-gradient-text">{{ workshop.title }}</span>
+      </h2>
+      <p class="enroll-modal__desc">
+        Fill in your details to secure your spot. We'll email you the schedule,
+        prerequisites, and meeting link.
+      </p>
+    </div>
+
+    <!-- Form -->
+    <form class="enroll-form" id="enrollForm" novalidate>
+      <input type="hidden" name="workshop_id" id="enrollWorkshopId" value="{{ workshop.id }}" />
+
+      <div class="enroll-form__row">
+        <!-- Full Name -->
+        <div class="enroll-field">
+          <label class="enroll-field__label" for="enrollName">
+            Full Name <span class="enroll-field__required">*</span>
+          </label>
+          <div class="enroll-field__input-wrap">
+            <svg class="enroll-field__icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            <input type="text" id="enrollName" name="name" class="enroll-field__input" placeholder="John Doe"
+              autocomplete="name" required />
+          </div>
+          <span class="enroll-field__error" id="errorName">Please enter your full name</span>
+        </div>
+
+        <!-- Email -->
+        <div class="enroll-field">
+          <label class="enroll-field__label" for="enrollEmail">
+            Email Address <span class="enroll-field__required">*</span>
+          </label>
+          <div class="enroll-field__input-wrap">
+            <svg class="enroll-field__icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="16" x="2" y="4" rx="2" />
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+            </svg>
+            <input type="email" id="enrollEmail" name="email" class="enroll-field__input"
+              placeholder="john@university.edu" autocomplete="email" required />
+          </div>
+          <span class="enroll-field__error" id="errorEmail">Please enter a valid email</span>
+        </div>
+      </div>
+
+      <div class="enroll-form__row">
+        <!-- Phone -->
+        <div class="enroll-field">
+          <label class="enroll-field__label" for="enrollPhone">
+            Phone / WhatsApp <span class="enroll-field__required">*</span>
+          </label>
+          <div class="enroll-field__input-wrap">
+            <svg class="enroll-field__icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+            <input type="tel" id="enrollPhone" name="phone" class="enroll-field__input"
+              placeholder="+91 98765 43210" autocomplete="tel" required />
+          </div>
+          <span class="enroll-field__error" id="errorPhone">Please enter your phone number</span>
+        </div>
+
+        <!-- Experience Level -->
+        <div class="enroll-field">
+          <label class="enroll-field__label" for="enrollExperience">
+            Experience Level
+          </label>
+          <div class="enroll-field__input-wrap">
+            <svg class="enroll-field__icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+              <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5" />
+            </svg>
+            <select id="enrollExperience" name="experience" class="enroll-field__input enroll-field__select">
+              <option value="beginner">Beginner (some Python)</option>
+              <option value="intermediate" selected>
+                Intermediate (built some ML/DL)
+              </option>
+              <option value="advanced">
+                Advanced (working with models in prod)
+              </option>
+            </select>
+            <svg class="enroll-field__chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Referral Source -->
+      <div class="enroll-field w-100">
+        <label class="enroll-field__label" for="enrollReferral">
+          How did you hear about us?
+          <span class="enroll-field__optional">(optional)</span>
+        </label>
+        <div class="enroll-field__input-wrap">
+          <svg class="enroll-field__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 16v-4" />
+            <path d="M12 8h.01" />
+          </svg>
+          <select id="enrollReferral" name="referral" class="enroll-field__input enroll-field__select">
+            <option value="" disabled selected>Select an option</option>
+            <option value="social">Social Media</option>
+            <option value="friend">Friend / Colleague</option>
+            <option value="search">Google Search</option>
+            <option value="linkedin">LinkedIn</option>
+            <option value="other">Other</option>
+          </select>
+          <svg class="enroll-field__chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Message -->
+      <div class="enroll-field w-100">
+        <label class="enroll-field__label" for="enrollMessage">
+          Anything else we should know?
+          <span class="enroll-field__optional">(optional)</span>
+        </label>
+        <textarea id="enrollMessage" name="message" class="enroll-field__input enroll-field__textarea" rows="3"
+          maxlength="300" placeholder="Tell us about your goals, questions, or special requirements..."></textarea>
+        <span class="enroll-field__char-count" id="charCount">0 / 300</span>
+      </div>
+
+      <!-- Terms -->
+      <div class="enroll-field enroll-field--checkbox">
+        <label class="enroll-checkbox">
+          <input type="checkbox" id="enrollTerms" name="terms" required />
+          <span class="enroll-checkbox__check">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </span>
+          <span class="enroll-checkbox__text">
+            I agree to receive workshop details and payment link via email.
+            <span class="enroll-field__required">*</span>
+          </span>
+        </label>
+        <span class="enroll-field__error" id="errorTerms">You must agree to proceed</span>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="enroll-submit" id="enrollSubmit">
+        <span class="enroll-submit__text">Complete Registration</span>
+
+        <svg class="enroll-submit__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14" />
+          <path d="m12 5 7 7-7 7" />
+        </svg>
+        <span class="enroll-submit__loader">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+          </svg>
+        </span>
+      </button>
+
+      <p class="enroll-form__note">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </svg>
+        Secure registration. No payment required now.
+      </p>
+    </form>
+
+    <!-- Success State -->
+    <div class="enroll-success" id="enrollSuccess">
+      <div class="enroll-success__icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+          <polyline points="22 4 12 14.01 9 11.01" />
+        </svg>
+      </div>
+      <h3 class="enroll-success__title">You're In!</h3>
+      <p class="enroll-success__message">
+        Thanks for registering, <span id="successName">there</span>! Check
+        your inbox at <span id="successEmail"></span> for next steps.
+      </p>
+      <div class="enroll-success__details">
+        <div class="enroll-success__detail">
+          <span class="enroll-success__detail-label">Workshop</span>
+          <span class="enroll-success__detail-value">{{ workshop.title }}</span>
+        </div>
+        <div class="enroll-success__detail">
+          <span class="enroll-success__detail-label">Dates</span>
+          <span class="enroll-success__detail-value">{{ workshop.date }}</span>
+        </div>
+      </div>
+      <button type="button" class="enroll-success__btn" id="enrollSuccessClose">
+        Got it, thanks!
+      </button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/enroll-modal.js' %}" defer></script>
+<script src="{% static 'js/project-details.js' %}" defer></script>
+{% endblock %}
