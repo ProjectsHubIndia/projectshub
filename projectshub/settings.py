@@ -14,14 +14,18 @@ if str(BASE_DIR) not in sys.path:
 IS_VERCEL = os.environ.get('VERCEL') == '1' or 'VERCEL' in os.environ
 
 # Security: Secret key from environment variable with safe dev fallback
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', os.environ.get('SECRET_KEY', 'django-insecure-change-this-in-production-use-env-var'))
+SECRET_KEY = (
+    os.environ.get('DJANGO_SECRET_KEY', '').strip()
+    or os.environ.get('SECRET_KEY', '').strip()
+    or 'django-insecure-projectshub-production-secret-key-super-secure-2026-xyz89234'
+)
 
 # Debug: True in local development unless explicitly set or on Vercel
 DEBUG = os.environ.get('DEBUG', 'False' if IS_VERCEL else 'True').lower() in ('true', '1', 'yes')
 
 # Allowed Hosts: Allow Vercel preview URLs, custom domains, and local dev
-raw_allowed_hosts = os.environ.get('ALLOWED_HOSTS', '*')
-if raw_allowed_hosts == '*':
+raw_allowed_hosts = os.environ.get('ALLOWED_HOSTS', '*').strip()
+if not raw_allowed_hosts or raw_allowed_hosts == '*':
     ALLOWED_HOSTS = ['*']
 else:
     ALLOWED_HOSTS = [h.strip() for h in raw_allowed_hosts.split(',') if h.strip()]
