@@ -866,12 +866,32 @@ body.light .call-dropdown__item:hover {
   background: transparent;
   border: 1px solid var(--ph-border);
   color: var(--ph-text-primary);
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  min-height: 42px;
   border-radius: 10px;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.hamburger:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+.hamburger:focus-visible {
+  outline: 2px solid var(--ph-primary);
+  outline-offset: 2px;
+}
+body:not(.light) .hamburger:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* ── Prevent body scrolling while mobile drawer is active ── */
+body.menu-open {
+  overflow: hidden !important;
+  touch-action: none;
 }
 
 /* ── Mobile Menu Drawer ── */
@@ -881,83 +901,173 @@ body.light .call-dropdown__item:hover {
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--ph-bg-base);
-  padding: 1.5rem;
+  background: var(--ph-bg-base, #ffffff);
+  padding: 1.25rem 1.25rem 2.5rem;
   overflow-y: auto;
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
   transform: translateY(-10px);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.28s;
   z-index: 999;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
-.navbar__mobile.active {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+
+.navbar.scrolled ~ .navbar__mobile,
+.navbar.scrolled .navbar__mobile {
+  top: 68px;
 }
+
+.navbar__mobile.active,
+.navbar__mobile.is-open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: translateY(0) !important;
+}
+
 .mob-nav {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
+
+.mob-item {
+  width: 100%;
+}
+
 .mob-btn {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 0.9rem 1.25rem;
-  background: var(--ph-bg-surface);
+  min-height: 44px;
+  padding: 0.85rem 1.15rem;
+  background: var(--ph-bg-surface, #f8fafc);
   border: 1px solid var(--ph-border);
   border-radius: 14px;
-  color: var(--ph-text-primary);
+  color: var(--ph-text-primary, #0f172a);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.98rem;
   text-decoration: none;
   text-align: left;
   cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
 }
+
+.mob-btn:hover {
+  background: rgba(99, 102, 241, 0.05);
+  border-color: rgba(99, 102, 241, 0.25);
+}
+
+.mob-chevron {
+  flex-shrink: 0;
+  opacity: 0.55;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s;
+}
+
+.mob-item.open > .mob-btn,
+.mob-item.is-open > .mob-btn {
+  border-color: rgba(99, 102, 241, 0.4);
+  color: var(--ph-primary, #6366f1);
+  background: rgba(99, 102, 241, 0.04);
+}
+
+.mob-item.open .mob-chevron,
+.mob-item.is-open .mob-chevron {
+  transform: rotate(180deg);
+  opacity: 0.9;
+}
+
 .mob-sub {
   display: none;
   list-style: none;
-  padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
   margin: 0;
+  border-left: 2px solid rgba(99, 102, 241, 0.15);
+  margin-left: 0.75rem;
+  margin-top: 0.25rem;
 }
-.mob-item.open .mob-sub {
-  display: block;
+
+.mob-item.open .mob-sub,
+.mob-item.is-open .mob-sub {
+  display: flex !important;
+  flex-direction: column;
+  gap: 0.2rem;
 }
+
 .mob-sub-title {
-  font-size: 0.75rem;
+  list-style: none;
+  font-size: 0.72rem;
   font-weight: 700;
-  color: var(--ph-primary);
+  color: #d97706;
   text-transform: uppercase;
-  margin: 0.75rem 0 0.4rem;
+  letter-spacing: 0.05em;
+  padding: 0.5rem 0.5rem 0.2rem;
 }
+
 .mob-sub-link {
-  display: block;
-  padding: 0.45rem 0;
-  color: var(--ph-text-secondary);
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0.5rem 0.65rem;
+  color: var(--ph-text-secondary, #475569);
   text-decoration: none;
   font-size: 0.92rem;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: background-color 0.18s, color 0.18s;
+  -webkit-tap-highlight-color: transparent;
 }
+
+.mob-sub-link:hover,
+.mob-sub-link:focus-visible {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--ph-text-primary, #0f172a);
+}
+
+body:not(.light) .mob-sub-link:hover,
+body:not(.light) .mob-sub-link:focus-visible {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+}
+
 .mobile-contact-group {
-  margin-top: 2rem;
+  margin-top: 1.75rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
+
 .mobile-contact-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.9rem;
+  min-height: 48px;
+  padding: 0.85rem 1.25rem;
   border-radius: 12px;
   font-weight: 700;
+  font-size: 0.95rem;
   text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.15s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
 }
+
+.mobile-contact-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.92;
+}
+
 .mobile-contact-btn--call {
-  background: var(--ph-primary);
+  background: var(--ph-primary, #6366f1);
   color: #fff !important;
 }
+
 .mobile-contact-btn--whatsapp {
   background: #25d366;
   color: #fff !important;
@@ -965,10 +1075,15 @@ body.light .call-dropdown__item:hover {
 
 /* ── Responsive Breakpoints for Nav ── */
 @media (max-width: 991px) {
-  .navbar__links { display: none; }
-  .navbar__actions .call-cta-wrap { display: none; }
-  .hamburger { display: flex; }
+  .navbar__links { display: none !important; }
+  .navbar__actions .call-cta-wrap { display: none !important; }
+  .hamburger { display: flex !important; }
   .navbar { padding: 0.75rem 1.25rem; }
+}
+
+@media (min-width: 992px) {
+  .hamburger { display: none !important; }
+  .navbar__mobile { display: none !important; }
 }
 
 /* ── Modern Hero Section ── */

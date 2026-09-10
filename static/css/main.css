@@ -464,11 +464,13 @@ body.light .navbar__mobile {
   background: #ffffff !important;
 }
 
-.navbar__mobile.is-open {
+.navbar__mobile.is-open,
+.navbar__mobile.active {
   max-height: 85vh;
   overflow-y: auto;
   scrollbar-width: none;
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
   padding-top: 16px;
   padding-bottom: 24px;
@@ -551,7 +553,8 @@ body.light .mob-btn:hover {
   transition: transform 0.25s ease;
 }
 
-.mob-item.is-open .mob-chevron {
+.mob-item.is-open .mob-chevron,
+.mob-item.open .mob-chevron {
   transform: rotate(180deg);
 }
 
@@ -564,7 +567,8 @@ body.light .mob-btn:hover {
   gap: 0.15rem;
 }
 
-.mob-item.is-open .mob-sub {
+.mob-item.is-open .mob-sub,
+.mob-item.open .mob-sub {
   display: flex;
 }
 

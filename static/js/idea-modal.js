@@ -195,14 +195,15 @@
         }
 
         bindEvents() {
-            // Open modal
-            const openButtons = document.querySelectorAll('#openIdeaModal, #openIdeaModalMobile');
-            openButtons.forEach(btn => {
+            // Open modal — support any element with data-open-idea-modal or known IDs
+            document.querySelectorAll('#openIdeaModal, #openIdeaModalMobile, [data-open-idea-modal]').forEach(btn => {
                 btn.addEventListener('click', () => this.open());
             });
 
             // Close modal
             this.closeBtn.addEventListener('click', () => this.close());
+
+            // Close only when clicking the translucent overlay backdrop, not the modal card itself
             this.overlay.addEventListener('click', (e) => {
                 if (e.target === this.overlay) this.close();
             });
@@ -222,6 +223,8 @@
             [this.nameInput, this.emailInput, this.titleInput, this.budgetSelect, this.timelineSelect, this.agreeCheckbox].forEach(field => {
                 if (field) {
                     field.addEventListener('input', () => this.clearFieldError(field));
+                    // Also clear on change for select elements
+                    field.addEventListener('change', () => this.clearFieldError(field));
                 }
             });
 
@@ -231,10 +234,15 @@
         open() {
             this.isOpen = true;
             this.overlay.classList.add('is-open');
+            // Lock background scroll on all browsers including iOS
             document.body.style.overflow = 'hidden';
+            document.body.style.touchAction = 'none';
+            this.overlay.setAttribute('aria-hidden', 'false');
 
-            // Focus management
-            setTimeout(() => this.nameInput.focus(), 100);
+            // Move focus into the modal for screen readers
+            setTimeout(() => {
+                if (this.nameInput) this.nameInput.focus();
+            }, 80);
         }
 
         close() {
@@ -243,7 +251,10 @@
 
             setTimeout(() => {
                 this.overlay.classList.remove('is-open', 'is-closing');
+                // Restore scroll
                 document.body.style.overflow = '';
+                document.body.style.touchAction = '';
+                this.overlay.setAttribute('aria-hidden', 'true');
                 this.resetForm();
             }, 300);
         }

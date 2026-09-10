@@ -43,29 +43,61 @@
     var iconMenu = hamburger.querySelector(".icon-menu");
     var iconClose = hamburger.querySelector(".icon-close");
 
-    // ── Hamburger toggle ──
-    hamburger.addEventListener("click", function () {
-      var isOpen = mobileMenu.classList.toggle("is-open");
+    function setMobileMenuState(isOpen) {
+      mobileMenu.classList.toggle("is-open", isOpen);
+      mobileMenu.classList.toggle("active", isOpen);
       navbar.classList.toggle("is-open", isOpen);
-      iconMenu.classList.toggle("hidden", isOpen);
-      iconClose.classList.toggle("hidden", !isOpen);
+      if (iconMenu) iconMenu.classList.toggle("hidden", isOpen);
+      if (iconClose) iconClose.classList.toggle("hidden", !isOpen);
       hamburger.setAttribute("aria-expanded", isOpen ? "true" : "false");
       mobileMenu.setAttribute("aria-hidden", isOpen ? "false" : "true");
+      document.body.classList.toggle("menu-open", isOpen);
+    }
+
+    // ── Hamburger toggle ──
+    hamburger.addEventListener("click", function () {
+      var willOpen = !mobileMenu.classList.contains("is-open") && !mobileMenu.classList.contains("active");
+      setMobileMenuState(willOpen);
     });
 
-    // ── Close on mobile link tap ──
-    document
-      .querySelectorAll("a.mobile-link, a.mobile-sublink, .btn-cta--mobile, .mob-sub-link, .mob-btn:not(.mob-btn--expand)")
+    // ── Accordion toggle for expandable items ──
+    mobileMenu.querySelectorAll(".mob-btn--expand").forEach(function (btn) {
+      if (btn.dataset.accordionBound) return;
+      btn.dataset.accordionBound = "true";
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var item = btn.closest(".mob-item");
+        if (!item) return;
+        var isOpen = item.classList.toggle("is-open");
+        item.classList.toggle("open", isOpen);
+        btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      });
+    });
+
+    // ── Close on mobile navigation link tap ──
+    mobileMenu
+      .querySelectorAll("a.mobile-link, a.mobile-sublink, .btn-cta--mobile, .mob-sub-link, a.mob-btn, .mobile-contact-btn")
       .forEach(function (link) {
         link.addEventListener("click", function () {
-          mobileMenu.classList.remove("is-open");
-          navbar.classList.remove("is-open");
-          iconMenu.classList.remove("hidden");
-          iconClose.classList.add("hidden");
-          hamburger.setAttribute("aria-expanded", "false");
-          mobileMenu.setAttribute("aria-hidden", "true");
+          setMobileMenuState(false);
         });
       });
+
+    // ── Close on Escape key press ──
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && (mobileMenu.classList.contains("is-open") || mobileMenu.classList.contains("active"))) {
+        setMobileMenuState(false);
+        hamburger.focus();
+      }
+    });
+
+    // ── Close when resized to desktop viewport (> 991px) ──
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 991 && (mobileMenu.classList.contains("is-open") || mobileMenu.classList.contains("active"))) {
+        setMobileMenuState(false);
+      }
+    });
   }
 
   // ── Universal Toast Notifications ──

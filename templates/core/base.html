@@ -238,10 +238,16 @@
   <script>
     (function () {
       document.querySelectorAll(".mob-btn--expand").forEach(function (btn) {
-        btn.addEventListener("click", function () {
+        if (btn.dataset.accordionBound) return;
+        btn.dataset.accordionBound = "true";
+        btn.addEventListener("click", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
           var item = btn.closest(".mob-item");
+          if (!item) return;
           var isOpen = item.classList.toggle("is-open");
-          btn.setAttribute("aria-expanded", isOpen);
+          item.classList.toggle("open", isOpen);
+          btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
         });
       });
     })();
