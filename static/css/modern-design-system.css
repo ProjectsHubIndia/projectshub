@@ -260,7 +260,6 @@ body.light .logo-combined--dark { display: none !important; }
 /* Navigation Links Container (Clean & Open - No Pill Wrapper) */
 .navbar__links,
 body.light .navbar__links {
-  display: flex !important;
   align-items: center !important;
   gap: 0.35rem !important;
   background: transparent !important;
@@ -269,6 +268,7 @@ body.light .navbar__links {
   padding: 0 !important;
   box-shadow: none !important;
   position: relative !important;
+  /* NOTE: display is controlled by responsive media queries — do NOT set display here */
 }
 
 /* Individual Navigation Links (High Contrast, Bold, Extremely Legible) */
@@ -1075,15 +1075,41 @@ body:not(.light) .mob-sub-link:focus-visible {
 
 /* ── Responsive Breakpoints for Nav ── */
 @media (max-width: 991px) {
-  .navbar__links { display: none !important; }
-  .navbar__actions .call-cta-wrap { display: none !important; }
-  .hamburger { display: flex !important; }
+  /* Hide desktop nav — use high specificity to beat .navbar__links and body.light .navbar__links */
+  .navbar__links,
+  body .navbar__links,
+  body.light .navbar__links {
+    display: none !important;
+  }
+  .navbar__actions .call-cta-wrap,
+  body.light .navbar__actions .call-cta-wrap {
+    display: none !important;
+  }
+  /* Show hamburger */
+  .hamburger,
+  body.light .hamburger {
+    display: flex !important;
+  }
   .navbar { padding: 0.75rem 1.25rem; }
 }
 
 @media (min-width: 992px) {
-  .hamburger { display: none !important; }
-  .navbar__mobile { display: none !important; }
+  /* Hide hamburger and mobile drawer on desktop */
+  .hamburger,
+  body.light .hamburger {
+    display: none !important;
+  }
+  /* Ensure nav links are visible on desktop */
+  .navbar__links,
+  body.light .navbar__links {
+    display: flex !important;
+  }
+  /* The mobile drawer is hidden via opacity/visibility by default; ensure it stays gone */
+  .navbar__mobile:not(.is-open):not(.active) {
+    pointer-events: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
 }
 
 /* ── Modern Hero Section ── */
