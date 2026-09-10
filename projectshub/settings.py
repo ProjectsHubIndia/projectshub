@@ -94,8 +94,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'projectshub.wsgi.application'
 
-# Database: PostgreSQL in production if DATABASE_URL is set, SQLite fallback
-DATABASE_URL = os.environ.get('DATABASE_URL')
+# Database: PostgreSQL in production if DATABASE_URL or POSTGRES_URL is set, SQLite fallback
+DATABASE_URL = os.environ.get('DATABASE_URL') or os.environ.get('POSTGRES_URL') or os.environ.get('POSTGRES_URL_NON_POOLING')
 if DATABASE_URL and DATABASE_URL.startswith('postgres'):
     try:
         import dj_database_url
