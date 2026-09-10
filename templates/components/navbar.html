@@ -295,8 +295,11 @@
     </div>
   </div>
 
-  <!-- Mobile Drawer Menu -->
-  <div class="navbar__mobile" id="mobileMenu" aria-hidden="true">
+</header>
+
+{# Mobile Drawer Menu — must be OUTSIDE <header> so position:fixed resolves to the viewport,
+   not the navbar (which has backdrop-filter creating a new containing block). #}
+<div class="navbar__mobile" id="mobileMenu" aria-hidden="true">
     <nav class="mob-nav" aria-label="Mobile Navigation">
       <div class="mob-item">
         <button class="mob-btn mob-btn--expand" type="button" aria-expanded="false" aria-controls="mobSubWork">
@@ -389,5 +392,4 @@
         💬 WhatsApp Us Directly
       </a>
     </div>
-  </div>
-</header>
+</div>
