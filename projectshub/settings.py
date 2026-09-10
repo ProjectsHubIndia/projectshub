@@ -23,23 +23,37 @@ SECRET_KEY = (
 # Debug: True in local development unless explicitly set or on Vercel
 DEBUG = os.environ.get('DEBUG', 'False' if IS_VERCEL else 'True').lower() in ('true', '1', 'yes')
 
-# Allowed Hosts: Allow Vercel preview URLs, custom domains, and local dev
+# Allowed Hosts: Allow Railway, Vercel preview URLs, custom domains, and local dev
 raw_allowed_hosts = os.environ.get('ALLOWED_HOSTS', '*').strip()
 if not raw_allowed_hosts or raw_allowed_hosts == '*':
     ALLOWED_HOSTS = ['*']
 else:
     ALLOWED_HOSTS = [h.strip() for h in raw_allowed_hosts.split(',') if h.strip()]
-    for host in ['.vercel.app', 'localhost', '127.0.0.1', 'projectshub.co.in', 'www.projectshub.co.in']:
+    for host in [
+        '.railway.app',
+        '.up.railway.app',
+        '.vercel.app',
+        'localhost',
+        '127.0.0.1',
+        '0.0.0.0',
+        'projectshub.co.in',
+        'www.projectshub.co.in'
+    ]:
         if host not in ALLOWED_HOSTS:
             ALLOWED_HOSTS.append(host)
 
-# CSRF Trusted Origins (essential for Vercel forms, modals & API requests)
+# CSRF Trusted Origins (essential for Railway & Vercel forms, modals & API requests)
 CSRF_TRUSTED_ORIGINS = [
+    'https://*.railway.app',
+    'https://*.up.railway.app',
     'https://*.vercel.app',
     'https://projectshub.co.in',
     'https://www.projectshub.co.in',
     'http://127.0.0.1:8000',
     'http://localhost:8000',
+    'http://127.0.0.1:8080',
+    'http://localhost:8080',
+    'http://0.0.0.0:8080',
 ]
 extra_origins = os.environ.get('CSRF_TRUSTED_ORIGINS', '')
 if extra_origins:
@@ -102,11 +116,13 @@ DATABASE_URL = os.environ.get('DATABASE_URL') or os.environ.get('POSTGRES_URL') 
 if DATABASE_URL and DATABASE_URL.startswith('postgres'):
     try:
         import dj_database_url
+        is_internal = any(h in DATABASE_URL for h in ['railway.internal', 'localhost', '127.0.0.1'])
+        use_ssl = not is_internal and os.environ.get('DB_SSL_REQUIRE', 'true').lower() in ('true', '1', 'yes')
         DATABASES = {
             'default': dj_database_url.config(
                 default=DATABASE_URL,
                 conn_max_age=600,
-                ssl_require=True
+                ssl_require=use_ssl
             )
         }
     except Exception:
