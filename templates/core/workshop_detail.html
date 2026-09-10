@@ -476,7 +476,9 @@
   <!-- /pd-wrapper -->
 </div>
 <!-- /main-body -->
+{% endblock %}
 
+{% block extra_modals %}
 <!-- ═══════════════════════════════════════════
    ENROLLMENT MODAL
    ═══════════════════════════════════════════ -->
@@ -704,7 +706,7 @@
     </div>
   </div>
 </div>
-{% endblock %}
+{% endblock extra_modals %}
 
 {% block extra_js %}
 <script src="{% static 'js/enroll-modal.js' %}" defer></script>

@@ -933,7 +933,9 @@ Main content
 
   </div><!-- /pd-wrapper -->
 </div><!-- /main-body -->
+{% endblock content %}
 
+{% block extra_modals %}
 {# ── Enrollment Modal (matches workshop listing page) ── #}
 <div class="enroll-modal" id="enrollModal" role="dialog" aria-modal="true" aria-labelledby="enrollModalTitle">
   <div class="enroll-modal__backdrop" id="enrollBackdrop"></div>
@@ -1104,7 +1106,7 @@ Main content
   </div><!-- /.enroll-modal__content -->
 </div><!-- /.enroll-modal -->
 
-{% endblock content %}
+{% endblock extra_modals %}
 
 {# ══════════════════════════════════
 Page-specific JS

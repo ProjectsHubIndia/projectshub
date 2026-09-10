@@ -922,13 +922,13 @@ body.light .workshop-footer {
 .share-overlay {
   position: fixed;
   inset: 0;
-  z-index: 2000;
+  z-index: 100000 !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: rgba(10, 15, 29, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   opacity: 0;
   visibility: hidden;
   transition:
@@ -1166,49 +1166,55 @@ body.light .day-card__share-btn:hover {
 .enroll-modal {
   position: fixed;
   inset: 0;
-  z-index: 9999;
+  z-index: 100000 !important;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  padding: 105px 20px 20px;
+  padding: 1.25rem 1rem;
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
   transition:
-    opacity 0.35s ease,
-    visibility 0.35s ease;
+    opacity 0.3s ease,
+    visibility 0.3s ease;
 }
 
 .enroll-modal.is-active {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
 }
 
 .enroll-modal__backdrop {
-  position: absolute;
+  position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(8px);
+  background: rgba(10, 15, 29, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   cursor: pointer;
+  z-index: 1;
 }
 
 body.light .enroll-modal__backdrop {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(15, 23, 42, 0.65);
 }
 
 .enroll-modal__content {
   position: relative;
+  z-index: 2;
   width: 100%;
-  max-width: 750px;
-  max-height: calc(100vh - 115px);
+  max-width: 640px;
+  max-height: min(88vh, 720px);
   overflow-y: auto;
-  background: rgba(13, 17, 32, 0.96);
+  overscroll-behavior: contain;
+  background: rgba(13, 17, 32, 0.98);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  padding: 1.25rem 1.5rem;
-  transform: scale(0.92) translateY(20px);
-  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  padding: 1.5rem 1.75rem;
+  transform: scale(0.95) translateY(12px);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
   scrollbar-width: thin;
   scrollbar-color: var(--blue-400, #60a5fa) transparent;
 }
@@ -1218,7 +1224,7 @@ body.light .enroll-modal__backdrop {
 }
 
 .enroll-modal__content::-webkit-scrollbar {
-  width: 4px;
+  width: 5px;
 }
 
 .enroll-modal__content::-webkit-scrollbar-thumb {
@@ -1227,13 +1233,13 @@ body.light .enroll-modal__backdrop {
 }
 
 body.light .enroll-modal__content {
-  background: rgba(255, 255, 255, 0.97);
+  background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.1),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+    0 25px 60px -15px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
 /* Close Button */
@@ -1772,23 +1778,20 @@ body.light .enroll-success__btn:hover {
 }
 
 /* Mobile */
-@media (max-width: 480px) {
+@media (max-width: 640px) {
   .enroll-modal {
-    padding: 0;
-    align-items: flex-end;
+    padding: 0.75rem;
+    align-items: center;
   }
 
   .enroll-modal__content {
-    max-height: 92vh;
-    border-radius: 20px 20px 0 0;
-    padding: 1.5rem;
+    max-height: 90vh;
+    border-radius: 18px;
+    padding: 1.25rem 1rem;
+    transform: scale(0.96) translateY(10px);
   }
 
   .enroll-modal.is-active .enroll-modal__content {
-    transform: translateY(0);
-  }
-
-  .enroll-modal__content {
-    transform: translateY(100%);
+    transform: scale(1) translateY(0);
   }
 }

@@ -183,6 +183,9 @@
   <!-- ── Share Your Idea Modal (per-page) ── -->
   {% block idea_modal %}{% endblock %}
 
+  <!-- ── Extra Page Modals (rendered at root body level above all stacking contexts) ── -->
+  {% block extra_modals %}{% endblock %}
+
   <!-- ── Scripts ── -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
   <script src="{% static 'js/ai-chatbot.js' %}?v=3" defer></script>

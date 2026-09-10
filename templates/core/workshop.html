@@ -1343,7 +1343,9 @@
   <!-- /.main-body -->
 </section>
 <!-- /.aurora-section -->
+{% endblock content %}
 
+{% block extra_modals %}
 {# ── Share Card Overlay ── #}
 <div
   class="share-overlay"
@@ -1784,7 +1786,7 @@
 </div>
 <!-- /.enroll-modal -->
 
-{% endblock content %}
+{% endblock extra_modals %}
 
 {# ══════════════════════════════════ Page-specific JS ══════════════════════════════════ #}
 {% block extra_js %}
