@@ -1,7 +1,6 @@
-import os
 from django.core.management.base import BaseCommand
 from django.conf import settings
-from core.models import Project, CaseStudy, BlogPost
+from core.models import Project
 
 
 class Command(BaseCommand):

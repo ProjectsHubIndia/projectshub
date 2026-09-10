@@ -1,7 +1,7 @@
 import csv
 from django.core.management.base import BaseCommand
 from django.test import Client
-from core.models import Project, BlogPost, CaseStudy, Service
+from core.models import Project, BlogPost
 
 
 class Command(BaseCommand):

@@ -1,7 +1,6 @@
 import csv
 import os
 import re
-import urllib.parse
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from django.test import Client

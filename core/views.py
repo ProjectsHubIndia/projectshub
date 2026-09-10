@@ -3,7 +3,7 @@ import logging
 import random
 import html
 import re
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
@@ -15,17 +15,16 @@ from django.contrib import admin
 from django.contrib.admin.views.decorators import staff_member_required
 
 from .models import (
-    SiteSettings, NavigationItem, SocialLink, StatItem,
-    ProjectCategory, Technology, Project, ProjectImage, ProjectHighlight,
-    ProjectDiagram, ProjectTimelinePhase, ProjectFeature,
+    SiteSettings, NavigationItem, StatItem,
+    ProjectCategory, Technology, Project,
     ToolCategory, AITool,
-    Service, ServiceFeature,
-    CaseStudy, CaseStudyMetric,
-    Testimonial, FAQCategory, FAQ,
-    BlogCategory, Tag, BlogPost, BlogSection,
+    Service,
+    CaseStudy,
+    Testimonial, FAQ,
+    BlogCategory, BlogPost,
     ContactInquiry, ContactMessage, ProjectGateLead,
     IdeaSubmission, WorkshopCard, WorkshopDay, WorkshopEnrollment,
-    PricingPlan, PricingFeature,
+    PricingPlan,
     SEOData, Redirect,
     ChatbotConversation, ChatbotMessage,
     AdminGuideNote

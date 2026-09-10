@@ -5,10 +5,9 @@ robots index control, and multi-entity Schema.org structured data.
 """
 
 import json
-from urllib.parse import urljoin
 from django.conf import settings
 from django.utils.html import strip_tags
-from core.models import SEOData, Project, BlogPost, AITool, CaseStudy, Service
+from core.models import SEOData
 
 DEFAULT_DOMAIN = "https://projectshub.co.in"
 DEFAULT_OG_IMAGE = "/static/image/favicon_io/og-image.png"

@@ -1,4 +1,3 @@
-import os
 from django.core.management.base import BaseCommand
 from django.utils.text import slugify
 from core.models import (
@@ -8,7 +7,6 @@ from core.models import (
     Service, ServiceFeature,
     CaseStudy, CaseStudyMetric,
     Testimonial, FAQCategory, FAQ,
-    BlogCategory, Tag, BlogPost,
     Redirect
 )
 
@@ -526,7 +524,7 @@ class Command(BaseCommand):
                 'industry': 'Logistics',
                 'emoji': '🚚',
                 'gradient': 'linear-gradient(135deg, #0c4a6e, #0ea5e9)',
-                'featured_image': 'case_studies/swiftmove_route_optimizer.jpg',
+                'featured_image': 'case_studies/swiftmove_route_optimizer.webp',
                 'summary': 'A last-mile delivery startup was burning money on inefficient routes. We built a machine learning route optimizer that factors in traffic, weather, and delivery windows — cutting costs significantly.',
                 'timeline': '60 Days',
                 'order': 6,
@@ -539,12 +537,12 @@ class Command(BaseCommand):
         ]
 
         img_map = {
-            'ai-document-summarizer-law-firms': 'case_studies/lexai_doc_summarizer.jpg',
-            'ai-product-recommendation-engine': 'case_studies/shopsmart_recommendation.jpg',
-            'personalized-learning-assistant-edtech': 'case_studies/edupath_learning_assistant.jpg',
-            'automated-patient-report-analyzer': 'case_studies/medtrack_patient_report.jpg',
-            'natural-language-analytics-dashboard': 'case_studies/datapulse_nlp_analytics.jpg',
-            'ai-route-optimizer-logistics': 'case_studies/swiftmove_route_optimizer.jpg',
+            'ai-document-summarizer-law-firms': 'case_studies/lexai_doc_summarizer.webp',
+            'ai-product-recommendation-engine': 'case_studies/shopsmart_recommendation.webp',
+            'personalized-learning-assistant-edtech': 'case_studies/edupath_learning_assistant.webp',
+            'automated-patient-report-analyzer': 'case_studies/medtrack_patient_report.webp',
+            'natural-language-analytics-dashboard': 'case_studies/datapulse_nlp_analytics.webp',
+            'ai-route-optimizer-logistics': 'case_studies/swiftmove_route_optimizer.webp',
         }
 
         for cs_data in case_studies_data:
