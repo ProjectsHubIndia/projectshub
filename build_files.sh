@@ -2,8 +2,14 @@
 # Vercel Build Script for ProjectsHub Django App
 echo "=== Building ProjectsHub for Vercel Deployment ==="
 
-# Install dependencies
-python3 -m pip install -r requirements.txt
+# Create and activate virtual environment to avoid PEP 668 externally-managed-environment
+if python3 -m venv .venv 2>/dev/null; then
+    source .venv/bin/activate
+    pip install --upgrade pip
+    pip install -r requirements.txt
+else
+    python3 -m pip install --break-system-packages -r requirements.txt || python3 -m pip install -r requirements.txt
+fi
 
 # Run migrations if database is accessible
 python3 manage.py migrate --noinput || true

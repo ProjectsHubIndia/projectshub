@@ -14,3 +14,5 @@ seo_report.csv
 *.tmp
 __pycache__
 *.pyc
+venv
+.venv
