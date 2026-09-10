@@ -1071,20 +1071,20 @@
   }
 
   function initMarquee() {
+    var winW = window.innerWidth;
     document.querySelectorAll(".marquee-track").forEach(function (track) {
-      // Keep cloning until track is at least 2x viewport width
       var original = track.innerHTML;
-      while (track.scrollWidth < window.innerWidth * 2.5) {
-        track.innerHTML += original;
+      var initialW = track.scrollWidth;
+      if (!initialW) return;
+      var targetW = winW * 2.5;
+      var sets = Math.max(2, Math.ceil(targetW / initialW));
+      var newHtml = "";
+      for (var s = 0; s < sets; s++) {
+        newHtml += original;
       }
+      track.innerHTML = newHtml;
 
-      // Count total sets and set the correct translate amount
-      var totalTags = track.querySelectorAll(".marquee-tag").length;
-      var originalTags = original.split("marquee-tag").length - 1;
-      var sets = totalTags / originalTags;
       var pct = ((1 / sets) * 100).toFixed(4);
-
-      // Inject a scoped style to override the keyframe endpoint
       var isReverse = track.classList.contains("marquee-track--reverse");
       var id = track.id || "mq-" + Math.random().toString(36).slice(2);
       track.id = id;

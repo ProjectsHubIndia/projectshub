@@ -135,8 +135,9 @@ form.addEventListener('submit', async (e) => {
     submitBtn.classList.add('is-loading');
     submitBtn.disabled = true;
 
+    const workshopHiddenInput = document.getElementById('enrollWorkshopId');
     const workshopBtn = document.querySelector('.open-enroll-modal[data-workshop-id]');
-    const workshopId = workshopBtn ? workshopBtn.dataset.workshopId : null;
+    const workshopId = activeWorkshopId || (workshopHiddenInput ? workshopHiddenInput.value : null) || (workshopBtn ? workshopBtn.dataset.workshopId : null);
 
     const formData = {
         fullName: document.getElementById('enrollName').value.trim(),
@@ -182,9 +183,23 @@ form.addEventListener('submit', async (e) => {
         submitBtn.disabled = false;
     }
 });
-    // ✅ THE FIX: bind ALL .open-enroll-modal buttons (covers both pages)
+    let activeWorkshopId = null;
+
+    // ✅ Bind all current buttons & delegate clicks for maximum reliability
     document.querySelectorAll('.open-enroll-modal, #openEnrollModal, #openEnrollModalMobile')
-        .forEach(btn => btn.addEventListener('click', openModal));
+        .forEach(btn => btn.addEventListener('click', function(e) {
+            activeWorkshopId = this.dataset?.workshopId || null;
+            openModal();
+        }));
+
+    document.addEventListener('click', function (e) {
+        const trigger = e.target.closest('.open-enroll-modal, #openEnrollModal, #openEnrollModalMobile');
+        if (trigger) {
+            e.preventDefault();
+            activeWorkshopId = trigger.dataset?.workshopId || null;
+            openModal();
+        }
+    });
 
     closeBtn?.addEventListener('click', closeModal);
     backdrop?.addEventListener('click', closeModal);

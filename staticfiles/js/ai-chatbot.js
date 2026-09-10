@@ -82,8 +82,8 @@
                     <div class="ai-chatbot-window" role="dialog" aria-modal="false" aria-label="ProjectsHub AI Chat">
                         <div class="ai-chatbot-header">
                             <div class="ai-chatbot-header-title">
-                                <img src="/static/image/DARK-THEME/transparent-image (1).png" alt="ProjectsHub" class="ai-chatbot-logo ai-chatbot-logo--dark" />
-                                <img src="/static/image/PROJECTHUB%20ALL%20LOGOS/ProjectsHubSVGLOGO.svg" alt="ProjectsHub" class="ai-chatbot-logo ai-chatbot-logo--light" />
+                                <img src="/static/image/DARK-THEME/transparent-image (1).png" alt="ProjectsHub" class="ai-chatbot-logo ai-chatbot-logo--dark" width="28" height="28" />
+                                <img src="/static/image/PROJECTHUB%20ALL%20LOGOS/ProjectsHubSVGLOGO.svg" alt="ProjectsHub" class="ai-chatbot-logo ai-chatbot-logo--light" width="28" height="28" />
                                 <div class="ai-chatbot-header-info">
                                     <span class="ai-chatbot-name">ProjectsHub AI</span>
                                     <span class="ai-chatbot-status"><span class="ai-chatbot-status-dot"></span> Online</span>

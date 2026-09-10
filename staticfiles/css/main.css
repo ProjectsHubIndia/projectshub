@@ -6521,41 +6521,43 @@ body:not(.light) .call-dropdown__text small {
 }
 
 .mobile-contact-btn--call {
-  background: linear-gradient(135deg, var(--blue-500), var(--purple));
-  color: #fff;
+  background: linear-gradient(135deg, #3b82f6, #7c3aed);
+  color: #fff !important;
   border-color: transparent;
-  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.35);
 }
 
 .mobile-contact-btn--call:hover {
   box-shadow: 0 6px 28px rgba(99, 102, 241, 0.5);
 }
 
-/* WhatsApp button — dark default (the earlier duplicate block was dead code and removed) */
+/* WhatsApp button */
 .mobile-contact-btn--whatsapp {
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text-body);
-  border-color: var(--border-glass);
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: #fff !important;
+  border-color: transparent;
+  box-shadow: 0 4px 16px rgba(22, 163, 74, 0.3);
 }
 
 .mobile-contact-btn--whatsapp:hover {
-  background: rgba(37, 211, 102, 0.08);
-  border-color: rgba(37, 211, 102, 0.3);
-  color: #4ade80;
-  opacity: 1;
+  opacity: 0.9;
 }
 
-/* light mode */
+/* light mode — same solid styles */
+body.light .mobile-contact-btn--call {
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: #fff !important;
+  border-color: transparent;
+}
+
 body.light .mobile-contact-btn--whatsapp {
-  background: rgba(0, 0, 0, 0.04);
-  color: #374151;
-  border-color: rgba(0, 0, 0, 0.12);
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: #fff !important;
+  border-color: transparent;
 }
 
 body.light .mobile-contact-btn--whatsapp:hover {
-  background: rgba(37, 211, 102, 0.1);
-  border-color: rgba(37, 211, 102, 0.35);
-  color: #15803d;
+  opacity: 0.9;
 }
 
 /* ── Animated AI Core ── */
@@ -8953,27 +8955,37 @@ body.light .mobile-contact-group {
 }
 
 .mobile-contact-btn--call {
-  background: rgba(59,130,246,0.12);
-  border: 1px solid rgba(59,130,246,0.25);
-  color: #60a5fa;
+  background: linear-gradient(135deg, #3b82f6, #7c3aed);
+  border: 1px solid transparent;
+  color: #fff !important;
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.35);
 }
 
 .mobile-contact-btn--whatsapp {
-  background: rgba(37,211,102,0.1);
-  border: 1px solid rgba(37,211,102,0.25);
-  color: #4ade80;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  border: 1px solid transparent;
+  color: #fff !important;
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(22, 163, 74, 0.3);
 }
 
 body.light .mobile-contact-btn--call {
-  background: rgba(59,130,246,0.08);
-  border-color: rgba(59,130,246,0.2);
-  color: #2563eb;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  border-color: transparent;
+  color: #fff !important;
 }
 
 body.light .mobile-contact-btn--whatsapp {
-  background: rgba(22,163,74,0.07);
-  border-color: rgba(22,163,74,0.2);
-  color: #16a34a;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  border-color: transparent;
+  color: #fff !important;
+}
+
+/* Hide floating share widget when mobile nav is open */
+.navbar__mobile.open ~ #socialShare,
+body.nav-open #socialShare {
+  display: none !important;
 }
 
 /* ── Hero trust bar refinement ── */
