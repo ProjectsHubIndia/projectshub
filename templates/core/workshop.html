@@ -1789,9 +1789,10 @@
 {# ══════════════════════════════════ Page-specific JS ══════════════════════════════════ #}
 {% block extra_js %}
 <script>
-  document
-    .getElementById("shareWorkshopBtn")
-    .addEventListener("click", function () {
+  (function() {
+    const shareBtn = document.getElementById("shareWorkshopBtn");
+    if (!shareBtn) return;
+    shareBtn.addEventListener("click", function () {
       const title =
         document.querySelector(".workshop-hero__title")?.innerText ||
         "AI Workshop";
@@ -1806,14 +1807,15 @@
       } else {
         // Fallback — copy to clipboard
         navigator.clipboard.writeText(url).then(() => {
-          const btn = document.getElementById("shareWorkshopBtn");
-          btn.innerHTML = `✅ Link Copied!`;
+          shareBtn.innerHTML = `✅ Link Copied!`;
           setTimeout(() => {
-            btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share This Workshop`;
+            shareBtn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share This Workshop`;
           }, 2500);
         });
       }
     });
+  })();
+</script>
 <script src="{% static 'js/enroll-modal.js' %}" defer></script>
 
 <script>

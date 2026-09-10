@@ -17,15 +17,28 @@
 
 /* ── Hero left copy ──────────────────────────────────── */
 .hero-text {
-  animation: heroFadeUp 0.7s cubic-bezier(0.23, 1, 0.32, 1) 0.15s both;
+  opacity: 1;
   padding-right: 2rem;
 }
 
-@media (max-width: 991px) { .hero-text { padding-right: 0; } }
+@media (prefers-reduced-motion: no-preference) {
+  .hero-text {
+    animation: heroFadeUp 0.5s cubic-bezier(0.23, 1, 0.32, 1) both;
+  }
+}
 
 @keyframes heroFadeUp {
-  from { opacity: 0; transform: translateY(32px); }
+  from { opacity: 0.9; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-title__cursor {
+  display: inline-block;
+  width: 2px;
+  min-width: 2px;
+  margin-left: 2px;
+  vertical-align: baseline;
+  user-select: none;
 }
 
 /* Badge */

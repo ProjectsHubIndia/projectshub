@@ -81,9 +81,6 @@ students and businesses. No signup needed.{% endblock %}
 Hero image preload — only on homepage
 ═══════════════════════════════════════ #}
 {% block extra_preload %}
-<link rel="preload" as="image" href="/static/image/ai-project-ideas-students.webp"
-      imagesrcset="/static/image/ai-project-ideas-students-480w.webp 480w, /static/image/ai-project-ideas-students-800w.webp 800w, /static/image/ai-project-ideas-students.webp 1690w"
-      imagesizes="(max-width: 480px) 480px, (max-width: 800px) 800px, 1690px" fetchpriority="high" />
 <link rel="preload" href="{% static 'css/hero-visual.css' %}?v=2" as="style" />
 {% endblock %}
 
@@ -267,7 +264,17 @@ CONTENT
 
                     <!-- Real photo banner -->
                     <div class="pcard__img-banner" aria-hidden="true">
-                        <img src="{% static 'image/students-ai-project.jpg' %}" alt="Student working on AI project" loading="lazy" decoding="async" width="520" height="200" style="width:100%;height:200px;object-fit:cover;border-radius:18px 18px 0 0;display:block;" />
+                        <img src="{% static 'image/students-ai-project-480w.webp' %}"
+                             srcset="{% static 'image/students-ai-project-320w.webp' %} 320w,
+                                     {% static 'image/students-ai-project-480w.webp' %} 480w,
+                                     {% static 'image/students-ai-project-640w.webp' %} 640w,
+                                     {% static 'image/students-ai-project-768w.webp' %} 768w,
+                                     {% static 'image/students-ai-project-1024w.webp' %} 1024w,
+                                     {% static 'image/students-ai-project.webp' %} 1200w"
+                             sizes="(max-width: 480px) 100vw, (max-width: 768px) 90vw, 520px"
+                             alt="Student working on AI project"
+                             loading="lazy" decoding="async" width="520" height="200"
+                             style="width:100%;height:200px;object-fit:cover;border-radius:18px 18px 0 0;display:block;" />
                         <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(99,102,241,0.08) 0%, rgba(255,255,255,0.55) 100%);border-radius:18px 18px 0 0;"></div>
                     </div>
 
@@ -373,7 +380,17 @@ CONTENT
 
                     <!-- Real photo banner -->
                     <div class="pcard__img-banner" aria-hidden="true">
-                        <img src="{% static 'image/business-ai-team.jpg' %}" alt="Business team reviewing AI analytics dashboard" loading="lazy" decoding="async" width="520" height="200" style="width:100%;height:200px;object-fit:cover;border-radius:18px 18px 0 0;display:block;" />
+                        <img src="{% static 'image/business-ai-team-480w.webp' %}"
+                             srcset="{% static 'image/business-ai-team-320w.webp' %} 320w,
+                                     {% static 'image/business-ai-team-480w.webp' %} 480w,
+                                     {% static 'image/business-ai-team-640w.webp' %} 640w,
+                                     {% static 'image/business-ai-team-768w.webp' %} 768w,
+                                     {% static 'image/business-ai-team-1024w.webp' %} 1024w,
+                                     {% static 'image/business-ai-team.webp' %} 1200w"
+                             sizes="(max-width: 480px) 100vw, (max-width: 768px) 90vw, 520px"
+                             alt="Business team reviewing AI analytics dashboard"
+                             loading="lazy" decoding="async" width="520" height="200"
+                             style="width:100%;height:200px;object-fit:cover;border-radius:18px 18px 0 0;display:block;" />
                         <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(59,130,246,0.08) 0%, rgba(255,255,255,0.55) 100%);border-radius:18px 18px 0 0;"></div>
                     </div>
 
@@ -509,8 +526,8 @@ CONTENT
                                     <line x1="6" y1="16" x2="10" y2="14" />
                                     <line x1="14" y1="10" x2="18" y2="8" />
                                 </svg>Machine Learning</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/fastapi/009688" width="15"
-                                    height="15" alt="" loading="lazy">FastAPI</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/fastapi.svg" width="15"
+                                    height="15" alt="FastAPI" loading="lazy">FastAPI</span>
                             <span class="marquee-tag"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
                                     stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <rect x="2" y="7" width="5" height="10" rx="1" />
@@ -518,13 +535,13 @@ CONTENT
                                     <rect x="17" y="9" width="5" height="6" rx="1" />
                                     <line x1="7" y1="12" x2="9.5" y2="12" />
                                     <line x1="14.5" y1="12" x2="17" y2="12" />
-                                </svg>Data Pipelines</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/docker/2496ED" width="15"
-                                    height="15" alt="" loading="lazy">Docker</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/kubernetes/326CE5"
-                                    width="15" height="15" alt="" loading="lazy">Kubernetes</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/amazonaws/FF9900" width="15"
-                                    height="15" alt="" loading="lazy">AWS Lambda</span>
+                                 </svg>Data Pipelines</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/docker.svg" width="15"
+                                    height="15" alt="Docker" loading="lazy">Docker</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/kubernetes.svg"
+                                    width="15" height="15" alt="Kubernetes" loading="lazy">Kubernetes</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/amazonaws.svg" width="15"
+                                    height="15" alt="AWS" loading="lazy">AWS Lambda</span>
                             <!-- duplicate -->
                             <span class="marquee-tag"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
                                     stroke="#818cf8" stroke-width="2" stroke-linecap="round">
@@ -538,8 +555,8 @@ CONTENT
                                     <line x1="6" y1="16" x2="10" y2="14" />
                                     <line x1="14" y1="10" x2="18" y2="8" />
                                 </svg>Machine Learning</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/fastapi/009688" width="15"
-                                    height="15" alt="" loading="lazy">FastAPI</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/fastapi.svg" width="15"
+                                    height="15" alt="FastAPI" loading="lazy">FastAPI</span>
                             <span class="marquee-tag"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
                                     stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <rect x="2" y="7" width="5" height="10" rx="1" />
@@ -548,46 +565,46 @@ CONTENT
                                     <line x1="7" y1="12" x2="9.5" y2="12" />
                                     <line x1="14.5" y1="12" x2="17" y2="12" />
                                 </svg>Data Pipelines</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/docker/2496ED" width="15"
-                                    height="15" alt="" loading="lazy">Docker</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/kubernetes/326CE5"
-                                    width="15" height="15" alt="" loading="lazy">Kubernetes</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/amazonaws/FF9900" width="15"
-                                    height="15" alt="" loading="lazy">AWS Lambda</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/docker.svg" width="15"
+                                    height="15" alt="Docker" loading="lazy">Docker</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/kubernetes.svg"
+                                    width="15" height="15" alt="Kubernetes" loading="lazy">Kubernetes</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/amazonaws.svg" width="15"
+                                    height="15" alt="AWS" loading="lazy">AWS Lambda</span>
                         </div>
                     </div>
 
                     <div class="marquee-row">
                         <div class="marquee-track marquee-track--reverse" id="track-2">
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/pytorch/EE4C2C" width="15"
-                                    height="15" alt="" loading="lazy">PyTorch</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/postgresql/4169E1"
-                                    width="15" height="15" alt="" loading="lazy">PostgreSQL</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/pytorch.svg" width="15"
+                                    height="15" alt="PyTorch" loading="lazy">PyTorch</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/postgresql.svg"
+                                    width="15" height="15" alt="PostgreSQL" loading="lazy">PostgreSQL</span>
                             <span class="marquee-tag"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
                                     stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M13 2L3 14h9l-1 8 10-12h-9z" />
                                 </svg>Real-time APIs</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/tensorflow/FF6F00"
-                                    width="15" height="15" alt="" loading="lazy">TensorFlow</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/scikitlearn/F7931E"
-                                    width="15" height="15" alt="" loading="lazy">Scikit-learn</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/tensorflow.svg"
+                                    width="15" height="15" alt="TensorFlow" loading="lazy">TensorFlow</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/scikitlearn.svg"
+                                    width="15" height="15" alt="Scikit-learn" loading="lazy">Scikit-learn</span>
                             <span class="marquee-tag"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
                                     stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M12 2L8 8H4l4 4-2 6 6-3 6 3-2-6 4-4h-4z" />
                                 </svg>Model Deployment</span>
                             <!-- duplicate -->
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/pytorch/EE4C2C" width="15"
-                                    height="15" alt="" loading="lazy">PyTorch</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/postgresql/4169E1"
-                                    width="15" height="15" alt="" loading="lazy">PostgreSQL</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/pytorch.svg" width="15"
+                                    height="15" alt="PyTorch" loading="lazy">PyTorch</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/postgresql.svg"
+                                    width="15" height="15" alt="PostgreSQL" loading="lazy">PostgreSQL</span>
                             <span class="marquee-tag"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
                                     stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M13 2L3 14h9l-1 8 10-12h-9z" />
                                 </svg>Real-time APIs</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/tensorflow/FF6F00"
-                                    width="15" height="15" alt="" loading="lazy">TensorFlow</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/scikitlearn/F7931E"
-                                    width="15" height="15" alt="" loading="lazy">Scikit-learn</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/tensorflow.svg"
+                                    width="15" height="15" alt="TensorFlow" loading="lazy">TensorFlow</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/scikitlearn.svg"
+                                    width="15" height="15" alt="Scikit-learn" loading="lazy">Scikit-learn</span>
                             <span class="marquee-tag"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
                                     stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M12 2L8 8H4l4 4-2 6 6-3 6 3-2-6 4-4h-4z" />
@@ -597,10 +614,10 @@ CONTENT
 
                     <div class="marquee-row">
                         <div class="marquee-track" id="track-3">
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/django/44B78B" width="15"
-                                    height="15" alt="" loading="lazy">Django</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/githubactions/2088FF"
-                                    width="15" height="15" alt="" loading="lazy">CI/CD Pipelines</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/django.svg" width="15"
+                                    height="15" alt="Django" loading="lazy">Django</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/githubactions.svg"
+                                    width="15" height="15" alt="GitHub Actions" loading="lazy">CI/CD Pipelines</span>
                             <span class="marquee-tag"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
                                     stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
@@ -613,13 +630,13 @@ CONTENT
                                     stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
                                 </svg>REST APIs</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/grafana/F46800" width="15"
-                                    height="15" alt="" loading="lazy">Data Visualization</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/grafana.svg" width="15"
+                                    height="15" alt="Grafana" loading="lazy">Data Visualization</span>
                             <!-- duplicate -->
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/django/44B78B" width="15"
-                                    height="15" alt="" loading="lazy">Django</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/githubactions/2088FF"
-                                    width="15" height="15" alt="" loading="lazy">CI/CD Pipelines</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/django.svg" width="15"
+                                    height="15" alt="Django" loading="lazy">Django</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/githubactions.svg"
+                                    width="15" height="15" alt="GitHub Actions" loading="lazy">CI/CD Pipelines</span>
                             <span class="marquee-tag"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
                                     stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
@@ -632,8 +649,8 @@ CONTENT
                                     stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
                                 </svg>REST APIs</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/grafana/F46800" width="15"
-                                    height="15" alt="" loading="lazy">Data Visualization</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/grafana.svg" width="15"
+                                    height="15" alt="Grafana" loading="lazy">Data Visualization</span>
                         </div>
                     </div>
                 </div>
@@ -648,12 +665,15 @@ CONTENT
                             <div class="laptop-screen">
                                 <div class="laptop-camera"></div>
                                 <div class="project-card__img-wrap">
-                                    <img src="/static/image/ai-project-ideas-students.webp" srcset="/static/image/ai-project-ideas-students-480w.webp 480w,
-                                                /static/image/ai-project-ideas-students-800w.webp 800w,
-                                                /static/image/ai-project-ideas-students.webp 1690w"
-                                        sizes="(max-width: 480px) 480px, (max-width: 800px) 800px, 1690px"
-                                        alt="AI Projects for Students and Businesses" class="project-card__img"
-                                        fetchpriority="high" />
+                                    <img src="/static/image/ai-project-ideas-students-480w.webp"
+                                         srcset="/static/image/ai-project-ideas-students-320w.webp 320w,
+                                                 /static/image/ai-project-ideas-students-480w.webp 480w,
+                                                 /static/image/ai-project-ideas-students-640w.webp 640w,
+                                                 /static/image/ai-project-ideas-students-800w.webp 800w,
+                                                 /static/image/ai-project-ideas-students.webp 1690w"
+                                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 90vw, 540px"
+                                         alt="AI Projects for Students and Businesses" class="project-card__img"
+                                         loading="lazy" decoding="async" width="540" height="298" />
                                     <span class="project-card__img-badge">🚀 Projects</span>
                                 </div>
                             </div>
@@ -706,11 +726,15 @@ CONTENT
                             <div class="laptop-screen">
                                 <div class="laptop-camera"></div>
                                 <div class="project-card__img-wrap">
-                                    <img src="/static/image/free-ai-tools-dashboard.webp" srcset="/static/image/free-ai-tools-dashboard-480w.webp 480w,
-                                                /static/image/free-ai-tools-dashboard-800w.webp 800w,
-                                                /static/image/free-ai-tools-dashboard.webp 1690w"
-                                        sizes="(max-width: 480px) 480px, (max-width: 800px) 800px, 1690px"
-                                        alt="Free AI Tools by ProjectsHub" class="project-card__img" loading="lazy" />
+                                    <img src="/static/image/free-ai-tools-dashboard-480w.webp"
+                                         srcset="/static/image/free-ai-tools-dashboard-320w.webp 320w,
+                                                 /static/image/free-ai-tools-dashboard-480w.webp 480w,
+                                                 /static/image/free-ai-tools-dashboard-640w.webp 640w,
+                                                 /static/image/free-ai-tools-dashboard-800w.webp 800w,
+                                                 /static/image/free-ai-tools-dashboard.webp 1690w"
+                                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 90vw, 540px"
+                                         alt="Free AI Tools by ProjectsHub" class="project-card__img"
+                                         loading="lazy" decoding="async" width="540" height="298" />
                                     <span class="project-card__img-badge project-card__img-badge--green">🛠 Free
                                         Tools</span>
                                 </div>
@@ -1006,7 +1030,7 @@ CONTENT
                         <!-- AI Brain image -->
                         <img src="{% static 'image/AI_Brain-removebg-preview.webp' %}"
                             alt="AI and machine learning neural network illustration"
-                            loading="lazy" decoding="async"
+                            loading="lazy" decoding="async" width="460" height="360"
                             style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -54%); width: 88%; max-width: 460px; object-fit: contain; pointer-events: none; z-index: 2; opacity: 0.92;" />
                         <!-- Continuous base glow at brain's bottom -->
                         <div class="brain-base-glow" aria-hidden="true">
@@ -1026,36 +1050,71 @@ CONTENT
                         </div>
                     </div>
 
-                    <!-- Load Particles.js -->
-                    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" defer></script>
+                    <!-- Load Particles.js when container enters viewport -->
                     <script>
-                        document.addEventListener("DOMContentLoaded", function () {
-                            if (typeof particlesJS !== 'undefined') {
-                                particlesJS('ai-particles-container', {
-                                    "particles": {
-                                        "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
-                                        "color": { "value": "#818cf8" },
-                                        "shape": { "type": "circle" },
-                                        "opacity": { "value": 0.6, "random": true, "anim": { "enable": true, "speed": 1, "opacity_min": 0.1, "sync": false } },
-                                        "size": { "value": 3, "random": true, "anim": { "enable": true, "speed": 2, "size_min": 0.1, "sync": false } },
-                                        "line_linked": { "enable": true, "distance": 150, "color": "#6366f1", "opacity": 0.4, "width": 1 },
-                                        "move": { "enable": true, "speed": 1.5, "direction": "none", "random": true, "straight": false, "out_mode": "bounce", "bounce": false, "attract": { "enable": false } }
-                                    },
-                                    "interactivity": {
-                                        "detect_on": "canvas",
-                                        "events": {
-                                            "onhover": { "enable": true, "mode": "grab" },
-                                            "onclick": { "enable": true, "mode": "push" },
-                                            "resize": true
+                        (function () {
+                            const container = document.getElementById('ai-particles-container');
+                            if (!container) return;
+
+                            let initialized = false;
+                            function loadAndInitParticles() {
+                                if (initialized) return;
+                                initialized = true;
+
+                                function runParticles() {
+                                    if (typeof particlesJS === 'undefined') return;
+                                    const isMobile = window.innerWidth < 768;
+                                    const particleCount = isMobile ? 20 : 60;
+                                    particlesJS('ai-particles-container', {
+                                        "particles": {
+                                            "number": { "value": particleCount, "density": { "enable": true, "value_area": 800 } },
+                                            "color": { "value": "#818cf8" },
+                                            "shape": { "type": "circle" },
+                                            "opacity": { "value": 0.5, "random": true, "anim": { "enable": !isMobile, "speed": 1, "opacity_min": 0.1, "sync": false } },
+                                            "size": { "value": 3, "random": true, "anim": { "enable": !isMobile, "speed": 2, "size_min": 0.1, "sync": false } },
+                                            "line_linked": { "enable": true, "distance": isMobile ? 110 : 150, "color": "#6366f1", "opacity": 0.35, "width": 1 },
+                                            "move": { "enable": true, "speed": isMobile ? 1 : 1.5, "direction": "none", "random": true, "straight": false, "out_mode": "bounce", "bounce": false, "attract": { "enable": false } }
                                         },
-                                        "modes": {
-                                            "grab": { "distance": 180, "line_linked": { "opacity": 0.8 } },
-                                            "push": { "particles_nb": 4 }
-                                        }
-                                    },
-                                    "retina_detect": true
-                                });
+                                        "interactivity": {
+                                            "detect_on": "canvas",
+                                            "events": {
+                                                "onhover": { "enable": !isMobile, "mode": "grab" },
+                                                "onclick": { "enable": true, "mode": "push" },
+                                                "resize": true
+                                            },
+                                            "modes": {
+                                                "grab": { "distance": 160, "line_linked": { "opacity": 0.7 } },
+                                                "push": { "particles_nb": 3 }
+                                            }
+                                        },
+                                        "retina_detect": !isMobile
+                                    });
+                                }
+
+                                if (typeof particlesJS === 'undefined') {
+                                    const script = document.createElement('script');
+                                    script.src = "https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js";
+                                    script.defer = true;
+                                    script.onload = runParticles;
+                                    document.body.appendChild(script);
+                                } else {
+                                    runParticles();
+                                }
                             }
+
+                            if ('IntersectionObserver' in window) {
+                                const obs = new IntersectionObserver((entries) => {
+                                    if (entries[0].isIntersecting) {
+                                        loadAndInitParticles();
+                                        obs.disconnect();
+                                    }
+                                }, { rootMargin: '200px' });
+                                obs.observe(container);
+                            } else {
+                                window.addEventListener('load', () => setTimeout(loadAndInitParticles, 1500));
+                            }
+                        })();
+                    </script>
 
                             // Rotating Text Logic
                             const words = ["Students", "Businesses", "Startups", "Developers"];
@@ -1606,7 +1665,7 @@ CONTENT
                             <div class="contact-form__field contact-captcha-group">
                                 <label for="contactCaptcha" class="contact-form__label">Catch Code <span style="color:#ef4444">*</span></label>
                                 <div class="contact-captcha-box">
-                                    <div class="contact-captcha-display" id="captchaDisplay" title="Verification Catch Code" aria-label="Catch Code Image">
+                                    <div class="contact-captcha-display" id="captchaDisplay" role="img" title="Verification Catch Code" aria-label="Catch Code Image">
                                         <div class="contact-captcha-loading" style="font-size:0.75rem; color:#94a3b8; font-weight:600;">Loading code...</div>
                                     </div>
                                     <button type="button" class="contact-captcha-refresh" id="captchaRefreshBtn" title="Get new catch code" aria-label="Refresh catch code">
@@ -1714,11 +1773,11 @@ CONTENT
 
         if (el && cursor) {
             let wordIdx = 0;
-            let charIdx = 0;
-            let isDeleting = false;
+            let charIdx = WORDS[0].length;
+            let isDeleting = true;
 
-            // Start with empty text and type from scratch — no glitch
-            el.textContent = '';
+            // Preserve initial rendered text "Students" for immediate, stable LCP
+            el.textContent = WORDS[0];
 
             function tick() {
                 const word = WORDS[wordIdx];
@@ -1750,8 +1809,8 @@ CONTENT
                 }
             }
 
-            // Kick off after a short initial delay
-            setTimeout(tick, 500);
+            // Start first rotation after initial pause so LCP candidate stabilizes
+            setTimeout(tick, 2800);
         }
 
         // Count-Up Animation for Stats (Absolute Simplest Version)
@@ -1850,35 +1909,16 @@ CONTENT
             countUpElements.forEach(el => observer.observe(el));
         }
 
-        // Bulletproof fallback trigger that works in ALL scroll containers & initial load
-        const checkVisibility = () => {
-            countUpElements.forEach(el => {
-                if (el.hasAttribute('data-target-value') && el.getAttribute('data-animated') !== 'true') {
-                    const rect = el.getBoundingClientRect();
-                    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-
-                    if (rect.top <= windowHeight * 0.95 && rect.bottom >= 0) {
+        // Fallback for browsers without IntersectionObserver or delayed scroll
+        if (!('IntersectionObserver' in window)) {
+            setTimeout(() => {
+                countUpElements.forEach(el => {
+                    if (el.getAttribute('data-animated') !== 'true') {
                         animateCountUp(el);
                     }
-                }
-            });
-        };
-
-        // 1. Capture-phase scroll catches scroll events from ANY div on the page
-        document.addEventListener('scroll', checkVisibility, true);
-        window.addEventListener('wheel', checkVisibility, { passive: true });
-        window.addEventListener('touchmove', checkVisibility, { passive: true });
-        window.addEventListener('resize', checkVisibility, { passive: true });
-        checkVisibility();
-
-        // 2. Guaranteed fallback reveal after brief delay so stats are NEVER left blank or 0
-        setTimeout(() => {
-            countUpElements.forEach(el => {
-                if (el.getAttribute('data-animated') !== 'true') {
-                    animateCountUp(el);
-                }
-            });
-        }, 1500);
+                });
+            }, 1200);
+        }
 
         // ── Contact section staggered reveal ──
         const revealEls = document.querySelectorAll('.contact-reveal');
@@ -1992,23 +2032,11 @@ CONTENT
             }
         }
 
-        // Update active pagination dot based on closest card to viewport center
+        // Update active pagination dot based on scroll position (zero layout reads)
         function updateActiveDot() {
             if (!dots.length) return;
-            const sliderRect = slider.getBoundingClientRect();
-            const scrollCenter = sliderRect.left + sliderRect.width / 2;
-            let closestIndex = 0;
-            let minDistance = Infinity;
-
-            cards.forEach((card, idx) => {
-                const cardRect = card.getBoundingClientRect();
-                const cardCenter = cardRect.left + cardRect.width / 2;
-                const dist = Math.abs(scrollCenter - cardCenter);
-                if (dist < minDistance) {
-                    minDistance = dist;
-                    closestIndex = idx;
-                }
-            });
+            const step = getScrollStep();
+            const closestIndex = Math.min(dots.length - 1, Math.max(0, Math.round(slider.scrollLeft / step)));
 
             dots.forEach((dot, idx) => {
                 const isActive = idx === closestIndex;

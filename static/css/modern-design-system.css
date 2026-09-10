@@ -1063,14 +1063,28 @@ body:not(.light) .mob-sub-link:focus-visible {
   opacity: 0.92;
 }
 
-.mobile-contact-btn--call {
-  background: var(--ph-primary, #6366f1);
-  color: #fff !important;
+.mobile-contact-btn--call,
+body .mobile-contact-btn--call,
+body.light .mobile-contact-btn--call {
+  background: linear-gradient(135deg, #2563eb, #7c3aed) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4) !important;
 }
 
-.mobile-contact-btn--whatsapp {
-  background: #25d366;
-  color: #fff !important;
+.mobile-contact-btn--whatsapp,
+body .mobile-contact-btn--whatsapp,
+body.light .mobile-contact-btn--whatsapp {
+  background: linear-gradient(135deg, #16a34a, #15803d) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 16px rgba(22, 163, 74, 0.35) !important;
+}
+
+/* ── Hide social share when mobile nav is open ── */
+body.menu-open #socialShare {
+  display: none !important;
+  pointer-events: none !important;
 }
 
 /* ── Responsive Breakpoints for Nav ── */
