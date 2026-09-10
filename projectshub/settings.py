@@ -4,8 +4,11 @@ Production-ready configuration optimized for Vercel & local development.
 """
 from pathlib import Path
 import os
+import sys
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
 
 # Detect Vercel serverless environment
 IS_VERCEL = os.environ.get('VERCEL') == '1' or 'VERCEL' in os.environ
@@ -117,14 +120,17 @@ if DATABASE_URL and DATABASE_URL.startswith('postgres'):
             }
         }
 else:
-    # If on Vercel without PostgreSQL, use /tmp/db.sqlite3 so it is writable in serverless runtime
+    # If on Vercel without PostgreSQL, use a writable temporary sqlite database
     if IS_VERCEL:
         import shutil
-        tmp_db = Path('/tmp/db.sqlite3')
+        import tempfile
+        tmp_dir = Path(tempfile.gettempdir())
+        tmp_db = tmp_dir / 'db.sqlite3'
         local_db = BASE_DIR / 'db.sqlite3'
-        if not tmp_db.exists() and local_db.exists():
+        if (not tmp_db.exists() or tmp_db.stat().st_size == 0) and local_db.exists():
             try:
-                shutil.copy2(local_db, tmp_db)
+                tmp_dir.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(str(local_db), str(tmp_db))
             except Exception:
                 pass
         db_path = tmp_db if tmp_db.exists() else local_db
@@ -134,7 +140,7 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': db_path,
+            'NAME': str(db_path),
         }
     }
 

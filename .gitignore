@@ -9,9 +9,8 @@ venv/
 .venv/
 virtualenv/
 
-# Django database
-db.sqlite3
-*.sqlite3
+# Django database (db.sqlite3 tracked for Vercel serverless copy fallback)
+
 
 # Secrets / environment
 .env
