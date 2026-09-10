@@ -1,4 +1,4 @@
-﻿{% extends 'core/base.html' %}
+{% extends 'core/base.html' %}
 {% load static %}
 
 {% block title %}AI Integration & Consulting Services | ProjectsHub{% endblock %}
@@ -7,7 +7,7 @@
 {% block nav_how_we_help %}active{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/ai_integration.css' %}">
+<link rel="stylesheet" href="{% static 'css/ai_integration.css' %}?v=3">
 {% endblock %} {% block content %}
 
 <!-- ══════════════════════════════════════
@@ -66,7 +66,7 @@
       <span class="aic-float aic-float-api">&lt;/&gt; API</span>
       <span class="aic-float aic-float-code">🤖 AI</span>
       <img
-        src="{% static 'image/ai integration.jpg' %}"
+        src="{% static 'image/ai-integration-hero.webp' %}"
         alt="AI Integration"
         loading="eager"
       />
@@ -148,9 +148,11 @@
   <div class="aic-wrap">
     <div class="aic-offer-wrap">
       <img
-        src="{% static 'image/AI_Brain-removebg-preview.png' %}"
+        src="{% static 'image/AI_Brain-removebg-preview.webp' %}"
         alt=""
         class="aic-offer-deco"
+        loading="lazy"
+        decoding="async"
         aria-hidden="true"
       />
       <div class="aic-offer-grid">
@@ -236,7 +238,7 @@
             <polygon points="56,36 52,40 60,41" fill="#f43f5e" />
           </svg>
           <span class="aic-panel-badge blue">AI Consulting Services</span>
-          <h3 class="aic-panel-h3">Turn AI Ideas into<br />Business Success</h3>
+          <h2 class="aic-panel-h3">Turn AI Ideas into<br />Business Success</h2>
           <p class="aic-panel-desc">
             We help you identify opportunities, create AI roadmaps, and
             implement strategies that deliver measurable business value.
@@ -420,9 +422,9 @@
             <circle cx="40" cy="68" r="2.5" fill="#fde68a" />
           </svg>
           <span class="aic-panel-badge teal">AI Integration Services</span>
-          <h3 class="aic-panel-h3">
+          <h2 class="aic-panel-h3">
             Connect AI with Your<br />Business Ecosystem
-          </h3>
+          </h2>
           <p class="aic-panel-desc">
             Integrate AI capabilities with your existing tools and platforms
             through secure and scalable API integrations.
@@ -699,7 +701,7 @@
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
         </div>
-        <h4>Discovery</h4>
+        <h3>Discovery</h3>
         <p>
           Understand your business objectives, challenges, and current systems.
         </p>
@@ -722,7 +724,7 @@
             <line x1="6" y1="20" x2="6" y2="14" />
           </svg>
         </div>
-        <h4>Business Analysis</h4>
+        <h3>Business Analysis</h3>
         <p>Evaluate workflows, data availability and existing systems.</p>
         <div class="aic-step-bg-num">02</div>
       </div>
@@ -743,7 +745,7 @@
             />
           </svg>
         </div>
-        <h4>AI Strategy &amp; Roadmap</h4>
+        <h3>AI Strategy &amp; Roadmap</h3>
         <p>Develop practical AI strategy with clear priorities.</p>
         <div class="aic-step-bg-num">03</div>
       </div>
@@ -763,7 +765,7 @@
             <polyline points="22 4 12 14.01 9 11.01" />
           </svg>
         </div>
-        <h4>AI Readiness Assessment</h4>
+        <h3>AI Readiness Assessment</h3>
         <p>Assess data, infrastructure, team capabilities and readiness.</p>
         <div class="aic-step-bg-num">04</div>
       </div>
@@ -787,7 +789,7 @@
             />
           </svg>
         </div>
-        <h4>API Assessment &amp; Planning</h4>
+        <h3>API Assessment &amp; Planning</h3>
         <p>Identify integration points and plan the right API strategy.</p>
         <div class="aic-step-bg-num">05</div>
       </div>
@@ -807,7 +809,7 @@
             <polyline points="8 6 2 12 8 18" />
           </svg>
         </div>
-        <h4>Development &amp; Integration</h4>
+        <h3>Development &amp; Integration</h3>
         <p>
           Build secure integrations and connect AI with your business systems.
         </p>
@@ -829,7 +831,7 @@
             <polyline points="22 4 12 14.01 9 11.01" />
           </svg>
         </div>
-        <h4>Testing &amp; Deployment</h4>
+        <h3>Testing &amp; Deployment</h3>
         <p>
           Test integrations, ensure security, and deploy with minimal
           disruption.
@@ -851,7 +853,7 @@
             <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
           </svg>
         </div>
-        <h4>Optimization &amp; Support</h4>
+        <h3>Optimization &amp; Support</h3>
         <p>Monitor performance and provide continuous optimization.</p>
         <div class="aic-step-bg-num">08</div>
       </div>
@@ -892,7 +894,7 @@
       <div class="aic-tech-card">
         <div class="aic-tech-box" style="background: #fff">
           <img
-            src="{% static 'image/Tech/gemini.png' %}"
+            src="{% static 'image/Tech/gemini.webp' %}"
             alt="Gemini"
             style="width: 48px; height: 48px; object-fit: cover"
           />
@@ -912,7 +914,7 @@
       <div class="aic-tech-card">
         <div class="aic-tech-box" style="background: #fff">
           <img
-            src="{% static 'image/Tech/python.jpg' %}"
+            src="{% static 'image/Tech/python.webp' %}"
             alt="Python"
             style="width: 48px; height: 48px; object-fit: cover"
           />
@@ -952,7 +954,7 @@
       <div class="aic-tech-card">
         <div class="aic-tech-box" style="background: #fff">
           <img
-            src="{% static 'image/Tech/aws.jpg' %}"
+            src="{% static 'image/Tech/aws.webp' %}"
             alt="AWS"
             style="width: 48px; height: 48px; object-fit: cover"
           />
@@ -962,7 +964,7 @@
       <div class="aic-tech-card">
         <div class="aic-tech-box" style="background: #fff">
           <img
-            src="{% static 'image/Tech/azure.png' %}"
+            src="{% static 'image/Tech/azure.webp' %}"
             alt="Azure"
             style="width: 48px; height: 48px; object-fit: cover"
           />
@@ -972,7 +974,7 @@
       <div class="aic-tech-card">
         <div class="aic-tech-box" style="background: #fff">
           <img
-            src="{% static 'image/Tech/GoogleCloudpng.png' %}"
+            src="{% static 'image/Tech/GoogleCloudpng.webp' %}"
             alt="Google Cloud"
             style="width: 48px; height: 48px; object-fit: cover"
           />
@@ -1022,7 +1024,7 @@
       <div class="aic-tech-card">
         <div class="aic-tech-box" style="background: #fff">
           <img
-            src="{% static 'image/Tech/Salesforce.jpg' %}"
+            src="{% static 'image/Tech/Salesforce.webp' %}"
             alt="Salesforce"
             style="width: 48px; height: 48px; object-fit: cover"
           />
@@ -1057,7 +1059,7 @@
         <div class="aic-tech-card">
           <div class="aic-tech-box" style="background: #fff">
             <img
-              src="{% static 'image/Tech/Microsoft Dynamics 365.png' %}"
+              src="{% static 'image/Tech/Microsoft Dynamics 365.webp' %}"
               alt="Microsoft Dynamics 365"
               style="width: 48px; height: 48px; object-fit: cover"
             />
@@ -1087,7 +1089,7 @@
         <div class="aic-tech-card">
           <div class="aic-tech-box" style="background: #fff">
             <img
-              src="{% static 'image/Tech/Odoo.png' %}"
+              src="{% static 'image/Tech/Odoo.webp' %}"
               alt="Odoo"
               style="width: 48px; height: 48px; object-fit: cover"
             />
@@ -1097,7 +1099,7 @@
         <div class="aic-tech-card">
           <div class="aic-tech-box" style="background: #fff">
             <img
-              src="{% static 'image/Tech/Slack.jpg' %}"
+              src="{% static 'image/Tech/Slack.webp' %}"
               alt="Slack"
               style="width: 48px; height: 48px; object-fit: cover"
             />
@@ -1107,7 +1109,7 @@
         <div class="aic-tech-card">
           <div class="aic-tech-box" style="background: #fff">
             <img
-              src="{% static 'image/Tech/Microsoft Teams.jpg' %}"
+              src="{% static 'image/Tech/Microsoft Teams.webp' %}"
               alt="Microsoft Teams"
               style="width: 48px; height: 48px; object-fit: cover"
             />
@@ -1127,7 +1129,7 @@
         <div class="aic-tech-card">
           <div class="aic-tech-box" style="background: #fff">
             <img
-              src="{% static 'image/Tech/Twilio.jpg' %}"
+              src="{% static 'image/Tech/Twilio.webp' %}"
               alt="Twilio"
               style="width: 48px; height: 48px; object-fit: cover"
             />
@@ -1137,7 +1139,7 @@
         <div class="aic-tech-card">
           <div class="aic-tech-box" style="background: #fff">
             <img
-              src="{% static 'image/Tech/Google Workspace.jpg' %}"
+              src="{% static 'image/Tech/Google Workspace.webp' %}"
               alt="Google Workspace"
               style="width: 48px; height: 48px; object-fit: cover"
             />
@@ -1147,7 +1149,7 @@
         <div class="aic-tech-card">
           <div class="aic-tech-box" style="background: #fff">
             <img
-              src="{% static 'image/Tech/Microsoft 365.jpg' %}"
+              src="{% static 'image/Tech/Microsoft 365.webp' %}"
               alt="Microsoft 365"
               style="width: 48px; height: 48px; object-fit: cover"
             />
@@ -1260,7 +1262,7 @@
     <div class="aic-bi2-grid">
       <!-- Key Benefits Card -->
       <div class="aic-bencard">
-        <p class="aic-bencard-h">Key Benefits for Your Business</p>
+        <h2 class="aic-bencard-h">Key Benefits for Your Business</h2>
         <div class="aic-ben-inner">
           <!-- Left column -->
           <div class="aic-ben-col">
@@ -1277,7 +1279,7 @@
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                 </svg>
               </div>
-              <h5>Reduce Implementation Risks</h5>
+              <h3>Reduce Implementation Risks</h3>
               <p>Make informed AI decisions.</p>
             </div>
             <div class="aic-ben-item">
@@ -1293,7 +1295,7 @@
                   <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
                 </svg>
               </div>
-              <h5>Improve Operational Efficiency</h5>
+              <h3>Improve Operational Efficiency</h3>
               <p>Automate processes and boost productivity.</p>
             </div>
             <div class="aic-ben-item">
@@ -1310,7 +1312,7 @@
                   <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                 </svg>
               </div>
-              <h5>Maximize ROI</h5>
+              <h3>Maximize ROI</h3>
               <p>Achieve measurable results.</p>
             </div>
           </div>
@@ -1331,7 +1333,7 @@
                   <path d="M3 9h18M9 21V9" />
                 </svg>
               </div>
-              <h5>Centralized &amp; Connected Systems</h5>
+              <h3>Centralized &amp; Connected Systems</h3>
               <p>Integrate AI with your existing ecosystem.</p>
             </div>
             <div class="aic-ben-item">
@@ -1348,7 +1350,7 @@
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                 </svg>
               </div>
-              <h5>Secure &amp; Scalable Integrations</h5>
+              <h3>Secure &amp; Scalable Integrations</h3>
               <p>Enterprise-grade security with APIs.</p>
             </div>
             <div class="aic-ben-item">
@@ -1365,7 +1367,7 @@
                   <polyline points="12 6 12 12 16 14" />
                 </svg>
               </div>
-              <h5>Faster Decisions</h5>
+              <h3>Faster Decisions</h3>
               <p>Leverage AI insights for data-driven decision making.</p>
             </div>
           </div>
@@ -1537,7 +1539,7 @@
             <path d="M16 3.13a4 4 0 0 1 0 7.75" />
           </svg>
         </div>
-        <h4>Experienced AI Consultants</h4>
+        <h3>Experienced AI Consultants</h3>
         <p>Skilled AI experts with deep industry knowledge.</p>
       </div>
       <div class="aic-why-card2">
@@ -1554,7 +1556,7 @@
             <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
           </svg>
         </div>
-        <h4>Business-First Approach</h4>
+        <h3>Business-First Approach</h3>
         <p>We focus on real business value, not just technology.</p>
       </div>
       <div class="aic-why-card2">
@@ -1572,7 +1574,7 @@
             />
           </svg>
         </div>
-        <h4>Customized Strategies</h4>
+        <h3>Customized Strategies</h3>
         <p>Tailored AI strategies for your unique needs.</p>
       </div>
       <div class="aic-why-card2">
@@ -1588,7 +1590,7 @@
             <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
           </svg>
         </div>
-        <h4>End-to-End Support</h4>
+        <h3>End-to-End Support</h3>
         <p>From strategy to implementation and ongoing optimization.</p>
       </div>
       <div class="aic-why-card2">
@@ -1605,7 +1607,7 @@
             <circle cx="12" cy="12" r="3" />
           </svg>
         </div>
-        <h4>Transparent Process</h4>
+        <h3>Transparent Process</h3>
         <p>Clear communication and complete transparency.</p>
       </div>
       <div class="aic-why-card2">
@@ -1622,7 +1624,7 @@
             <circle cx="9" cy="7" r="4" />
           </svg>
         </div>
-        <h4>Long-Term Partnership</h4>
+        <h3>Long-Term Partnership</h3>
         <p>Dedicated partnership for sustainable business growth.</p>
       </div>
     </div>

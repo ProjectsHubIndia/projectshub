@@ -1,0 +1,489 @@
+{% load i18n static %}<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:'en-us' }}" dir="{{ LANGUAGE_BIDI|yesno:'rtl,ltr,auto' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="NONE,NOARCHIVE">
+  <title>{% block title %}{% endblock %} | ProjectsHub</title>
+  
+  <!-- WordPress System Typography & Icon Fonts -->
+  <link rel="stylesheet" href="{% static 'admin/css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/responsive.css' %}">
+  {% block extrastyle %}{% endblock %}
+  <link rel="stylesheet" href="{% static 'css/wp-admin.css' %}?v=5">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'image/Favicon-new/favicon-32x32.png' %}">
+  
+  {% block extrahead %}{% endblock %}
+  {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE">{% endblock %}
+</head>
+<body class="wp-admin wp-core-ui js {% block bodyclass %}{% endblock %}" data-admin-utc-offset="{% now 'Z' %}">
+
+  {% if user.is_authenticated and not is_popup %}
+  <!-- ═══════════════════════════════════════════════════════════
+       1. WORDPRESS TOP ADMIN BAR (#wpadminbar)
+       ═══════════════════════════════════════════════════════════ -->
+  <div id="wpadminbar" role="navigation" aria-label="Toolbar">
+
+    <div class="wpab-left">
+      <!-- WordPress / ProjectsHub Site Icon & Menu -->
+      <div class="wpab-item">
+        <a href="{% url 'admin:index' %}" class="wpab-link" title="About ProjectsHub">
+          <span class="wpab-icon">⚡</span>
+          <span style="font-weight:700;">ProjectsHub</span>
+        </a>
+        <ul class="wpab-submenu">
+          <li><a href="{% url 'admin:index' %}">About ProjectsHub</a></li>
+          <li><a href="https://docs.djangoproject.com/" target="_blank">Django 4.2 Documentation ↗</a></li>
+          <li><a href="/sitemap/" target="_blank">View Site Map ↗</a></li>
+        </ul>
+      </div>
+
+      <!-- Live Site Jump Link -->
+      <div class="wpab-item">
+        <a href="/" target="_blank" class="wpab-link" title="Visit Live Site">
+          <span class="wpab-icon">🏠</span>
+          <span>ProjectsHub</span>
+          <span style="font-size:10px;opacity:0.7;">↗</span>
+        </a>
+        <ul class="wpab-submenu">
+          <li><a href="/" target="_blank">Visit Site ↗</a></li>
+          <li><a href="/projects/" target="_blank">Projects Showcase ↗</a></li>
+          <li><a href="/workshop/" target="_blank">3-Day Bootcamp ↗</a></li>
+          <li><a href="/tools/" target="_blank">AI Tools Directory ↗</a></li>
+          <li><a href="/blog/" target="_blank">Blog & Resources ↗</a></li>
+        </ul>
+      </div>
+
+      <!-- Project Guide Quick Link -->
+      <div class="wpab-item">
+        <a href="/admin/guide/" class="wpab-link" title="Master Project Guide & Operations Manual">
+          <span class="wpab-icon">📖</span>
+          <span>Project Guide</span>
+        </a>
+        <ul class="wpab-submenu">
+          <li><a href="/admin/guide/">Operations Manual</a></li>
+          <li><a href="/admin/core/adminguidenote/">Custom Notes &amp; SOPs</a></li>
+          <li><a href="/admin/core/adminguidenote/add/">➕ Add New Note</a></li>
+        </ul>
+      </div>
+
+      <!-- Inquiries Notification Bubble -->
+      <div class="wpab-item">
+        <a href="/admin/core/contactinquiry/" class="wpab-link" title="{{ admin_stats.new_inquiries|default:'0' }} new inquiries awaiting triage">
+          <span class="wpab-icon">💬</span>
+          <span class="wpab-badge">{{ admin_stats.new_inquiries|default:'0' }}</span>
+        </a>
+      </div>
+
+      <!-- "+ New" Quick Creation Dropdown -->
+      <div class="wpab-item">
+        <button type="button" class="wpab-link" aria-haspopup="true">
+          <span class="wpab-icon">➕</span>
+          <span>New</span>
+        </button>
+        <ul class="wpab-submenu">
+          <li><a href="/admin/core/project/add/">AI Project</a></li>
+          <li><a href="/admin/core/blogpost/add/">Blog Post</a></li>
+          <li><a href="/admin/core/aitool/add/">AI Tool</a></li>
+          <li><a href="/admin/core/workshopcard/add/">Workshop</a></li>
+          <li><a href="/admin/core/casestudy/add/">Case Study</a></li>
+          <li><a href="/admin/core/adminguidenote/add/">Guide Note / SOP</a></li>
+          <li><a href="/admin/auth/user/add/">User</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Right Side: User Profile & Quick Actions -->
+    <div class="wpab-right">
+      <div class="wpab-item">
+        <a href="{% url 'admin:password_change' %}" class="wpab-link">
+          <span>Howdy, <strong>{{ user.get_short_name|default:user.username }}</strong></span>
+          <span class="wpab-user-avatar">{{ user.username|slice:":1"|upper }}</span>
+        </a>
+        <ul class="wpab-submenu align-right">
+          <li style="padding:8px 14px;border-bottom:1px solid rgba(255,255,255,0.1);color:#ffffff;">
+            <strong>{{ user.username }}</strong><br>
+            <span style="font-size:11px;color:#a7aaad;">{{ user.email|default:'Administrator' }}</span>
+          </li>
+          <li><a href="{% url 'admin:password_change' %}">Edit Profile / Password</a></li>
+          <li>
+            <form id="wp-logout-form" method="post" action="{% url 'admin:logout' %}" style="display:inline;margin:0;width:100%;">
+              {% csrf_token %}
+              <button type="submit" style="background:none;border:none;color:#d63638;padding:7px 14px;width:100%;text-align:left;cursor:pointer;font-size:12px;font-family:inherit;">
+                Log Out
+              </button>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- ═══════════════════════════════════════════════════════════
+       2. WORDPRESS MAIN SHELL (#wpwrap)
+       ═══════════════════════════════════════════════════════════ -->
+  <div id="wpwrap" class="{% if not user.is_authenticated or is_popup %}wp-login-mode{% endif %}">
+    
+    {% if user.is_authenticated and not is_popup %}
+    <!-- ── WordPress Left Sidebar Navigation (#adminmenumain) ── -->
+    <div id="adminmenumain" role="navigation" aria-label="Main menu">
+      <ul id="adminmenu">
+
+        <!-- 1. Dashboard -->
+        <li class="wp-menu-item" data-path="/admin/">
+          <a href="{% url 'admin:index' %}" class="wp-menu-link">
+            <span class="wp-menu-icon">📊</span>
+            <span class="wp-menu-name">Dashboard</span>
+          </a>
+          <ul class="wp-submenu">
+            <li class="wp-submenu-head">Dashboard</li>
+            <li><a href="{% url 'admin:index' %}">Home</a></li>
+            <li><a href="/admin/core/sitesettings/1/change/">Site Telemetry</a></li>
+          </ul>
+        </li>
+
+        <!-- Project Guide & Operations Manual -->
+        <li class="wp-menu-item" data-path="/admin/guide/">
+          <a href="/admin/guide/" class="wp-menu-link">
+            <span class="wp-menu-icon">📖</span>
+            <span class="wp-menu-name">Project Guide</span>
+            <span class="wp-menu-count blue" style="background:#6366f1;">Guide</span>
+          </a>
+          <ul class="wp-submenu">
+            <li class="wp-submenu-head">Project Guide</li>
+            <li><a href="/admin/guide/">Operations Manual</a></li>
+            <li><a href="/admin/core/adminguidenote/">Custom Notes &amp; SOPs</a></li>
+            <li><a href="/admin/core/adminguidenote/add/">➕ Add Guide Note</a></li>
+          </ul>
+        </li>
+
+        <li class="wp-menu-separator"></li>
+
+        <!-- 2. AI Projects -->
+        <li class="wp-menu-item" data-path="/admin/core/project/">
+          <a href="/admin/core/project/" class="wp-menu-link">
+            <span class="wp-menu-icon">🚀</span>
+            <span class="wp-menu-name">Projects</span>
+            <span class="wp-menu-count blue">{{ model_counts.project|default:'0' }}</span>
+          </a>
+          <ul class="wp-submenu">
+            <li class="wp-submenu-head">Projects</li>
+            <li><a href="/admin/core/project/">All Projects</a></li>
+            <li><a href="/admin/core/project/add/">Add New</a></li>
+            <li><a href="/admin/core/projectcategory/">Categories</a></li>
+            <li><a href="/admin/core/technology/">Technologies</a></li>
+          </ul>
+        </li>
+
+        <!-- 3. Posts (Blog) -->
+        <li class="wp-menu-item" data-path="/admin/core/blogpost/">
+          <a href="/admin/core/blogpost/" class="wp-menu-link">
+            <span class="wp-menu-icon">📝</span>
+            <span class="wp-menu-name">Posts</span>
+            <span class="wp-menu-count blue">{{ model_counts.blogpost|default:'0' }}</span>
+          </a>
+          <ul class="wp-submenu">
+            <li class="wp-submenu-head">Posts</li>
+            <li><a href="/admin/core/blogpost/">All Posts</a></li>
+            <li><a href="/admin/core/blogpost/add/">Add New</a></li>
+            <li><a href="/admin/core/blogcategory/">Categories</a></li>
+            <li><a href="/admin/core/tag/">Tags</a></li>
+          </ul>
+        </li>
+
+        <!-- 4. AI Tools -->
+        <li class="wp-menu-item" data-path="/admin/core/aitool/">
+          <a href="/admin/core/aitool/" class="wp-menu-link">
+            <span class="wp-menu-icon">🛠️</span>
+            <span class="wp-menu-name">AI Tools</span>
+            <span class="wp-menu-count blue">{{ model_counts.aitool|default:'0' }}</span>
+          </a>
+          <ul class="wp-submenu">
+            <li class="wp-submenu-head">AI Tools</li>
+            <li><a href="/admin/core/aitool/">All Tools</a></li>
+            <li><a href="/admin/core/aitool/add/">Add New</a></li>
+            <li><a href="/admin/core/toolcategory/">Categories</a></li>
+          </ul>
+        </li>
+
+        <!-- 5. Workshops -->
+        <li class="wp-menu-item" data-path="/admin/core/workshop">
+          <a href="/admin/core/workshopcard/" class="wp-menu-link">
+            <span class="wp-menu-icon">🎓</span>
+            <span class="wp-menu-name">Workshops</span>
+            {% if admin_stats.pending_enrollments %}
+              <span class="wp-menu-count red">{{ admin_stats.pending_enrollments }}</span>
+            {% endif %}
+          </a>
+          <ul class="wp-submenu">
+            <li class="wp-submenu-head">Workshops</li>
+            <li><a href="/admin/core/workshopcard/">All Workshops</a></li>
+            <li><a href="/admin/core/workshopday/">Curriculum Days</a></li>
+            <li><a href="/admin/core/workshopenrollment/">Enrollments ({{ model_counts.workshopenrollment|default:'0' }})</a></li>
+          </ul>
+        </li>
+
+        <!-- 6. Services & Work -->
+        <li class="wp-menu-item" data-path="/admin/core/service/">
+          <a href="/admin/core/service/" class="wp-menu-link">
+            <span class="wp-menu-icon">💼</span>
+            <span class="wp-menu-name">Services</span>
+          </a>
+          <ul class="wp-submenu">
+            <li class="wp-submenu-head">Services &amp; Work</li>
+            <li><a href="/admin/core/service/">All Services</a></li>
+            <li><a href="/admin/core/servicefeature/">Service Features</a></li>
+            <li><a href="/admin/core/casestudy/">Case Studies ({{ model_counts.casestudy|default:'0' }})</a></li>
+            <li><a href="/admin/core/pricingplan/">Pricing Plans</a></li>
+          </ul>
+        </li>
+
+        <!-- 7. Testimonials & FAQ -->
+        <li class="wp-menu-item" data-path="/admin/core/testimonial/">
+          <a href="/admin/core/testimonial/" class="wp-menu-link">
+            <span class="wp-menu-icon">💬</span>
+            <span class="wp-menu-name">Feedback</span>
+          </a>
+          <ul class="wp-submenu">
+            <li class="wp-submenu-head">Feedback &amp; FAQ</li>
+            <li><a href="/admin/core/testimonial/">Testimonials</a></li>
+            <li><a href="/admin/core/faq/">FAQs</a></li>
+            <li><a href="/admin/core/faqcategory/">FAQ Categories</a></li>
+          </ul>
+        </li>
+
+        <!-- 8. CRM & Inquiries -->
+        <li class="wp-menu-item" data-path="/admin/core/contactinquiry/">
+          <a href="/admin/core/contactinquiry/" class="wp-menu-link">
+            <span class="wp-menu-icon">📬</span>
+            <span class="wp-menu-name">Inquiries</span>
+            {% if admin_stats.new_inquiries %}
+              <span class="wp-menu-count red">{{ admin_stats.new_inquiries }}</span>
+            {% else %}
+              <span class="wp-menu-count">{{ model_counts.contactinquiry|default:'0' }}</span>
+            {% endif %}
+          </a>
+          <ul class="wp-submenu">
+            <li class="wp-submenu-head">CRM &amp; Leads</li>
+            <li><a href="/admin/core/contactinquiry/">Contact Inquiries</a></li>
+            <li><a href="/admin/core/ideasubmission/">Idea Proposals ({{ model_counts.ideasubmission|default:'0' }})</a></li>
+            <li><a href="/admin/core/projectgatelead/">Gate Leads ({{ model_counts.projectgatelead|default:'0' }})</a></li>
+            <li><a href="/admin/core/contactmessage/">Direct Messages</a></li>
+            <li><a href="/admin/core/chatbotconversation/">Chatbot Chats &amp; Leads ({{ model_counts.chatbotconversation|default:'0' }})</a></li>
+          </ul>
+        </li>
+
+        <li class="wp-menu-separator"></li>
+
+        <!-- 9. Appearance -->
+        <li class="wp-menu-item" data-path="/admin/core/navigationitem/">
+          <a href="/admin/core/navigationitem/" class="wp-menu-link">
+            <span class="wp-menu-icon">🎨</span>
+            <span class="wp-menu-name">Appearance</span>
+          </a>
+          <ul class="wp-submenu">
+            <li class="wp-submenu-head">Appearance</li>
+            <li><a href="/admin/core/navigationitem/">Menus &amp; Navigation</a></li>
+            <li><a href="/admin/core/sociallink/">Social Links</a></li>
+            <li><a href="/admin/core/statitem/">Hero Stats</a></li>
+          </ul>
+        </li>
+
+        <!-- 10. SEO & Redirects -->
+        <li class="wp-menu-item" data-path="/admin/core/seodata/">
+          <a href="/admin/core/seodata/" class="wp-menu-link">
+            <span class="wp-menu-icon">🔍</span>
+            <span class="wp-menu-name">SEO &amp; Tools</span>
+          </a>
+          <ul class="wp-submenu">
+            <li class="wp-submenu-head">SEO &amp; Redirects</li>
+            <li><a href="/admin/core/seodata/">SEO Metadata</a></li>
+            <li><a href="/admin/core/redirect/">301/302 Redirects</a></li>
+            <li><a href="/sitemap.xml" target="_blank">XML Sitemap ↗</a></li>
+            <li><a href="/robots.txt" target="_blank">Robots.txt ↗</a></li>
+          </ul>
+        </li>
+
+        <!-- 11. Users -->
+        <li class="wp-menu-item" data-path="/admin/auth/">
+          <a href="/admin/auth/user/" class="wp-menu-link">
+            <span class="wp-menu-icon">👥</span>
+            <span class="wp-menu-name">Users</span>
+            <span class="wp-menu-count">{{ model_counts.user|default:'1' }}</span>
+          </a>
+          <ul class="wp-submenu">
+            <li class="wp-submenu-head">Users</li>
+            <li><a href="/admin/auth/user/">All Users</a></li>
+            <li><a href="/admin/auth/user/add/">Add New</a></li>
+            <li><a href="/admin/auth/group/">User Groups</a></li>
+            <li><a href="/admin/auth/permission/">Permissions &amp; Capabilities ({{ model_counts.permission|default:'0' }})</a></li>
+          </ul>
+        </li>
+
+        <!-- 12. Settings -->
+        <li class="wp-menu-item" data-path="/admin/core/sitesettings/">
+          <a href="/admin/core/sitesettings/1/change/" class="wp-menu-link">
+            <span class="wp-menu-icon">⚙️</span>
+            <span class="wp-menu-name">Settings</span>
+          </a>
+          <ul class="wp-submenu">
+            <li class="wp-submenu-head">Settings</li>
+            <li><a href="/admin/core/sitesettings/1/change/">General Settings</a></li>
+          </ul>
+        </li>
+
+      </ul>
+
+      <!-- Collapse menu button -->
+      <button type="button" id="collapse-menu" title="Collapse Main menu">
+        <span class="collapse-icon">◀</span>
+        <span>Collapse menu</span>
+      </button>
+    </div>
+    {% endif %}
+
+    <!-- ── WordPress Main Content Area (#wpcontent) ── -->
+    <div id="wpcontent" {% if not user.is_authenticated or is_popup %}style="margin-left:0 !important;padding:0 !important;background:transparent !important;"{% endif %}>
+      <div id="wpbody" role="main">
+        <div id="wpbody-content">
+
+          {% if user.is_authenticated and not is_popup %}
+          <!-- Top WordPress Screen Header Bar -->
+          <div class="wp-screen-header">
+            <div>
+              <h1 class="wp-heading-inline">
+                {% block content_title %}
+                  {% if title %}{{ title }}{% else %}Dashboard{% endif %}
+                {% endblock %}
+              </h1>
+              {% block object-tools %}{% endblock %}
+            </div>
+
+            <!-- Screen Options & Help Toggles -->
+            <div class="screen-meta-toggle">
+              <button type="button" class="screen-meta-btn" onclick="toggleScreenOptions()">Screen Options ▾</button>
+              <button type="button" class="screen-meta-btn" onclick="toggleHelpTab()">Help ▾</button>
+            </div>
+          </div>
+
+          <!-- Hidden Screen Options Panel (WordPress Style) -->
+          <div id="screen-options-wrap" style="display:none;background:#ffffff;border:1px solid #c3c4c7;padding:12px 16px;margin-bottom:15px;border-radius:3px;">
+            <p style="margin:0 0 6px 0;font-weight:600;">Screen Elements</p>
+            <label style="margin-right:15px;"><input type="checkbox" checked disabled> Welcome Panel</label>
+            <label style="margin-right:15px;"><input type="checkbox" checked disabled> At a Glance</label>
+            <label style="margin-right:15px;"><input type="checkbox" checked disabled> Activity</label>
+            <label style="margin-right:15px;"><input type="checkbox" checked disabled> Quick Draft</label>
+            <label><input type="checkbox" checked disabled> Platform Health</label>
+          </div>
+          {% endif %}
+
+          <!-- Breadcrumbs if present -->
+          {% block nav-breadcrumbs %}
+            {% block breadcrumbs %}{% endblock %}
+          {% endblock %}
+
+          <!-- WordPress Dismissible Notices -->
+          {% block messages %}
+            {% if messages %}
+              <div class="wp-notices">
+                {% for message in messages %}
+                  <div class="notice notice-{{ message.tags|default:'info' }} is-dismissible" role="alert">
+                    <p>{{ message|capfirst }}</p>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endblock messages %}
+
+          <!-- Content Body -->
+          {% block content %}{% endblock %}
+
+        </div>
+      </div>
+
+      {% if user.is_authenticated and not is_popup %}
+      <!-- WordPress Footer (#wpfooter) -->
+      <div id="wpfooter" role="contentinfo">
+        <p id="footer-left">
+          Thank you for creating with <a href="/" target="_blank">ProjectsHub</a>.
+        </p>
+        <p id="footer-right">
+          Version 2.0 · Django 4.2 LTS
+        </p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Interactive WordPress Script -->
+  <script>
+    (function() {
+      // 1. Sidebar Fold / Unfold
+      var collapseBtn = document.getElementById('collapse-menu');
+      var wpwrap = document.getElementById('wpwrap');
+      var isFolded = localStorage.getItem('wp-admin-folded') === 'true';
+      if (isFolded && wpwrap) {
+        wpwrap.classList.add('folded');
+        if (collapseBtn) collapseBtn.querySelector('.collapse-icon').textContent = '▶';
+      }
+
+      if (collapseBtn && wpwrap) {
+        collapseBtn.addEventListener('click', function() {
+          var folded = wpwrap.classList.toggle('folded');
+          collapseBtn.querySelector('.collapse-icon').textContent = folded ? '▶' : '◀';
+          localStorage.setItem('wp-admin-folded', folded ? 'true' : 'false');
+        });
+      }
+
+      // 2. Active Menu Item Highlighter
+      var currentPath = window.location.pathname;
+      var menuItems = document.querySelectorAll('#adminmenu > li.wp-menu-item');
+      var matched = false;
+      menuItems.forEach(function(item) {
+        var itemPath = item.getAttribute('data-path');
+        var hasSublink = false;
+        item.querySelectorAll('.wp-submenu a').forEach(function(sublink) {
+          var subHref = sublink.getAttribute('href');
+          if (subHref && subHref !== '#' && currentPath.indexOf(subHref) === 0) {
+            hasSublink = true;
+            sublink.style.fontWeight = '700';
+            sublink.style.color = '#fff';
+          }
+        });
+        if (itemPath === '/admin/' && (currentPath === '/admin/' || currentPath === '/admin')) {
+          item.classList.add('current');
+          matched = true;
+        } else if (hasSublink || (itemPath && itemPath !== '/admin/' && currentPath.indexOf(itemPath) === 0)) {
+          item.classList.add('current');
+          matched = true;
+        }
+      });
+      if (!matched && menuItems[0]) {
+        menuItems[0].classList.add('current');
+      }
+
+      // 3. Dismissible Notices
+      document.querySelectorAll('.notice.is-dismissible').forEach(function(notice) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.innerHTML = '✕';
+        btn.style.cssText = 'background:none;border:none;color:#787c82;cursor:pointer;margin-left:auto;font-size:12px;padding:2px 6px;';
+        btn.onclick = function() { notice.remove(); };
+        notice.appendChild(btn);
+      });
+    })();
+
+    function toggleScreenOptions() {
+      var wrap = document.getElementById('screen-options-wrap');
+      if (wrap) wrap.style.display = wrap.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function toggleHelpTab() {
+      alert('ProjectsHub Admin Help:\n\n• Manage projects, tools, workshops and blogs from the sidebar.\n• Track new CRM inquiries in real-time.\n• Changes are instantly reflected on the live site.');
+    }
+  </script>
+
+  {% block footer %}{% endblock %}
+</body>
+</html>

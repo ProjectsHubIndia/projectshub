@@ -23,6 +23,11 @@
         }
       }
     }
+    // Fallback: read from <meta name="csrf-token"> if cookie not set
+    if (!cookieValue && name === "csrftoken") {
+      var meta = document.querySelector('meta[name="csrf-token"]');
+      if (meta) cookieValue = meta.getAttribute("content");
+    }
     return cookieValue;
   }
 
@@ -33,58 +38,115 @@
   var navbar = document.getElementById("navbar");
   var hamburger = document.getElementById("hamburger");
   var mobileMenu = document.getElementById("mobileMenu");
-  var themeToggle = document.getElementById("themeToggle");
 
   if (hamburger && navbar && mobileMenu) {
     var iconMenu = hamburger.querySelector(".icon-menu");
     var iconClose = hamburger.querySelector(".icon-close");
 
-    // ── Hamburger toggle ──
-    hamburger.addEventListener("click", function () {
-      var isOpen = mobileMenu.classList.toggle("is-open");
+    function setMobileMenuState(isOpen) {
+      mobileMenu.classList.toggle("is-open", isOpen);
+      mobileMenu.classList.toggle("active", isOpen);
       navbar.classList.toggle("is-open", isOpen);
-      iconMenu.classList.toggle("hidden", isOpen);
-      iconClose.classList.toggle("hidden", !isOpen);
+      if (iconMenu) iconMenu.classList.toggle("hidden", isOpen);
+      if (iconClose) iconClose.classList.toggle("hidden", !isOpen);
       hamburger.setAttribute("aria-expanded", isOpen ? "true" : "false");
       mobileMenu.setAttribute("aria-hidden", isOpen ? "false" : "true");
-    });
-
-    // ── Close on mobile link tap ──
-    document
-      .querySelectorAll("a.mobile-link, a.mobile-sublink, .btn-cta--mobile, .mob-sub-link, .mob-btn:not(.mob-btn--expand)")
-      .forEach(function (link) {
-        link.addEventListener("click", function () {
-          mobileMenu.classList.remove("is-open");
-          navbar.classList.remove("is-open");
-          iconMenu.classList.remove("hidden");
-          iconClose.classList.add("hidden");
-          hamburger.setAttribute("aria-expanded", "false");
-          mobileMenu.setAttribute("aria-hidden", "true");
-        });
-      });
-  }
-
-  // ── Theme Toggle ──
-  if (themeToggle) {
-    var iconSun = themeToggle.querySelector(".icon-sun");
-    var iconMoon = themeToggle.querySelector(".icon-moon");
-
-    function applyTheme(isLight) {
-      document.body.classList.toggle("light", isLight);
-      if (iconSun && iconMoon) {
-        iconSun.classList.toggle("hidden", isLight);
-        iconMoon.classList.toggle("hidden", !isLight);
-      }
-      localStorage.setItem("ph-theme", isLight ? "light" : "dark");
+      document.body.classList.toggle("menu-open", isOpen);
     }
 
-    // Default to light unless user explicitly chose dark
-    var savedTheme = localStorage.getItem("ph-theme");
-    applyTheme(savedTheme !== "dark");
-
-    themeToggle.addEventListener("click", function () {
-      applyTheme(!document.body.classList.contains("light"));
+    // ── Hamburger toggle ──
+    hamburger.addEventListener("click", function () {
+      var willOpen = !mobileMenu.classList.contains("is-open") && !mobileMenu.classList.contains("active");
+      setMobileMenuState(willOpen);
     });
+
+    // ── Accordion toggle for expandable items ──
+    mobileMenu.querySelectorAll(".mob-btn--expand").forEach(function (btn) {
+      if (btn.dataset.accordionBound) return;
+      btn.dataset.accordionBound = "true";
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var item = btn.closest(".mob-item");
+        if (!item) return;
+        var isOpen = item.classList.toggle("is-open");
+        item.classList.toggle("open", isOpen);
+        btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      });
+    });
+
+    // ── Close on mobile navigation link tap ──
+    mobileMenu
+      .querySelectorAll("a.mobile-link, a.mobile-sublink, .btn-cta--mobile, .mob-sub-link, a.mob-btn, .mobile-contact-btn")
+      .forEach(function (link) {
+        link.addEventListener("click", function () {
+          setMobileMenuState(false);
+        });
+      });
+
+    // ── Close on Escape key press ──
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && (mobileMenu.classList.contains("is-open") || mobileMenu.classList.contains("active"))) {
+        setMobileMenuState(false);
+        hamburger.focus();
+      }
+    });
+
+    // ── Close when resized to desktop viewport (> 991px) ──
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 991 && (mobileMenu.classList.contains("is-open") || mobileMenu.classList.contains("active"))) {
+        setMobileMenuState(false);
+      }
+    });
+  }
+
+  // ── Universal Toast Notifications ──
+  window.showToast = function (message, type) {
+    type = type || "success";
+    var container = document.getElementById("phToastContainer");
+    if (!container) {
+      container = document.createElement("div");
+      container.id = "phToastContainer";
+      container.className = "ph-toast-container";
+      document.body.appendChild(container);
+    }
+    var toast = document.createElement("div");
+    toast.className = "ph-toast ph-toast--" + type;
+    toast.innerHTML = (type === "success" ? "✓ " : type === "error" ? "✕ " : "ℹ ") + message;
+    container.appendChild(toast);
+    requestAnimationFrame(function () {
+      toast.classList.add("show");
+    });
+    setTimeout(function () {
+      toast.classList.remove("show");
+      setTimeout(function () {
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
+      }, 350);
+    }, 4000);
+  };
+
+  // ── Theme Management (Pure Light Theme Default) ──
+  function initTheme() {
+    localStorage.removeItem("ph-theme-v3");
+    localStorage.removeItem("ph-theme");
+    localStorage.setItem("ph-theme", "light");
+    if (document.body) document.body.classList.add("light");
+    if (document.documentElement) document.documentElement.classList.add("light");
+  }
+  initTheme();
+
+  function toggleTheme() {
+    // Theme toggle retained as safe no-op if triggered
+    initTheme();
+  }
+
+  var desktopThemeToggle = document.getElementById("themeToggleBtn");
+  if (desktopThemeToggle) {
+    desktopThemeToggle.addEventListener("click", toggleTheme);
+  }
+  var mobileThemeToggle = document.getElementById("mobileThemeToggleBtn");
+  if (mobileThemeToggle) {
+    mobileThemeToggle.addEventListener("click", toggleTheme);
   }
 
   // ── Navbar border on scroll ──
@@ -483,84 +545,7 @@
     });
   }
 
-  /* ════════════════════════════════════════
-       8. CONTACT FORM (index.html)
-       ════════════════════════════════════════ */
 
-  function initContactForm() {
-    var form = document.getElementById("contactForm");
-    if (!form) return;
-
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var name = document.getElementById("contactName");
-      var email = document.getElementById("contactEmail");
-      var message = document.getElementById("contactMessage");
-      var btn = document.getElementById("contactSubmitBtn");
-      var valid = true;
-
-      [name, email, message].forEach(function (el) {
-        el.classList.remove("has-error");
-      });
-
-      if (!name.value.trim()) {
-        name.classList.add("has-error");
-        valid = false;
-      }
-      if (
-        !email.value.trim() ||
-        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)
-      ) {
-        email.classList.add("has-error");
-        valid = false;
-      }
-      if (!message.value.trim()) {
-        message.classList.add("has-error");
-        valid = false;
-      }
-      if (!valid) return;
-
-      btn.textContent = "Sending…";
-      btn.disabled = true;
-
-      fetch("/contact/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": getCookie("csrftoken"),
-        },
-        body: JSON.stringify({
-          full_name: name.value.trim(),
-          email: email.value.trim(),
-          message: message.value.trim(),
-        }),
-      })
-        .then(function (r) {
-          return r.json();
-        })
-        .then(function (data) {
-          if (data.success) {
-            btn.textContent = "✓ Message Sent!";
-            btn.style.background = "linear-gradient(135deg, #22c55e, #16a34a)";
-            setTimeout(function () {
-              form.reset();
-              btn.textContent = "Send Message";
-              btn.style.background = "";
-              btn.disabled = false;
-            }, 3000);
-          } else {
-            btn.textContent = "Send Message";
-            btn.style.background = "";
-            btn.disabled = false;
-          }
-        })
-        .catch(function () {
-          btn.textContent = "Send Message";
-          btn.style.background = "";
-          btn.disabled = false;
-        });
-    });
-  }
 
   /* ════════════════════════════════════════
        9. SPLINE LAZY LOADER (index.html)
@@ -1086,20 +1071,20 @@
   }
 
   function initMarquee() {
+    var winW = window.innerWidth;
     document.querySelectorAll(".marquee-track").forEach(function (track) {
-      // Keep cloning until track is at least 2x viewport width
       var original = track.innerHTML;
-      while (track.scrollWidth < window.innerWidth * 2.5) {
-        track.innerHTML += original;
+      var initialW = track.scrollWidth;
+      if (!initialW) return;
+      var targetW = winW * 2.5;
+      var sets = Math.max(2, Math.ceil(targetW / initialW));
+      var newHtml = "";
+      for (var s = 0; s < sets; s++) {
+        newHtml += original;
       }
+      track.innerHTML = newHtml;
 
-      // Count total sets and set the correct translate amount
-      var totalTags = track.querySelectorAll(".marquee-tag").length;
-      var originalTags = original.split("marquee-tag").length - 1;
-      var sets = totalTags / originalTags;
       var pct = ((1 / sets) * 100).toFixed(4);
-
-      // Inject a scoped style to override the keyframe endpoint
       var isReverse = track.classList.contains("marquee-track--reverse");
       var id = track.id || "mq-" + Math.random().toString(36).slice(2);
       track.id = id;
@@ -1129,6 +1114,153 @@
       document.head.appendChild(style);
     });
   }
+  /* ════════════════════════════════════════
+       CONTACT FORM SUBMISSION
+       ════════════════════════════════════════ */
+  function initContactForm() {
+    var form = document.getElementById("contactForm");
+    if (!form) return;
+
+    var captchaDisplay = document.getElementById("captchaDisplay");
+    var captchaRefreshBtn = document.getElementById("captchaRefreshBtn");
+    var captchaInput = document.getElementById("contactCaptcha");
+    var currentCaptchaToken = "";
+
+    function loadCaptcha() {
+      if (!captchaDisplay) return;
+      captchaDisplay.style.opacity = "0.5";
+      fetch("/api/captcha/")
+        .then(function (res) {
+          return res.json();
+        })
+        .then(function (data) {
+          if (data && data.success) {
+            currentCaptchaToken = data.token || "";
+            captchaDisplay.innerHTML = data.svg;
+            if (captchaInput) captchaInput.value = "";
+          }
+        })
+        .catch(function (err) {
+          console.error("Catch code load error:", err);
+          if (captchaDisplay) {
+            captchaDisplay.innerHTML = '<span style="font-size:0.7rem;color:#ef4444;">Click refresh</span>';
+          }
+        })
+        .finally(function () {
+          if (captchaDisplay) captchaDisplay.style.opacity = "1";
+        });
+    }
+
+    if (captchaRefreshBtn) {
+      captchaRefreshBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        loadCaptcha();
+      });
+    }
+
+    // Load initial catch code on setup
+    loadCaptcha();
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var submitBtn = form.querySelector('button[type="submit"]');
+      var originalContent = submitBtn ? submitBtn.innerHTML : "Send Message";
+
+      var fullNameInput = form.querySelector('#contactName, [name="full_name"]');
+      var emailInput = form.querySelector('#contactEmail, [name="email"]');
+      var subjectInput = form.querySelector('#contactSubject, [name="subject"]');
+      var messageInput = form.querySelector('#contactMessage, [name="message"]');
+      var catchCodeInput = form.querySelector('#contactCaptcha, [name="catch_code"]');
+      var hpInput = form.querySelector('#contactHpFax, [name="hp_company_url"]');
+
+      var fullName = fullNameInput ? fullNameInput.value.trim() : "";
+      var email = emailInput ? emailInput.value.trim() : "";
+      var subject = subjectInput ? subjectInput.value.trim() : "";
+      var message = messageInput ? messageInput.value.trim() : "";
+      var catchCode = catchCodeInput ? catchCodeInput.value.trim() : "";
+      var hpVal = hpInput ? hpInput.value.trim() : "";
+
+      if (!fullName || !email || !message) {
+        if (window.showToast) window.showToast("Please fill in your name, email, and message.", "error");
+        return;
+      }
+
+      if (!catchCode) {
+        if (window.showToast) window.showToast("Please enter the catch code (security verification).", "error");
+        if (catchCodeInput) catchCodeInput.focus();
+        return;
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Sending...';
+      }
+
+      var csrfToken = getCookie("csrftoken");
+
+      fetch("/contact/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
+        },
+        body: JSON.stringify({
+          full_name: fullName,
+          email: email,
+          subject: subject,
+          message: message,
+          catch_code: catchCode,
+          captcha_token: currentCaptchaToken,
+          hp_company_url: hpVal,
+        }),
+      })
+        .then(function (res) {
+          return res.json().then(function (data) {
+            return { ok: res.ok, status: res.status, data: data };
+          });
+        })
+        .then(function (resObj) {
+          var data = resObj.data;
+          if (resObj.ok && data && data.success) {
+            form.reset();
+            loadCaptcha();
+            if (window.showToast) {
+              window.showToast("Thank you! We've received your message and will reach out shortly.", "success");
+            }
+          } else {
+            var errMsg = "Failed to submit message. Please try again.";
+            if (data && data.errors && data.errors.catch_code) {
+              errMsg = data.errors.catch_code;
+            } else if (data && data.errors) {
+              var firstErrKey = Object.keys(data.errors)[0];
+              errMsg = data.errors[firstErrKey];
+            } else if (data && data.message) {
+              errMsg = data.message;
+            }
+            if (window.showToast) window.showToast(errMsg, "error");
+            loadCaptcha();
+            if (catchCodeInput) {
+              catchCodeInput.value = "";
+              catchCodeInput.focus();
+            }
+          }
+        })
+        .catch(function (err) {
+          console.error("Contact form error:", err);
+          if (window.showToast) {
+            window.showToast("Network error. Please try again or email us directly.", "error");
+          }
+          loadCaptcha();
+        })
+        .finally(function () {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalContent;
+          }
+        });
+    });
+  }
+
   /* ════════════════════════════════════════
        INIT — Run everything on DOMContentLoaded
        ════════════════════════════════════════ */

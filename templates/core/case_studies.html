@@ -1,115 +1,257 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-{% block title %}Case Studies | ProjectsHub{% endblock %}
+{% block title %}AI Case Studies &amp; Client Success Stories | ProjectsHub{% endblock %}
+{% block meta_description %}Explore real-world AI case studies and client success stories by ProjectsHub. See how custom AI development, NLP, automation, and machine learning drive measurable business ROI.{% endblock %}
 {% block nav_projects %}active{% endblock %}
 
 {% block extra_css %}
 <style>
+  /* ══════════════════════════════════════════════════════════
+     HERO SECTION
+     ══════════════════════════════════════════════════════════ */
   .cs-hero {
     text-align: center;
-    padding: 140px 5% 60px;
+    padding: 130px 5% 50px;
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
   }
   .cs-hero__label {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     font-size: 0.78rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: #f28c28;
-    margin-bottom: 1rem;
+    background: rgba(242, 140, 40, 0.12);
+    border: 1px solid rgba(242, 140, 40, 0.28);
+    padding: 0.35rem 0.95rem;
+    border-radius: 99px;
+    margin-bottom: 1.2rem;
+  }
+  .cs-hero__label::before {
+    content: "";
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #f28c28;
+    box-shadow: 0 0 8px #f28c28;
   }
   .cs-hero__title {
-    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
     font-weight: 800;
-    color: #f1f5f9;
-    margin-bottom: 1rem;
+    color: #f8fafc;
+    margin-bottom: 1.2rem;
     line-height: 1.15;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
   }
-  body.light .cs-hero__title { color: #0f172a; }
+  body.light .cs-hero__title {
+    color: #0f172a;
+  }
   .cs-hero__sub {
     color: #94a3b8;
-    font-size: 1.1rem;
-    max-width: 560px;
-    margin: 0 auto;
+    font-size: 1.12rem;
+    max-width: 680px;
+    margin: 0 auto 1.8rem;
+    line-height: 1.65;
   }
-  body.light .cs-hero__sub { color: #475569; }
+  body.light .cs-hero__sub {
+    color: #475569;
+  }
 
-  /* Grid */
+  /* Trust Pills */
+  .cs-hero__trust {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+  .cs-hero__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #cbd5e1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.35rem 0.9rem;
+    border-radius: 99px;
+  }
+  body.light .cs-hero__pill {
+    background: #f1f5f9;
+    color: #334155;
+    border-color: #e2e8f0;
+  }
+  .cs-hero__pill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     GRID & CARDS
+     ══════════════════════════════════════════════════════════ */
   .cs-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2rem;
-    max-width: 1200px;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 2.2rem;
+    max-width: 1240px;
     margin: 0 auto;
-    padding: 0 5% 80px;
+    padding: 30px 5% 90px;
+  }
+  @media (max-width: 640px) {
+    .cs-grid {
+      grid-template-columns: 1fr;
+      gap: 1.6rem;
+      padding: 20px 1rem 60px;
+    }
   }
 
   /* Card */
   .cs-card {
     border-radius: 20px;
     overflow: hidden;
-    background: #111827;
-    border: 1px solid rgba(255,255,255,0.08);
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     flex-direction: column;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+    position: relative;
   }
   body.light .cs-card {
     background: #ffffff;
-    border-color: rgba(0,0,0,0.08);
-    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    border-color: rgba(15, 23, 42, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   }
   .cs-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 25px rgba(59, 130, 246, 0.2);
+    border-color: rgba(99, 102, 241, 0.4);
+  }
+  body.light .cs-card:hover {
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.12), 0 0 20px rgba(59, 130, 246, 0.15);
+    border-color: rgba(59, 130, 246, 0.3);
   }
 
+  /* Media Container with Real Images */
+  .cs-card__media {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    background: #090d16;
+  }
   .cs-card__img {
     width: 100%;
-    height: 200px;
+    height: 100%;
     object-fit: cover;
+    object-position: top center;
     display: block;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .cs-card__color-band {
-    height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3.5rem;
-    position: relative;
+  .cs-card:hover .cs-card__img {
+    transform: scale(1.06);
   }
-  .cs-card__industry {
+  .cs-card__media-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.3) 0%, transparent 40%, rgba(15, 23, 42, 0.8) 100%);
+    pointer-events: none;
+  }
+  body.light .cs-card__media-overlay {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, transparent 45%, rgba(0, 0, 0, 0.5) 100%);
+  }
+
+  .cs-card__badges {
     position: absolute;
     top: 1rem;
     left: 1rem;
-    background: rgba(0,0,0,0.5);
-    color: #fff;
-    padding: 0.3rem 0.85rem;
+    right: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .cs-card__industry {
+    background: rgba(15, 23, 42, 0.82);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #93c5fd;
+    padding: 0.32rem 0.85rem;
     border-radius: 99px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.03em;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  }
+  .cs-card__timeline {
+    background: rgba(15, 23, 42, 0.82);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #fb923c;
+    padding: 0.32rem 0.75rem;
+    border-radius: 99px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    border: 1px solid rgba(242, 140, 40, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
   }
 
-  .cs-card__body { padding: 1.6rem; flex: 1; display: flex; flex-direction: column; }
+  /* Body */
+  .cs-card__body {
+    padding: 1.6rem 1.6rem 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
   .cs-card__client {
-    font-size: 0.78rem;
-    font-weight: 700;
+    font-size: 0.76rem;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     color: #f28c28;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.55rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .cs-card__client::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #f28c28;
   }
   .cs-card__title {
-    font-size: 1.2rem;
+    font-size: 1.22rem;
     font-weight: 700;
-    color: #f1f5f9;
-    margin-bottom: 0.75rem;
-    line-height: 1.4;
+    color: #f8fafc;
+    margin-bottom: 0.8rem;
+    line-height: 1.42;
+    transition: color 0.2s;
   }
-  body.light .cs-card__title { color: #0f172a; }
+  body.light .cs-card__title {
+    color: #0f172a;
+  }
+  .cs-card:hover .cs-card__title {
+    color: #60a5fa;
+  }
+  body.light .cs-card:hover .cs-card__title {
+    color: #2563eb;
+  }
   .cs-card__desc {
     color: #94a3b8;
     font-size: 0.92rem;
@@ -117,266 +259,349 @@
     flex: 1;
     margin-bottom: 1.4rem;
   }
-  body.light .cs-card__desc { color: #475569; }
+  body.light .cs-card__desc {
+    color: #475569;
+  }
 
   /* Stats row */
   .cs-card__stats {
-    display: flex;
-    gap: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
     padding: 1rem 0;
-    border-top: 1px solid rgba(255,255,255,0.07);
-    border-bottom: 1px solid rgba(255,255,255,0.07);
-    margin-bottom: 1.4rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 1.3rem;
   }
   body.light .cs-card__stats {
-    border-color: rgba(0,0,0,0.07);
+    border-color: rgba(15, 23, 42, 0.08);
+  }
+  .cs-card__stat-item {
+    text-align: left;
   }
   .cs-card__stat-val {
-    font-size: 1.4rem;
+    font-size: 1.22rem;
     font-weight: 800;
     color: #f1f5f9;
     display: block;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
   }
-  body.light .cs-card__stat-val { color: #0f172a; }
+  body.light .cs-card__stat-val {
+    color: #0f172a;
+  }
   .cs-card__stat-label {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: #64748b;
     text-transform: uppercase;
-    letter-spacing: 0.07em;
+    letter-spacing: 0.06em;
+    margin-top: 0.25rem;
+    display: block;
+  }
+  body.light .cs-card__stat-label {
+    color: #64748b;
   }
 
+  .cs-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.2rem;
+  }
   .cs-card__cta {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    color: #3b82f6;
-    font-weight: 600;
+    gap: 0.5rem;
+    color: #38bdf8;
+    font-weight: 700;
     font-size: 0.92rem;
     text-decoration: none;
+    transition: gap 0.2s ease, color 0.2s ease;
   }
-  body.light .cs-card__cta { color: #2563eb; }
+  body.light .cs-card__cta {
+    color: #0284c7;
+  }
+  .cs-card:hover .cs-card__cta {
+    gap: 0.75rem;
+    color: #60a5fa;
+  }
+  body.light .cs-card:hover .cs-card__cta {
+    color: #2563eb;
+  }
 
-  /* CTA section */
-  .cs-cta {
-    text-align: center;
-    padding: 60px 5% 100px;
-    max-width: 700px;
+  /* ══════════════════════════════════════════════════════════
+     BOTTOM CTA SECTION
+     ══════════════════════════════════════════════════════════ */
+  .cs-cta-wrapper {
+    padding: 20px 5% 90px;
+    max-width: 1100px;
     margin: 0 auto;
   }
-  .cs-cta__title {
-    font-size: clamp(1.6rem, 4vw, 2.4rem);
-    font-weight: 800;
-    color: #f1f5f9;
-    margin-bottom: 1rem;
+  .cs-cta-box {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 60px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
   }
-  body.light .cs-cta__title { color: #0f172a; }
-  .cs-cta__sub {
-    color: #94a3b8;
-    margin-bottom: 2rem;
-    font-size: 1rem;
+  .cs-cta-box::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: 20%;
+    width: 60%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, rgba(59, 130, 246, 0.1) 50%, transparent 75%);
+    pointer-events: none;
   }
-  body.light .cs-cta__sub { color: #475569; }
-  .cs-cta__btn {
+  .cs-cta__eyebrow {
     display: inline-block;
-    background: linear-gradient(135deg, #3b82f6, #6366f1);
-    color: #fff;
+    font-size: 0.75rem;
     font-weight: 700;
-    font-size: 1rem;
-    padding: 0.9rem 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #38bdf8;
+    margin-bottom: 0.75rem;
+    position: relative;
+    z-index: 1;
+  }
+  .cs-cta-box h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    font-weight: 800;
+    color: #ffffff !important;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+    letter-spacing: -0.02em;
+  }
+  .cs-cta-box p {
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-size: 1.05rem;
+    max-width: 620px;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+    position: relative;
+    z-index: 1;
+  }
+  .cs-cta-box .cs-cta-btns {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+  .cs-cta-primary {
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.85rem 2.2rem;
     border-radius: 99px;
     text-decoration: none;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 20px rgba(59,130,246,0.35);
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
   }
-  .cs-cta__btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(59,130,246,0.45); color: #fff; }
+  .cs-cta-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.55);
+    color: #ffffff !important;
+  }
+  .cs-cta-ghost {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.85rem 2rem;
+    border-radius: 99px;
+    text-decoration: none;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .cs-cta-ghost:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #ffffff !important;
+  }
 </style>
 {% endblock %}
 
 {% block content %}
 <!-- Hero -->
 <div class="cs-hero">
-  <span class="cs-hero__label">Real Results, Real Clients</span>
+  <span class="cs-hero__label">Proven Impact &amp; Real Results</span>
   <h1 class="cs-hero__title">AI Case Studies &amp; Success Stories</h1>
-  <p class="cs-hero__sub">See how ProjectsHub helped businesses and startups build AI-powered products with custom AI development — delivering measurable, real-world impact.</p>
+  <p class="cs-hero__sub">Explore how ProjectsHub helps startups and enterprise teams build production-grade AI applications — delivering measurable growth, operational speed, and clear ROI.</p>
+  <div class="cs-hero__trust">
+    <div class="cs-hero__pill"><span class="cs-hero__pill-dot"></span> 6+ Production Deployments</div>
+    <div class="cs-hero__pill"><span class="cs-hero__pill-dot"></span> 3–6 Week Average MVP Speed</div>
+    <div class="cs-hero__pill"><span class="cs-hero__pill-dot"></span> 100% Enterprise Security</div>
+  </div>
 </div>
 
 <!-- Cards Grid -->
 <div class="cs-grid">
-
-  <!-- Case Study 1 -->
-  <div class="cs-card">
-    <div class="cs-card__color-band" style="background: linear-gradient(135deg, #1e3a5f, #3b82f6);">
-      <span class="cs-card__industry">LegalTech</span>
-      ⚖️
-    </div>
-    <div class="cs-card__body">
-      <div class="cs-card__client">LexAI — Startup</div>
-      <h2 class="cs-card__title">AI Document Summarizer for Law Firms — From Zero to MVP in 3 Weeks</h2>
-      <p class="cs-card__desc">A law firm startup needed an AI-powered document summarizer before an investor demo. We designed, built, and deployed a full Django + GPT-4 SaaS product in 21 days — helping them close a seed round.</p>
-      <div class="cs-card__stats">
-        <div>
-          <span class="cs-card__stat-val">3 Weeks</span>
-          <span class="cs-card__stat-label">MVP Delivery</span>
-        </div>
-        <div>
-          <span class="cs-card__stat-val">100+</span>
-          <span class="cs-card__stat-label">Beta Users</span>
-        </div>
-        <div>
-          <span class="cs-card__stat-val">Seed</span>
-          <span class="cs-card__stat-label">Round Closed</span>
-        </div>
-      </div>
-      <a href="{% url 'blog_detail' 'from-zero-to-mvp-in-3-weeks' %}" class="cs-card__cta">Read Full Case Study &rarr;</a>
-    </div>
-  </div>
-
-  <!-- Case Study 2 -->
-  <div class="cs-card">
-    <div class="cs-card__color-band" style="background: linear-gradient(135deg, #064e3b, #10b981);">
-      <span class="cs-card__industry">E-Commerce</span>
-      🛒
-    </div>
-    <div class="cs-card__body">
-      <div class="cs-card__client">ShopSmart — D2C Brand</div>
-      <h2 class="cs-card__title">AI-Powered Product Recommendation Engine that Boosted Revenue by 38%</h2>
-      <p class="cs-card__desc">A D2C fashion brand was losing customers due to irrelevant product suggestions. We built a collaborative filtering recommendation engine integrated into their existing Shopify store.</p>
-      <div class="cs-card__stats">
-        <div>
-          <span class="cs-card__stat-val">+38%</span>
-          <span class="cs-card__stat-label">Revenue</span>
-        </div>
-        <div>
-          <span class="cs-card__stat-val">+62%</span>
-          <span class="cs-card__stat-label">Click-Through</span>
-        </div>
-        <div>
-          <span class="cs-card__stat-val">6 Weeks</span>
-          <span class="cs-card__stat-label">To Ship</span>
+  {% if case_studies %}
+    {% for cs in case_studies %}
+    <div class="cs-card" id="{{ cs.slug }}">
+      <div class="cs-card__media">
+        {% if cs.featured_image %}
+          <img src="{{ cs.featured_image.url }}" class="cs-card__img" alt="{{ cs.title }}" loading="lazy" />
+        {% elif cs.slug == 'ai-document-summarizer-law-firms' or cs.slug == 'from-zero-to-mvp-in-3-weeks' %}
+          <img src="{% static 'image/case_studies/lexai_doc_summarizer.webp' %}" class="cs-card__img" alt="{{ cs.title }}" loading="lazy" />
+        {% elif cs.slug == 'ai-product-recommendation-engine' %}
+          <img src="{% static 'image/case_studies/shopsmart_recommendation.webp' %}" class="cs-card__img" alt="{{ cs.title }}" loading="lazy" />
+        {% elif cs.slug == 'personalized-learning-assistant-edtech' %}
+          <img src="{% static 'image/case_studies/edupath_learning_assistant.webp' %}" class="cs-card__img" alt="{{ cs.title }}" loading="lazy" />
+        {% elif cs.slug == 'automated-patient-report-analyzer' %}
+          <img src="{% static 'image/case_studies/medtrack_patient_report.webp' %}" class="cs-card__img" alt="{{ cs.title }}" loading="lazy" />
+        {% elif cs.slug == 'natural-language-analytics-dashboard' %}
+          <img src="{% static 'image/case_studies/datapulse_nlp_analytics.webp' %}" class="cs-card__img" alt="{{ cs.title }}" loading="lazy" />
+        {% elif cs.slug == 'ai-route-optimizer-logistics' %}
+          <img src="{% static 'image/case_studies/swiftmove_route_optimizer.webp' %}" class="cs-card__img" alt="{{ cs.title }}" loading="lazy" />
+        {% else %}
+          <img src="{% static 'image/case_studies/lexai_doc_summarizer.webp' %}" class="cs-card__img" alt="{{ cs.title }}" loading="lazy" />
+        {% endif %}
+        <div class="cs-card__media-overlay"></div>
+        <div class="cs-card__badges">
+          <span class="cs-card__industry">{{ cs.industry }}</span>
+          {% if cs.timeline %}
+          <span class="cs-card__timeline">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            {{ cs.timeline }}
+          </span>
+          {% endif %}
         </div>
       </div>
-      <a href="/#contact" class="cs-card__cta">Start a Similar Project &rarr;</a>
-    </div>
-  </div>
-
-  <!-- Case Study 3 -->
-  <div class="cs-card">
-    <div class="cs-card__color-band" style="background: linear-gradient(135deg, #4c1d95, #7c3aed);">
-      <span class="cs-card__industry">EdTech</span>
-      🎓
-    </div>
-    <div class="cs-card__body">
-      <div class="cs-card__client">EduPath — EdTech Platform</div>
-      <h2 class="cs-card__title">Personalized Learning Assistant that Reduced Student Drop-off by 45%</h2>
-      <p class="cs-card__desc">An online learning platform was losing students mid-course. We built an AI tutor that adapts to each student's pace, detects confusion, and sends personalized nudges — dramatically improving completion rates.</p>
-      <div class="cs-card__stats">
-        <div>
-          <span class="cs-card__stat-val">-45%</span>
-          <span class="cs-card__stat-label">Drop-off</span>
+      <div class="cs-card__body">
+        <div class="cs-card__client">{{ cs.client }}</div>
+        <h2 class="cs-card__title">{{ cs.title }}</h2>
+        <p class="cs-card__desc">{{ cs.summary }}</p>
+        {% if cs.metrics.all %}
+        <div class="cs-card__stats">
+          {% for m in cs.metrics.all %}
+          <div class="cs-card__stat-item">
+            <span class="cs-card__stat-val">{{ m.value }}</span>
+            <span class="cs-card__stat-label">{{ m.label }}</span>
+          </div>
+          {% endfor %}
         </div>
-        <div>
-          <span class="cs-card__stat-val">+3x</span>
-          <span class="cs-card__stat-label">Completion</span>
-        </div>
-        <div>
-          <span class="cs-card__stat-val">8 Weeks</span>
-          <span class="cs-card__stat-label">To Launch</span>
+        {% endif %}
+        <div class="cs-card__footer">
+          <a href="{% if cs.slug == 'from-zero-to-mvp-in-3-weeks' or cs.slug == 'ai-document-summarizer-law-firms' %}{% url 'blog_detail' 'from-zero-to-mvp-in-3-weeks' %}{% else %}/#contact{% endif %}" class="cs-card__cta">
+            <span>{% if cs.slug == 'from-zero-to-mvp-in-3-weeks' or cs.slug == 'ai-document-summarizer-law-firms' %}Read Full Case Study{% else %}Start a Similar Project{% endif %}</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
         </div>
       </div>
-      <a href="/#contact" class="cs-card__cta">Start a Similar Project &rarr;</a>
     </div>
-  </div>
-
-  <!-- Case Study 4 -->
-  <div class="cs-card">
-    <div class="cs-card__color-band" style="background: linear-gradient(135deg, #7c2d12, #f97316);">
-      <span class="cs-card__industry">Healthcare</span>
-      🏥
-    </div>
-    <div class="cs-card__body">
-      <div class="cs-card__client">MedTrack — HealthTech</div>
-      <h2 class="cs-card__title">Automated Patient Report Analyzer Saving 4 Hours Per Day Per Doctor</h2>
-      <p class="cs-card__desc">Doctors were spending hours manually reading lab reports. We built a FastAPI + OpenAI system that extracts key values, flags anomalies, and generates plain-language summaries instantly.</p>
-      <div class="cs-card__stats">
-        <div>
-          <span class="cs-card__stat-val">4 hrs</span>
-          <span class="cs-card__stat-label">Saved/Day</span>
-        </div>
-        <div>
-          <span class="cs-card__stat-val">98%</span>
-          <span class="cs-card__stat-label">Accuracy</span>
-        </div>
-        <div>
-          <span class="cs-card__stat-val">5 Weeks</span>
-          <span class="cs-card__stat-label">To Deploy</span>
+    {% endfor %}
+  {% else %}
+    <!-- Case Study 1: LegalTech -->
+    <div class="cs-card">
+      <div class="cs-card__media">
+        <img src="{% static 'image/case_studies/lexai_doc_summarizer.webp' %}" class="cs-card__img" alt="AI Document Summarizer for Law Firms" loading="lazy" />
+        <div class="cs-card__media-overlay"></div>
+        <div class="cs-card__badges">
+          <span class="cs-card__industry">LegalTech</span>
+          <span class="cs-card__timeline">⏱️ 3 Weeks</span>
         </div>
       </div>
-      <a href="/#contact" class="cs-card__cta">Start a Similar Project &rarr;</a>
-    </div>
-  </div>
-
-  <!-- Case Study 5 -->
-  <div class="cs-card">
-    <div class="cs-card__color-band" style="background: linear-gradient(135deg, #1e1b4b, #6366f1);">
-      <span class="cs-card__industry">SaaS</span>
-      📊
-    </div>
-    <div class="cs-card__body">
-      <div class="cs-card__client">DataPulse — Analytics SaaS</div>
-      <h2 class="cs-card__title">Natural Language Analytics Dashboard — Ask Your Data a Question</h2>
-      <p class="cs-card__desc">A SaaS analytics company wanted users to query their dashboards in plain English. We built an NLP-to-SQL engine that lets non-technical users ask business questions and get instant chart answers.</p>
-      <div class="cs-card__stats">
-        <div>
-          <span class="cs-card__stat-val">+210%</span>
-          <span class="cs-card__stat-label">User Retention</span>
+      <div class="cs-card__body">
+        <div class="cs-card__client">LexAI — Startup</div>
+        <h2 class="cs-card__title">AI Document Summarizer for Law Firms — From Zero to MVP in 3 Weeks</h2>
+        <p class="cs-card__desc">A law firm startup needed an AI-powered document summarizer before an investor demo. We designed, built, and deployed a full Django + GPT-4 SaaS product in 21 days — helping them close a seed round.</p>
+        <div class="cs-card__stats">
+          <div class="cs-card__stat-item"><span class="cs-card__stat-val">3 Weeks</span><span class="cs-card__stat-label">MVP Delivery</span></div>
+          <div class="cs-card__stat-item"><span class="cs-card__stat-val">100+</span><span class="cs-card__stat-label">Beta Users</span></div>
+          <div class="cs-card__stat-item"><span class="cs-card__stat-val">Seed</span><span class="cs-card__stat-label">Round Closed</span></div>
         </div>
-        <div>
-          <span class="cs-card__stat-val">0 SQL</span>
-          <span class="cs-card__stat-label">Knowledge Needed</span>
-        </div>
-        <div>
-          <span class="cs-card__stat-val">10 Weeks</span>
-          <span class="cs-card__stat-label">To Launch</span>
+        <div class="cs-card__footer">
+          <a href="{% url 'blog_detail' 'from-zero-to-mvp-in-3-weeks' %}" class="cs-card__cta">
+            <span>Read Full Case Study</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
         </div>
       </div>
-      <a href="/#contact" class="cs-card__cta">Start a Similar Project &rarr;</a>
     </div>
-  </div>
 
-  <!-- Case Study 6 -->
-  <div class="cs-card">
-    <div class="cs-card__color-band" style="background: linear-gradient(135deg, #0c4a6e, #0ea5e9);">
-      <span class="cs-card__industry">Logistics</span>
-      🚚
-    </div>
-    <div class="cs-card__body">
-      <div class="cs-card__client">SwiftMove — Logistics Startup</div>
-      <h2 class="cs-card__title">AI Route Optimizer that Cut Delivery Costs by 27% in 60 Days</h2>
-      <p class="cs-card__desc">A last-mile delivery startup was burning money on inefficient routes. We built a machine learning route optimizer that factors in traffic, weather, and delivery windows — cutting costs significantly.</p>
-      <div class="cs-card__stats">
-        <div>
-          <span class="cs-card__stat-val">-27%</span>
-          <span class="cs-card__stat-label">Delivery Cost</span>
-        </div>
-        <div>
-          <span class="cs-card__stat-val">+19%</span>
-          <span class="cs-card__stat-label">On-Time Rate</span>
-        </div>
-        <div>
-          <span class="cs-card__stat-val">60 Days</span>
-          <span class="cs-card__stat-label">To Results</span>
+    <!-- Case Study 2: E-Commerce -->
+    <div class="cs-card">
+      <div class="cs-card__media">
+        <img src="{% static 'image/case_studies/shopsmart_recommendation.webp' %}" class="cs-card__img" alt="AI-Powered Product Recommendation Engine" loading="lazy" />
+        <div class="cs-card__media-overlay"></div>
+        <div class="cs-card__badges">
+          <span class="cs-card__industry">E-Commerce</span>
+          <span class="cs-card__timeline">⏱️ 6 Weeks</span>
         </div>
       </div>
-      <a href="/#contact" class="cs-card__cta">Start a Similar Project &rarr;</a>
+      <div class="cs-card__body">
+        <div class="cs-card__client">ShopSmart — D2C Brand</div>
+        <h2 class="cs-card__title">AI-Powered Product Recommendation Engine that Boosted Revenue by 38%</h2>
+        <p class="cs-card__desc">A D2C fashion brand was losing customers due to irrelevant product suggestions. We built a collaborative filtering recommendation engine integrated into their existing Shopify store.</p>
+        <div class="cs-card__stats">
+          <div class="cs-card__stat-item"><span class="cs-card__stat-val">+38%</span><span class="cs-card__stat-label">Revenue</span></div>
+          <div class="cs-card__stat-item"><span class="cs-card__stat-val">+62%</span><span class="cs-card__stat-label">Click-Through</span></div>
+          <div class="cs-card__stat-item"><span class="cs-card__stat-val">6 Weeks</span><span class="cs-card__stat-label">To Ship</span></div>
+        </div>
+        <div class="cs-card__footer">
+          <a href="/#contact" class="cs-card__cta">
+            <span>Start a Similar Project</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
     </div>
-  </div>
 
+    <!-- Case Study 3: EdTech -->
+    <div class="cs-card">
+      <div class="cs-card__media">
+        <img src="{% static 'image/case_studies/edupath_learning_assistant.webp' %}" class="cs-card__img" alt="Personalized Learning Assistant" loading="lazy" />
+        <div class="cs-card__media-overlay"></div>
+        <div class="cs-card__badges">
+          <span class="cs-card__industry">EdTech</span>
+          <span class="cs-card__timeline">⏱️ 8 Weeks</span>
+        </div>
+      </div>
+      <div class="cs-card__body">
+        <div class="cs-card__client">EduPath — EdTech Platform</div>
+        <h2 class="cs-card__title">Personalized Learning Assistant that Reduced Student Drop-off by 45%</h2>
+        <p class="cs-card__desc">An online learning platform was losing students mid-course. We built an AI tutor that adapts to each student's pace, detects confusion, and sends personalized nudges — dramatically improving completion rates.</p>
+        <div class="cs-card__stats">
+          <div class="cs-card__stat-item"><span class="cs-card__stat-val">-45%</span><span class="cs-card__stat-label">Drop-off</span></div>
+          <div class="cs-card__stat-item"><span class="cs-card__stat-val">+3x</span><span class="cs-card__stat-label">Completion</span></div>
+          <div class="cs-card__stat-item"><span class="cs-card__stat-val">8 Weeks</span><span class="cs-card__stat-label">To Launch</span></div>
+        </div>
+        <div class="cs-card__footer">
+          <a href="/#contact" class="cs-card__cta">
+            <span>Start a Similar Project</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  {% endif %}
 </div>
 
 <!-- Bottom CTA -->
-<div class="cs-cta">
-  <h2 class="cs-cta__title">Ready to Be Our Next Success Story?</h2>
-  <p class="cs-cta__sub">Tell us about your idea. We'll scope it, design it, and ship it — fast.</p>
-  <a href="/#contact" class="cs-cta__btn">Start Your Project</a>
+<div class="cs-cta-wrapper">
+  <div class="cs-cta-box">
+    <span class="cs-cta__eyebrow">Enterprise &amp; Startup AI Engineering</span>
+    <h2 style="color: #ffffff !important;">Ready to Be Our Next Success Story?</h2>
+    <p style="color: rgba(255, 255, 255, 0.85) !important;">Tell us about your project vision. We'll scope the architecture, build high-performance AI models, and deploy to production in weeks.</p>
+    <div class="cs-cta-btns">
+      <a href="/#contact" class="cs-cta-primary">
+        <span>Start Your Project</span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <a href="{% url 'tools' %}" class="cs-cta-ghost">Explore Free AI Tools</a>
+    </div>
+  </div>
 </div>
 {% endblock %}

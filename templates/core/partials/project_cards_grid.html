@@ -1,0 +1,44 @@
+{% load static %}
+{% if projects %}
+  {% for project in projects %}
+  <article class="project-card" itemscope itemtype="https://schema.org/SoftwareApplication">
+    <a href="{% if project.slug %}{% url 'project_detail_slug' project.slug %}{% else %}{% url 'project_detail' project.id %}{% endif %}" class="project-card-link-wrapper" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;" aria-label="View details for {{ project.title }}">
+      <div class="project-card__img-wrap">
+        <img src="{{ project.get_image_src }}"
+             alt="{{ project.title }} — ProjectsHub AI Project"
+             class="project-card__img"
+             loading="lazy"
+             width="400"
+             height="210"
+             itemprop="image" />
+        {% if project.price_label %}
+        <span style="position: absolute; top: 12px; right: 12px; background: rgba(15, 23, 42, 0.85); color: #22d3ee; border: 1px solid rgba(34, 211, 238, 0.3); padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(8px);">
+          {{ project.price_label }}
+        </span>
+        {% endif %}
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__tags">
+          {% for tag in project.get_tags_list|slice:":3" %}
+          <span class="project-tag">{{ tag }}</span>
+          {% endfor %}
+        </div>
+        <h3 class="project-card__title" itemprop="name">{{ project.title }}</h3>
+        <p class="project-card__desc" itemprop="description">{{ project.description|truncatewords:24 }}</p>
+        <span class="project-card__cta" aria-hidden="true">
+          Explore Project &rarr;
+        </span>
+      </div>
+    </a>
+  </article>
+  {% endfor %}
+{% else %}
+  <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 1.5rem; background: var(--ph-bg-surface); border: 1px solid var(--ph-border); border-radius: 20px;">
+    <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🔍</div>
+    <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--ph-text-primary); margin-bottom: 0.5rem;">No projects found</h3>
+    <p style="color: var(--ph-text-secondary); max-width: 480px; margin: 0 auto 1.5rem;">
+      No projects match the selected filter. Try selecting another category or clear your search term.
+    </p>
+    <a href="/projects/" class="btn-hero-primary" style="display: inline-flex;">View All Projects</a>
+  </div>
+{% endif %}

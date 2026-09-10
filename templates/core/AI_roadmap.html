@@ -52,12 +52,30 @@
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
 />
+<link rel="stylesheet" href="{% static 'css/ai_roadmap.css' %}?v=8" />
+<link rel="stylesheet" href="{% static 'css/ai_roadmapresponsive.css' %}?v=8" />
+
+<style>
+  html, body {
+    background-color: #f8fafc !important;
+    color: #0f172a !important;
+  }
+</style>
+<script>
+  (function() {
+    try {
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+      if (document.body) {
+        document.body.classList.add('light', 'light-mode');
+        document.body.classList.remove('dark', 'ai-roadmap-dark');
+      }
+    } catch (e) {}
+  })();
+</script>
 
 {% endblock %}
 
-{# =========================================
-   CONTENT
-========================================= #}
 {% block content %}
 
 <!-- Animated Ambient Background Elements -->
@@ -91,7 +109,7 @@
         <div class="timeline-icon"><i class="fa-solid fa-play"></i></div>
         <div class="connecting-line"></div>
         <div class="timeline-content">
-          <h3>1. Introduction</h3>
+          <h2>1. Introduction</h2>
           <div class="tags-container">
             <span class="tag" onclick="openDrawer('what_is_ai_eng')"
               >What is an AI Engineer?</span
@@ -114,7 +132,7 @@
         <div class="timeline-icon"><i class="fa-solid fa-brain"></i></div>
         <div class="connecting-line"></div>
         <div class="timeline-content">
-          <h3>2. Working With LLMs</h3>
+          <h2>2. Working With LLMs</h2>
           <div class="tags-container">
             <span class="tag" onclick="openDrawer('how_llm_work')"
               >How LLMs Work</span
@@ -122,7 +140,7 @@
           </div>
 
           <div class="sub-category">
-            <h4>Core LLM Elements</h4>
+            <h3>Core LLM Elements</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('tokens')">Tokens</span>
               <span class="tag" onclick="openDrawer('context')"
@@ -143,7 +161,7 @@
           </div>
 
           <div class="sub-category">
-            <h4>Common Terminology</h4>
+            <h3>Common Terminology</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('ai_vs_agi')"
                 >AI vs AGI</span
@@ -182,10 +200,10 @@
         </div>
         <div class="connecting-line"></div>
         <div class="timeline-content">
-          <h3>3. Prompt vs Context Engineering</h3>
+          <h2>3. Prompt vs Context Engineering</h2>
 
           <div class="sub-category">
-            <h4>Prompt Engineering</h4>
+            <h3>Prompt Engineering</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('zero_shot')"
                 >Zero-Shot</span
@@ -225,7 +243,7 @@
           </div>
 
           <div class="sub-category">
-            <h4>Context Engineering</h4>
+            <h3>Context Engineering</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('ext_memory')"
                 >External Memory</span
@@ -251,10 +269,10 @@
         </div>
         <div class="connecting-line"></div>
         <div class="timeline-content">
-          <h3>4. AI Models</h3>
+          <h2>4. AI Models</h2>
 
           <div class="sub-category">
-            <h4>Type of Models</h4>
+            <h3>Type of Models</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('pre_trained')"
                 >Pre-trained Models</span
@@ -269,7 +287,7 @@
           </div>
 
           <div class="sub-category">
-            <h4>Choosing the Right Model</h4>
+            <h3>Choosing the Right Model</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('closed_models')"
                 >Closed Models (Claude, Gemini, OpenAI)</span
@@ -281,7 +299,7 @@
           </div>
 
           <div class="sub-category">
-            <h4>Hugging Face</h4>
+            <h3>Hugging Face</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('hf_tasks')"
                 >Hugging Face Tasks</span
@@ -296,7 +314,7 @@
           </div>
 
           <div class="sub-category">
-            <h4>Local & Platforms</h4>
+            <h3>Local & Platforms</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('ollama')">Ollama</span>
               <span class="tag" onclick="openDrawer('lm_studio')"
@@ -309,7 +327,7 @@
           </div>
 
           <div class="sub-category">
-            <h4>APIs & SDKs</h4>
+            <h3>APIs & SDKs</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('openai_api')"
                 >OpenAI Response API</span
@@ -335,10 +353,10 @@
         </div>
         <div class="connecting-line"></div>
         <div class="timeline-content">
-          <h3>5. Embeddings & Vector Databases</h3>
+          <h2>5. Embeddings & Vector Databases</h2>
 
           <div class="sub-category">
-            <h4>What are Embeddings</h4>
+            <h3>What are Embeddings</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('semantic_search')"
                 >Semantic Search</span
@@ -356,7 +374,7 @@
           </div>
 
           <div class="sub-category">
-            <h4>Embedding Models</h4>
+            <h3>Embedding Models</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('prop_embeddings')"
                 >Proprietary (OpenAI, Gemini, Cohere)</span
@@ -376,10 +394,10 @@
         </div>
         <div class="connecting-line"></div>
         <div class="timeline-content">
-          <h3>6. Vector Databases</h3>
+          <h2>6. Vector Databases</h2>
 
           <div class="sub-category">
-            <h4>Popular Vector DBs</h4>
+            <h3>Popular Vector DBs</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('chroma')">Chroma</span>
               <span class="tag" onclick="openDrawer('pinecone')"
@@ -397,7 +415,7 @@
           </div>
 
           <div class="sub-category">
-            <h4>Implementing Vector Search</h4>
+            <h3>Implementing Vector Search</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('indexing')"
                 >Indexing Embeddings</span
@@ -417,10 +435,10 @@
         </div>
         <div class="connecting-line"></div>
         <div class="timeline-content">
-          <h3>7. Retrieval Augmented Generation (RAG)</h3>
+          <h2>7. Retrieval Augmented Generation (RAG)</h2>
 
           <div class="sub-category">
-            <h4>What are RAGs?</h4>
+            <h3>What are RAGs?</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('rag_usecases')"
                 >RAG Usecases</span
@@ -432,7 +450,7 @@
           </div>
 
           <div class="sub-category">
-            <h4>Implementing RAG</h4>
+            <h3>Implementing RAG</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('chunking')"
                 >Chunking</span
@@ -453,7 +471,7 @@
           </div>
 
           <div class="sub-category">
-            <h4>Ways of Implementing</h4>
+            <h3>Ways of Implementing</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('sdks_direct')"
                 >Using SDKs Directly</span
@@ -477,10 +495,10 @@
         <div class="timeline-icon"><i class="fa-solid fa-robot"></i></div>
         <div class="connecting-line"></div>
         <div class="timeline-content">
-          <h3>8. AI Agents</h3>
+          <h2>8. AI Agents</h2>
 
           <div class="sub-category">
-            <h4>Concepts</h4>
+            <h3>Concepts</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('agents_usecases')"
                 >Agents Usecases</span
@@ -498,7 +516,7 @@
           </div>
 
           <div class="sub-category">
-            <h4>Building AI Agents</h4>
+            <h3>Building AI Agents</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('custom_agents')"
                 >Custom Agents (from scratch)</span
@@ -517,7 +535,7 @@
           </div>
 
           <div class="sub-category">
-            <h4>Cloud & Frameworks</h4>
+            <h3>Cloud & Frameworks</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('openai_agentkit')"
                 >OpenAI AgentKit</span
@@ -540,10 +558,10 @@
         </div>
         <div class="connecting-line"></div>
         <div class="timeline-content">
-          <h3>9. Model Context Protocol (MCP)</h3>
+          <h2>9. Model Context Protocol (MCP)</h2>
 
           <div class="sub-category">
-            <h4>Core Components</h4>
+            <h3>Core Components</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('mcp_host')"
                 >MCP Host & Client</span
@@ -558,7 +576,7 @@
           </div>
 
           <div class="sub-category">
-            <h4>Developing with MCP</h4>
+            <h3>Developing with MCP</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('build_mcp_server')"
                 >Building an MCP Server</span
@@ -581,10 +599,10 @@
         </div>
         <div class="connecting-line"></div>
         <div class="timeline-content">
-          <h3>10. AI Safety and Ethics</h3>
+          <h2>10. AI Safety and Ethics</h2>
 
           <div class="sub-category">
-            <h4>Safety Issues</h4>
+            <h3>Safety Issues</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('prompt_injection')"
                 >Prompt Injection Attacks</span
@@ -599,7 +617,7 @@
           </div>
 
           <div class="sub-category">
-            <h4>Best Practices</h4>
+            <h3>Best Practices</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('content_mod')"
                 >Content Moderation APIs</span
@@ -625,10 +643,10 @@
         </div>
         <div class="connecting-line"></div>
         <div class="timeline-content">
-          <h3>11. Evaluation & Observability</h3>
+          <h2>11. Evaluation & Observability</h2>
 
           <div class="sub-category">
-            <h4>Observability Tools</h4>
+            <h3>Observability Tools</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('tracing')"
                 >Tracing & Logging</span
@@ -643,7 +661,7 @@
           </div>
 
           <div class="sub-category">
-            <h4>Evaluation (Evals)</h4>
+            <h3>Evaluation (Evals)</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('llm_as_judge')"
                 >LLM-as-a-judge</span
@@ -664,9 +682,9 @@
         <div class="timeline-icon"><i class="fa-solid fa-icons"></i></div>
         <div class="connecting-line"></div>
         <div class="timeline-content">
-          <h3>12. Multimodal AI</h3>
+          <h2>12. Multimodal AI</h2>
           <div class="sub-category">
-            <h4>Multimodal Concepts</h4>
+            <h3>Multimodal Concepts</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('multi_ai')"
                 >Multimodal AI</span
@@ -695,7 +713,7 @@
             </div>
           </div>
           <div class="sub-category">
-            <h4>APIs and Frameworks</h4>
+            <h3>APIs and Frameworks</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('vision_api')"
                 >OpenAI Vision API</span
@@ -727,9 +745,9 @@
         </div>
         <div class="connecting-line"></div>
         <div class="timeline-content">
-          <h3>13. Development Tools</h3>
+          <h2>13. Development Tools</h2>
           <div class="sub-category">
-            <h4>AI Code Editors</h4>
+            <h3>AI Code Editors</h3>
             <div class="tags-container">
               <span class="tag" onclick="openDrawer('dev_tools_intro')"
                 >Development Tools</span
@@ -751,57 +769,6 @@
   </div>
 </div>
 
-<!-- Dynamic Offcanvas Drawer -->
-<div
-  class="offcanvas offcanvas-end"
-  tabindex="-1"
-  id="dynamicOffcanvas"
-  aria-labelledby="dynamicOffcanvasLabel"
-  data-bs-scroll="true"
-  data-bs-backdrop="false"
->
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="drawerTitle">Title</h5>
-    <button
-      type="button"
-      class="btn-close-custom"
-      data-bs-dismiss="offcanvas"
-      aria-label="Close"
-    >
-      <i class="fa-solid fa-xmark"></i>
-    </button>
-  </div>
-  <div class="offcanvas-body">
-    <div id="drawerDesc">Description goes here...</div>
-
-    <!-- Topic Image (dummy placeholder, future: real image link per topic) -->
-    <div class="drawer-image-container" id="drawerImageContainer">
-      <img id="drawerImage" src="" alt="" class="drawer-image" />
-      <div class="drawer-image-overlay">
-        <span class="drawer-image-label" id="drawerImageLabel"></span>
-      </div>
-    </div>
-
-    <div class="resource-card free" id="freeSection">
-      <h4><i class="fa-solid fa-heart"></i> Free Resources</h4>
-      <div id="freeList"></div>
-    </div>
-
-    <div class="resource-card tutor" id="tutorSection">
-      <h4><i class="fa-solid fa-bolt"></i> AI Tutor</h4>
-      <div id="tutorList"></div>
-    </div>
-
-    <div class="resource-card premium" id="premiumSection">
-      <h4>
-        <i class="fa-solid fa-star"></i> Premium Resources
-        <i class="fa-solid fa-circle-info fa-xs text-muted ms-1"></i>
-      </h4>
-      <div id="premiumList"></div>
-    </div>
-  </div>
-</div>
-
 <!-- Mobile Screen Border Trace (mobile only) -->
 <div id="mobileBorderTrace" class="mobile-border-trace">
   <div class="border-line border-top" id="borderTop"></div>
@@ -813,9 +780,71 @@
 {% endblock content %}
 
 {# =========================================
-   Per-page JS ? Bootstrap JS is already
+   Modal rendered outside <main> & <footer>
+========================================= #}
+{% block idea_modal %}
+<!-- Centered Roadmap Pop-up Modal -->
+<div class="roadmap-modal-overlay" id="roadmapModalOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="roadmap-modal-backdrop" id="roadmapModalBackdrop"></div>
+  <div class="roadmap-modal-dialog" id="roadmapModalDialog">
+    <div class="roadmap-modal-header">
+      <div class="roadmap-modal-header-info">
+        <span class="roadmap-modal-badge" id="modalBadge"><i class="fa-solid fa-compass"></i> Topic Deep Dive</span>
+        <h3 class="roadmap-modal-title" id="modalTitle">What is an AI Engineer?</h3>
+      </div>
+      <button type="button" class="roadmap-modal-close" id="modalCloseBtn" aria-label="Close pop-up">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    
+    <div class="roadmap-modal-body">
+      <!-- Topic Description -->
+      <div class="roadmap-modal-desc" id="modalDesc"></div>
+
+      <!-- Topic Image Banner -->
+      <div class="roadmap-modal-image-wrap" id="modalImageWrap" style="display: none;">
+        <img id="modalImage" src="" alt="" class="roadmap-modal-image" />
+        <div class="roadmap-modal-image-overlay">
+          <span class="roadmap-modal-image-label" id="modalImageLabel"></span>
+        </div>
+      </div>
+
+      <!-- Free Resources -->
+      <div class="resource-card free" id="freeSection">
+        <h4><i class="fa-solid fa-heart"></i> Free Resources</h4>
+        <div id="freeList"></div>
+      </div>
+
+      <!-- AI Tutor -->
+      <div class="resource-card tutor" id="tutorSection">
+        <h4><i class="fa-solid fa-bolt"></i> AI Tutor</h4>
+        <div id="tutorList"></div>
+      </div>
+
+      <!-- Premium Resources -->
+      <div class="resource-card premium" id="premiumSection">
+        <h4>
+          <i class="fa-solid fa-star"></i> Premium Resources
+          <i class="fa-solid fa-circle-info fa-xs text-muted ms-1"></i>
+        </h4>
+        <div id="premiumList"></div>
+      </div>
+    </div>
+
+    <div class="roadmap-modal-footer">
+      <button type="button" class="btn-modal-secondary" id="modalFooterClose">Close</button>
+      <a href="/projects/?category=ml" class="btn-modal-primary">
+        <i class="fa-solid fa-rocket"></i> Explore AI Projects
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock idea_modal %}
+
+{# =========================================
+   Per-page JS — Bootstrap JS is already
    loaded globally in base.html
 ========================================= #}
 {% block extra_js %}
-<script src="{% static 'js/ai-roadmap-script.js' %}"></script>
+<script src="{% static 'js/ai_roadmap.js' %}?v=8" defer></script>
 {% endblock %}

@@ -12,7 +12,40 @@
             this.messages = [];
             this.isTyping = false;
             this.unreadCount = 0;
+            this.sessionId = this.getOrCreateSessionId();
             this.init();
+        }
+
+        getOrCreateSessionId() {
+            try {
+                let sid = localStorage.getItem('projectshub_chat_session');
+                if (!sid) {
+                    sid = 'chat_' + Math.random().toString(36).substring(2, 10) + '_' + Date.now().toString(36);
+                    localStorage.setItem('projectshub_chat_session', sid);
+                }
+                return sid;
+            } catch (e) {
+                return 'chat_' + Math.random().toString(36).substring(2, 10);
+            }
+        }
+
+        sendToBackend(text, sender) {
+            try {
+                fetch('/api/chatbot/message/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        session_id: this.sessionId,
+                        sender: sender,
+                        message: text,
+                        page_url: window.location.pathname + window.location.search
+                    })
+                }).catch(function(err) {
+                    console.debug('Chatbot backend telemetry offline:', err);
+                });
+            } catch (e) {}
         }
 
         init() {
@@ -33,34 +66,31 @@
         }
 
         createChatbotHTML() {
+            if (document.querySelector('.ai-chatbot-widget')) return;
+
             const html = `
                 <div class="ai-chatbot-widget">
-                    <button class="ai-chatbot-toggle" aria-label="Open AI Chat">
-
-    <span class="ai-chatbot-badge" style="display: none;">0</span>
-
-    <svg class="chatbot-icon"
-         xmlns="http://www.w3.org/2000/svg"
-         viewBox="0 0 24 24"
-         fill="none"
-         stroke="currentColor"
-         stroke-width="2"
-         stroke-linecap="round"
-         stroke-linejoin="round">
-
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-
-    </svg>
-
-</button>
-                    <div class="ai-chatbot-window">
+                    <button class="ai-chatbot-toggle" aria-label="Open AI Assistant" aria-expanded="false" title="Chat with ProjectsHub AI">
+                        <svg class="chatbot-icon chatbot-icon--chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        <svg class="chatbot-icon chatbot-icon--close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                    <div class="ai-chatbot-window" role="dialog" aria-modal="false" aria-label="ProjectsHub AI Chat">
                         <div class="ai-chatbot-header">
                             <div class="ai-chatbot-header-title">
-                               <img src="/static/image/DARK-THEME/transparent-image (1).png" alt="ProjectsHub" class="ai-chatbot-logo ai-chatbot-logo--dark" />
-                               <img src="/static/image/PROJECTHUB%20ALL%20LOGOS/ProjectsHubSVGLOGO.svg" alt="ProjectsHub" class="ai-chatbot-logo ai-chatbot-logo--light" />
+                                <img src="/static/image/DARK-THEME/transparent-image (1).png" alt="ProjectsHub" class="ai-chatbot-logo ai-chatbot-logo--dark" width="28" height="28" />
+                                <img src="/static/image/PROJECTHUB%20ALL%20LOGOS/ProjectsHubSVGLOGO.svg" alt="ProjectsHub" class="ai-chatbot-logo ai-chatbot-logo--light" width="28" height="28" />
+                                <div class="ai-chatbot-header-info">
+                                    <span class="ai-chatbot-name">ProjectsHub AI</span>
+                                    <span class="ai-chatbot-status"><span class="ai-chatbot-status-dot"></span> Online</span>
+                                </div>
                             </div>
                             <button class="ai-chatbot-close" aria-label="Close chat">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                     <line x1="18" y1="6" x2="6" y2="18"></line>
                                     <line x1="6" y1="6" x2="18" y2="18"></line>
                                 </svg>
@@ -72,7 +102,7 @@
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                                 </svg>
-                                <p>Start a conversation</p>
+                                <p>Start a conversation with ProjectsHub AI</p>
                             </div>
                         </div>
 
@@ -82,6 +112,7 @@
                                 class="ai-chatbot-input" 
                                 placeholder="Type a message..."
                                 autocomplete="off"
+                                aria-label="Your message to ProjectsHub AI"
                             />
                             <button type="submit" class="ai-chatbot-send-btn" aria-label="Send message">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
@@ -107,27 +138,62 @@
             this.form = document.querySelector('.ai-chatbot-input-form');
             this.input = document.querySelector('.ai-chatbot-input');
             this.sendBtn = document.querySelector('.ai-chatbot-send-btn');
-            this.badge = document.querySelector('.ai-chatbot-badge');
+            this.badge = null;
         }
 
         bindEvents() {
-            this.toggle.addEventListener('click', () => this.toggleChat());
-            this.closeBtn.addEventListener('click', () => this.toggleChat());
-            this.form.addEventListener('submit', (e) => this.handleSubmit(e));
-            this.input.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    this.handleSubmit(e);
+            if (this.toggle) {
+                this.toggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.toggleChat();
+                });
+            }
+            if (this.closeBtn) {
+                this.closeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.toggleChat(false);
+                });
+            }
+            if (this.form) {
+                this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+            }
+            if (this.input) {
+                this.input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.handleSubmit(e);
+                    }
+                });
+            }
+
+            // Close on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && this.isOpen) {
+                    this.toggleChat(false);
+                }
+            });
+
+            // Close on click outside
+            document.addEventListener('click', (e) => {
+                if (this.isOpen && this.widget && !this.widget.contains(e.target)) {
+                    this.toggleChat(false);
                 }
             });
         }
 
-        toggleChat() {
-            this.isOpen = !this.isOpen;
-            this.window.classList.toggle('is-open', this.isOpen);
+        toggleChat(force) {
+            this.isOpen = (typeof force === 'boolean') ? force : !this.isOpen;
+            if (this.window) {
+                this.window.classList.toggle('is-open', this.isOpen);
+            }
+            if (this.toggle) {
+                this.toggle.classList.toggle('is-active', this.isOpen);
+                this.toggle.setAttribute('aria-expanded', this.isOpen ? 'true' : 'false');
+                this.toggle.setAttribute('aria-label', this.isOpen ? 'Close AI Assistant' : 'Open AI Assistant');
+            }
             
-            if (this.isOpen) {
-                this.input.focus();
+            if (this.isOpen && this.input) {
+                setTimeout(() => this.input.focus(), 150);
                 this.clearUnreadBadge();
             }
         }
@@ -160,6 +226,7 @@
             this.messages.push(message);
             this.renderMessages();
             this.saveMessages();
+            this.sendToBackend(text, 'user');
         }
 
         addBotMessage(text) {
@@ -167,6 +234,7 @@
             this.messages.push(message);
             this.renderMessages();
             this.saveMessages();
+            this.sendToBackend(text, 'bot');
             
             // Show unread badge if closed
             if (!this.isOpen) {
@@ -295,8 +363,9 @@
         }
 
         updateBadge() {
-            this.badge.textContent = this.unreadCount;
-            this.badge.style.display = this.unreadCount > 0 ? 'flex' : 'none';
+            if (this.badge) {
+                this.badge.style.display = 'none';
+            }
         }
 
         clearUnreadBadge() {

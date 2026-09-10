@@ -1110,12 +1110,8 @@ Main content
 Page-specific JS
 ══════════════════════════════════ #}
 {% block extra_js %}
-<script src="{% static 'js/project-details.js' %}"></script>
-<script src="{% static 'js/quantum-pulse-loader.js' %}"></script>
-<!--<script src="{% static 'js/ai-chatbot.js' %}"></script>-->
-<!--<script src="{% static 'js/social-share.js' %}"></script>-->
-<script src="{% static 'js/idea-modal.js' %}"></script>
-<script src="{% static 'js/enroll-modal.js' %}"></script>
+<script src="{% static 'js/project-details.js' %}" defer></script>
+<script src="{% static 'js/enroll-modal.js' %}" defer></script>
 
 {# ── Journey trail: reveal stops + draw a serpentine dotted/glow trail with a comet ── #}
 <script>

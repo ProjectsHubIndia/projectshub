@@ -1,4 +1,4 @@
-from django.urls import path, re_path
+from django.urls import path
 from . import views
 
 urlpatterns = [
@@ -6,6 +6,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('projects/', views.projects_page, name='projects'),
     path('projects/<int:project_id>/', views.project_detail, name='project_detail'),
+    path('projects/<slug:slug>/', views.project_detail, name='project_detail_slug'),
     path('workshop/', views.workshop_page, name='workshop'),
     path('workshop/<int:workshop_id>/', views.workshop_detail, name='workshop_detail'),
     path('workshop/<int:workshop_id>/day/<int:day_number>/', views.workshop_day_detail, name='workshop_day_detail'),
@@ -38,25 +39,21 @@ urlpatterns = [
     path('enroll/', views.enroll_submit, name='enroll_submit'),
 
     # JSON API
+    path('api/captcha/', views.api_captcha, name='api_captcha'),
     path('api/projects/', views.api_projects, name='api_projects'),
     path('api/pricing/', views.api_pricing, name='api_pricing'),
     path('api/workshops/', views.api_workshops, name='api_workshops'),
     path('api/blog/', views.api_blog, name='api_blog'),
-    
-    #Legal
+    path('api/chatbot/message/', views.api_chatbot_message, name='api_chatbot_message'),
+    path('api/chatbot/history/', views.api_chatbot_history, name='api_chatbot_history'),
+
+    # Legal
     path('terms/', views.terms, name='terms'),
     path('refund/', views.refund, name='refund'),
     path('privacy/', views.privacy, name='privacy'),
     path('sitemap/', views.html_sitemap, name='html_sitemap'),
 
-
-
-
-
-
-
-    
-    
-    # Catch-all route to test 404 in development mode
-    re_path(r'^.*$', views.error_404, kwargs={'exception': Exception('Not Found')}),
+    # SEO
+    path('robots.txt', views.robots_txt, name='robots_txt'),
+    path('sitemap.xml', views.sitemap_xml, name='sitemap_xml'),
 ]

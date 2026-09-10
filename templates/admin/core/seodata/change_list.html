@@ -1,0 +1,50 @@
+{% extends "admin/change_list.html" %}
+{% load i18n static %}
+
+{% block content %}
+<div class="postbox" style="margin-bottom:18px;border-left:4px solid #00a32a;">
+  <div class="postbox-header" style="display:flex;align-items:center;justify-content:space-between;">
+    <h2 style="display:flex;align-items:center;gap:8px;">
+      <span>🔍</span>
+      <span>SEO &amp; Index Status Telemetry (Google &amp; Bing Indexing)</span>
+    </h2>
+    <div style="display:flex;gap:6px;">
+      <a href="/sitemap.xml" target="_blank" class="button button-secondary button-small">
+        View XML Sitemap ↗
+      </a>
+      <a href="/robots.txt" target="_blank" class="button button-secondary button-small">
+        View Robots.txt ↗
+      </a>
+    </div>
+  </div>
+  <div class="inside" style="padding:14px 18px;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:16px;margin-bottom:14px;">
+      <div style="background:#f6f7f7;padding:12px;border-radius:4px;border:1px solid #c3c4c7;">
+        <div style="font-size:11px;text-transform:uppercase;color:#646970;font-weight:700;">Index Status</div>
+        <div style="font-size:18px;font-weight:700;color:#00a32a;margin-top:2px;">100% INDEXABLE</div>
+        <div style="font-size:11px;color:#646970;margin-top:2px;">robots: index, follow active</div>
+      </div>
+      <div style="background:#f6f7f7;padding:12px;border-radius:4px;border:1px solid #c3c4c7;">
+        <div style="font-size:11px;text-transform:uppercase;color:#646970;font-weight:700;">Schema.org JSON-LD</div>
+        <div style="font-size:18px;font-weight:700;color:#2271b1;margin-top:2px;">Automated ⚡</div>
+        <div style="font-size:11px;color:#646970;margin-top:2px;">Organization, WebSite, Product, Course</div>
+      </div>
+      <div style="background:#f6f7f7;padding:12px;border-radius:4px;border:1px solid #c3c4c7;">
+        <div style="font-size:11px;text-transform:uppercase;color:#646970;font-weight:700;">Canonical Integrity</div>
+        <div style="font-size:18px;font-weight:700;color:#2271b1;margin-top:2px;">Auto-Canonical</div>
+        <div style="font-size:11px;color:#646970;margin-top:2px;">Prevents duplicate indexing</div>
+      </div>
+      <div style="background:#f6f7f7;padding:12px;border-radius:4px;border:1px solid #c3c4c7;">
+        <div style="font-size:11px;text-transform:uppercase;color:#646970;font-weight:700;">OpenGraph &amp; Twitter</div>
+        <div style="font-size:18px;font-weight:700;color:#00a32a;margin-top:2px;">Active (Rich Cards)</div>
+        <div style="font-size:11px;color:#646970;margin-top:2px;">Social previews enabled</div>
+      </div>
+    </div>
+    <p style="margin:0;font-size:12px;color:#646970;">
+      💡 <em>Tip: Select routes below and use the action dropdown "⚡ Auto-Generate / Synchronize Best SEO &amp; Schema for All Site Routes" to refresh metadata anytime!</em>
+    </p>
+  </div>
+</div>
+
+{{ block.super }}
+{% endblock %}

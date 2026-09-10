@@ -1,7 +1,7 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-{% block title %}{{ post.title }} | ProjectsHub{% endblock %}
+{% block title %}{{ post.title }} | ProjectsHub Blog{% endblock %}
 {% block meta_description %}{{ post.excerpt|truncatechars:160 }}{% endblock %}
 {% block canonical %}https://projectshub.co.in{% url 'blog_detail' post.slug %}{% endblock %}
 {% block og_title %}{{ post.title }} | ProjectsHub{% endblock %}
@@ -25,107 +25,179 @@
   "publisher": {
     "@type": "Organization",
     "name": "ProjectsHub",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://projectshub.co.in/static/image/favicon_io/logo.png"
-    }
+    "logo": {"@type": "ImageObject", "url": "https://projectshub.co.in/static/image/favicon_io/logo.png"}
   }
 }
 </script>
 {% endblock %}
 
 {% block extra_css %}
-<style>
-  .bd-wrap { color: #e2e8f0; }
-  .bd-wrap h1 { color: #f1f5f9; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.15; margin-bottom: 2rem; letter-spacing: -0.02em; }
-  .bd-wrap h2 { color: #f1f5f9; font-size: 1.8rem; font-weight: 700; margin: 3rem 0 1.5rem; }
-  .bd-wrap p { margin-bottom: 1.25rem; }
-  .bd-muted { color: #9ca3af; }
-  .bd-lead { color: #e2e8f0; font-size: 1.25rem; font-weight: 500; margin-bottom: 2rem; }
-  .bd-author-name { font-weight: 700; color: #f1f5f9; }
-  .bd-author-role { font-size: 0.9rem; color: #9ca3af; }
-  .bd-divider { border-top: 1px solid rgba(255,255,255,0.1); }
-
-  body.light .bd-wrap { color: #374151; }
-  body.light .bd-wrap h1 { color: #0f172a; }
-  body.light .bd-wrap h2 { color: #1e293b; }
-  body.light .bd-muted { color: #64748b; }
-  body.light .bd-lead { color: #1e293b; }
-  body.light .bd-author-name { color: #0f172a; }
-  body.light .bd-author-role { color: #64748b; }
-  body.light .bd-divider { border-top-color: rgba(0,0,0,0.1); }
-
-  .bd-code { background: #0f172a; color: #e2e8f0; padding: 1.5rem; border-radius: 12px; font-family: monospace; font-size: 0.95rem; margin: 1.5rem 0; overflow-x: auto; }
-  .bd-hero { width: 100%; height: 400px; border-radius: 24px; display: flex; align-items: center; justify-content: center; font-size: 6rem; margin-bottom: 3rem; }
-  .bd-tag { padding: 0.4rem 1rem; border-radius: 99px; font-weight: 600; font-size: 0.85rem; }
-
-  /* Related-post cards (same look as the blog listing) */
-  .blog-card { border-radius: 20px; overflow: hidden; display: block; text-decoration: none; color: inherit; border: 1px solid rgba(255,255,255,0.08); }
-  body.light .blog-card { border-color: rgba(0,0,0,0.08); box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
-  .blog-card__img { display: flex; align-items: center; justify-content: center; position: relative; }
-  .blog-card__body { background: #1a2236; }
-  body.light .blog-card__body { background: #ffffff; }
-  .blog-card__title { margin: 0 0 0.7rem; font-weight: 700; line-height: 1.45; color: #f1f5f9; }
-  body.light .blog-card__title { color: #0f172a; }
-  .blog-card__date { font-size: 0.82rem; color: #9ca3af; }
-  body.light .blog-card__date { color: #64748b; }
-
-  @media (max-width: 480px) {
-    .bd-code { padding: 1rem; font-size: 0.85rem; }
-    .bd-hero { height: 240px; font-size: 4rem; margin-bottom: 2rem; }
-  }
-</style>
+<link rel="stylesheet" href="{% static 'css/blog.css' %}?v=3" />
 {% endblock %}
 
 {% block content %}
-<div class="bd-wrap" style="max-width: 900px; margin: 0 auto; padding: 140px 5% 80px; min-height: 80vh;">
+<div class="bd-wrap">
 
-  <a href="{% url 'blog' %}" style="display: inline-flex; align-items: center; gap: 0.5rem; color: #3b82f6; text-decoration: none; font-weight: 600; margin-bottom: 2rem; transition: transform 0.2s;">
-    &larr; Back to all posts
+  <!-- Back link -->
+  <a href="{% url 'blog' %}" class="bd-back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+    </svg>
+    Back to all posts
   </a>
 
-  <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap;">
-    <span class="bd-tag" style="background: {{ post.accent }}1f; color: {{ post.accent }};">{{ post.get_category_display }}</span>
-    <span class="bd-muted" style="font-size: 0.9rem;">
-      {{ post.published_at|date:"F d, Y" }}{% if post.read_time %} &bull; {{ post.read_time }}{% endif %}
+  <!-- Meta: category + date + read time -->
+  <div class="bd-meta">
+    <span class="bd-tag" style="background: {{ post.accent }}1f; color: {{ post.accent }};">
+      {{ post.get_category_display }}
     </span>
+    <span class="bd-meta-dot" aria-hidden="true"></span>
+    <span class="bd-muted">
+      <time datetime="{{ post.published_at|date:'Y-m-d' }}">{{ post.published_at|date:"F d, Y" }}</time>
+    </span>
+    {% if post.read_time %}
+    <span class="bd-meta-dot" aria-hidden="true"></span>
+    <span class="bd-muted" style="display:inline-flex;align-items:center;gap:5px;">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+      </svg>
+      {{ post.read_time }}
+    </span>
+    {% endif %}
   </div>
 
+  <!-- Title -->
   <h1>{{ post.title }}</h1>
 
-  {% if post.get_image_src %}
-  <img src="{{ post.get_image_src }}" alt="{{ post.title }}" class="bd-hero"
-       style="object-fit: cover; display: block;" />
-  {% else %}
-  <div class="bd-hero" style="background: {{ post.get_gradient }}; box-shadow: 0 20px 40px {{ post.accent }}33;">{{ post.emoji }}</div>
-  {% endif %}
+  <!-- Hero image -->
+  <div class="bd-hero">
+    <img src="{{ post.get_image_src }}" alt="{{ post.title }}" loading="eager" onerror="this.onerror=null; this.src='/static/image/ai-project-ideas-students.webp';" />
+  </div>
 
+  <!-- Table of Contents (if multiple sections with headings) -->
+  {% with sections_with_headings=post.sections.all %}
+  {% if sections_with_headings|length > 2 %}
+  <nav class="bd-toc" aria-label="Table of contents">
+    <div class="bd-toc__title">In this article</div>
+    <ol class="bd-toc__list">
+      {% for section in post.sections.all %}
+      {% if section.heading %}
+      <li>
+        <a href="#section-{{ forloop.counter }}" class="bd-toc__link">{{ section.heading }}</a>
+      </li>
+      {% endif %}
+      {% endfor %}
+    </ol>
+  </nav>
+  {% endif %}
+  {% endwith %}
+
+  <!-- Lead paragraph -->
   <p class="bd-lead">{{ post.get_lead }}</p>
 
+  <!-- Article sections -->
   {% for section in post.sections.all %}
+  <div id="section-{{ forloop.counter }}">
     {% if section.heading %}<h2>{{ section.heading }}</h2>{% endif %}
-    {% for para in section.body.splitlines %}{% if para.strip %}<p>{{ para }}</p>{% endif %}{% endfor %}
-    {% if section.code %}<div class="bd-code"><pre style="margin:0;font:inherit;white-space:pre-wrap;">{{ section.code }}</pre></div>{% endif %}
+    {% for para in section.body.splitlines %}
+      {% if para.strip %}<p>{{ para }}</p>{% endif %}
+    {% endfor %}
+    {% if section.code %}
+    <div class="bd-code">
+      <pre>{{ section.code }}</pre>
+    </div>
+    {% endif %}
+  </div>
   {% endfor %}
 
-  <div class="bd-divider" style="margin-top: 4rem; padding-top: 2rem; display: flex; align-items: center; gap: 1rem;">
-    <div style="width: 50px; height: 50px; border-radius: 50%; background: {{ post.accent }}; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">{{ post.author_initials }}</div>
+  <!-- Share buttons -->
+  <div class="bd-share">
+    <span class="bd-share__label">Share</span>
+    <a
+      href="https://twitter.com/intent/tweet?text={{ post.title|urlencode }}&url=https://projectshub.co.in{% url 'blog_detail' post.slug %}"
+      target="_blank" rel="noopener noreferrer"
+      class="bd-share__btn"
+      aria-label="Share on Twitter/X"
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+      </svg>
+      X (Twitter)
+    </a>
+    <a
+      href="https://www.linkedin.com/shareArticle?mini=true&url=https://projectshub.co.in{% url 'blog_detail' post.slug %}&title={{ post.title|urlencode }}"
+      target="_blank" rel="noopener noreferrer"
+      class="bd-share__btn"
+      aria-label="Share on LinkedIn"
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+      </svg>
+      LinkedIn
+    </a>
+    <a
+      href="https://wa.me/?text={{ post.title|urlencode }}%20https://projectshub.co.in{% url 'blog_detail' post.slug %}"
+      target="_blank" rel="noopener noreferrer"
+      class="bd-share__btn"
+      aria-label="Share on WhatsApp"
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M20.52 3.48A11.82 11.82 0 0 0 12.07 0C5.5 0 .15 5.35.15 11.92c0 2.1.55 4.15 1.6 5.97L0 24l6.29-1.65a11.9 11.9 0 0 0 5.78 1.47h.01c6.57 0 11.92-5.35 11.92-11.92 0-3.18-1.24-6.17-3.48-8.42z"/>
+      </svg>
+      WhatsApp
+    </a>
+    <button
+      id="bdCopyBtn"
+      class="bd-share__btn"
+      aria-label="Copy link to clipboard"
+      onclick="copyPostLink(this)"
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+      </svg>
+      <span id="bdCopyLabel">Copy link</span>
+    </button>
+  </div>
+
+  <!-- Author -->
+  <div class="bd-author">
+    <div class="bd-author-avatar" style="background: {{ post.accent|default:'#3b82f6' }};">
+      {{ post.author_initials }}
+    </div>
     <div>
       <div class="bd-author-name">{{ post.author_name }}</div>
       <div class="bd-author-role">{{ post.author_role }}</div>
     </div>
   </div>
 
+  <!-- Related posts -->
   {% if related_posts %}
-  <div class="bd-divider" style="margin-top: 3rem; padding-top: 2rem;">
-    <h2 style="margin-top:0;">More in {{ post.get_category_display }}</h2>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem;">
+  <div class="bd-divider" style="margin-top: 3.5rem; padding-top: 2.5rem;">
+    <h2 class="bd-related-title">More in {{ post.get_category_display }}</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.25rem;">
       {% for rel in related_posts %}
       <a href="{% url 'blog_detail' rel.slug %}" class="blog-card">
-        <div class="blog-card__img" style="height: 120px; font-size: 2.5rem; background: {{ rel.get_gradient }};">{{ rel.emoji }}</div>
+        <div class="blog-card__img" style="height: 130px; font-size: 2.5rem; {% if rel.get_image_src %}padding:0;{% else %}background: {{ rel.get_gradient }};{% endif %}">
+          {% if rel.get_image_src %}
+          <img src="{{ rel.get_image_src }}" alt="{{ rel.title }}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" />
+          {% else %}
+          <span aria-hidden="true">{{ rel.emoji }}</span>
+          {% endif %}
+          <div class="blog-card__img-overlay" aria-hidden="true"></div>
+        </div>
         <div class="blog-card__body" style="padding: 1rem 1.15rem 1.25rem;">
-          <h3 class="blog-card__title" style="font-size: 1rem; margin-bottom: 0.35rem;">{{ rel.title }}</h3>
-          <div class="blog-card__date" style="margin: 0;">{{ rel.published_at|date:"F d, Y" }}</div>
+          <h3 class="blog-card__title" style="font-size: 0.98rem; margin-bottom: 0.35rem;">{{ rel.title }}</h3>
+          <div class="blog-card__meta" style="margin:0;">
+            <time datetime="{{ rel.published_at|date:'Y-m-d' }}">{{ rel.published_at|date:"M d, Y" }}</time>
+            {% if rel.read_time %}
+            <span class="blog-card__meta-dot" aria-hidden="true"></span>
+            <span>{{ rel.read_time }}</span>
+            {% endif %}
+          </div>
         </div>
       </a>
       {% endfor %}
@@ -133,5 +205,24 @@
   </div>
   {% endif %}
 
-</div>
+</div><!-- /.bd-wrap -->
+
+<script>
+function copyPostLink(btn) {
+  const label = document.getElementById('bdCopyLabel');
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    label.textContent = 'Copied!';
+    btn.style.color = '#22c55e';
+    btn.style.borderColor = 'rgba(34,197,94,0.4)';
+    setTimeout(() => {
+      label.textContent = 'Copy link';
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 2200);
+  }).catch(() => {
+    label.textContent = 'Failed';
+    setTimeout(() => { label.textContent = 'Copy link'; }, 2000);
+  });
+}
+</script>
 {% endblock %}

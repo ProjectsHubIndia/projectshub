@@ -1,0 +1,1035 @@
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block title %}Master Project Guide & Operations Manual | ProjectsHub{% endblock %}
+{% block content_title %}📖 Project Guide & Operations Manual{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+  /* ═══════════════════════════════════════════════════════════════
+     ProjectsHub Master Admin Guide Styles
+     ═══════════════════════════════════════════════════════════════ */
+  :root {
+    --guide-primary: #2271b1;
+    --guide-primary-dark: #135e96;
+    --guide-bg-card: #ffffff;
+    --guide-border: #dcdcde;
+    --guide-text: #1d2327;
+    --guide-text-muted: #646970;
+    --guide-accent: #6366f1;
+    --guide-radius: 8px;
+  }
+
+  .guide-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 10px 0 40px 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  }
+
+  /* Hero Banner */
+  .guide-hero {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    color: #ffffff;
+    border-radius: var(--guide-radius);
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+  }
+  .guide-hero::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, rgba(99, 102, 241, 0) 70%);
+    pointer-events: none;
+  }
+  .guide-hero h2 {
+    color: #ffffff;
+    font-size: 24px;
+    margin: 0 0 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .guide-hero p {
+    color: #cbd5e1;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0 0 16px 0;
+    max-width: 860px;
+  }
+  .guide-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+  .guide-hero-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .guide-hero-btn.primary {
+    background: #6366f1;
+    color: #ffffff;
+    border: 1px solid #4f46e5;
+  }
+  .guide-hero-btn.primary:hover {
+    background: #4f46e5;
+    color: #ffffff;
+  }
+  .guide-hero-btn.secondary {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  .guide-hero-btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+  }
+
+  /* Search & Filter Bar */
+  .guide-controls {
+    background: #ffffff;
+    border: 1px solid var(--guide-border);
+    border-radius: var(--guide-radius);
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+  .guide-search-wrapper {
+    position: relative;
+    margin-bottom: 14px;
+  }
+  .guide-search-input {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    font-size: 14px;
+    border: 1px solid var(--guide-border);
+    border-radius: 6px;
+    background: #f8fafc;
+    transition: all 0.2s;
+    box-sizing: border-box;
+  }
+  .guide-search-input:focus {
+    background: #ffffff;
+    border-color: #2271b1;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(34, 113, 177, 0.2);
+  }
+  .guide-search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 16px;
+    pointer-events: none;
+  }
+  .guide-filter-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .guide-tab-btn {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid transparent;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .guide-tab-btn:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+  }
+  .guide-tab-btn.active {
+    background: #2271b1;
+    color: #ffffff;
+    border-color: #135e96;
+    font-weight: 600;
+  }
+
+  /* Cards Grid */
+  .guide-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+  @media (max-width: 768px) {
+    .guide-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Individual Guide Card */
+  .guide-card {
+    background: #ffffff;
+    border: 1px solid var(--guide-border);
+    border-radius: var(--guide-radius);
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .guide-card:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
+  }
+  .guide-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    gap: 12px;
+  }
+  .guide-card-title-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .guide-card-icon {
+    font-size: 24px;
+    line-height: 1;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+  }
+  .guide-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--guide-text);
+    margin: 0;
+  }
+  .guide-card-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 12px;
+    background: #f1f5f9;
+    color: #475569;
+    white-space: nowrap;
+  }
+  .guide-card-badge.status-live {
+    background: #dcfce7;
+    color: #15803d;
+  }
+  .guide-card-target {
+    font-size: 12px;
+    color: #64748b;
+    margin: 0 0 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .guide-card-target a {
+    color: #2271b1;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .guide-card-target a:hover {
+    text-decoration: underline;
+  }
+  .guide-card-desc {
+    font-size: 13px;
+    color: #334155;
+    line-height: 1.55;
+    margin: 0 0 14px 0;
+  }
+
+  /* Step-by-Step Instructions inside card */
+  .guide-steps {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+  }
+  .guide-steps-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #64748b;
+    margin: 0 0 8px 0;
+  }
+  .guide-steps-list {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 12.5px;
+    color: #334155;
+    line-height: 1.5;
+  }
+  .guide-steps-list li {
+    margin-bottom: 4px;
+  }
+  .guide-steps-list li:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Direct Action Buttons */
+  .guide-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 14px;
+    border-top: 1px solid #f1f5f9;
+  }
+  .guide-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .guide-action-btn.primary {
+    background: #2271b1;
+    color: #ffffff;
+    border: 1px solid #135e96;
+  }
+  .guide-action-btn.primary:hover {
+    background: #135e96;
+    color: #ffffff;
+  }
+  .guide-action-btn.secondary {
+    background: #f6f7f7;
+    color: #2271b1;
+    border: 1px solid #dcdcde;
+  }
+  .guide-action-btn.secondary:hover {
+    background: #f0f0f1;
+    border-color: #0a4b78;
+    color: #0a4b78;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     Custom Notes & Checklists Section
+     ═══════════════════════════════════════════════════════════════ */
+  .guide-notes-section {
+    background: #ffffff;
+    border: 1px solid var(--guide-border);
+    border-radius: var(--guide-radius);
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+  .guide-notes-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .guide-notes-title h3 {
+    margin: 0 0 4px 0;
+    font-size: 18px;
+    color: var(--guide-text);
+  }
+  .guide-notes-title p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--guide-text-muted);
+  }
+
+  .guide-note-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    background: #fafafa;
+    transition: all 0.15s ease;
+  }
+  .guide-note-item:hover {
+    background: #ffffff;
+    border-color: #cbd5e1;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  }
+  .guide-note-item.completed {
+    background: #f8fafc;
+    opacity: 0.75;
+  }
+  .guide-note-checkbox {
+    margin-top: 3px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #16a34a;
+  }
+  .guide-note-body {
+    flex: 1;
+  }
+  .guide-note-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+  .guide-note-heading strong {
+    font-size: 14px;
+    color: #0f172a;
+  }
+  .guide-note-item.completed .guide-note-heading strong {
+    text-decoration: line-through;
+    color: #64748b;
+  }
+  .guide-note-content {
+    font-size: 13px;
+    color: #475569;
+    line-height: 1.5;
+    margin: 0 0 8px 0;
+  }
+  .guide-note-footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+  }
+  .guide-note-footer a {
+    color: #2271b1;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .guide-note-footer a:hover {
+    text-decoration: underline;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="guide-container">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       1. HERO HEADER
+       ═══════════════════════════════════════════════════════════ -->
+  <div class="guide-hero">
+    <h2>
+      <span>📘</span>
+      <span>ProjectsHub Master Project Guide &amp; Operations Manual</span>
+    </h2>
+    <p>
+      This master manual is your single source of truth for the entire ProjectsHub platform.
+      Every feature, page, settings group, and lead funnel is documented here with live previews, step-by-step editing instructions, and 1-click action shortcuts so you can make any changes needed immediately.
+    </p>
+    <div class="guide-hero-actions">
+      <a href="/admin/core/sitesettings/1/change/" class="guide-hero-btn primary">
+        <span>⚙️</span> Edit General Settings
+      </a>
+      <a href="/admin/core/adminguidenote/add/" class="guide-hero-btn secondary">
+        <span>➕</span> Add Custom Guide Note / SOP
+      </a>
+      <a href="/" target="_blank" class="guide-hero-btn secondary">
+        <span>🏠</span> View Live Website ↗
+      </a>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       2. REAL-TIME SEARCH & CATEGORY FILTER
+       ═══════════════════════════════════════════════════════════ -->
+  <div class="guide-controls">
+    <div class="guide-search-wrapper">
+      <span class="guide-search-icon">🔍</span>
+      <input type="search" id="guideSearch" class="guide-search-input" placeholder="Search operations manual (e.g. logo, hero, project, tools, pricing, leads, seo, redirect, menu)...">
+    </div>
+    <div class="guide-filter-tabs" id="guideFilterTabs">
+      <button type="button" class="guide-tab-btn active" data-category="all">🌟 All Modules</button>
+      <button type="button" class="guide-tab-btn" data-category="branding">⚙️ Branding &amp; Hero</button>
+      <button type="button" class="guide-tab-btn" data-category="navigation">🎨 Navigation &amp; Menus</button>
+      <button type="button" class="guide-tab-btn" data-category="projects">🚀 Projects Showcase</button>
+      <button type="button" class="guide-tab-btn" data-category="tools">🛠️ AI Tools Directory</button>
+      <button type="button" class="guide-tab-btn" data-category="services">💼 Services &amp; Case Studies</button>
+      <button type="button" class="guide-tab-btn" data-category="workshops">🎓 Bootcamps</button>
+      <button type="button" class="guide-tab-btn" data-category="blog">📝 Blog &amp; Content</button>
+      <button type="button" class="guide-tab-btn" data-category="crm">📬 CRM &amp; Chatbot Leads</button>
+      <button type="button" class="guide-tab-btn" data-category="seo">🔍 SEO &amp; Redirects</button>
+      <button type="button" class="guide-tab-btn" data-category="users">👥 Users &amp; Security</button>
+      <button type="button" class="guide-tab-btn" data-category="notes">📋 Custom SOPs &amp; Tasks</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       3. MASTER GUIDE MODULE CARDS (10 CORE PLATFORM AREAS)
+       ═══════════════════════════════════════════════════════════ -->
+  <div class="guide-grid" id="guideCardsGrid">
+
+    <!-- Card 1: Branding & Settings -->
+    <div class="guide-card" data-category="branding" data-keywords="site settings branding logo hero title headline email phone whatsapp tagline favicon">
+      <div>
+        <div class="guide-card-header">
+          <div class="guide-card-title-group">
+            <div class="guide-card-icon">⚙️</div>
+            <div>
+              <h3 class="guide-card-title">1. Site Settings, Branding &amp; Hero</h3>
+            </div>
+          </div>
+          <span class="guide-card-badge status-live">Live Active</span>
+        </div>
+        <div class="guide-card-target">
+          <span>Live Location:</span>
+          <a href="/" target="_blank">Homepage Hero (/) &amp; Footer ↗</a>
+        </div>
+        <p class="guide-card-desc">
+          Controls global branding, primary email (<code>{{ guide_stats.site_settings.primary_email }}</code>), contact phone/WhatsApp, office location, dark/light logos, and the large hero headline prefix ("{{ guide_stats.site_settings.hero_headline_prefix }}") and highlighted words.
+        </p>
+        <div class="guide-steps">
+          <div class="guide-steps-title">How to change:</div>
+          <ol class="guide-steps-list">
+            <li>Click <strong>Edit General Settings</strong> below.</li>
+            <li>Modify title, tagline, hero text, or upload new logo image files.</li>
+            <li>Click <strong>Save</strong> — updates instantly appear across the entire site.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="guide-actions">
+        <a href="/admin/core/sitesettings/1/change/" class="guide-action-btn primary">⚡ Edit General Settings</a>
+        <a href="/" target="_blank" class="guide-action-btn secondary">👁️ View Live Hero ↗</a>
+      </div>
+    </div>
+
+    <!-- Card 2: Navigation & Menus -->
+    <div class="guide-card" data-category="navigation" data-keywords="navigation menu navbar mega menu badges appearance footer links stats social">
+      <div>
+        <div class="guide-card-header">
+          <div class="guide-card-title-group">
+            <div class="guide-card-icon">🎨</div>
+            <div>
+              <h3 class="guide-card-title">2. Navigation, Mega Menus &amp; Badges</h3>
+            </div>
+          </div>
+          <span class="guide-card-badge">{{ guide_stats.nav_items }} Items</span>
+        </div>
+        <div class="guide-card-target">
+          <span>Live Location:</span>
+          <a href="/" target="_blank">Top Header Bar &amp; Mega Menus ↗</a>
+        </div>
+        <p class="guide-card-desc">
+          Manages the primary header navbar, multi-column mega menus ("Our Work", "How We Help Students", "How We Help Businesses"), attention badges ("NEW", "HOT", "FREE"), ordering, and social media links.
+        </p>
+        <div class="guide-steps">
+          <div class="guide-steps-title">How to change:</div>
+          <ol class="guide-steps-list">
+            <li>Go to <strong>Menus &amp; Navigation</strong> to reorder, add, or rename links.</li>
+            <li>Assign to groups (e.g. <code>Mega Menu — Our Work</code> or <code>Primary Top Navigation</code>).</li>
+            <li>Add custom badge text and color to spotlight high-value pages.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="guide-actions">
+        <a href="/admin/core/navigationitem/" class="guide-action-btn primary">🎨 Manage Menus</a>
+        <a href="/admin/core/navigationitem/add/" class="guide-action-btn secondary">➕ Add Nav Item</a>
+        <a href="/admin/core/sociallink/" class="guide-action-btn secondary">🌐 Social Links</a>
+        <a href="/admin/core/statitem/" class="guide-action-btn secondary">📊 Hero Stats</a>
+      </div>
+    </div>
+
+    <!-- Card 3: Projects Showcase -->
+    <div class="guide-card" data-category="projects" data-keywords="projects showcase portfolio github code demo gallery tech category duplicate">
+      <div>
+        <div class="guide-card-header">
+          <div class="guide-card-title-group">
+            <div class="guide-card-icon">🚀</div>
+            <div>
+              <h3 class="guide-card-title">3. AI Projects Showcase &amp; Portfolios</h3>
+            </div>
+          </div>
+          <span class="guide-card-badge status-live">{{ guide_stats.total_projects }} Total ({{ guide_stats.featured_projects }} Featured)</span>
+        </div>
+        <div class="guide-card-target">
+          <span>Live Location:</span>
+          <a href="/projects/" target="_blank">/projects/ &amp; Homepage Grid ↗</a>
+        </div>
+        <p class="guide-card-desc">
+          Showcase real-world AI/ML projects with title, tech stack badges, GitHub source repository links, live demos, difficulty level, and multi-screenshot galleries.
+        </p>
+        <div class="guide-steps">
+          <div class="guide-steps-title">How to change:</div>
+          <ol class="guide-steps-list">
+            <li>Click <strong>Add AI Project</strong> to publish a new build.</li>
+            <li>Check <strong>Show on Index</strong> to spotlight it on the homepage.</li>
+            <li>Attach screenshots in the <strong>Project Images</strong> inline at the bottom.</li>
+            <li>Use the <strong>Duplicate selected project(s)</strong> action to clone projects as drafts.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="guide-actions">
+        <a href="/admin/core/project/add/" class="guide-action-btn primary">➕ Add Project</a>
+        <a href="/admin/core/project/" class="guide-action-btn secondary">📋 All Projects</a>
+        <a href="/admin/core/projectcategory/" class="guide-action-btn secondary">📂 Categories</a>
+        <a href="/admin/core/technology/" class="guide-action-btn secondary">🛠️ Tech Stacks</a>
+      </div>
+    </div>
+
+    <!-- Card 4: AI Tools Directory -->
+    <div class="guide-card" data-category="tools" data-keywords="tools ai directory free tools external link category featured spotlight bulk publish">
+      <div>
+        <div class="guide-card-header">
+          <div class="guide-card-title-group">
+            <div class="guide-card-icon">🛠️</div>
+            <div>
+              <h3 class="guide-card-title">4. Free AI Tools Directory</h3>
+            </div>
+          </div>
+          <span class="guide-card-badge status-live">{{ guide_stats.published_tools }} Published / {{ guide_stats.total_tools }} Total</span>
+        </div>
+        <div class="guide-card-target">
+          <span>Live Location:</span>
+          <a href="/tools/" target="_blank">/tools/ AI Tools Directory ↗</a>
+        </div>
+        <p class="guide-card-desc">
+          Curated directory of free AI tools categorized into Writing, Developer, Chatbots, Career, and SEO. Includes icon emojis, external action URLs, and featured spotlight cards.
+        </p>
+        <div class="guide-steps">
+          <div class="guide-steps-title">How to change:</div>
+          <ol class="guide-steps-list">
+            <li>Click <strong>Add AI Tool</strong>, input name, external tool URL, and category.</li>
+            <li>Provide an emoji (e.g. ⚡, 🤖, ✍️) or icon image.</li>
+            <li>Toggle <strong>Featured</strong> to pin the tool in the spotlight row.</li>
+            <li>Use batch actions (<code>Publish</code>, <code>Unpublish</code>, <code>Feature</code>) in the list view.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="guide-actions">
+        <a href="/admin/core/aitool/add/" class="guide-action-btn primary">➕ Add AI Tool</a>
+        <a href="/admin/core/aitool/" class="guide-action-btn secondary">🛠️ Manage Tools</a>
+        <a href="/admin/core/toolcategory/" class="guide-action-btn secondary">🏷️ Categories</a>
+        <a href="/tools/" target="_blank" class="guide-action-btn secondary">👁️ View /tools/ ↗</a>
+      </div>
+    </div>
+
+    <!-- Card 5: Services & Case Studies -->
+    <div class="guide-card" data-category="services" data-keywords="services case studies portfolio metrics client proof pricing features consulting">
+      <div>
+        <div class="guide-card-header">
+          <div class="guide-card-title-group">
+            <div class="guide-card-icon">💼</div>
+            <div>
+              <h3 class="guide-card-title">5. Services &amp; Case Studies</h3>
+            </div>
+          </div>
+          <span class="guide-card-badge">{{ guide_stats.total_services }} Services / {{ guide_stats.total_case_studies }} Studies</span>
+        </div>
+        <div class="guide-card-target">
+          <span>Live Location:</span>
+          <a href="/case-studies/" target="_blank">/case-studies/ &amp; /services/ ↗</a>
+        </div>
+        <p class="guide-card-desc">
+          Commercial consulting and development offerings, target audience segmentation, client case studies with quantified ROI metrics (e.g. "+300% conversion"), and pricing plans.
+        </p>
+        <div class="guide-steps">
+          <div class="guide-steps-title">How to change:</div>
+          <ol class="guide-steps-list">
+            <li>Add case studies under <strong>Case Studies</strong> with client summaries and results.</li>
+            <li>Add metrics (+300%, 2 Weeks) and technologies using the inlines.</li>
+            <li>Configure monthly and annual service tiers in <strong>Pricing Plans</strong>.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="guide-actions">
+        <a href="/admin/core/casestudy/add/" class="guide-action-btn primary">➕ Add Case Study</a>
+        <a href="/admin/core/casestudy/" class="guide-action-btn secondary">💼 Case Studies</a>
+        <a href="/admin/core/service/" class="guide-action-btn secondary">⚙️ Services</a>
+        <a href="/admin/core/pricingplan/" class="guide-action-btn secondary">💳 Pricing Plans</a>
+      </div>
+    </div>
+
+    <!-- Card 6: Workshops & Bootcamps -->
+    <div class="guide-card" data-category="workshops" data-keywords="workshop bootcamp curriculum days syllabus student enrollment pending confirmed">
+      <div>
+        <div class="guide-card-header">
+          <div class="guide-card-title-group">
+            <div class="guide-card-icon">🎓</div>
+            <div>
+              <h3 class="guide-card-title">6. 3-Day Bootcamp &amp; Enrollments</h3>
+            </div>
+          </div>
+          {% if guide_stats.pending_enrollments %}
+            <span class="guide-card-badge" style="background:#fee2e2;color:#b91c1c;">{{ guide_stats.pending_enrollments }} Pending</span>
+          {% else %}
+            <span class="guide-card-badge">{{ guide_stats.total_enrollments }} Enrollments</span>
+          {% endif %}
+        </div>
+        <div class="guide-card-target">
+          <span>Live Location:</span>
+          <a href="/workshop/" target="_blank">/workshop/ 3-Day AI Bootcamp ↗</a>
+        </div>
+        <p class="guide-card-desc">
+          Manages the 3-day intensive hands-on AI bootcamp details, dates, pricing, day-by-day syllabus modules, and student registration triage.
+        </p>
+        <div class="guide-steps">
+          <div class="guide-steps-title">How to change:</div>
+          <ol class="guide-steps-list">
+            <li>Update workshop dates, pricing, and badges under <strong>All Workshops</strong>.</li>
+            <li>Edit daily syllabus topics in <strong>Curriculum Days</strong>.</li>
+            <li>Review student signups in <strong>Enrollments</strong> and mark them as <code>Confirmed</code>.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="guide-actions">
+        <a href="/admin/core/workshopenrollment/" class="guide-action-btn primary">📝 Review Enrollments</a>
+        <a href="/admin/core/workshopcard/" class="guide-action-btn secondary">🎓 Workshops</a>
+        <a href="/admin/core/workshopday/" class="guide-action-btn secondary">📅 Curriculum Days</a>
+        <a href="/workshop/" target="_blank" class="guide-action-btn secondary">👁️ View Workshop ↗</a>
+      </div>
+    </div>
+
+    <!-- Card 7: Blog & Content -->
+    <div class="guide-card" data-category="blog" data-keywords="blog post article content sections author tags categories duplicate publishing">
+      <div>
+        <div class="guide-card-header">
+          <div class="guide-card-title-group">
+            <div class="guide-card-icon">📝</div>
+            <div>
+              <h3 class="guide-card-title">7. Blog Articles &amp; SEO Guides</h3>
+            </div>
+          </div>
+          <span class="guide-card-badge status-live">{{ guide_stats.published_blogs }} Published / {{ guide_stats.total_blogs }} Total</span>
+        </div>
+        <div class="guide-card-target">
+          <span>Live Location:</span>
+          <a href="/blog/" target="_blank">/blog/ Blog &amp; Resources ↗</a>
+        </div>
+        <p class="guide-card-desc">
+          High-ranking AI guides and educational articles with structured rich sections (headings, paragraphs, code blocks, quote callouts, images) and tag relationships.
+        </p>
+        <div class="guide-steps">
+          <div class="guide-steps-title">How to change:</div>
+          <ol class="guide-steps-list">
+            <li>Click <strong>Write Blog Post</strong>, set title, category, and cover image.</li>
+            <li>Add content sections in the <strong>Blog Sections</strong> inline table.</li>
+            <li>Check <strong>Is Published</strong> to publish live immediately.</li>
+            <li>Use the <strong>Duplicate selected post(s)</strong> action to clone posts as drafts.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="guide-actions">
+        <a href="/admin/core/blogpost/add/" class="guide-action-btn primary">✏️ Write Post</a>
+        <a href="/admin/core/blogpost/" class="guide-action-btn secondary">📝 All Posts</a>
+        <a href="/admin/core/blogcategory/" class="guide-action-btn secondary">🏷️ Categories</a>
+        <a href="/admin/core/tag/" class="guide-action-btn secondary">🏷️ Tags</a>
+      </div>
+    </div>
+
+    <!-- Card 8: CRM & Chatbot Leads -->
+    <div class="guide-card" data-category="crm" data-keywords="crm leads inquiries chatbot messages idea submissions gate downloads csv export">
+      <div>
+        <div class="guide-card-header">
+          <div class="guide-card-title-group">
+            <div class="guide-card-icon">📬</div>
+            <div>
+              <h3 class="guide-card-title">8. CRM, Leads &amp; AI Chatbot Funnel</h3>
+            </div>
+          </div>
+          {% if guide_stats.new_inquiries %}
+            <span class="guide-card-badge" style="background:#fee2e2;color:#b91c1c;">{{ guide_stats.new_inquiries }} New Inquiries</span>
+          {% else %}
+            <span class="guide-card-badge">{{ guide_stats.total_inquiries }} Total Leads</span>
+          {% endif %}
+        </div>
+        <div class="guide-card-target">
+          <span>Live Location:</span>
+          <a href="/contact/" target="_blank">Contact Forms, Ideas &amp; AI Chatbot ↗</a>
+        </div>
+        <p class="guide-card-desc">
+          Collects and organizes incoming business requests from the contact page, idea proposal modal, project source download gate, and interactive AI chatbot visitor leads.
+        </p>
+        <div class="guide-steps">
+          <div class="guide-steps-title">How to change:</div>
+          <ol class="guide-steps-list">
+            <li>Check <strong>Contact Inquiries</strong> regularly. Update status from <code>New</code> to <code>Contacted</code> or <code>Converted</code>.</li>
+            <li>Review client/student software requests in <strong>Idea Proposals</strong>.</li>
+            <li>View captured visitor emails/phones in <strong>Chatbot Chats &amp; Leads</strong>.</li>
+            <li>Use the <strong>Export selected to CSV</strong> action anytime to export leads.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="guide-actions">
+        <a href="/admin/core/contactinquiry/" class="guide-action-btn primary">📬 Contact Inquiries</a>
+        <a href="/admin/core/chatbotconversation/" class="guide-action-btn secondary">💬 Chatbot Leads ({{ guide_stats.chatbot_leads }})</a>
+        <a href="/admin/core/ideasubmission/" class="guide-action-btn secondary">💡 Idea Proposals</a>
+        <a href="/admin/core/projectgatelead/" class="guide-action-btn secondary">📥 Gate Leads</a>
+      </div>
+    </div>
+
+    <!-- Card 9: SEO & Redirects -->
+    <div class="guide-card" data-category="seo" data-keywords="seo metadata title description opengraph redirects 301 302 sitemap robots">
+      <div>
+        <div class="guide-card-header">
+          <div class="guide-card-title-group">
+            <div class="guide-card-icon">🔍</div>
+            <div>
+              <h3 class="guide-card-title">9. SEO Metadata, Redirects &amp; Telemetry</h3>
+            </div>
+          </div>
+          <span class="guide-card-badge">{{ guide_stats.seo_items }} SEO Rules / {{ guide_stats.redirects }} Redirects</span>
+        </div>
+        <div class="guide-card-target">
+          <span>Live Location:</span>
+          <a href="/sitemap.xml" target="_blank">Search Engines, /sitemap.xml &amp; /robots.txt ↗</a>
+        </div>
+        <p class="guide-card-desc">
+          Controls Google search preview titles, meta descriptions, canonical URLs, and 301 permanent redirects to ensure old links never 404.
+        </p>
+        <div class="guide-steps">
+          <div class="guide-steps-title">How to change:</div>
+          <ol class="guide-steps-list">
+            <li>To customize metadata for any route, click <strong>Add SEO Metadata</strong> and enter the path (e.g. <code>/services/</code>).</li>
+            <li>To redirect an old or modified URL, add a 301 rule in <strong>301/302 Redirects</strong>.</li>
+            <li>Check <strong>XML Sitemap</strong> to verify Google crawler indexing.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="guide-actions">
+        <a href="/admin/core/seodata/" class="guide-action-btn primary">🔍 SEO Metadata</a>
+        <a href="/admin/core/redirect/" class="guide-action-btn secondary">🔀 301/302 Redirects</a>
+        <a href="/sitemap.xml" target="_blank" class="guide-action-btn secondary">🗺️ XML Sitemap ↗</a>
+        <a href="/robots.txt" target="_blank" class="guide-action-btn secondary">🤖 Robots.txt ↗</a>
+      </div>
+    </div>
+
+    <!-- Card 10: Users & Security -->
+    <div class="guide-card" data-category="users" data-keywords="users accounts staff superuser permissions security password access groups">
+      <div>
+        <div class="guide-card-header">
+          <div class="guide-card-title-group">
+            <div class="guide-card-icon">👥</div>
+            <div>
+              <h3 class="guide-card-title">10. Users, Staff Capabilities &amp; Security</h3>
+            </div>
+          </div>
+          <span class="guide-card-badge">Access Control</span>
+        </div>
+        <div class="guide-card-target">
+          <span>Live Location:</span>
+          <span>Authentication &amp; Role-based Permissions</span>
+        </div>
+        <p class="guide-card-desc">
+          Manage administrator and staff accounts, grant specific editing capabilities, organize staff into groups (e.g. "Content Editors", "Lead Triagers"), and update passwords.
+        </p>
+        <div class="guide-steps">
+          <div class="guide-steps-title">How to change:</div>
+          <ol class="guide-steps-list">
+            <li>To invite a team member, click <strong>Add New User</strong> and check <code>Staff status</code>.</li>
+            <li>Assign model permissions or add them to pre-configured <strong>User Groups</strong>.</li>
+            <li>To change your own password, click <strong>Change Password</strong>.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="guide-actions">
+        <a href="/admin/auth/user/" class="guide-action-btn primary">👥 Manage Users</a>
+        <a href="/admin/auth/user/add/" class="guide-action-btn secondary">➕ Add User</a>
+        <a href="/admin/auth/group/" class="guide-action-btn secondary">🛡️ Groups</a>
+        <a href="{% url 'admin:password_change' %}" class="guide-action-btn secondary">🔒 Change Password</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       4. CUSTOM ADMIN NOTES & OPERATIONAL CHECKLISTS
+       ═══════════════════════════════════════════════════════════ -->
+  <div class="guide-notes-section" id="guideNotesSection">
+    <div class="guide-notes-header">
+      <div class="guide-notes-title">
+        <h3>📋 Custom Admin Notes &amp; Operational SOP Checklist</h3>
+        <p>
+          Internal SOPs, reminders, and checklists managed by administrators. Click a checkbox to toggle completion status in real-time.
+        </p>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <a href="/admin/core/adminguidenote/add/" class="guide-hero-btn primary" style="background:#2271b1;border-color:#135e96;">
+          <span>➕</span> Add Custom Guide Note
+        </a>
+        <a href="/admin/core/adminguidenote/" class="guide-hero-btn secondary" style="background:#f1f5f9;color:#334155;border-color:#cbd5e1;">
+          <span>⚙️</span> Manage All Notes
+        </a>
+      </div>
+    </div>
+
+    <div id="guideNotesList">
+      {% for note in guide_notes %}
+        <div class="guide-note-item {% if note.is_completed %}completed{% endif %}" id="note-card-{{ note.id }}" data-category="notes" data-keywords="{{ note.title }} {{ note.content }} {{ note.get_category_display }}">
+          <input type="checkbox" class="guide-note-checkbox" data-note-id="{{ note.id }}" {% if note.is_completed %}checked{% endif %} title="Mark as completed / uncompleted">
+          <div class="guide-note-body">
+            <div class="guide-note-heading">
+              {% if note.is_pinned %}<span title="Pinned to top">📌</span>{% endif %}
+              <strong id="note-title-{{ note.id }}">{{ note.title }}</strong>
+              <span class="guide-card-badge">{{ note.get_category_display }}</span>
+            </div>
+            <p class="guide-note-content">{{ note.content }}</p>
+            <div class="guide-note-footer">
+              {% if note.action_url %}
+                <a href="{{ note.action_url }}" class="guide-action-btn secondary" style="padding:2px 8px;font-size:11px;">
+                  {{ note.action_label|default:'Take Action ↗' }}
+                </a>
+              {% endif %}
+              <a href="/admin/core/adminguidenote/{{ note.id }}/change/" style="font-size:11px;color:#64748b;">
+                ✏️ Edit Note
+              </a>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <div style="text-align:center;padding:30px;color:#64748b;font-size:13px;">
+          No custom guide notes yet. Click <strong>Add Custom Guide Note</strong> above to create your first SOP or checklist!
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     5. CLIENT-SIDE INTERACTION: REAL-TIME SEARCH & FILTER
+     ═══════════════════════════════════════════════════════════ -->
+<script>
+  (function() {
+    var searchInput = document.getElementById('guideSearch');
+    var filterTabs = document.querySelectorAll('.guide-tab-btn');
+    var cards = document.querySelectorAll('.guide-card');
+    var notes = document.querySelectorAll('.guide-note-item');
+    var notesSection = document.getElementById('guideNotesSection');
+    var activeCategory = 'all';
+
+    function filterGuide() {
+      var query = (searchInput.value || '').toLowerCase().trim();
+
+      // Filter main cards
+      cards.forEach(function(card) {
+        var cardCat = card.getAttribute('data-category') || '';
+        var cardKeywords = (card.getAttribute('data-keywords') || '').toLowerCase();
+        var cardText = card.innerText.toLowerCase();
+
+        var matchesCategory = (activeCategory === 'all' || activeCategory === cardCat);
+        var matchesQuery = (!query || cardKeywords.indexOf(query) !== -1 || cardText.indexOf(query) !== -1);
+
+        if (activeCategory === 'notes') {
+          card.style.display = 'none';
+        } else if (matchesCategory && matchesQuery) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Filter notes
+      var visibleNotesCount = 0;
+      notes.forEach(function(note) {
+        var noteKeywords = (note.getAttribute('data-keywords') || '').toLowerCase();
+        var noteText = note.innerText.toLowerCase();
+
+        var matchesCategory = (activeCategory === 'all' || activeCategory === 'notes');
+        var matchesQuery = (!query || noteKeywords.indexOf(query) !== -1 || noteText.indexOf(query) !== -1);
+
+        if (matchesCategory && matchesQuery) {
+          note.style.display = 'flex';
+          visibleNotesCount++;
+        } else {
+          note.style.display = 'none';
+        }
+      });
+
+      if (activeCategory !== 'all' && activeCategory !== 'notes' && !query) {
+        notesSection.style.display = 'none';
+      } else {
+        notesSection.style.display = 'block';
+      }
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', filterGuide);
+    }
+
+    filterTabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        filterTabs.forEach(function(t) { t.classList.remove('active'); });
+        tab.classList.add('active');
+        activeCategory = tab.getAttribute('data-category');
+        filterGuide();
+      });
+    });
+
+    // AJAX Toggle for Custom Guide Notes
+    document.querySelectorAll('.guide-note-checkbox').forEach(function(checkbox) {
+      checkbox.addEventListener('change', function() {
+        var noteId = checkbox.getAttribute('data-note-id');
+        var card = document.getElementById('note-card-' + noteId);
+
+        // Get CSRF cookie
+        function getCookie(name) {
+          var cookieValue = null;
+          if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+              var cookie = cookies[i].trim();
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+              }
+            }
+          }
+          return cookieValue;
+        }
+
+        fetch('/admin/guide/toggle/' + noteId + '/', {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': getCookie('csrftoken') || '',
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          if (data.status === 'ok') {
+            if (data.is_completed) {
+              card.classList.add('completed');
+            } else {
+              card.classList.remove('completed');
+            }
+          }
+        })
+        .catch(function(err) {
+          console.error('Error toggling note status:', err);
+        });
+      });
+    });
+
+  })();
+</script>
+{% endblock %}

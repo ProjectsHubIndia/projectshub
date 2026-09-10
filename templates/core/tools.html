@@ -1,351 +1,602 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-{% block title %}Free AI Tools | ProjectsHub{% endblock %}
-{% block nav_projects %}active{% endblock %}
+{% block title %}Free AI Tools Directory | 50+ Webapps for Students & Developers — ProjectsHub{% endblock %}
+{% block meta_description %}Explore 50+ free, production-ready AI tools and webapps for students, developers, and researchers. Code explainers, text generators, OCR, and resume builders with zero signup required.{% endblock %}
+{% block meta_keywords %}free AI tools, AI tools for students, code explainer AI, free resume builder AI, AI text generator, OCR tool online, ProjectsHub tools{% endblock %}
+{% block canonical %}https://projectshub.co.in/tools/{% endblock %}
+{% block og_title %}Free AI Tools Directory — ProjectsHub{% endblock %}
+{% block og_description %}Discover free AI webapps for coding, writing, research, and career prep. Instant browser access, zero signups or API keys needed.{% endblock %}
+{% block og_url %}https://projectshub.co.in/tools/{% endblock %}
+
+{% block schema %}
+{# BreadcrumbList Schema #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://projectshub.co.in/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Free AI Tools",
+      "item": "https://projectshub.co.in/tools/"
+    }
+  ]
+}
+</script>
+
+{# CollectionPage Schema #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Free AI Tools Directory — ProjectsHub",
+  "description": "Curated directory of 50+ free AI tools and web applications built for developers, students, and researchers.",
+  "url": "https://projectshub.co.in/tools/",
+  "publisher": {
+    "@type": "Organization",
+    "name": "ProjectsHub",
+    "url": "https://projectshub.co.in/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://projectshub.co.in/static/image/favicon_io/logo.png"
+    }
+  }
+}
+</script>
+
+{# FAQPage Schema #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Are all tools in this directory completely free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, every tool listed in the ProjectsHub Free AI Tools Directory is 100% free to access and use with zero hidden subscriptions, fees, or credit cards required."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to sign up or provide an API key to use these tools?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No signup or account creation is required. You can launch any tool directly in your browser and start working immediately without entering personal API keys."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use outputs from these tools for commercial and college projects?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes! All generated outputs, text, summaries, and code snippets can be freely used in your academic assignments, capstone projects, and commercial business workflows."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I get the source code for these AI tools?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes! ProjectsHub provides full source code, datasets, and architecture blueprints for 50+ production-grade AI and ML projects in our main Projects catalog."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How often are new AI tools added to the directory?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our engineering team continuously tests and deploys new specialized AI tools every month, focusing on productivity, developer workflows, and data science utilities."
+      }
+    }
+  ]
+}
+</script>
+{% endblock %}
 
 {% block extra_css %}
-<style>
-  .tools-hero {
-    text-align: center;
-    padding: 140px 5% 60px;
-  }
-  .tools-hero__label {
-    display: inline-block;
-    font-size: 0.78rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: #f28c28;
-    margin-bottom: 1rem;
-  }
-  .tools-hero__title {
-    font-size: clamp(2rem, 5vw, 3.2rem);
-    font-weight: 800;
-    color: #f1f5f9;
-    margin-bottom: 1rem;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-  }
-  body.light .tools-hero__title { color: #0f172a; }
-  .tools-hero__sub {
-    color: #94a3b8;
-    font-size: 1.1rem;
-    max-width: 580px;
-    margin: 0 auto 2.5rem;
-  }
-  body.light .tools-hero__sub { color: #475569; }
-  .tools-hero__badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: rgba(59,130,246,0.12);
-    border: 1px solid rgba(59,130,246,0.25);
-    color: #60a5fa;
-    padding: 0.45rem 1.2rem;
-    border-radius: 99px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-  }
-
-  /* Category tabs */
-  .tools-tabs {
-    display: flex;
-    gap: 0.6rem;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: 3rem;
-    padding: 0 5%;
-  }
-  .tools-tab {
-    padding: 0.5rem 1.25rem;
-    border-radius: 99px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: #94a3b8;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  body.light .tools-tab {
-    background: #f1f5f9;
-    border-color: #e2e8f0;
-    color: #475569;
-  }
-  .tools-tab.active, .tools-tab:hover {
-    background: #3b82f6;
-    border-color: #3b82f6;
-    color: #fff;
-  }
-
-  /* Grid */
-  .tools-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 5% 80px;
-  }
-
-  /* Tool Card */
-  .tool-card {
-    border-radius: 16px;
-    background: #111827;
-    border: 1px solid rgba(255,255,255,0.08);
-    padding: 1.6rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-    transition: transform 0.22s ease, box-shadow 0.22s ease;
-    text-decoration: none;
-    color: inherit;
-  }
-  body.light .tool-card {
-    background: #ffffff;
-    border-color: rgba(0,0,0,0.08);
-    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-  }
-  .tool-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 36px rgba(0,0,0,0.22);
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .tool-card__icon {
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.7rem;
-    flex-shrink: 0;
-  }
-  .tool-card__header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  .tool-card__name {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: #f1f5f9;
-    margin: 0;
-  }
-  body.light .tool-card__name { color: #0f172a; }
-  .tool-card__tag {
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 0.2rem 0.65rem;
-    border-radius: 99px;
-    background: rgba(59,130,246,0.12);
-    color: #60a5fa;
-    margin-top: 0.2rem;
-    display: inline-block;
-  }
-  .tool-card__desc {
-    color: #94a3b8;
-    font-size: 0.9rem;
-    line-height: 1.6;
-    flex: 1;
-  }
-  body.light .tool-card__desc { color: #475569; }
-  .tool-card__cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    color: #3b82f6;
-    font-weight: 600;
-    font-size: 0.88rem;
-    margin-top: auto;
-  }
-  body.light .tool-card__cta { color: #2563eb; }
-
-  /* Banner CTA */
-  .tools-banner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 5% 100px;
-  }
-  .tools-banner__inner {
-    background: linear-gradient(135deg, #1e3a5f 0%, #1e1b4b 60%, #312e81 100%);
-    border-radius: 24px;
-    padding: 3.5rem 3rem;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .tools-banner__inner::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 70% 50%, rgba(99,102,241,0.3) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .tools-banner__emoji { font-size: 3rem; margin-bottom: 1rem; display: block; }
-  .tools-banner__title {
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    font-weight: 800;
-    color: #f1f5f9;
-    margin-bottom: 0.75rem;
-  }
-  .tools-banner__sub { color: rgba(255,255,255,0.65); margin-bottom: 2rem; font-size: 1rem; }
-  .tools-banner__btn {
-    display: inline-block;
-    background: #fff;
-    color: #1e1b4b;
-    font-weight: 700;
-    font-size: 1rem;
-    padding: 0.9rem 2.5rem;
-    border-radius: 99px;
-    text-decoration: none;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
-  }
-  .tools-banner__btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.35); color: #1e1b4b; }
-</style>
+<link rel="stylesheet" href="{% static 'css/tools.css' %}?v=3" />
 {% endblock %}
 
 {% block content %}
+<div class="tools-page">
 
-<!-- Hero -->
-<div class="tools-hero">
-  <div class="tools-hero__badge">
-    <span>⚡</span> 50+ Tools — No Signup Needed
-  </div>
-  <h1 class="tools-hero__title">Free AI Tools</h1>
-  <p class="tools-hero__sub">Powerful, ready-to-use AI tools built for students and businesses. Generate, analyze, and automate — instantly.</p>
+  <!-- ── Hero Section ── -->
+  <section class="tools-hero" aria-labelledby="toolsHeroTitle">
+    
+    <!-- Breadcrumb -->
+    <nav class="tools-breadcrumb" aria-label="Breadcrumb">
+      <a href="{% url 'index' %}">Home</a>
+      <span class="tools-breadcrumb-sep">/</span>
+      <span class="tools-breadcrumb-current">Free AI Tools</span>
+    </nav>
+
+    <!-- Top Badge -->
+    <div class="tools-badge">
+      <span class="tools-badge__dot"></span>
+      50+ Free AI Webapps &mdash; No Signup Required
+    </div>
+
+    <!-- Title -->
+    <h1 class="tools-title" id="toolsHeroTitle">
+      Free <span class="tools-title__gradient">AI Tools Directory</span>
+    </h1>
+
+    <!-- Subtitle -->
+    <p class="tools-desc">
+      Production-ready AI utilities, code analyzers, and productivity webapps crafted for students, developers, and researchers. Free forever, instant browser access.
+    </p>
+
+    <!-- Search Bar -->
+    <div class="tools-search-wrap">
+      <div class="tools-search-bar" id="toolsSearchBar">
+        <svg class="tools-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input
+          type="text"
+          id="toolSearchInput"
+          class="tools-search-input"
+          placeholder="Search tools by name, tag, or function (e.g. Code, Chatbot, Resume)..."
+          aria-label="Search tools"
+          autocomplete="off"
+        />
+        <button type="button" id="clearToolSearch" class="tools-search-clear" aria-label="Clear search">✕</button>
+        <kbd class="tools-search-kbd" title="Press / to focus">/</kbd>
+      </div>
+    </div>
+
+    <!-- Live Counter -->
+    <div class="tools-count-bar" aria-live="polite">
+      <span>Showing <strong id="visibleCount">{{ total_count|default:tools.count }}</strong> curated AI tools</span>
+      <span id="activeFilterLabel"></span>
+    </div>
+
+    <!-- Modern Segmented Filter Tabs -->
+    <div class="tools-tabs" id="toolTabs" role="tablist" aria-label="Filter tools by category">
+      <button class="tools-tab active" data-cat="all" role="tab" aria-selected="true">
+        <span>🌐</span> All Tools
+        <span class="tab-count" id="countAll">{{ total_count|default:tools.count }}</span>
+      </button>
+
+      {% if categories %}
+        {% for cat in categories %}
+        <button class="tools-tab" data-cat="{{ cat.slug }}" role="tab" aria-selected="false">
+          {% if cat.slug == 'text' %}<span>✍️</span>
+          {% elif cat.slug == 'dev' %}<span>💻</span>
+          {% elif cat.slug == 'chat' %}<span>🤖</span>
+          {% elif cat.slug == 'career' %}<span>💼</span>
+          {% elif cat.slug == 'seo' %}<span>📈</span>
+          {% elif cat.slug == 'utils' %}<span>🛠️</span>
+          {% else %}<span>⚡</span>
+          {% endif %}
+          {{ cat.name }}
+          <span class="tab-count">{{ cat.tool_count }}</span>
+        </button>
+        {% endfor %}
+      {% else %}
+        <button class="tools-tab" data-cat="text" role="tab"><span>✍️</span> Writing &amp; Text</button>
+        <button class="tools-tab" data-cat="dev" role="tab"><span>💻</span> Developer &amp; Code</button>
+        <button class="tools-tab" data-cat="chat" role="tab"><span>🤖</span> Chatbots &amp; LLMs</button>
+        <button class="tools-tab" data-cat="career" role="tab"><span>💼</span> Career &amp; Interview</button>
+        <button class="tools-tab" data-cat="seo" role="tab"><span>📈</span> SEO &amp; Growth</button>
+        <button class="tools-tab" data-cat="utils" role="tab"><span>🛠️</span> Utilities</button>
+      {% endif %}
+    </div>
+
+  </section>
+
+  <!-- ── 4-Point Trust & Value Strip ── -->
+  <section class="tools-trust-strip" aria-label="Tool benefits">
+    <div class="tools-trust-item">
+      <div class="tools-trust-icon">💯</div>
+      <div>
+        <h4 class="tools-trust-title">100% Free Forever</h4>
+        <p class="tools-trust-desc">Zero paywalls, trial expirations, or required credit cards.</p>
+      </div>
+    </div>
+    <div class="tools-trust-item">
+      <div class="tools-trust-icon">🔓</div>
+      <div>
+        <h4 class="tools-trust-title">Zero Signup Required</h4>
+        <p class="tools-trust-desc">Open any webapp directly in browser and start creating immediately.</p>
+      </div>
+    </div>
+    <div class="tools-trust-item">
+      <div class="tools-trust-icon">⚡</div>
+      <div>
+        <h4 class="tools-trust-title">Real-Time AI Engines</h4>
+        <p class="tools-trust-desc">Powered by modern neural networks, transformer models, and OCR.</p>
+      </div>
+    </div>
+    <div class="tools-trust-item">
+      <div class="tools-trust-icon">🎯</div>
+      <div>
+        <h4 class="tools-trust-title">Student &amp; Dev Friendly</h4>
+        <p class="tools-trust-desc">Crafted to accelerate college projects, interview prep, and code tasks.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Main Tools Section ── -->
+  <section aria-labelledby="allToolsHeading">
+    <div class="tools-section-header">
+      <h2 class="tools-section-title" id="allToolsHeading">
+        <span>Curated Web Applications</span>
+      </h2>
+      <span class="tools-section-badge">Direct Browser Access</span>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="tools-grid" id="toolsGrid">
+      {% if tools %}
+        {% for tool in tools %}
+        <a
+          href="{{ tool.external_url|default:tool.url|default:'https://tools.projectshub.co.in/' }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="tool-card"
+          data-cat="{{ tool.category.slug|default:tool.category_slug|default:'all' }}"
+          data-title="{{ tool.name|lower }}"
+          data-desc="{{ tool.description|lower }}"
+        >
+          <div class="tool-card__header">
+            <div class="tool-card__icon"{% if tool.icon_bg_gradient %} style="background: {{ tool.icon_bg_gradient }};"{% endif %}>
+              {{ tool.icon|default:'⚡' }}
+            </div>
+            <div class="tool-card__info">
+              <h3 class="tool-card__name">{{ tool.name }}</h3>
+              <div class="tool-card__meta">
+                <span class="tool-card__tag">{{ tool.category.name|default:'AI Tool' }}</span>
+                {% if tool.featured %}
+                <span class="tool-card__featured-badge">★ Featured</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <p class="tool-card__desc">{{ tool.description }}</p>
+
+          <div class="tool-card__features">
+            <span class="tool-feature-pill">⚡ Instant</span>
+            <span class="tool-feature-pill">🔒 Private</span>
+            <span class="tool-feature-pill">Free</span>
+          </div>
+
+          <div class="tool-card__footer">
+            <span class="tool-card__status">Live Webapp</span>
+            <span class="tool-card__cta">
+              Launch Tool
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </span>
+          </div>
+        </a>
+        {% endfor %}
+      {% else %}
+        <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer" class="tool-card" data-cat="text" data-title="ai text generator" data-desc="generate high quality blog posts descriptions emails">
+          <div class="tool-card__header">
+            <div class="tool-card__icon" style="background: linear-gradient(135deg, #1e40af, #3b82f6);">🤖</div>
+            <div class="tool-card__info">
+              <h3 class="tool-card__name">AI Text Generator</h3>
+              <span class="tool-card__tag">Writing &amp; Text</span>
+            </div>
+          </div>
+          <p class="tool-card__desc">Generate high-quality blog posts, product descriptions, emails, and documentation in seconds using GPT-powered models.</p>
+          <div class="tool-card__features">
+            <span class="tool-feature-pill">⚡ Instant</span>
+            <span class="tool-feature-pill">Free</span>
+          </div>
+          <div class="tool-card__footer">
+            <span class="tool-card__status">Live Webapp</span>
+            <span class="tool-card__cta">Launch Tool &rarr;</span>
+          </div>
+        </a>
+      {% endif %}
+    </div>
+
+    <!-- Empty Search State -->
+    <div id="toolsNoResults" class="tools-no-results">
+      <div class="tools-no-results__icon">🔍</div>
+      <h3 class="tools-no-results__title">No tools found matching your search</h3>
+      <p class="tools-no-results__text">
+        We couldn't find any tool matching that query. Try another keyword (e.g. "code", "resume", "pdf") or browse all available tools.
+      </p>
+      <button type="button" class="tools-reset-btn" id="resetToolsBtn">
+        <span>🔄</span> Reset Filters &amp; View All
+      </button>
+    </div>
+  </section>
+
+  <!-- ── Interactive FAQ Section ── -->
+  <section class="tools-faq-section" aria-labelledby="toolsFaqTitle">
+    <div class="tools-faq-header">
+      <div class="tools-badge" style="margin-bottom: 0.75rem;">
+        <span>❓</span> Got Questions?
+      </div>
+      <h2 class="tools-faq-title" id="toolsFaqTitle">Frequently Asked Questions</h2>
+      <p class="tools-faq-sub">Everything you need to know about our free AI tools and how to use them.</p>
+    </div>
+
+    <div class="tools-faq-list" id="faqAccordion">
+      
+      <!-- FAQ 1 -->
+      <div class="tools-faq-item">
+        <button type="button" class="tools-faq-question" aria-expanded="false">
+          <span>Are all tools in this directory really free?</span>
+          <svg class="tools-faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="tools-faq-answer">
+          <div class="tools-faq-answer__inner">
+            Yes, 100%! Every web application in our Free AI Tools Directory is hosted and provided completely free of charge. There are no surprise paywalls, credit card forms, or limited trial periods.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 2 -->
+      <div class="tools-faq-item">
+        <button type="button" class="tools-faq-question" aria-expanded="false">
+          <span>Do I need to sign up or enter an API key?</span>
+          <svg class="tools-faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="tools-faq-answer">
+          <div class="tools-faq-answer__inner">
+            No signup or personal account is necessary. You do not need an OpenAI or Anthropic API key. You can click "Launch Tool" on any card and immediately begin using the application right inside your web browser.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 3 -->
+      <div class="tools-faq-item">
+        <button type="button" class="tools-faq-question" aria-expanded="false">
+          <span>Can I use the outputs for my college assignments or commercial projects?</span>
+          <svg class="tools-faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="tools-faq-answer">
+          <div class="tools-faq-answer__inner">
+            Absolutely. All code analysis, text generation, resume structures, and OCR transcriptions produced by the tools are yours to use freely in personal projects, academic reports, capstones, and commercial client deliverables.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 4 -->
+      <div class="tools-faq-item">
+        <button type="button" class="tools-faq-question" aria-expanded="false">
+          <span>Can I get the full source code for these AI tools?</span>
+          <svg class="tools-faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="tools-faq-answer">
+          <div class="tools-faq-answer__inner">
+            Yes! If you are a student or developer looking to build similar machine learning applications from scratch, ProjectsHub offers 50+ complete real-world AI and Django projects with full source code, architecture diagrams, datasets, and installation guides in our <a href="{% url 'projects' %}" style="color: #3b82f6; text-decoration: underline; font-weight: 600;">Projects Catalog</a>.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 5 -->
+      <div class="tools-faq-item">
+        <button type="button" class="tools-faq-question" aria-expanded="false">
+          <span>How often are new tools and features released?</span>
+          <svg class="tools-faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="tools-faq-answer">
+          <div class="tools-faq-answer__inner">
+            Our engineering team regularly evaluates the latest advancements in LLMs, multimodal AI, and developer tools. New webapps and performance upgrades are rolled out on an ongoing monthly basis.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Conversion CTA Banner ── -->
+  <section class="tools-cta-wrap" aria-label="Next steps">
+    <div class="tools-cta-box">
+      <div class="tools-cta-badge">
+        <span>🚀</span> Accelerate Your AI Journey
+      </div>
+      <h2 class="tools-cta-title">Looking for Complete AI Projects with Full Source Code?</h2>
+      <p class="tools-cta-desc">
+        Explore 50+ production-grade AI &amp; ML projects with documented architectures, clean datasets, and step-by-step setup guides &mdash; or speak with our engineers for custom AI development.
+      </p>
+      <div class="tools-cta-actions">
+        <a href="{% url 'projects' %}" class="tools-cta-btn-primary">
+          <span>Explore 50+ AI Projects</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+        <a href="{% url 'index' %}#consultation" class="tools-cta-btn-secondary">
+          <span>Book a Free Consultation</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
 </div>
 
-<!-- Tool Cards Grid -->
-<div class="tools-grid">
+<!-- ── Interactive Client-Side Logic ── -->
+<script>
+(function() {
+  var grid = document.getElementById('toolsGrid');
+  var cards = grid ? Array.from(grid.querySelectorAll('.tool-card')) : [];
+  var tabs = Array.from(document.querySelectorAll('#toolTabs .tools-tab'));
+  var searchInput = document.getElementById('toolSearchInput');
+  var clearBtn = document.getElementById('clearToolSearch');
+  var noResults = document.getElementById('toolsNoResults');
+  var resetBtn = document.getElementById('resetToolsBtn');
+  var visibleCountEl = document.getElementById('visibleCount');
+  var filterLabelEl = document.getElementById('activeFilterLabel');
+  var activeCat = 'all';
 
-  <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer" class="tool-card">
-    <div class="tool-card__header">
-      <div class="tool-card__icon" style="background: linear-gradient(135deg, #1e40af, #3b82f6);">🤖</div>
-      <div>
-        <p class="tool-card__name">AI Text Generator</p>
-        <span class="tool-card__tag">Text</span>
-      </div>
-    </div>
-    <p class="tool-card__desc">Generate high-quality blog posts, product descriptions, emails, and more in seconds using GPT-powered AI.</p>
-    <span class="tool-card__cta">Try Free &rarr;</span>
-  </a>
+  function filterTools() {
+    var q = searchInput ? searchInput.value.toLowerCase().trim() : '';
+    if (clearBtn) {
+      clearBtn.style.display = q ? 'inline-flex' : 'none';
+    }
 
-  <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer" class="tool-card">
-    <div class="tool-card__header">
-      <div class="tool-card__icon" style="background: linear-gradient(135deg, #065f46, #10b981);">📄</div>
-      <div>
-        <p class="tool-card__name">Resume Builder</p>
-        <span class="tool-card__tag">Career</span>
-      </div>
-    </div>
-    <p class="tool-card__desc">Create an ATS-friendly, professional resume in minutes. Enter your details and get a polished PDF instantly.</p>
-    <span class="tool-card__cta">Try Free &rarr;</span>
-  </a>
+    var visibleCount = 0;
+    cards.forEach(function(card) {
+      var cat = card.getAttribute('data-cat') || '';
+      var title = card.getAttribute('data-title') || '';
+      var desc = card.getAttribute('data-desc') || '';
 
-  <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer" class="tool-card">
-    <div class="tool-card__header">
-      <div class="tool-card__icon" style="background: linear-gradient(135deg, #6b21a8, #a855f7);">🖼️</div>
-      <div>
-        <p class="tool-card__name">AI Image Caption Generator</p>
-        <span class="tool-card__tag">Vision</span>
-      </div>
-    </div>
-    <p class="tool-card__desc">Upload any image and get accurate, descriptive captions for social media, accessibility, or content creation.</p>
-    <span class="tool-card__cta">Try Free &rarr;</span>
-  </a>
+      var matchesCat = (activeCat === 'all') || (cat === activeCat);
+      var matchesSearch = !q || title.indexOf(q) !== -1 || desc.indexOf(q) !== -1;
 
-  <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer" class="tool-card">
-    <div class="tool-card__header">
-      <div class="tool-card__icon" style="background: linear-gradient(135deg, #7c2d12, #f97316);">📊</div>
-      <div>
-        <p class="tool-card__name">Data Summarizer</p>
-        <span class="tool-card__tag">Analytics</span>
-      </div>
-    </div>
-    <p class="tool-card__desc">Paste any CSV or table data and get an instant AI-generated summary with key insights and trends.</p>
-    <span class="tool-card__cta">Try Free &rarr;</span>
-  </a>
+      var show = matchesCat && matchesSearch;
+      card.style.display = show ? 'flex' : 'none';
+      if (show) visibleCount++;
+    });
 
-  <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer" class="tool-card">
-    <div class="tool-card__header">
-      <div class="tool-card__icon" style="background: linear-gradient(135deg, #0c4a6e, #0ea5e9);">💬</div>
-      <div>
-        <p class="tool-card__name">AI Chatbot Builder</p>
-        <span class="tool-card__tag">Chat</span>
-      </div>
-    </div>
-    <p class="tool-card__desc">Create a custom AI chatbot for your website in minutes. No coding required — just define your bot's persona.</p>
-    <span class="tool-card__cta">Try Free &rarr;</span>
-  </a>
+    if (visibleCountEl) {
+      visibleCountEl.textContent = visibleCount;
+    }
+    var countAllEl = document.getElementById('countAll');
+    if (countAllEl && cards.length > 0) {
+      countAllEl.textContent = cards.length;
+    }
 
-  <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer" class="tool-card">
-    <div class="tool-card__header">
-      <div class="tool-card__icon" style="background: linear-gradient(135deg, #4c1d95, #7c3aed);">🔍</div>
-      <div>
-        <p class="tool-card__name">SEO Keyword Analyzer</p>
-        <span class="tool-card__tag">SEO</span>
-      </div>
-    </div>
-    <p class="tool-card__desc">Analyze any content for SEO strength. Get keyword density, readability score, and AI-powered improvement tips.</p>
-    <span class="tool-card__cta">Try Free &rarr;</span>
-  </a>
+    if (filterLabelEl) {
+      if (activeCat !== 'all' || q) {
+        var parts = [];
+        if (activeCat !== 'all') {
+          var activeTab = document.querySelector('#toolTabs .tools-tab.active');
+          if (activeTab) {
+            parts.push('in ' + activeTab.innerText.trim());
+          }
+        }
+        if (q) {
+          parts.push('matching "' + q + '"');
+        }
+        filterLabelEl.textContent = ' (' + parts.join(' ') + ')';
+      } else {
+        filterLabelEl.textContent = '';
+      }
+    }
 
-  <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer" class="tool-card">
-    <div class="tool-card__header">
-      <div class="tool-card__icon" style="background: linear-gradient(135deg, #134e4a, #14b8a6);">✉️</div>
-      <div>
-        <p class="tool-card__name">Cold Email Writer</p>
-        <span class="tool-card__tag">Outreach</span>
-      </div>
-    </div>
-    <p class="tool-card__desc">Write high-converting cold emails for sales, job applications, or partnerships — personalized by AI in one click.</p>
-    <span class="tool-card__cta">Try Free &rarr;</span>
-  </a>
+    if (noResults) {
+      noResults.style.display = (visibleCount === 0) ? 'block' : 'none';
+    }
+  }
 
-  <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer" class="tool-card">
-    <div class="tool-card__header">
-      <div class="tool-card__icon" style="background: linear-gradient(135deg, #881337, #f43f5e);">🎙️</div>
-      <div>
-        <p class="tool-card__name">Interview Question Generator</p>
-        <span class="tool-card__tag">Career</span>
-      </div>
-    </div>
-    <p class="tool-card__desc">Enter a job role and get 20 tailored technical + behavioral interview questions with ideal answer frameworks.</p>
-    <span class="tool-card__cta">Try Free &rarr;</span>
-  </a>
+  // Category Tab Switching
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      activeCat = tab.getAttribute('data-cat');
+      tabs.forEach(function(t) {
+        var isActive = (t === tab);
+        t.classList.toggle('active', isActive);
+        t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+      filterTools();
+    });
+  });
 
-  <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer" class="tool-card">
-    <div class="tool-card__header">
-      <div class="tool-card__icon" style="background: linear-gradient(135deg, #1e3a5f, #6366f1);">🧠</div>
-      <div>
-        <p class="tool-card__name">Code Explainer</p>
-        <span class="tool-card__tag">Dev</span>
-      </div>
-    </div>
-    <p class="tool-card__desc">Paste any code snippet and get a plain-English explanation. Perfect for beginners learning to code or debugging.</p>
-    <span class="tool-card__cta">Try Free &rarr;</span>
-  </a>
+  // Search Input Events
+  if (searchInput) {
+    searchInput.addEventListener('input', filterTools);
 
-</div>
+    // Keyboard shortcut: '/' focuses search bar
+    window.addEventListener('keydown', function(e) {
+      if (e.key === '/' && document.activeElement !== searchInput && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+        e.preventDefault();
+        searchInput.focus();
+        searchInput.select();
+      }
+      if (e.key === 'Escape' && document.activeElement === searchInput) {
+        searchInput.value = '';
+        filterTools();
+        searchInput.blur();
+      }
+    });
+  }
 
-<!-- CTA Banner -->
-<div class="tools-banner">
-  <div class="tools-banner__inner">
-    <span class="tools-banner__emoji">🚀</span>
-    <h2 class="tools-banner__title">50+ More Tools Available at tools.projectshub.co.in</h2>
-    <p class="tools-banner__sub">All tools are free, no account needed. Built with Django, Python & OpenAI.</p>
-    <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer" class="tools-banner__btn">
-      Explore All Free Tools &rarr;
-    </a>
-  </div>
-</div>
+  // Clear Search Button
+  if (clearBtn) {
+    clearBtn.addEventListener('click', function() {
+      if (searchInput) {
+        searchInput.value = '';
+        filterTools();
+        searchInput.focus();
+      }
+    });
+  }
 
+  // Reset Button
+  if (resetBtn) {
+    resetBtn.addEventListener('click', function() {
+      activeCat = 'all';
+      if (searchInput) searchInput.value = '';
+      tabs.forEach(function(t) {
+        var isAll = (t.getAttribute('data-cat') === 'all');
+        t.classList.toggle('active', isAll);
+        t.setAttribute('aria-selected', isAll ? 'true' : 'false');
+      });
+      filterTools();
+    });
+  }
+
+  // FAQ Accordion
+  var faqItems = document.querySelectorAll('.tools-faq-item');
+  faqItems.forEach(function(item) {
+    var btn = item.querySelector('.tools-faq-question');
+    var answer = item.querySelector('.tools-faq-answer');
+    if (btn && answer) {
+      btn.addEventListener('click', function() {
+        var isOpen = item.classList.contains('active');
+        // Close other items
+        faqItems.forEach(function(other) {
+          if (other !== item) {
+            other.classList.remove('active');
+            var otherBtn = other.querySelector('.tools-faq-question');
+            var otherAns = other.querySelector('.tools-faq-answer');
+            if (otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
+            if (otherAns) otherAns.style.maxHeight = null;
+          }
+        });
+
+        // Toggle current item
+        if (isOpen) {
+          item.classList.remove('active');
+          btn.setAttribute('aria-expanded', 'false');
+          answer.style.maxHeight = null;
+        } else {
+          item.classList.add('active');
+          btn.setAttribute('aria-expanded', 'true');
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+        }
+      });
+    }
+  });
+
+  // Run initial filter check
+  filterTools();
+})();
+</script>
 {% endblock %}

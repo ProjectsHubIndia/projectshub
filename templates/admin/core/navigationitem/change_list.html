@@ -1,0 +1,31 @@
+{% extends "admin/change_list.html" %}
+{% load i18n static %}
+
+{% block content %}
+<div class="postbox" style="margin-bottom:18px;border-left:4px solid #2271b1;">
+  <div class="postbox-header" style="display:flex;align-items:center;justify-content:space-between;">
+    <h2 style="display:flex;align-items:center;gap:8px;">
+      <span>🎨</span>
+      <span>Mega Menu UI/UX Management (Live Navigation Builder)</span>
+    </h2>
+    <a href="/" target="_blank" class="button button-secondary button-small">
+      Preview Mega Menu Live ↗
+    </a>
+  </div>
+  <div class="inside" style="padding:14px 18px;">
+    <p style="margin:0 0 10px 0;font-size:13px;color:#1d2327;">
+      Manage all cards, audience columns, badge labels, and pill tags for the frontend <strong>Mega Menu</strong> directly from this screen. Changes take effect on the live website immediately.
+    </p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+      <a href="?group__exact=our_work" class="button button-secondary">📁 Our Work Cards</a>
+      <a href="?group__exact=how_we_help_students" class="button button-secondary">🎓 For Students Column</a>
+      <a href="?group__exact=how_we_help_business" class="button button-secondary">🏢 For Businesses Column</a>
+      <a href="?group__exact=popular_tags" class="button button-secondary">🏷️ Bottom Pill Tags</a>
+      <a href="?group__exact=main" class="button button-secondary">🔗 Top Navbar Links</a>
+      <a href="/admin/core/navigationitem/" class="button button-secondary" style="font-weight:600;">Show All Items</a>
+    </div>
+  </div>
+</div>
+
+{{ block.super }}
+{% endblock %}

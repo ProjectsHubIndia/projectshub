@@ -171,7 +171,7 @@
              style="width:100%;height:auto;object-fit:cover;display:block;"
              width="1280"
              height="720"
-             onerror="this.onerror=null; this.src='/static/image/projects/5cce966bbfd0773ff7f37f60210e23c9.jpg';" />
+             onerror="this.onerror=null; this.style.opacity='0.3';" />
       </div>
       {% endif %}
       {% endwith %}
@@ -543,7 +543,7 @@
                alt="{{ rel.title }} — AI project by ProjectsHub"
                class="pd-related-card__img"
                loading="lazy"
-               onerror="this.onerror=null; this.src='/static/image/projects/5cce966bbfd0773ff7f37f60210e23c9.jpg';" />
+               onerror="this.onerror=null; this.style.opacity='0.3';" />
           {% endif %}
           <div class="pd-related-card__body">
             <div class="pd-related-card__tag">{{ rel.tags|truncatechars:50 }}</div>
@@ -605,12 +605,8 @@
    Page-specific JS — loaded after base.html's script.js
 ══════════════════════════════════ #}
 {% block extra_js %}
-<script src="{% static 'js/project-details.js' %}"></script>
-<script src="{% static 'js/quantum-pulse-loader.js' %}"></script>
-<script src="{% static 'js/interested_model.js'%}"></script>
-<!--<script src="{% static 'js/ai-chatbot.js' %}"></script>-->
-<!--<script src="{% static 'js/social-share.js' %}"></script>-->
-<script src="{% static 'js/idea-modal.js' %}"></script>
+<script src="{% static 'js/project-details.js' %}" defer></script>
+<script src="{% static 'js/interested_model.js' %}" defer></script>
 
 <script>
   // YouTube facade — replace thumbnail with iframe on click / keyboard Enter

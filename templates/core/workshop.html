@@ -997,6 +997,7 @@
       </div>
 
       {# ── 5-Step Progress Dots ── #}
+      <h2 class="visually-hidden">Workshop Daily Schedule</h2>
       <div class="ws-steps" role="list" aria-label="Workshop day overview">
         {% for day in workshop.days.all %}
         <div class="ws-steps__item" role="listitem">
@@ -1374,8 +1375,8 @@
     </button>
     <div class="share-card__preview">
       <div class="share-card__badge">ProjectsHub Workshop</div>
-      <h3 class="share-card__day" id="shareDay">Day 1</h3>
-      <h2 class="share-card__title" id="shareTitle">Title</h2>
+      <div class="share-card__day" id="shareDay">Day 1</div>
+      <h3 class="share-card__title" id="shareTitle">Title</h3>
       <p class="share-card__date" id="shareDate">Date</p>
       <p class="share-card__desc" id="shareDesc">Desc</p>
       <div class="share-card__outcome" id="shareOutcome">
@@ -1788,9 +1789,10 @@
 {# ══════════════════════════════════ Page-specific JS ══════════════════════════════════ #}
 {% block extra_js %}
 <script>
-  document
-    .getElementById("shareWorkshopBtn")
-    .addEventListener("click", function () {
+  (function() {
+    const shareBtn = document.getElementById("shareWorkshopBtn");
+    if (!shareBtn) return;
+    shareBtn.addEventListener("click", function () {
       const title =
         document.querySelector(".workshop-hero__title")?.innerText ||
         "AI Workshop";
@@ -1805,21 +1807,16 @@
       } else {
         // Fallback — copy to clipboard
         navigator.clipboard.writeText(url).then(() => {
-          const btn = document.getElementById("shareWorkshopBtn");
-          btn.innerHTML = `✅ Link Copied!`;
+          shareBtn.innerHTML = `✅ Link Copied!`;
           setTimeout(() => {
-            btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share This Workshop`;
+            shareBtn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share This Workshop`;
           }, 2500);
         });
       }
     });
+  })();
 </script>
-<script src="{% static 'js/quantum-pulse-loader.js' %}"></script>
-<!--<script src="{% static 'js/ai-chatbot.js' %}"></script>-->
-<!--<script src="{% static 'js/social-share.js' %}"></script>-->
-<script src="{% static 'js/spotlight.js' %}"></script>
-<script src="{% static 'js/idea-modal.js' %}"></script>
-<script src="{% static 'js/enroll-modal.js' %}"></script>
+<script src="{% static 'js/enroll-modal.js' %}" defer></script>
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {

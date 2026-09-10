@@ -1,0 +1,361 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block title %}Dashboard | ProjectsHub{% endblock %}
+{% block content_title %}Dashboard{% endblock %}
+{% block bodyclass %}{{ block.super }} wp-dashboard{% endblock %}
+
+{% block content %}
+<div id="dashboard-widgets-wrap">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       1. WORDPRESS WELCOME PANEL (.welcome-panel)
+       ═══════════════════════════════════════════════════════════ -->
+  <div id="welcome-panel" class="welcome-panel">
+    <button type="button" class="welcome-panel-close" aria-label="Dismiss the welcome panel" onclick="document.getElementById('welcome-panel').style.display='none';">
+      Dismiss
+    </button>
+
+    <div class="welcome-panel-content">
+      <div class="welcome-panel-header">
+        <h2>Welcome to ProjectsHub!</h2>
+        <p class="about-description">
+          We’ve assembled some links to get you started with managing your AI platform, showcase, CRM, and content:
+        </p>
+      </div>
+
+      <div class="welcome-panel-grid">
+        <!-- Column 1: Get Started -->
+        <div class="welcome-panel-column">
+          <h3>Get Started</h3>
+          <a href="/admin/core/sitesettings/1/change/" class="button button-primary button-hero">
+            Customize Your Site
+          </a>
+          <div style="margin-top:10px;">
+            <a href="/admin/guide/" class="button button-secondary" style="display:inline-flex;align-items:center;gap:5px;font-weight:600;font-size:12px;">
+              <span>📖</span> Master Project Guide &amp; SOPs
+            </a>
+          </div>
+          <p style="margin-top:8px;font-size:12px;color:#646970;">
+            or, <a href="/" target="_blank">view your live website ↗</a>
+          </p>
+        </div>
+
+        <!-- Column 2: Next Steps -->
+        <div class="welcome-panel-column">
+          <h3>Next Steps</h3>
+          <ul>
+            <li>
+              <a href="/admin/core/project/add/">
+                <span class="dashicons dashicons-plus-alt">➕</span> Add an AI project
+              </a>
+            </li>
+            <li>
+              <a href="/admin/core/blogpost/add/">
+                <span class="dashicons dashicons-edit">✏️</span> Write your next blog post
+              </a>
+            </li>
+            <li>
+              <a href="/admin/core/aitool/add/">
+                <span class="dashicons dashicons-admin-tools">🛠️</span> Add a curated AI tool
+              </a>
+            </li>
+            <li>
+              <a href="/admin/core/workshopcard/">
+                <span class="dashicons dashicons-welcome-learn-more">🎓</span> Manage 3-Day Bootcamp
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Column 3: More Actions -->
+        <div class="welcome-panel-column">
+          <h3>More Actions</h3>
+          <ul>
+            <li>
+              <a href="/admin/core/contactinquiry/">
+                <span class="dashicons dashicons-email-alt">📬</span> Manage Inquiries
+                {% if admin_stats.new_inquiries %}
+                  <span class="wp-menu-count red" style="margin-left:4px;">{{ admin_stats.new_inquiries }} new</span>
+                {% endif %}
+              </a>
+            </li>
+            <li>
+              <a href="/admin/core/ideasubmission/">
+                <span class="dashicons dashicons-lightbulb">💡</span> Review Idea Proposals ({{ model_counts.ideasubmission|default:'0' }})
+              </a>
+            </li>
+            <li>
+              <a href="/admin/core/navigationitem/">
+                <span class="dashicons dashicons-menu">🎨</span> Edit Navigation &amp; Menus
+              </a>
+            </li>
+            <li>
+              <a href="/admin/core/seodata/">
+                <span class="dashicons dashicons-search">🔍</span> Configure SEO &amp; Redirects
+              </a>
+            </li>
+            <li>
+              <a href="/admin/guide/" style="font-weight:600;color:#2271b1;">
+                <span class="dashicons dashicons-book">📖</span> Project Guide &amp; Operations Manual
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       2. WORDPRESS DASHBOARD WIDGETS (METABOXES)
+       ═══════════════════════════════════════════════════════════ -->
+  <div class="wp-dashboard-grid">
+    
+    <!-- ── LEFT COLUMN ── -->
+    <div class="postbox-container">
+      
+      <!-- Widget: Master Project Guide & Operations -->
+      <div class="postbox" id="dashboard_guide_widget">
+        <div class="postbox-header">
+          <h2>📖 Operations Manual &amp; Project Guide</h2>
+        </div>
+        <div class="inside" style="padding:14px 16px;">
+          <p style="margin:0 0 12px 0;font-size:13px;color:#475569;line-height:1.5;">
+            Need help making changes to branding, projects, navigation, AI tools, bootcamps, SEO, or chatbot leads?
+            The <strong>Project Guide</strong> provides step-by-step instructions and 1-click action shortcuts for every section of the platform.
+          </p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <a href="/admin/guide/" class="button button-primary" style="display:inline-flex;align-items:center;gap:4px;">
+              <span>📘</span> Open Project Guide &amp; Manual
+            </a>
+            <a href="/admin/core/adminguidenote/add/" class="button" style="display:inline-flex;align-items:center;gap:4px;">
+              <span>➕</span> Add Custom SOP Note
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Widget 1: At a Glance -->
+      <div class="postbox" id="dashboard_right_now">
+        <div class="postbox-header">
+          <h2>At a Glance</h2>
+        </div>
+        <div class="inside">
+          <ul class="glance-grid">
+            <li class="glance-item">
+              <a href="/admin/core/project/">🚀 {{ admin_stats.total_projects|default:'0' }} Projects</a>
+            </li>
+            <li class="glance-item">
+              <a href="/admin/core/blogpost/">📝 {{ admin_stats.total_blogs|default:'0' }} Posts</a>
+            </li>
+            <li class="glance-item">
+              <a href="/admin/core/aitool/">🛠️ {{ admin_stats.total_tools|default:'0' }} AI Tools</a>
+            </li>
+            <li class="glance-item">
+              <a href="/admin/core/casestudy/">💼 {{ admin_stats.total_case_studies|default:'0' }} Case Studies</a>
+            </li>
+            <li class="glance-item">
+              <a href="/admin/core/contactinquiry/">📬 {{ admin_stats.total_inquiries|default:'0' }} Inquiries</a>
+            </li>
+            <li class="glance-item">
+              <a href="/admin/core/workshopenrollment/">🎓 {{ admin_stats.total_enrollments|default:'0' }} Enrollments</a>
+            </li>
+          </ul>
+          <div class="glance-footer">
+            <span>ProjectsHub 2.0 running on Django {{ system_info.django_version|default:'4.2' }}</span>
+            <span>Theme: <strong>Modern Dark/Light</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Widget 2: Activity Feed -->
+      <div class="postbox" id="dashboard_activity">
+        <div class="postbox-header">
+          <h2>Activity</h2>
+        </div>
+        <div class="inside">
+          <div class="activity-block">
+            <h3 class="activity-subhead">Recently Published</h3>
+            <ul class="activity-list">
+              {% for post in recent_blogs %}
+                <li class="activity-item">
+                  <span>
+                    <a href="/admin/core/blogpost/{{ post.id }}/change/" class="activity-title">{{ post.title|truncatechars:38 }}</a>
+                    <span class="activity-meta">in {{ post.category.name|default:'General' }}</span>
+                  </span>
+                  <span class="activity-meta">{{ post.created_at|date:"M j" }}</span>
+                </li>
+              {% empty %}
+                <li class="activity-item">
+                  <span class="activity-meta">No recent blog posts published yet.</span>
+                </li>
+              {% endfor %}
+            </ul>
+
+            <h3 class="activity-subhead" style="margin-top:12px;">Recent Showcase Projects</h3>
+            <ul class="activity-list">
+              {% for prj in recent_projects %}
+                <li class="activity-item">
+                  <span>
+                    <a href="/admin/core/project/{{ prj.id }}/change/" class="activity-title">{{ prj.title|truncatechars:38 }}</a>
+                    <span class="activity-meta">· {{ prj.category.name|default:'AI' }}</span>
+                  </span>
+                  <span class="activity-meta">{{ prj.created_at|date:"M j" }}</span>
+                </li>
+              {% empty %}
+                <li class="activity-item">
+                  <span class="activity-meta">No projects added yet.</span>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Widget 3: Quick Draft -->
+      <div class="postbox" id="dashboard_quick_press">
+        <div class="postbox-header">
+          <h2>Quick Draft</h2>
+        </div>
+        <div class="inside">
+          <form class="quick-draft-form" action="/admin/core/blogpost/add/" method="get">
+            <label style="display:block;margin-bottom:4px;font-weight:600;" for="quick-title">Title</label>
+            <input type="text" name="title" id="quick-title" placeholder="What’s on your mind?" autocomplete="off" />
+
+            <label style="display:block;margin-bottom:4px;font-weight:600;" for="quick-content">Content Summary</label>
+            <textarea name="excerpt" id="quick-content" rows="3" placeholder="Draft ideas or notes for your next post..."></textarea>
+
+            <button type="submit" class="button button-primary">Save Draft</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── RIGHT COLUMN ── -->
+    <div class="postbox-container">
+
+      <!-- Widget 4: Platform Health & Telemetry -->
+      <div class="postbox" id="dashboard_site_health">
+        <div class="postbox-header">
+          <h2>Site Health &amp; Telemetry</h2>
+        </div>
+        <div class="inside">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;padding:8px 12px;background:#f6f7f7;border-radius:3px;">
+            <span style="font-size:20px;">✅</span>
+            <div>
+              <strong style="color:#00a32a;">Good</strong>
+              <div style="font-size:12px;color:#646970;">All platform systems and database connections operational.</div>
+            </div>
+          </div>
+
+          <table style="width:100%;font-size:12px;border-collapse:collapse;">
+            <tr style="border-bottom:1px solid #f0f0f1;">
+              <td style="padding:6px 0;color:#646970;">Python Engine:</td>
+              <td style="padding:6px 0;text-align:right;font-weight:600;">Python {{ system_info.python_version|default:'3.12' }}</td>
+            </tr>
+            <tr style="border-bottom:1px solid #f0f0f1;">
+              <td style="padding:6px 0;color:#646970;">Django Framework:</td>
+              <td style="padding:6px 0;text-align:right;font-weight:600;">Django {{ system_info.django_version|default:'4.2' }}</td>
+            </tr>
+            <tr style="border-bottom:1px solid #f0f0f1;">
+              <td style="padding:6px 0;color:#646970;">Database Backend:</td>
+              <td style="padding:6px 0;text-align:right;font-weight:600;">{{ system_info.db_engine|default:'SQLite' }}</td>
+            </tr>
+            <tr style="border-bottom:1px solid #f0f0f1;">
+              <td style="padding:6px 0;color:#646970;">Cache Store:</td>
+              <td style="padding:6px 0;text-align:right;font-weight:600;">{{ system_info.cache_backend|default:'LocMem' }}</td>
+            </tr>
+            <tr style="border-bottom:1px solid #f0f0f1;">
+              <td style="padding:6px 0;color:#646970;">Time Zone:</td>
+              <td style="padding:6px 0;text-align:right;font-weight:600;">{{ system_info.time_zone|default:'Asia/Kolkata' }}</td>
+            </tr>
+            <tr>
+              <td style="padding:6px 0;color:#646970;">Debug Mode:</td>
+              {% if system_info.debug_mode %}
+                <td style="padding:6px 0;text-align:right;font-weight:600;color:#dba617;">Enabled (Dev)</td>
+              {% else %}
+                <td style="padding:6px 0;text-align:right;font-weight:600;color:#00a32a;">Disabled (Prod)</td>
+              {% endif %}
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Widget 5: Recent CRM Inquiries -->
+      <div class="postbox" id="dashboard_crm_leads">
+        <div class="postbox-header">
+          <h2>Recent CRM Inquiries</h2>
+          <a href="/admin/core/contactinquiry/" style="font-size:12px;">View All</a>
+        </div>
+        <div class="inside">
+          <ul class="activity-list" style="margin-bottom:10px;">
+            {% for inq in recent_inquiries %}
+              <li class="activity-item">
+                <div>
+                  <a href="/admin/core/contactinquiry/{{ inq.id }}/change/" class="activity-title">
+                    {{ inq.name }}
+                  </a>
+                  <div class="activity-meta">
+                    {{ inq.service_interest|default:'General Inquiry' }} · {{ inq.email }}
+                  </div>
+                </div>
+                {% if inq.status == 'new' %}
+                  <span class="wp-badge" style="background:#d63638;">NEW</span>
+                {% elif inq.status == 'converted' %}
+                  <span class="wp-badge" style="background:#00a32a;">CONVERTED</span>
+                {% else %}
+                  <span class="wp-badge" style="background:#2271b1;">{{ inq.status|upper }}</span>
+                {% endif %}
+              </li>
+            {% empty %}
+              <li class="activity-item">
+                <span class="activity-meta">No inquiries received yet.</span>
+              </li>
+            {% endfor %}
+          </ul>
+
+          <div style="padding-top:8px;border-top:1px solid #f0f0f1;display:flex;align-items:center;justify-content:space-between;">
+            <a href="/admin/core/contactinquiry/" class="button button-secondary button-small">Manage Inquiries</a>
+            <a href="/admin/core/ideasubmission/" class="button button-secondary button-small">Idea Proposals ({{ admin_stats.total_ideas }})</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Widget 6: Quick Admin Shortcuts -->
+      <div class="postbox" id="dashboard_quick_links">
+        <div class="postbox-header">
+          <h2>Quick Actions &amp; Tools</h2>
+        </div>
+        <div class="inside">
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <a href="/admin/core/project/add/" class="button button-secondary" style="display:flex;align-items:center;justify-content:space-between;">
+              <span>🚀 Add New AI Project</span>
+              <span>➕</span>
+            </a>
+            <a href="/admin/core/blogpost/add/" class="button button-secondary" style="display:flex;align-items:center;justify-content:space-between;">
+              <span>📝 Add New Blog Post</span>
+              <span>➕</span>
+            </a>
+            <a href="/admin/core/aitool/add/" class="button button-secondary" style="display:flex;align-items:center;justify-content:space-between;">
+              <span>🛠️ Add New AI Tool</span>
+              <span>➕</span>
+            </a>
+            <a href="/admin/core/workshopcard/add/" class="button button-secondary" style="display:flex;align-items:center;justify-content:space-between;">
+              <span>🎓 Add New Workshop</span>
+              <span>➕</span>
+            </a>
+            <a href="/sitemap.xml" target="_blank" class="button button-secondary" style="display:flex;align-items:center;justify-content:space-between;">
+              <span>🌐 Open XML Sitemap</span>
+              <span>↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

@@ -78,6 +78,17 @@ students and businesses. No signup needed.{% endblock %}
 
 
 {# ═══════════════════════════════════════
+Hero image preload — only on homepage
+═══════════════════════════════════════ #}
+{% block extra_preload %}
+<link rel="preload" href="{% static 'css/hero-visual.css' %}?v=2" as="style" />
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/hero-visual.css' %}?v=2" />
+{% endblock %}
+
+{# ═══════════════════════════════════════
 CONTENT
 ═══════════════════════════════════════ #}
 {% block content %}
@@ -88,136 +99,137 @@ CONTENT
 
         <section class="hero-section">
             <div class="container">
-                <div class="row d-flex align-items-center justify-content-between">
-                    <div class="col-lg-7">
+                <div class="row d-flex align-items-center justify-content-between g-0">
+
+                    <!-- ── Left: Copy ── -->
+                    <div class="col-lg-6 col-xl-5">
                         <div class="hero-text">
+
+                            <!-- Eyebrow badge -->
                             <p class="hero-tag">
                                 <span class="hero-tag__dot"></span>
                                 AI-Powered Platform
                             </p>
+
+                            <!-- Headline -->
                             <h1 class="hero-title">
-                                Real-World AI Projects &amp; <span class="hero-title__underline">Free Tools</span>
+                                Real-World AI Projects &amp;&nbsp;<span class="hero-title__underline">Free&nbsp;Tools</span>
                                 for<br>
-                                <span class="hero-title__gradient" id="heroWordRotator">Students</span>
+                                <span class="hero-title__gradient" id="heroWordRotator">Students</span><span id="heroCursor" class="hero-title__cursor" style="color: var(--ph-cyan); opacity: 0.8; animation: ph-blink 1s infinite;">|</span>
                             </h1>
+
+                            <!-- Description -->
                             <p class="hero-desc">
                                 Real-world AI and machine learning projects with source code and mentorship
                                 for students, plus custom AI development and automation for businesses.
                             </p>
+
+                            <!-- CTAs -->
                             <div class="hero-actions">
                                 <a href="/projects/" class="btn-hero-primary">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
                                     </svg>
                                     Explore Projects
                                 </a>
                                 <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer"
-                                    class="btn-hero-ghost">Try Free Tools →</a>
+                                    class="btn-hero-ghost">
+                                    Try Free Tools
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                                    </svg>
+                                </a>
                             </div>
 
-                            <!-- Trust bar -->
-                            <div class="hero-trust-bar">
-                                <div class="hero-trust-item">
-                                    <svg class="hero-trust-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path
-                                            d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-                                    </svg>
-                                    <span class="hero-trust-value">50+</span>
-                                    <span class="hero-trust-label">AI Projects</span>
-                                </div>
-                                <div class="hero-trust-divider"></div>
-                                <div class="hero-trust-item">
-                                    <svg class="hero-trust-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <rect x="4" y="4" width="16" height="16" rx="2" />
-                                        <path d="M9 9h6M9 12h6M9 15h4" />
-                                    </svg>
-                                    <span class="hero-trust-value">10+</span>
-                                    <span class="hero-trust-label">Free Tools</span>
-                                </div>
-                                <div class="hero-trust-divider"></div>
-                                <div class="hero-trust-item">
-                                    <svg class="hero-trust-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                                        <circle cx="9" cy="7" r="4" />
-                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                                    </svg>
-                                    <span class="hero-trust-value">500+</span>
-                                    <span class="hero-trust-label">Happy Users</span>
-                                </div>
-                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-5 text-center d-none d-md-flex hero-visual-col">
-                        <!-- Real Robot Video / Interactive AI (ULTIMATE) -->
-                        <div class="real-robot-container" id="ultimate-robot-card">
-                            <!-- Background Aura -->
-                            <div class="robot-aura"></div>
 
-                            <!-- Massive Spinning Border Wrapper -->
-                            <div class="robot-spin-border">
-                                <div class="robot-video-wrapper"
-                                    style="height: 400px; background: radial-gradient(circle, #1e293b, #000);">
-                                    <!-- 3D Interactive Spline Robot (Tracks Mouse) -->
-                                    <iframe id="spline-frame"
+                    <!-- ── Right: Visual card ── -->
+                    <div class="col-lg-6 col-xl-6 d-none d-lg-flex hero-visual-col justify-content-end">
+                        <div class="hero-visual-card" id="heroVisualCard">
+
+                            <!-- Ambient glow blobs -->
+                            <div class="hvc-blob hvc-blob--blue"  aria-hidden="true"></div>
+                            <div class="hvc-blob hvc-blob--purple" aria-hidden="true"></div>
+
+                            <!-- Main iframe window -->
+                            <div class="hvc-window">
+                                <!-- Fake browser chrome -->
+                                <div class="hvc-chrome">
+                                    <span class="hvc-dot hvc-dot--red"></span>
+                                    <span class="hvc-dot hvc-dot--yellow"></span>
+                                    <span class="hvc-dot hvc-dot--green"></span>
+                                    <span class="hvc-chrome__url">projectshub.co.in</span>
+                                </div>
+                                <!-- Spline robot -->
+                                <div class="hvc-iframe-wrap">
+                                    <iframe
+                                        id="spline-frame"
                                         src="https://my.spline.design/nexbotrobotcharacterconcept-8ZQLeb6vV2g0TQt5jHHsLI3O/"
-                                        title="3D Interactive AI Robot" frameborder="0" loading="lazy"
-                                        style="width: 100%; height: calc(100% + 60px); border: none; background: transparent; position: relative; z-index: 5; margin-bottom: -60px;">
-                                    </iframe>
-                                    <div class="robot-holo-overlay"></div>
-                                    <div class="robot-glitch-line"></div>
+                                        title="3D Interactive AI Robot"
+                                        frameborder="0"
+                                        loading="lazy"
+                                        style="width:100%; height:calc(100% + 60px); border:none; background:transparent; position:relative; z-index:5; margin-bottom:-60px;"
+                                    ></iframe>
                                 </div>
                             </div>
 
-                            <!-- Floating Code Terminal -->
-                            <div class="data-screen screen-left code-panel">
-                                <div class="code-header">
-                                    <span class="dot red"></span><span class="dot yellow"></span><span
-                                        class="dot green"></span>
-                                    <span style="margin-left:5px">AI_CORE.py</span>
+                            <!-- Floating code card (top-left) -->
+                            <div class="hvc-float hvc-float--code hvc-float--tl" aria-hidden="true">
+                                <div class="hvc-float__bar">
+                                    <span class="hvc-dot hvc-dot--red"></span>
+                                    <span class="hvc-dot hvc-dot--yellow"></span>
+                                    <span class="hvc-dot hvc-dot--green"></span>
+                                    <span class="hvc-float__filename">AI_CORE.py</span>
                                 </div>
-                                <div class="code-body">
-                                    <span class="code-line keyword">import</span> <span
-                                        class="code-line text">tensorflow</span> <span
-                                        class="code-line keyword">as</span> <span class="code-line text">tf</span><br>
-                                    <span class="code-line keyword">def</span> <span
-                                        class="code-line function">init_neural_net</span>():<br>
-                                    &nbsp;&nbsp;<span class="code-line text">model = tf.keras.</span><span
-                                        class="code-line function">Sequential</span>()<br>
-                                    &nbsp;&nbsp;<span class="code-line text">model.</span><span
-                                        class="code-line function">compile</span>(<span
-                                        class="code-line string">'adam'</span>)<br>
-                                    <span class="code-cursor">_</span>
+                                <div class="hvc-float__code">
+                                    <span class="hvc-kw">import</span> tensorflow <span class="hvc-kw">as</span> tf<br>
+                                    <span class="hvc-kw">def</span> <span class="hvc-fn">build_model</span>():<br>
+                                    &nbsp;&nbsp;model = tf.keras.<span class="hvc-fn">Sequential</span>()<br>
+                                    &nbsp;&nbsp;model.<span class="hvc-fn">compile</span>(<span class="hvc-str">'adam'</span>)<br>
+                                    <span class="hvc-cursor">▌</span>
                                 </div>
                             </div>
 
-                            <!-- Holographic AI Processor Chip -->
-                            <div class="data-screen screen-right holo-chip-container">
-                                <div class="holo-chip">
-                                    <div class="chip-core"><span class="chip-text">AI</span></div>
-                                    <div class="circuit-line l1"></div>
-                                    <div class="circuit-line l2"></div>
-                                    <div class="circuit-line l3"></div>
-                                    <div class="circuit-line l4"></div>
+                            <!-- Floating stat card — accuracy (top-right) -->
+                            <div class="hvc-float hvc-float--stat hvc-float--tr" aria-hidden="true">
+                                <div class="hvc-stat__icon hvc-stat__icon--green">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
                                 </div>
-                                <div class="chip-status">
-                                    <div class="pulse-indicator"></div>
-                                    <span>NEURAL PROCESSOR</span>
+                                <div>
+                                    <div class="hvc-stat__value">94.7%</div>
+                                    <div class="hvc-stat__label">Model Accuracy</div>
                                 </div>
                             </div>
+
+                            <!-- Floating stat card — users (bottom-right) -->
+                            <div class="hvc-float hvc-float--stat hvc-float--br" aria-hidden="true">
+                                <div class="hvc-stat__icon hvc-stat__icon--blue">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                </div>
+                                <div>
+                                    <div class="hvc-stat__value">500+</div>
+                                    <div class="hvc-stat__label">Happy Users</div>
+                                </div>
+                                <div class="hvc-stat__pulse"></div>
+                            </div>
+
+                            <!-- Floating AI chip (bottom-left) -->
+                            <div class="hvc-float hvc-float--chip hvc-float--bl" aria-hidden="true">
+                                <div class="hvc-chip">
+                                    <div class="hvc-chip__core">AI</div>
+                                </div>
+                                <div class="hvc-chip__label">
+                                    <div class="hvc-chip__pulse"></div>
+                                    LIVE
+                                </div>
+                            </div>
+
                         </div>
-
-                        <script>
-                            // 3D Tilt interaction removed as requested, keeping only CSS animations
-                        </script>
                     </div>
+
                 </div>
             </div>
         </section>
@@ -250,23 +262,21 @@ CONTENT
                 <!-- ── Students Card ── -->
                 <div class="audience-card audience-card--students pcard pcard--students">
 
-                    <!-- Decorative dots & plus -->
-                    <span class="pcard__dot pcard__dot--filled pcard__dot--purple"
-                        style="top:86px;right:96px;width:7px;height:7px;"></span>
-                    <span class="pcard__dot pcard__dot--ring   pcard__dot--blue"
-                        style="top:68px;right:52px;width:10px;height:10px;"></span>
-                    <span class="pcard__dot pcard__dot--ring   pcard__dot--gray"
-                        style="top:100px;right:44px;width:7px;height:7px;"></span>
-                    <span class="pcard__plus" style="top:90px;right:126px;">+</span>
-
-                    <!-- Background wavy lines -->
-                    <svg class="pcard__wavebg" viewBox="0 0 320 90" fill="none" preserveAspectRatio="none"
-                        aria-hidden="true">
-                        <path d="M0 45 Q80 15 160 45 Q240 75 320 45" stroke="rgba(99,102,241,0.10)" stroke-width="1.5"
-                            fill="none" />
-                        <path d="M0 60 Q80 30 160 60 Q240 90 320 60" stroke="rgba(99,102,241,0.07)" stroke-width="1.2"
-                            fill="none" />
-                    </svg>
+                    <!-- Real photo banner -->
+                    <div class="pcard__img-banner" aria-hidden="true">
+                        <img src="{% static 'image/students-ai-project-480w.webp' %}"
+                             srcset="{% static 'image/students-ai-project-320w.webp' %} 320w,
+                                     {% static 'image/students-ai-project-480w.webp' %} 480w,
+                                     {% static 'image/students-ai-project-640w.webp' %} 640w,
+                                     {% static 'image/students-ai-project-768w.webp' %} 768w,
+                                     {% static 'image/students-ai-project-1024w.webp' %} 1024w,
+                                     {% static 'image/students-ai-project.webp' %} 1200w"
+                             sizes="(max-width: 480px) 100vw, (max-width: 768px) 90vw, 520px"
+                             alt="Student working on AI project"
+                             loading="lazy" decoding="async" width="520" height="200"
+                             style="width:100%;height:200px;object-fit:cover;border-radius:18px 18px 0 0;display:block;" />
+                        <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(99,102,241,0.08) 0%, rgba(255,255,255,0.55) 100%);border-radius:18px 18px 0 0;"></div>
+                    </div>
 
                     <!-- Icon box -->
                     <div class="audience-card__icon pcard__icon pcard__icon--purple">
@@ -357,75 +367,6 @@ CONTENT
                         </li>
                     </ul>
 
-                    <!-- Vector illustration: Open book + lightbulb -->
-                    <div class="pcard__illustration" aria-hidden="true">
-                        <svg width="145" height="135" viewBox="0 0 145 135" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-
-                            <!-- ── Lightbulb ── -->
-                            <!-- Glass body -->
-                            <path
-                                d="M72 4 C57 4 46 15 46 30 C46 41 52 49 60 53 L60 63 L84 63 L84 53 C92 49 98 41 98 30 C98 15 87 4 72 4 Z"
-                                fill="rgba(99,102,241,0.18)" stroke="rgba(99,102,241,0.62)" stroke-width="1.8" />
-                            <!-- Base rings -->
-                            <rect x="60" y="63" width="24" height="5" rx="2.5" fill="rgba(99,102,241,0.32)"
-                                stroke="rgba(99,102,241,0.60)" stroke-width="1.3" />
-                            <rect x="62" y="68" width="20" height="5" rx="2.5" fill="rgba(99,102,241,0.26)"
-                                stroke="rgba(99,102,241,0.54)" stroke-width="1.3" />
-                            <rect x="64" y="73" width="16" height="5" rx="2.5" fill="rgba(99,102,241,0.20)"
-                                stroke="rgba(99,102,241,0.48)" stroke-width="1.3" />
-                            <!-- Filament -->
-                            <path d="M61 32 L66 39 L74 25 L79 32" stroke="rgba(99,102,241,0.65)" stroke-width="1.6"
-                                stroke-linecap="round" stroke-linejoin="round" fill="none" />
-                            <!-- Glass shine -->
-                            <path d="M53 22 C53 15 58 10 63 9" stroke="rgba(99,102,241,0.38)" stroke-width="1.3"
-                                stroke-linecap="round" fill="none" />
-
-                            <!-- ── Open book ── -->
-                            <!-- Spine -->
-                            <line x1="72" y1="84" x2="72" y2="128" stroke="rgba(99,102,241,0.70)" stroke-width="2.5"
-                                stroke-linecap="round" />
-                            <!-- Left page -->
-                            <path d="M72 84 C72 84 38 80 14 90 L14 128 C38 118 72 122 72 122 Z"
-                                fill="rgba(99,102,241,0.17)" stroke="rgba(99,102,241,0.54)" stroke-width="1.6"
-                                stroke-linejoin="round" />
-                            <!-- Right page -->
-                            <path d="M72 84 C72 84 106 80 130 90 L130 128 C106 118 72 122 72 122 Z"
-                                fill="rgba(99,102,241,0.13)" stroke="rgba(99,102,241,0.48)" stroke-width="1.6"
-                                stroke-linejoin="round" />
-                            <!-- Left text lines -->
-                            <line x1="26" y1="100" x2="65" y2="97" stroke="rgba(99,102,241,0.42)" stroke-width="1.2"
-                                stroke-linecap="round" />
-                            <line x1="22" y1="108" x2="65" y2="105" stroke="rgba(99,102,241,0.30)" stroke-width="1.2"
-                                stroke-linecap="round" />
-                            <line x1="20" y1="116" x2="65" y2="113" stroke="rgba(99,102,241,0.28)" stroke-width="1.2"
-                                stroke-linecap="round" />
-                            <!-- Right text lines -->
-                            <line x1="79" y1="97" x2="118" y2="100" stroke="rgba(99,102,241,0.42)" stroke-width="1.2"
-                                stroke-linecap="round" />
-                            <line x1="79" y1="105" x2="122" y2="108" stroke="rgba(99,102,241,0.30)" stroke-width="1.2"
-                                stroke-linecap="round" />
-                            <line x1="79" y1="113" x2="124" y2="116" stroke="rgba(99,102,241,0.28)" stroke-width="1.2"
-                                stroke-linecap="round" />
-                            <!-- Book bottom edge -->
-                            <path d="M14 128 C38 118 72 122 72 122 C72 122 106 118 130 128"
-                                stroke="rgba(99,102,241,0.56)" stroke-width="2" stroke-linecap="round" fill="none" />
-
-                            <!-- ── Sparkle decorations ── -->
-                            <!-- Plus/cross top-left -->
-                            <line x1="20" y1="22" x2="20" y2="30" stroke="rgba(99,102,241,0.55)" stroke-width="1.5"
-                                stroke-linecap="round" />
-                            <line x1="16" y1="26" x2="24" y2="26" stroke="rgba(99,102,241,0.55)" stroke-width="1.5"
-                                stroke-linecap="round" />
-                            <!-- Filled dot top-right -->
-                            <circle cx="128" cy="16" r="3" fill="rgba(99,102,241,0.45)" />
-                            <!-- Filled dot right -->
-                            <circle cx="138" cy="50" r="2.2" fill="rgba(99,102,241,0.35)" />
-                            <!-- Ring dot left -->
-                            <circle cx="8" cy="60" r="3.5" fill="none" stroke="rgba(99,102,241,0.45)"
-                                stroke-width="1.3" />
-                        </svg>
-                    </div>
 
                     <!-- CTA Button -->
                     <a href="/projects/"
@@ -437,22 +378,25 @@ CONTENT
                 <!-- ── Businesses Card ── -->
                 <div class="audience-card audience-card--business pcard pcard--business">
 
+                    <!-- Real photo banner -->
+                    <div class="pcard__img-banner" aria-hidden="true">
+                        <img src="{% static 'image/business-ai-team-480w.webp' %}"
+                             srcset="{% static 'image/business-ai-team-320w.webp' %} 320w,
+                                     {% static 'image/business-ai-team-480w.webp' %} 480w,
+                                     {% static 'image/business-ai-team-640w.webp' %} 640w,
+                                     {% static 'image/business-ai-team-768w.webp' %} 768w,
+                                     {% static 'image/business-ai-team-1024w.webp' %} 1024w,
+                                     {% static 'image/business-ai-team.webp' %} 1200w"
+                             sizes="(max-width: 480px) 100vw, (max-width: 768px) 90vw, 520px"
+                             alt="Business team reviewing AI analytics dashboard"
+                             loading="lazy" decoding="async" width="520" height="200"
+                             style="width:100%;height:200px;object-fit:cover;border-radius:18px 18px 0 0;display:block;" />
+                        <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(59,130,246,0.08) 0%, rgba(255,255,255,0.55) 100%);border-radius:18px 18px 0 0;"></div>
+                    </div>
+
                     <!-- Decorative dots -->
-                    <span class="pcard__dot pcard__dot--filled pcard__dot--blue"
-                        style="top:82px;right:84px;width:7px;height:7px;"></span>
-                    <span class="pcard__dot pcard__dot--ring   pcard__dot--blue"
-                        style="top:65px;right:46px;width:10px;height:10px;"></span>
                     <span class="pcard__dot pcard__dot--ring   pcard__dot--gray"
                         style="top:98px;right:40px;width:6px;height:6px;"></span>
-
-                    <!-- Background ribbon curves (diagonal — business theme) -->
-                    <svg class="pcard__wavebg" viewBox="0 0 320 90" fill="none" preserveAspectRatio="none"
-                        aria-hidden="true">
-                        <path d="M0 75 Q80 38 160 18 Q240 -2 320 12" stroke="rgba(59,130,246,0.11)" stroke-width="1.5"
-                            fill="none" />
-                        <path d="M0 90 Q80 55 160 35 Q240 14 320 28" stroke="rgba(59,130,246,0.07)" stroke-width="1.2"
-                            fill="none" />
-                    </svg>
 
                     <!-- Icon box -->
                     <div class="audience-card__icon pcard__icon pcard__icon--blue">
@@ -540,69 +484,6 @@ CONTENT
                         </li>
                     </ul>
 
-                    <!-- Vector illustration: City buildings -->
-                    <div class="pcard__illustration" aria-hidden="true">
-                        <svg width="155" height="148" viewBox="0 0 155 148" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <!-- ── City skyline ── -->
-
-                            <!-- Building 1 — far left, shortest -->
-                            <rect x="2" y="92" width="24" height="56" rx="3" fill="rgba(59,130,246,0.12)"
-                                stroke="rgba(59,130,246,0.42)" stroke-width="1.5" />
-                            <rect x="6" y="100" width="6" height="5" rx="1" fill="rgba(59,130,246,0.45)" />
-                            <rect x="15" y="100" width="6" height="5" rx="1" fill="rgba(59,130,246,0.35)" />
-                            <rect x="6" y="112" width="6" height="5" rx="1" fill="rgba(59,130,246,0.38)" />
-                            <rect x="15" y="112" width="6" height="5" rx="1" fill="rgba(59,130,246,0.48)" />
-
-                            <!-- Building 2 — medium-low -->
-                            <rect x="30" y="68" width="28" height="80" rx="3" fill="rgba(59,130,246,0.13)"
-                                stroke="rgba(59,130,246,0.45)" stroke-width="1.5" />
-                            <rect x="35" y="76" width="7" height="6" rx="1" fill="rgba(59,130,246,0.45)" />
-                            <rect x="46" y="76" width="7" height="6" rx="1" fill="rgba(59,130,246,0.38)" />
-                            <rect x="35" y="88" width="7" height="6" rx="1" fill="rgba(59,130,246,0.38)" />
-                            <rect x="46" y="88" width="7" height="6" rx="1" fill="rgba(59,130,246,0.50)" />
-                            <rect x="35" y="100" width="7" height="6" rx="1" fill="rgba(59,130,246,0.42)" />
-                            <rect x="46" y="100" width="7" height="6" rx="1" fill="rgba(59,130,246,0.35)" />
-
-                            <!-- Building 3 — tallest center, with antenna -->
-                            <rect x="62" y="18" width="38" height="130" rx="3" fill="rgba(59,130,246,0.17)"
-                                stroke="rgba(59,130,246,0.55)" stroke-width="1.8" />
-                            <!-- Antenna -->
-                            <line x1="81" y1="18" x2="81" y2="6" stroke="rgba(59,130,246,0.62)" stroke-width="1.6"
-                                stroke-linecap="round" />
-                            <circle cx="81" cy="5" r="2.5" fill="rgba(59,130,246,0.58)" stroke="rgba(59,130,246,0.72)"
-                                stroke-width="1" />
-                            <!-- Windows -->
-                            <rect x="67" y="26" width="8" height="6" rx="1" fill="rgba(59,130,246,0.50)" />
-                            <rect x="79" y="26" width="8" height="6" rx="1" fill="rgba(59,130,246,0.40)" />
-                            <rect x="91" y="26" width="5" height="6" rx="1" fill="rgba(59,130,246,0.50)" />
-                            <rect x="67" y="38" width="8" height="6" rx="1" fill="rgba(59,130,246,0.38)" />
-                            <rect x="79" y="38" width="8" height="6" rx="1" fill="rgba(59,130,246,0.52)" />
-                            <rect x="91" y="38" width="5" height="6" rx="1" fill="rgba(59,130,246,0.38)" />
-                            <rect x="67" y="50" width="8" height="6" rx="1" fill="rgba(59,130,246,0.45)" />
-                            <rect x="79" y="50" width="8" height="6" rx="1" fill="rgba(59,130,246,0.38)" />
-                            <rect x="91" y="50" width="5" height="6" rx="1" fill="rgba(59,130,246,0.45)" />
-
-                            <!-- Building 4 — right, tall -->
-                            <rect x="105" y="34" width="30" height="114" rx="3" fill="rgba(59,130,246,0.14)"
-                                stroke="rgba(59,130,246,0.50)" stroke-width="1.5" />
-                            <rect x="110" y="42" width="7" height="6" rx="1" fill="rgba(59,130,246,0.48)" />
-                            <rect x="122" y="42" width="7" height="6" rx="1" fill="rgba(59,130,246,0.38)" />
-                            <rect x="110" y="54" width="7" height="6" rx="1" fill="rgba(59,130,246,0.38)" />
-                            <rect x="122" y="54" width="7" height="6" rx="1" fill="rgba(59,130,246,0.52)" />
-                            <rect x="110" y="66" width="7" height="6" rx="1" fill="rgba(59,130,246,0.45)" />
-                            <rect x="122" y="66" width="7" height="6" rx="1" fill="rgba(59,130,246,0.38)" />
-
-                            <!-- Building 5 — far right, small -->
-                            <rect x="140" y="74" width="14" height="74" rx="2" fill="rgba(59,130,246,0.10)"
-                                stroke="rgba(59,130,246,0.38)" stroke-width="1.3" />
-                            <rect x="143" y="82" width="5" height="4" rx="1" fill="rgba(59,130,246,0.42)" />
-                            <rect x="143" y="92" width="5" height="4" rx="1" fill="rgba(59,130,246,0.35)" />
-
-                            <!-- Ground line -->
-                            <line x1="0" y1="148" x2="155" y2="148" stroke="rgba(59,130,246,0.48)" stroke-width="1.8" />
-                        </svg>
-                    </div>
 
                     <!-- CTA Button -->
                     <button type="button" id="openIdeaModal"
@@ -617,10 +498,9 @@ CONTENT
                 </div>
 
             </div>
+        </section><!-- /#about -->
 
-
-
-            <!-- ── Projects ── -->
+        <!-- ── Projects ── -->
             <section id="projects">
                 <div class="projects-header">
                     <h2 class="projects-title">Explore Real-World<br><span class="projects-title__gradient">AI Projects
@@ -646,8 +526,8 @@ CONTENT
                                     <line x1="6" y1="16" x2="10" y2="14" />
                                     <line x1="14" y1="10" x2="18" y2="8" />
                                 </svg>Machine Learning</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/fastapi/009688" width="15"
-                                    height="15" alt="" loading="lazy">FastAPI</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/fastapi.svg" width="15"
+                                    height="15" alt="FastAPI" loading="lazy">FastAPI</span>
                             <span class="marquee-tag"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
                                     stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <rect x="2" y="7" width="5" height="10" rx="1" />
@@ -655,13 +535,13 @@ CONTENT
                                     <rect x="17" y="9" width="5" height="6" rx="1" />
                                     <line x1="7" y1="12" x2="9.5" y2="12" />
                                     <line x1="14.5" y1="12" x2="17" y2="12" />
-                                </svg>Data Pipelines</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/docker/2496ED" width="15"
-                                    height="15" alt="" loading="lazy">Docker</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/kubernetes/326CE5"
-                                    width="15" height="15" alt="" loading="lazy">Kubernetes</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/amazonaws/FF9900" width="15"
-                                    height="15" alt="" loading="lazy">AWS Lambda</span>
+                                 </svg>Data Pipelines</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/docker.svg" width="15"
+                                    height="15" alt="Docker" loading="lazy">Docker</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/kubernetes.svg"
+                                    width="15" height="15" alt="Kubernetes" loading="lazy">Kubernetes</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/amazonaws.svg" width="15"
+                                    height="15" alt="AWS" loading="lazy">AWS Lambda</span>
                             <!-- duplicate -->
                             <span class="marquee-tag"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
                                     stroke="#818cf8" stroke-width="2" stroke-linecap="round">
@@ -675,8 +555,8 @@ CONTENT
                                     <line x1="6" y1="16" x2="10" y2="14" />
                                     <line x1="14" y1="10" x2="18" y2="8" />
                                 </svg>Machine Learning</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/fastapi/009688" width="15"
-                                    height="15" alt="" loading="lazy">FastAPI</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/fastapi.svg" width="15"
+                                    height="15" alt="FastAPI" loading="lazy">FastAPI</span>
                             <span class="marquee-tag"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
                                     stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <rect x="2" y="7" width="5" height="10" rx="1" />
@@ -685,46 +565,46 @@ CONTENT
                                     <line x1="7" y1="12" x2="9.5" y2="12" />
                                     <line x1="14.5" y1="12" x2="17" y2="12" />
                                 </svg>Data Pipelines</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/docker/2496ED" width="15"
-                                    height="15" alt="" loading="lazy">Docker</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/kubernetes/326CE5"
-                                    width="15" height="15" alt="" loading="lazy">Kubernetes</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/amazonaws/FF9900" width="15"
-                                    height="15" alt="" loading="lazy">AWS Lambda</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/docker.svg" width="15"
+                                    height="15" alt="Docker" loading="lazy">Docker</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/kubernetes.svg"
+                                    width="15" height="15" alt="Kubernetes" loading="lazy">Kubernetes</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/amazonaws.svg" width="15"
+                                    height="15" alt="AWS" loading="lazy">AWS Lambda</span>
                         </div>
                     </div>
 
                     <div class="marquee-row">
                         <div class="marquee-track marquee-track--reverse" id="track-2">
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/pytorch/EE4C2C" width="15"
-                                    height="15" alt="" loading="lazy">PyTorch</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/postgresql/4169E1"
-                                    width="15" height="15" alt="" loading="lazy">PostgreSQL</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/pytorch.svg" width="15"
+                                    height="15" alt="PyTorch" loading="lazy">PyTorch</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/postgresql.svg"
+                                    width="15" height="15" alt="PostgreSQL" loading="lazy">PostgreSQL</span>
                             <span class="marquee-tag"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
                                     stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M13 2L3 14h9l-1 8 10-12h-9z" />
                                 </svg>Real-time APIs</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/tensorflow/FF6F00"
-                                    width="15" height="15" alt="" loading="lazy">TensorFlow</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/scikitlearn/F7931E"
-                                    width="15" height="15" alt="" loading="lazy">Scikit-learn</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/tensorflow.svg"
+                                    width="15" height="15" alt="TensorFlow" loading="lazy">TensorFlow</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/scikitlearn.svg"
+                                    width="15" height="15" alt="Scikit-learn" loading="lazy">Scikit-learn</span>
                             <span class="marquee-tag"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
                                     stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M12 2L8 8H4l4 4-2 6 6-3 6 3-2-6 4-4h-4z" />
                                 </svg>Model Deployment</span>
                             <!-- duplicate -->
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/pytorch/EE4C2C" width="15"
-                                    height="15" alt="" loading="lazy">PyTorch</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/postgresql/4169E1"
-                                    width="15" height="15" alt="" loading="lazy">PostgreSQL</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/pytorch.svg" width="15"
+                                    height="15" alt="PyTorch" loading="lazy">PyTorch</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/postgresql.svg"
+                                    width="15" height="15" alt="PostgreSQL" loading="lazy">PostgreSQL</span>
                             <span class="marquee-tag"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
                                     stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M13 2L3 14h9l-1 8 10-12h-9z" />
                                 </svg>Real-time APIs</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/tensorflow/FF6F00"
-                                    width="15" height="15" alt="" loading="lazy">TensorFlow</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/scikitlearn/F7931E"
-                                    width="15" height="15" alt="" loading="lazy">Scikit-learn</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/tensorflow.svg"
+                                    width="15" height="15" alt="TensorFlow" loading="lazy">TensorFlow</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/scikitlearn.svg"
+                                    width="15" height="15" alt="Scikit-learn" loading="lazy">Scikit-learn</span>
                             <span class="marquee-tag"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
                                     stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M12 2L8 8H4l4 4-2 6 6-3 6 3-2-6 4-4h-4z" />
@@ -734,10 +614,10 @@ CONTENT
 
                     <div class="marquee-row">
                         <div class="marquee-track" id="track-3">
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/django/44B78B" width="15"
-                                    height="15" alt="" loading="lazy">Django</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/githubactions/2088FF"
-                                    width="15" height="15" alt="" loading="lazy">CI/CD Pipelines</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/django.svg" width="15"
+                                    height="15" alt="Django" loading="lazy">Django</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/githubactions.svg"
+                                    width="15" height="15" alt="GitHub Actions" loading="lazy">CI/CD Pipelines</span>
                             <span class="marquee-tag"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
                                     stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
@@ -750,13 +630,13 @@ CONTENT
                                     stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
                                 </svg>REST APIs</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/grafana/F46800" width="15"
-                                    height="15" alt="" loading="lazy">Data Visualization</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/grafana.svg" width="15"
+                                    height="15" alt="Grafana" loading="lazy">Data Visualization</span>
                             <!-- duplicate -->
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/django/44B78B" width="15"
-                                    height="15" alt="" loading="lazy">Django</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/githubactions/2088FF"
-                                    width="15" height="15" alt="" loading="lazy">CI/CD Pipelines</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/django.svg" width="15"
+                                    height="15" alt="Django" loading="lazy">Django</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/githubactions.svg"
+                                    width="15" height="15" alt="GitHub Actions" loading="lazy">CI/CD Pipelines</span>
                             <span class="marquee-tag"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
                                     stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
@@ -769,8 +649,8 @@ CONTENT
                                     stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
                                 </svg>REST APIs</span>
-                            <span class="marquee-tag"><img src="https://cdn.simpleicons.org/grafana/F46800" width="15"
-                                    height="15" alt="" loading="lazy">Data Visualization</span>
+                            <span class="marquee-tag"><img src="/static/image/icons/grafana.svg" width="15"
+                                    height="15" alt="Grafana" loading="lazy">Data Visualization</span>
                         </div>
                     </div>
                 </div>
@@ -785,12 +665,15 @@ CONTENT
                             <div class="laptop-screen">
                                 <div class="laptop-camera"></div>
                                 <div class="project-card__img-wrap">
-                                    <img src="/static/image/ai-project-ideas-students.webp" srcset="/static/image/ai-project-ideas-students-480w.webp 480w,
-                                                /static/image/ai-project-ideas-students-800w.webp 800w,
-                                                /static/image/ai-project-ideas-students.webp 1690w"
-                                        sizes="(max-width: 480px) 480px, (max-width: 800px) 800px, 1690px"
-                                        alt="AI Projects for Students and Businesses" class="project-card__img"
-                                        fetchpriority="high" />
+                                    <img src="/static/image/ai-project-ideas-students-480w.webp"
+                                         srcset="/static/image/ai-project-ideas-students-320w.webp 320w,
+                                                 /static/image/ai-project-ideas-students-480w.webp 480w,
+                                                 /static/image/ai-project-ideas-students-640w.webp 640w,
+                                                 /static/image/ai-project-ideas-students-800w.webp 800w,
+                                                 /static/image/ai-project-ideas-students.webp 1690w"
+                                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 90vw, 540px"
+                                         alt="AI Projects for Students and Businesses" class="project-card__img"
+                                         loading="lazy" decoding="async" width="540" height="298" />
                                     <span class="project-card__img-badge">🚀 Projects</span>
                                 </div>
                             </div>
@@ -843,11 +726,15 @@ CONTENT
                             <div class="laptop-screen">
                                 <div class="laptop-camera"></div>
                                 <div class="project-card__img-wrap">
-                                    <img src="/static/image/free-ai-tools-dashboard.webp" srcset="/static/image/free-ai-tools-dashboard-480w.webp 480w,
-                                                /static/image/free-ai-tools-dashboard-800w.webp 800w,
-                                                /static/image/free-ai-tools-dashboard.webp 1690w"
-                                        sizes="(max-width: 480px) 480px, (max-width: 800px) 800px, 1690px"
-                                        alt="Free AI Tools by ProjectsHub" class="project-card__img" loading="lazy" />
+                                    <img src="/static/image/free-ai-tools-dashboard-480w.webp"
+                                         srcset="/static/image/free-ai-tools-dashboard-320w.webp 320w,
+                                                 /static/image/free-ai-tools-dashboard-480w.webp 480w,
+                                                 /static/image/free-ai-tools-dashboard-640w.webp 640w,
+                                                 /static/image/free-ai-tools-dashboard-800w.webp 800w,
+                                                 /static/image/free-ai-tools-dashboard.webp 1690w"
+                                         sizes="(max-width: 480px) 100vw, (max-width: 800px) 90vw, 540px"
+                                         alt="Free AI Tools by ProjectsHub" class="project-card__img"
+                                         loading="lazy" decoding="async" width="540" height="298" />
                                     <span class="project-card__img-badge project-card__img-badge--green">🛠 Free
                                         Tools</span>
                                 </div>
@@ -899,9 +786,9 @@ CONTENT
                             <div class="laptop-screen">
                                 <div class="laptop-camera"></div>
                                 <div class="project-card__img-wrap">
-                                    <img src="/static/image/casestudy.png"
+                                    <img src="/static/image/casestudy.webp"
                                         alt="Real-World AI Case Studies by ProjectsHub" class="project-card__img"
-                                        loading="lazy" />
+                                        width="400" height="250" loading="lazy" decoding="async" />
                                     <span class="project-card__img-badge project-card__img-badge--teal">📊 Case
                                         Studies</span>
                                 </div>
@@ -950,40 +837,22 @@ CONTENT
 
                 {% if index_projects %}
                 <!-- Featured Projects (admin-managed via show_on_index) -->
-                <style>
-                    .featured-projects-header{margin:3.5rem 0 1.5rem;text-align:center;}
-                    .featured-projects-header h3{font-size:1.6rem;font-weight:700;margin:0;}
-                    .featured-projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-bottom:2rem;}
-                    .featured-projects-grid .project-card-link-wrapper{display:block;color:inherit;text-decoration:none;}
-                </style>
-                <div class="featured-projects-header">
-                    <h3>Featured Projects</h3>
-                </div>
-                <div class="featured-projects-grid">
-                    {% for project in index_projects %}
-                    <article class="project-card" itemscope itemtype="https://schema.org/SoftwareApplication">
-                        <a href="{% url 'project_detail' project.id %}" class="project-card-link-wrapper"
-                            itemprop="url" aria-label="View project: {{ project.title }}">
-                            <div class="project-card__img-wrap">
-                                <img src="{{ project.get_image_src }}"
-                                    alt="{{ project.title }} — AI project by ProjectsHub" class="project-card__img"
-                                    loading="lazy" width="400" height="220" itemprop="image" />
-                            </div>
-                            <div class="project-card__body">
-                                <div class="project-card__tags" aria-label="Tags">
-                                    {% for tag in project.get_tags_list %}
-                                    <span class="project-tag">{{ tag }}</span>
-                                    {% endfor %}
-                                </div>
-                                <h4 class="project-card__title" itemprop="name">{{ project.title }}</h4>
-                                <p class="project-card__desc" itemprop="description">{{ project.description }}</p>
-                                <span class="project-card__link">
-                                    View project <span class="project-card__arrow" aria-hidden="true">→</span>
-                                </span>
-                            </div>
+                <div class="featured-projects-section" style="margin: 4.5rem 0 3rem;">
+                    <div style="text-align: center; margin-bottom: 2.5rem;">
+                        <span class="badge" style="background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); padding: 0.35rem 0.9rem; border-radius: 999px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; display: inline-block; margin-bottom: 0.75rem;">Verified Portfolio</span>
+                        <h3 style="font-size: 2.2rem; font-weight: 800; color: var(--ph-text-primary); margin: 0 0 0.5rem;">Featured Live Projects</h3>
+                        <p style="color: var(--ph-text-secondary); max-width: 600px; margin: 0 auto; font-size: 1rem;">
+                            Production-ready Machine Learning models, Django/FastAPI backends, and full-stack AI solutions with source code and documentation.
+                        </p>
+                    </div>
+                    <div class="projects-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.75rem; margin-bottom: 2.5rem;">
+                        {% include 'core/partials/project_cards_grid.html' with projects=index_projects %}
+                    </div>
+                    <div style="text-align: center;">
+                        <a href="/projects/" class="btn-hero-primary" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; padding: 0.75rem 1.75rem; font-size: 0.95rem; font-weight: 700; border-radius: 999px;">
+                            Browse All 50+ Projects &rarr;
                         </a>
-                    </article>
-                    {% endfor %}
+                    </div>
                 </div>
                 {% endif %}
 
@@ -1159,8 +1028,9 @@ CONTENT
                     <div id="ai-particles-container"
                         style="width: 100%; height: 100%; min-height: 450px; background: radial-gradient(circle at center, #0f172a 0%, #020617 100%); border-radius: 20px; box-shadow: inset 0 0 50px rgba(99, 102, 241, 0.15), 0 20px 40px rgba(0,0,0,0.3); border: 1px solid rgba(99, 102, 241, 0.2); overflow: hidden; position: relative; cursor: crosshair;">
                         <!-- AI Brain image -->
-                        <img src="{% static 'image/AI_Brain-removebg-preview.png' %}"
+                        <img src="{% static 'image/AI_Brain-removebg-preview.webp' %}"
                             alt="AI and machine learning neural network illustration"
+                            loading="lazy" decoding="async" width="460" height="360"
                             style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -54%); width: 88%; max-width: 460px; object-fit: contain; pointer-events: none; z-index: 2; opacity: 0.92;" />
                         <!-- Continuous base glow at brain's bottom -->
                         <div class="brain-base-glow" aria-hidden="true">
@@ -1180,36 +1050,71 @@ CONTENT
                         </div>
                     </div>
 
-                    <!-- Load Particles.js -->
-                    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+                    <!-- Load Particles.js when container enters viewport -->
                     <script>
-                        document.addEventListener("DOMContentLoaded", function () {
-                            if (typeof particlesJS !== 'undefined') {
-                                particlesJS('ai-particles-container', {
-                                    "particles": {
-                                        "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
-                                        "color": { "value": "#818cf8" },
-                                        "shape": { "type": "circle" },
-                                        "opacity": { "value": 0.6, "random": true, "anim": { "enable": true, "speed": 1, "opacity_min": 0.1, "sync": false } },
-                                        "size": { "value": 3, "random": true, "anim": { "enable": true, "speed": 2, "size_min": 0.1, "sync": false } },
-                                        "line_linked": { "enable": true, "distance": 150, "color": "#6366f1", "opacity": 0.4, "width": 1 },
-                                        "move": { "enable": true, "speed": 1.5, "direction": "none", "random": true, "straight": false, "out_mode": "bounce", "bounce": false, "attract": { "enable": false } }
-                                    },
-                                    "interactivity": {
-                                        "detect_on": "canvas",
-                                        "events": {
-                                            "onhover": { "enable": true, "mode": "grab" },
-                                            "onclick": { "enable": true, "mode": "push" },
-                                            "resize": true
+                        (function () {
+                            const container = document.getElementById('ai-particles-container');
+                            if (!container) return;
+
+                            let initialized = false;
+                            function loadAndInitParticles() {
+                                if (initialized) return;
+                                initialized = true;
+
+                                function runParticles() {
+                                    if (typeof particlesJS === 'undefined') return;
+                                    const isMobile = window.innerWidth < 768;
+                                    const particleCount = isMobile ? 20 : 60;
+                                    particlesJS('ai-particles-container', {
+                                        "particles": {
+                                            "number": { "value": particleCount, "density": { "enable": true, "value_area": 800 } },
+                                            "color": { "value": "#818cf8" },
+                                            "shape": { "type": "circle" },
+                                            "opacity": { "value": 0.5, "random": true, "anim": { "enable": !isMobile, "speed": 1, "opacity_min": 0.1, "sync": false } },
+                                            "size": { "value": 3, "random": true, "anim": { "enable": !isMobile, "speed": 2, "size_min": 0.1, "sync": false } },
+                                            "line_linked": { "enable": true, "distance": isMobile ? 110 : 150, "color": "#6366f1", "opacity": 0.35, "width": 1 },
+                                            "move": { "enable": true, "speed": isMobile ? 1 : 1.5, "direction": "none", "random": true, "straight": false, "out_mode": "bounce", "bounce": false, "attract": { "enable": false } }
                                         },
-                                        "modes": {
-                                            "grab": { "distance": 180, "line_linked": { "opacity": 0.8 } },
-                                            "push": { "particles_nb": 4 }
-                                        }
-                                    },
-                                    "retina_detect": true
-                                });
+                                        "interactivity": {
+                                            "detect_on": "canvas",
+                                            "events": {
+                                                "onhover": { "enable": !isMobile, "mode": "grab" },
+                                                "onclick": { "enable": true, "mode": "push" },
+                                                "resize": true
+                                            },
+                                            "modes": {
+                                                "grab": { "distance": 160, "line_linked": { "opacity": 0.7 } },
+                                                "push": { "particles_nb": 3 }
+                                            }
+                                        },
+                                        "retina_detect": !isMobile
+                                    });
+                                }
+
+                                if (typeof particlesJS === 'undefined') {
+                                    const script = document.createElement('script');
+                                    script.src = "https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js";
+                                    script.defer = true;
+                                    script.onload = runParticles;
+                                    document.body.appendChild(script);
+                                } else {
+                                    runParticles();
+                                }
                             }
+
+                            if ('IntersectionObserver' in window) {
+                                const obs = new IntersectionObserver((entries) => {
+                                    if (entries[0].isIntersecting) {
+                                        loadAndInitParticles();
+                                        obs.disconnect();
+                                    }
+                                }, { rootMargin: '200px' });
+                                obs.observe(container);
+                            } else {
+                                window.addEventListener('load', () => setTimeout(loadAndInitParticles, 1500));
+                            }
+                        })();
+                    </script>
 
                             // Rotating Text Logic
                             const words = ["Students", "Businesses", "Startups", "Developers"];
@@ -1513,150 +1418,70 @@ CONTENT
                     </div>
 
                     <div class="testimonials-slider-wrapper">
-                        <button class="scroll-arrow left-arrow" aria-label="Scroll left">
+                        <button type="button" class="scroll-arrow left-arrow" id="testimonialsPrev" aria-label="Scroll left">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="m15 18-6-6 6-6" />
                             </svg>
                         </button>
 
-                        <div class="testimonials-slider" id="testimonialsSlider">
-
-                            <!-- Testimonial 1 -->
+                        <div class="testimonials-slider" id="testimonialsSlider" tabindex="0" role="region" aria-label="Customer Testimonials">
+                            {% for t in testimonials %}
+                            {% with card_color=t.avatar_color|default:'purple' %}
+                            <div class="testimonial-card trs-card--{{ card_color }}">
+                                <span class="trs-card-quote trs-card-quote--{{ card_color }}">"</span>
+                                <div class="trs-stars-row">
+                                    <div class="t-stars">{% for i in "12345" %}{% if forloop.counter <= t.rating %}★{% else %}☆{% endif %}{% endfor %}</div>
+                                    <span class="trs-sparkle-sm">✦</span>
+                                </div>
+                                <p class="t-text">"{{ t.content }}"</p>
+                                <div class="trs-author-divider"></div>
+                                <div class="t-author">
+                                    <div class="t-avatar trs-avatar--{{ card_color }}" style="position:relative;">
+                                        {{ t.initial }}<span class="trs-online-dot"></span>
+                                    </div>
+                                    <div class="t-info">
+                                        <strong>{{ t.name }}</strong>
+                                        <span>{{ t.role }}{% if t.company %}, {{ t.company }}{% endif %}</span>
+                                    </div>
+                                </div>
+                                <div class="trs-card-dots" aria-hidden="true">
+                                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                                </div>
+                            </div>
+                            {% endwith %}
+                            {% empty %}
                             <div class="testimonial-card trs-card--purple">
                                 <span class="trs-card-quote trs-card-quote--purple">"</span>
                                 <div class="trs-stars-row">
                                     <div class="t-stars">★★★★★</div>
                                     <span class="trs-sparkle-sm">✦</span>
                                 </div>
-                                <p class="t-text">"ProjectsHub's free AI tools are incredible. The resume builder helped
-                                    me land my first software engineering internship within weeks!"</p>
+                                <p class="t-text">"ProjectsHub's free AI tools and hands-on projects helped me land my first software engineering role within weeks!"</p>
                                 <div class="trs-author-divider"></div>
                                 <div class="t-author">
-                                    <div class="t-avatar trs-avatar--purple" style="position:relative;">S<span
-                                            class="trs-online-dot"></span></div>
-                                    <div class="t-info"><strong>Sarah J.</strong><span>CS Student</span></div>
-                                </div>
-                                <div class="trs-card-dots" aria-hidden="true">
-                                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                                    <div class="t-avatar trs-avatar--purple" style="position:relative;">S<span class="trs-online-dot"></span></div>
+                                    <div class="t-info"><strong>Sarah J.</strong><span>CS Student, Stanford University</span></div>
                                 </div>
                             </div>
-
-                            <!-- Testimonial 2 -->
-                            <div class="testimonial-card trs-card--blue">
-                                <span class="trs-card-quote trs-card-quote--blue">"</span>
-                                <div class="trs-stars-row">
-                                    <div class="t-stars">★★★★★</div>
-                                    <span class="trs-sparkle-sm">✦</span>
-                                </div>
-                                <p class="t-text">"The production-ready Machine Learning projects gave me exactly what I
-                                    needed to understand real-world model deployment."</p>
-                                <div class="trs-author-divider"></div>
-                                <div class="t-author">
-                                    <div class="t-avatar trs-avatar--cyan" style="position:relative;">D<span
-                                            class="trs-online-dot"></span></div>
-                                    <div class="t-info"><strong>David M.</strong><span>Data Scientist</span></div>
-                                </div>
-                                <div class="trs-card-dots" aria-hidden="true">
-                                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-                                </div>
-                            </div>
-
-                            <!-- Testimonial 3 -->
-                            <div class="testimonial-card trs-card--green">
-                                <span class="trs-card-quote trs-card-quote--green">"</span>
-                                <div class="trs-stars-row">
-                                    <div class="t-stars">★★★★★</div>
-                                    <span class="trs-sparkle-sm">✦</span>
-                                </div>
-                                <p class="t-text">"We requested a custom internal tool for our startup and they
-                                    delivered a flawless, scalable Django backend in record time."</p>
-                                <div class="trs-author-divider"></div>
-                                <div class="t-author">
-                                    <div class="t-avatar trs-avatar--orange" style="position:relative;">E<span
-                                            class="trs-online-dot"></span></div>
-                                    <div class="t-info"><strong>Elena R.</strong><span>Startup Founder</span></div>
-                                </div>
-                                <div class="trs-card-dots" aria-hidden="true">
-                                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-                                </div>
-                            </div>
-
-                            <!-- Testimonial 4 -->
-                            <div class="testimonial-card trs-card--purple">
-                                <span class="trs-card-quote trs-card-quote--purple">"</span>
-                                <div class="trs-stars-row">
-                                    <div class="t-stars">★★★★★</div>
-                                    <span class="trs-sparkle-sm">✦</span>
-                                </div>
-                                <p class="t-text">"The UI/UX is unmatched. Using the image generation and text tools on
-                                    this platform feels so much better than any premium tool I've used."</p>
-                                <div class="trs-author-divider"></div>
-                                <div class="t-author">
-                                    <div class="t-avatar trs-avatar--purple" style="position:relative;">M<span
-                                            class="trs-online-dot"></span></div>
-                                    <div class="t-info"><strong>Michael T.</strong><span>UX Designer</span></div>
-                                </div>
-                                <div class="trs-card-dots" aria-hidden="true">
-                                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-                                </div>
-                            </div>
-
-                            <!-- Testimonial 5 -->
-                            <div class="testimonial-card trs-card--blue">
-                                <span class="trs-card-quote trs-card-quote--blue">"</span>
-                                <div class="trs-stars-row">
-                                    <div class="t-stars">★★★★★</div>
-                                    <span class="trs-sparkle-sm">✦</span>
-                                </div>
-                                <p class="t-text">"The free API integrations they showcase are incredibly
-                                    well-documented. Saved me countless hours of debugging."</p>
-                                <div class="trs-author-divider"></div>
-                                <div class="t-author">
-                                    <div class="t-avatar trs-avatar--blue" style="position:relative;">J<span
-                                            class="trs-online-dot"></span></div>
-                                    <div class="t-info"><strong>James K.</strong><span>Backend Dev</span></div>
-                                </div>
-                                <div class="trs-card-dots" aria-hidden="true">
-                                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-                                </div>
-                            </div>
-
-                            <!-- Testimonial 6 -->
-                            <div class="testimonial-card trs-card--green">
-                                <span class="trs-card-quote trs-card-quote--green">"</span>
-                                <div class="trs-stars-row">
-                                    <div class="t-stars">★★★★★</div>
-                                    <span class="trs-sparkle-sm">✦</span>
-                                </div>
-                                <p class="t-text">"Support is lightning fast. I had a question about one of the data
-                                    science repos and got a detailed reply the same day."</p>
-                                <div class="trs-author-divider"></div>
-                                <div class="t-author">
-                                    <div class="t-avatar trs-avatar--green" style="position:relative;">A<span
-                                            class="trs-online-dot"></span></div>
-                                    <div class="t-info"><strong>Anita P.</strong><span>Machine Learning Eng</span></div>
-                                </div>
-                                <div class="trs-card-dots" aria-hidden="true">
-                                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-                                </div>
-                            </div>
-
+                            {% endfor %}
                         </div>
 
-                        <button class="scroll-arrow right-arrow" aria-label="Scroll right">
+                        <button type="button" class="scroll-arrow right-arrow" id="testimonialsNext" aria-label="Scroll right">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="m9 18 6-6-6-6" />
                             </svg>
                         </button>
                     </div>
 
-                    <!-- Pagination dots -->
-                    <div class="trs-pagination" aria-hidden="true">
-                        <span class="trs-dot"></span>
-                        <span class="trs-dot active"></span>
-                        <span class="trs-dot"></span>
+                    <!-- Pagination dots (one per testimonial) -->
+                    <div class="trs-pagination" role="tablist" aria-label="Testimonials pagination" id="trsPagination">
+                        {% for t in testimonials %}
+                        <button type="button" class="trs-dot{% if forloop.first %} active{% endif %}" role="tab" aria-label="Testimonial {{ forloop.counter }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-index="{{ forloop.counter0 }}"></button>
+                        {% empty %}
+                        <button type="button" class="trs-dot active" role="tab" aria-label="Testimonial 1" aria-selected="true" data-index="0"></button>
+                        {% endfor %}
                     </div>
                 </div>
             </section>
@@ -1670,134 +1495,39 @@ CONTENT
                 </div>
 
                 <div class="faq-list">
-                    <!-- Item 1 -->
+                    {% for faq in faqs %}
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>{{ faq.question }}</span>
+                            <div class="faq-icon-wrapper">
+                                <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="m6 9 6 6 6-6" />
+                                </svg>
+                            </div>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                {{ faq.answer }}
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
                     <div class="faq-item">
                         <button class="faq-question">
                             <span>Are the AI tools completely free to use?</span>
                             <div class="faq-icon-wrapper">
-                                <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path d="m6 9 6 6 6-6" />
-                                </svg>
+                                <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6" /></svg>
                             </div>
                         </button>
                         <div class="faq-answer">
                             <div class="faq-answer-inner">
-                                Yes! All our free AI tools — including the resume builder, PDF tools, image tools, and
-                                text utilities — are completely free to use, with no signup required. We believe in
-                                providing accessible AI tools for students and businesses.
+                                Yes! All our free AI tools are completely free to use with no signup required.
                             </div>
                         </div>
                     </div>
-
-                    <!-- Item 2 -->
-                    <div class="faq-item">
-                        <button class="faq-question">
-                            <span>What kind of AI projects are showcased on ProjectsHub?</span>
-                            <div class="faq-icon-wrapper">
-                                <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path d="m6 9 6 6 6-6" />
-                                </svg>
-                            </div>
-                        </button>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                We showcase production-ready AI and machine learning projects with source code —
-                                including
-                                Machine Learning models, Django and FastAPI backends, Data Science analytics, NLP, RAG,
-                                and
-                                full-stack applications for students and businesses.
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Item 3 -->
-                    <div class="faq-item">
-                        <button class="faq-question">
-                            <span>Can I request custom AI development for my business?</span>
-                            <div class="faq-icon-wrapper">
-                                <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path d="m6 9 6 6 6-6" />
-                                </svg>
-                            </div>
-                        </button>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Absolutely. We provide custom AI development and automation tailored to your needs —
-                                whether
-                                you are a student, a startup, or a growing business in India. Use the contact form below
-                                to get in touch!
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Item 4 -->
-                    <div class="faq-item">
-                        <button class="faq-question">
-                            <span>Do I need to create an account to use the tools?</span>
-                            <div class="faq-icon-wrapper">
-                                <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path d="m6 9 6 6 6-6" />
-                                </svg>
-                            </div>
-                        </button>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                No account is required to use our free AI tools. You can jump right in and start
-                                building
-                                resumes, converting PDFs, or editing images instantly — no signup needed.
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Item 5 -->
-                    <div class="faq-item">
-                        <button class="faq-question">
-                            <span>How fast is your support response time?</span>
-                            <div class="faq-icon-wrapper">
-                                <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path d="m6 9 6 6 6-6" />
-                                </svg>
-                            </div>
-                        </button>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                We take pride in our rapid support. If you reach out to us with a question or project
-                                inquiry, you will typically receive a personalized response in under 24 hours.
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Item 6 -->
-                    <div class="faq-item">
-                        <button class="faq-question">
-                            <span>Are the AI and ML projects suitable for beginners and final-year students?</span>
-                            <div class="faq-icon-wrapper">
-                                <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path d="m6 9 6 6 6-6" />
-                                </svg>
-                            </div>
-                        </button>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Yes! Our AI and machine learning projects are designed to be highly educational, with
-                                clean
-                                code and full documentation — ideal for final-year projects and beginners of all skill
-                                levels.
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </section>
 
@@ -1930,6 +1660,33 @@ CONTENT
                                 <textarea id="contactMessage" class="contact-form__input contact-form__textarea"
                                     rows="5" placeholder="Tell us about your project..." required></textarea>
                             </div>
+
+                            <!-- Catch Code (Security Verification) -->
+                            <div class="contact-form__field contact-captcha-group">
+                                <label for="contactCaptcha" class="contact-form__label">Catch Code <span style="color:#ef4444">*</span></label>
+                                <div class="contact-captcha-box">
+                                    <div class="contact-captcha-display" id="captchaDisplay" role="img" title="Verification Catch Code" aria-label="Catch Code Image">
+                                        <div class="contact-captcha-loading" style="font-size:0.75rem; color:#94a3b8; font-weight:600;">Loading code...</div>
+                                    </div>
+                                    <button type="button" class="contact-captcha-refresh" id="captchaRefreshBtn" title="Get new catch code" aria-label="Refresh catch code">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                            <polyline points="23 4 23 10 17 10"></polyline>
+                                            <polyline points="1 20 1 14 7 14"></polyline>
+                                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                                        </svg>
+                                    </button>
+                                    <input type="text" id="contactCaptcha" name="catch_code" class="contact-form__input contact-captcha-input"
+                                        placeholder="Enter catch code" maxlength="6" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" required />
+                                </div>
+                                <span class="contact-captcha-hint">Type the 5 characters shown above to verify you're human</span>
+                            </div>
+
+                            <!-- Honeypot field (hidden from real users, catches bots) -->
+                            <div style="display:none !important;" aria-hidden="true">
+                                <label for="contactHpFax">Leave this field blank</label>
+                                <input type="text" id="contactHpFax" name="hp_company_url" tabindex="-1" autocomplete="off" />
+                            </div>
+
                             <button type="submit" class="contact-form__submit" id="contactSubmitBtn">
                                 Send Message
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -1999,11 +1756,13 @@ CONTENT
     </div>
 </div>
 
+{% endblock content %}
+
 {% block extra_js %}
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         // ── Simple Typewriter rotator ──
-        const WORDS = ["AI Solutions", "Machine Learning", "Custom Software", "Data Pipelines"];
+        const WORDS = ["Students", "Developers", "Businesses", "Innovators"];
         const TYPE_SPEED = 80;   // ms per character while typing
         const DELETE_SPEED = 50;   // ms per character while deleting
         const PAUSE_AFTER = 2200; // ms to hold full word before deleting
@@ -2014,11 +1773,11 @@ CONTENT
 
         if (el && cursor) {
             let wordIdx = 0;
-            let charIdx = 0;
-            let isDeleting = false;
+            let charIdx = WORDS[0].length;
+            let isDeleting = true;
 
-            // Start with empty text and type from scratch — no glitch
-            el.textContent = '';
+            // Preserve initial rendered text "Students" for immediate, stable LCP
+            el.textContent = WORDS[0];
 
             function tick() {
                 const word = WORDS[wordIdx];
@@ -2050,8 +1809,8 @@ CONTENT
                 }
             }
 
-            // Kick off after a short initial delay
-            setTimeout(tick, 500);
+            // Start first rotation after initial pause so LCP candidate stabilizes
+            setTimeout(tick, 2800);
         }
 
         // Count-Up Animation for Stats (Absolute Simplest Version)
@@ -2146,29 +1905,19 @@ CONTENT
                         observer.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.1 });
+            }, { threshold: 0.05 });
             countUpElements.forEach(el => observer.observe(el));
-        } else {
-            // Bulletproof fallback trigger that works in ALL scroll containers
-            const checkVisibility = () => {
-                countUpElements.forEach(el => {
-                    if (el.hasAttribute('data-target-value') && el.getAttribute('data-animated') !== 'true') {
-                        const rect = el.getBoundingClientRect();
-                        const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+        }
 
-                        if (rect.top <= windowHeight * 0.95 && rect.bottom >= 0) {
-                            animateCountUp(el);
-                        }
+        // Fallback for browsers without IntersectionObserver or delayed scroll
+        if (!('IntersectionObserver' in window)) {
+            setTimeout(() => {
+                countUpElements.forEach(el => {
+                    if (el.getAttribute('data-animated') !== 'true') {
+                        animateCountUp(el);
                     }
                 });
-            };
-
-            // 1. Capture-phase scroll catches scroll events from ANY div on the page
-            document.addEventListener('scroll', checkVisibility, true);
-            // 2. Physical wheel/swipe events as an absolute fallback
-            window.addEventListener('wheel', checkVisibility, { passive: true });
-            window.addEventListener('touchmove', checkVisibility, { passive: true });
-            checkVisibility();
+            }, 1200);
         }
 
         // ── Contact section staggered reveal ──
@@ -2189,8 +1938,6 @@ CONTENT
 
     });
 </script>
-
-{% endblock %}
 
 <!-- FAQ JS inserted separately -->
 <script>
@@ -2238,43 +1985,176 @@ CONTENT
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const slider = document.getElementById("testimonialsSlider");
-        const leftBtn = document.querySelector(".left-arrow");
-        const rightBtn = document.querySelector(".right-arrow");
+        const wrapper = document.querySelector(".testimonials-slider-wrapper");
+        const leftBtn = document.getElementById("testimonialsPrev") || document.querySelector(".left-arrow");
+        const rightBtn = document.getElementById("testimonialsNext") || document.querySelector(".right-arrow");
+        const paginationContainer = document.getElementById("trsPagination");
+        const dots = document.querySelectorAll(".trs-pagination .trs-dot");
 
-        if (slider && leftBtn && rightBtn) {
-            function getScrollAmount() {
-                const card = slider.querySelector(".testimonial-card");
-                return card ? card.offsetWidth + 16 : 370;
+        if (!slider) return;
+
+        const cards = Array.from(slider.querySelectorAll(".testimonial-card"));
+        if (!cards.length) return;
+
+        // Calculate card scroll step (card width + gap)
+        function getScrollStep() {
+            if (cards.length > 1) {
+                const step = cards[1].getBoundingClientRect().left - cards[0].getBoundingClientRect().left;
+                if (step > 50) return step;
             }
+            const firstCard = cards[0];
+            const style = window.getComputedStyle(slider);
+            const gap = parseFloat(style.columnGap || style.gap) || 28;
+            return (firstCard ? firstCard.offsetWidth : 360) + gap;
+        }
 
-            leftBtn.addEventListener("click", () => {
-                slider.scrollBy({ left: -getScrollAmount(), behavior: "smooth" });
-            });
+        // Scroll Next (Right)
+        function scrollNext() {
+            const maxScroll = slider.scrollWidth - slider.clientWidth;
+            if (maxScroll <= 5) return;
 
-            rightBtn.addEventListener("click", () => {
-                slider.scrollBy({ left: getScrollAmount(), behavior: "smooth" });
-            });
+            if (slider.scrollLeft >= maxScroll - 15) {
+                slider.scrollTo({ left: 0, behavior: "smooth" });
+            } else {
+                slider.scrollBy({ left: getScrollStep(), behavior: "smooth" });
+            }
+        }
 
-            let autoScrollTimer = setInterval(() => {
-                if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 10) {
-                    slider.scrollTo({ left: 0, behavior: "smooth" });
-                } else {
-                    slider.scrollBy({ left: getScrollAmount(), behavior: "smooth" });
-                }
-            }, 3500);
+        // Scroll Prev (Left)
+        function scrollPrev() {
+            const maxScroll = slider.scrollWidth - slider.clientWidth;
+            if (maxScroll <= 5) return;
 
-            const wrapper = document.querySelector(".testimonials-slider-wrapper");
-            wrapper.addEventListener("mouseenter", () => clearInterval(autoScrollTimer));
-            wrapper.addEventListener("mouseleave", () => {
-                autoScrollTimer = setInterval(() => {
-                    if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 10) {
-                        slider.scrollTo({ left: 0, behavior: "smooth" });
-                    } else {
-                        slider.scrollBy({ left: getScrollAmount(), behavior: "smooth" });
-                    }
-                }, 3500);
+            if (slider.scrollLeft <= 15) {
+                slider.scrollTo({ left: maxScroll, behavior: "smooth" });
+            } else {
+                slider.scrollBy({ left: -getScrollStep(), behavior: "smooth" });
+            }
+        }
+
+        // Update active pagination dot based on scroll position (zero layout reads)
+        function updateActiveDot() {
+            if (!dots.length) return;
+            const step = getScrollStep();
+            const closestIndex = Math.min(dots.length - 1, Math.max(0, Math.round(slider.scrollLeft / step)));
+
+            dots.forEach((dot, idx) => {
+                const isActive = idx === closestIndex;
+                dot.classList.toggle("active", isActive);
+                dot.setAttribute("aria-selected", isActive ? "true" : "false");
             });
         }
+
+        let scrollDebounce = null;
+        slider.addEventListener("scroll", function () {
+            if (scrollDebounce) cancelAnimationFrame(scrollDebounce);
+            scrollDebounce = requestAnimationFrame(updateActiveDot);
+        }, { passive: true });
+
+        // Auto Scroll timer
+        let autoScrollTimer = null;
+        let isHovered = false;
+        const AUTO_SCROLL_INTERVAL = 3500; // 3.5 seconds
+
+        function startAutoScroll() {
+            stopAutoScroll();
+            if (isHovered) return;
+            autoScrollTimer = setInterval(function () {
+                if (!isHovered) {
+                    scrollNext();
+                }
+            }, AUTO_SCROLL_INTERVAL);
+        }
+
+        function stopAutoScroll() {
+            if (autoScrollTimer) {
+                clearInterval(autoScrollTimer);
+                autoScrollTimer = null;
+            }
+        }
+
+        function resetAutoScroll() {
+            stopAutoScroll();
+            if (!isHovered) {
+                startAutoScroll();
+            }
+        }
+
+        // Navigation click events
+        if (leftBtn) {
+            leftBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                scrollPrev();
+                resetAutoScroll();
+            });
+        }
+
+        if (rightBtn) {
+            rightBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                scrollNext();
+                resetAutoScroll();
+            });
+        }
+
+        // Dot click events
+        dots.forEach((dot, idx) => {
+            dot.addEventListener("click", function (e) {
+                e.preventDefault();
+                if (cards[idx]) {
+                    const sliderRect = slider.getBoundingClientRect();
+                    const cardRect = cards[idx].getBoundingClientRect();
+                    const targetLeft = slider.scrollLeft + (cardRect.left - sliderRect.left);
+                    slider.scrollTo({ left: targetLeft, behavior: "smooth" });
+                }
+                resetAutoScroll();
+            });
+        });
+
+        // Hover pause logic:
+        // Automatically stop when cursor is hovered over testimonials area, resume when cursor leaves
+        const hoverTargets = [wrapper, paginationContainer].filter(Boolean);
+
+        hoverTargets.forEach((target) => {
+            target.addEventListener("mouseenter", function () {
+                isHovered = true;
+                stopAutoScroll();
+            });
+            target.addEventListener("mouseleave", function () {
+                isHovered = false;
+                startAutoScroll();
+            });
+        });
+
+        // Touch support: pause on touch, resume smoothly after touch ends
+        slider.addEventListener("touchstart", function () {
+            isHovered = true;
+            stopAutoScroll();
+        }, { passive: true });
+
+        slider.addEventListener("touchend", function () {
+            setTimeout(function () {
+                isHovered = false;
+                startAutoScroll();
+            }, 2000);
+        }, { passive: true });
+
+        // Keyboard navigation (Left / Right keys when focused)
+        slider.addEventListener("keydown", function (e) {
+            if (e.key === "ArrowLeft") {
+                e.preventDefault();
+                scrollPrev();
+                resetAutoScroll();
+            } else if (e.key === "ArrowRight") {
+                e.preventDefault();
+                scrollNext();
+                resetAutoScroll();
+            }
+        });
+
+        // Initial setup
+        updateActiveDot();
+        startAutoScroll();
     });
 </script>
-{% endblock content %}
+{% endblock extra_js %}

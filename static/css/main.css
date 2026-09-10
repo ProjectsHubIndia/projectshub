@@ -10,12 +10,13 @@
   --blue-400: #60a5fa;
   --purple: #a855f7;
   --purple-light: #c084fc;
-  --bg-glass: rgba(18, 18, 24, 0.62);
-  --border-glass: rgba(255, 255, 255, 0.1);
-  --text-bright: #ffffff;
-  --text-muted: #9ca3af;
-  --text-body: #d1d5db;
-  --bg-surface: rgba(255, 255, 255, 0.04);
+  /* ProjectsHub Light Theme Tokens (Default) */
+  --bg-glass: rgba(255, 255, 255, 0.9);
+  --border-glass: rgba(0, 0, 0, 0.1);
+  --text-bright: #0f172a;
+  --text-muted: #64748b;
+  --text-body: #334155;
+  --bg-surface: #ffffff;
   --radius-pill: 9999px;
   --radius-card: 16px;
   --nav-transition: 300ms ease;
@@ -33,15 +34,24 @@
 
 html {
   scroll-behavior: smooth;
+  background-color: var(--ph-bg-base, #f8fafc);
+  height: 100%;
+}
+
+html.light, body.light {
+  background-color: var(--ph-bg-base, #f8fafc);
 }
 
 body {
-  font-family: "Lexend Deca", sans-serif;
-  background: var(--bg-dark);
-  color: var(--text-bright);
+  font-family: var(--ph-font-sans, "Lexend Deca", sans-serif);
+  background-color: var(--ph-bg-base, #f8fafc);
+  color: var(--ph-text-primary, #0f172a);
   min-height: 100vh;
-  min-height: 100svh;
+  min-height: 100dvh;
   position: relative;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (min-width: 1400px) {
@@ -95,23 +105,27 @@ body {
   margin-bottom: -15px;
 }
 
-/* Dark theme (default): dark logo visible, light logo hidden */
+/* Logo visibility aligned with theme */
 .logo-combined--dark {
-  display: block;
+  display: none !important;
 }
 
 .logo-combined--light {
-  display: none;
+  display: block !important;
+  height: 130px;
+  width: auto;
+  image-rendering: crisp-edges;
+  margin-top: -25px;
+  margin-bottom: -25px;
 }
 
-/* Light theme: light logo visible, dark logo hidden */
 body.light .logo-combined--dark {
-  display: none;
+  display: none !important;
 }
 
 body.light .logo-combined--light {
-  display: block;
-  height: 130px; /* Increased to match the user's desired size */
+  display: block !important;
+  height: 130px;
   width: auto;
   image-rendering: crisp-edges;
   margin-top: -25px;
@@ -201,16 +215,11 @@ body.light .logo-combined--light {
   left: 0;
   width: 100%;
   z-index: 1000;
-  padding: 0px 5%;
-  border-bottom: 1px solid var(--border-glass);
-  background: var(--bg-glass);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-  transition:
-    border-color 0.3s ease,
-    background 0.3s ease;
-  /* was 'all' — transitions all triggers repaint on every scroll */
+  padding: 14px 24px;
+  border-bottom: none;
+  background: transparent;
+  pointer-events: none;
+  transition: padding 0.3s ease;
 }
 
 .navbar.is-open {
@@ -312,7 +321,7 @@ body.light .logo-combined--light {
   border-radius: var(--radius-pill);
   text-decoration: none;
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: #64748b;
   background: transparent;
   transition: color 250ms ease;
   z-index: 1;
@@ -326,11 +335,11 @@ body.light .logo-combined--light {
 }
 
 .nav-link:hover {
-  color: var(--text-bright);
+  color: #0f172a;
 }
 
 .nav-link.active {
-  color: #096dfc;
+  color: #0242cd;
   font-weight: 600;
 }
 
@@ -413,8 +422,8 @@ body.light .logo-combined--light {
   height: 36px;
   border: none;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--text-muted);
+  background: rgba(0, 0, 0, 0.05);
+  color: #6b7280;
   cursor: pointer;
   transition:
     background 200ms,
@@ -422,8 +431,8 @@ body.light .logo-combined--light {
 }
 
 .hamburger:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: var(--text-bright);
+  background: rgba(0, 0, 0, 0.1);
+  color: #0f172a;
 }
 
 @media (min-width: 992px) {
@@ -443,7 +452,7 @@ body.light .logo-combined--light {
   max-height: 0;
   opacity: 0;
   pointer-events: none;
-  background: var(--bg-dark);
+  background: var(--ph-bg-base, #ffffff);
   padding-inline: 16px;
   transition:
     max-height var(--nav-transition),
@@ -455,11 +464,13 @@ body.light .navbar__mobile {
   background: #ffffff !important;
 }
 
-.navbar__mobile.is-open {
+.navbar__mobile.is-open,
+.navbar__mobile.active {
   max-height: 85vh;
   overflow-y: auto;
   scrollbar-width: none;
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
   padding-top: 16px;
   padding-bottom: 24px;
@@ -499,7 +510,7 @@ body.light .navbar__mobile {
 }
 
 .mob-item {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
 }
 
 body.light .mob-item {
@@ -517,7 +528,7 @@ body.light .mob-item {
   font-family: "Lexend Deca", sans-serif;
   font-size: 0.97rem;
   font-weight: 500;
-  color: var(--text-muted);
+  color: #374151;
   text-decoration: none;
   cursor: pointer;
   text-align: left;
@@ -525,7 +536,7 @@ body.light .mob-item {
 }
 
 .mob-btn:hover {
-  color: var(--text-bright);
+  color: #0f172a;
 }
 
 body.light .mob-btn {
@@ -542,7 +553,8 @@ body.light .mob-btn:hover {
   transition: transform 0.25s ease;
 }
 
-.mob-item.is-open .mob-chevron {
+.mob-item.is-open .mob-chevron,
+.mob-item.open .mob-chevron {
   transform: rotate(180deg);
 }
 
@@ -555,14 +567,15 @@ body.light .mob-btn:hover {
   gap: 0.15rem;
 }
 
-.mob-item.is-open .mob-sub {
+.mob-item.is-open .mob-sub,
+.mob-item.open .mob-sub {
   display: flex;
 }
 
 .mob-sub-link {
   display: block;
   font-size: 0.88rem;
-  color: #64748b;
+  color: #6b7280;
   text-decoration: none;
   padding: 0.45rem 0.5rem;
   border-radius: 6px;
@@ -572,8 +585,8 @@ body.light .mob-btn:hover {
 }
 
 .mob-sub-link:hover {
-  color: #f1f5f9;
-  background: rgba(255, 255, 255, 0.05);
+  color: #0f172a;
+  background: rgba(0, 0, 0, 0.04);
 }
 
 body.light .mob-sub-link {
@@ -671,8 +684,7 @@ body.light .mobile-accordion-content {
   justify-content: center;
   min-height: 100vh;
   min-height: 100svh;
-  /* Stable on mobile — doesn't resize when address bar hides/shows */
-  background-color: var(--bg-dark);
+  background-color: var(--bg-light);
   color: var(--text-bright);
   overflow: hidden;
   transition: background-color 0.3s ease;
@@ -2017,6 +2029,21 @@ body.light .about-title .gradient-word {
 }
 
 /* ── Audience Cards ── */
+/* Photo banner inside pcard — bleeds to card edges */
+.pcard__img-banner {
+  position: relative;
+  margin: -2rem -1.75rem 1.5rem -1.75rem;
+  border-radius: 22px 22px 0 0;
+  overflow: hidden;
+  line-height: 0;
+}
+.pcard__img-banner img {
+  transition: transform 0.5s ease;
+}
+.pcard:hover .pcard__img-banner img {
+  transform: scale(1.04);
+}
+
 .about-audience-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -3691,7 +3718,8 @@ body.light .pricing-title__gradient {
 
 .pricing-card__glass {
   position: absolute;
-  inset-x: 0;
+  left: 0;
+  right: 0;
   top: 0;
   height: 120px;
   border-radius: inherit;
@@ -4020,7 +4048,8 @@ body.light .check-icon--featured {
 
 .modal-card__glass {
   position: absolute;
-  inset-x: 0;
+  left: 0;
+  right: 0;
   top: 0;
   height: 140px;
   pointer-events: none;
@@ -4920,11 +4949,13 @@ body.light .contact-form__input:focus {
    14. ULTIMATE AI FOOTER
     */
 .site-footer {
+  margin-top: auto;
+  width: 100%;
   position: relative;
-  background: rgba(10, 15, 25, 0.6);
+  background: var(--ph-bg-subtle, #0a0f1d);
   backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(56, 189, 248, 0.2);
-  padding: 5rem 2rem 1.5rem;
+  border-top: 1px solid var(--ph-border, rgba(56, 189, 248, 0.2));
+  padding: 3.25rem 0 1.5rem;
   overflow: hidden;
   z-index: 10;
 }
@@ -5354,8 +5385,8 @@ body.light .contact-form__input:focus {
 
 /* Light mode overrides */
 body.light .site-footer {
-  background: rgba(255, 255, 255, 0.8);
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  background: var(--ph-bg-subtle, #f1f5f9) !important;
+  border-top: 1px solid var(--ph-border, rgba(0, 0, 0, 0.08)) !important;
 }
 
 body.light .site-footer::before {
@@ -6490,41 +6521,43 @@ body:not(.light) .call-dropdown__text small {
 }
 
 .mobile-contact-btn--call {
-  background: linear-gradient(135deg, var(--blue-500), var(--purple));
-  color: #fff;
+  background: linear-gradient(135deg, #3b82f6, #7c3aed);
+  color: #fff !important;
   border-color: transparent;
-  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.35);
 }
 
 .mobile-contact-btn--call:hover {
   box-shadow: 0 6px 28px rgba(99, 102, 241, 0.5);
 }
 
-/* WhatsApp button — dark default (the earlier duplicate block was dead code and removed) */
+/* WhatsApp button */
 .mobile-contact-btn--whatsapp {
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text-body);
-  border-color: var(--border-glass);
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: #fff !important;
+  border-color: transparent;
+  box-shadow: 0 4px 16px rgba(22, 163, 74, 0.3);
 }
 
 .mobile-contact-btn--whatsapp:hover {
-  background: rgba(37, 211, 102, 0.08);
-  border-color: rgba(37, 211, 102, 0.3);
-  color: #4ade80;
-  opacity: 1;
+  opacity: 0.9;
 }
 
-/* light mode */
+/* light mode — same solid styles */
+body.light .mobile-contact-btn--call {
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: #fff !important;
+  border-color: transparent;
+}
+
 body.light .mobile-contact-btn--whatsapp {
-  background: rgba(0, 0, 0, 0.04);
-  color: #374151;
-  border-color: rgba(0, 0, 0, 0.12);
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: #fff !important;
+  border-color: transparent;
 }
 
 body.light .mobile-contact-btn--whatsapp:hover {
-  background: rgba(37, 211, 102, 0.1);
-  border-color: rgba(37, 211, 102, 0.35);
-  color: #15803d;
+  opacity: 0.9;
 }
 
 /* ── Animated AI Core ── */
@@ -7577,11 +7610,6 @@ body.light .faq-desc {
 }
 
 @media (max-width: 768px) {
-  .left-arrow,
-  .right-arrow {
-    display: none;
-  }
-
   .testimonials-section {
     padding: 4rem 0;
   }
@@ -8491,13 +8519,7 @@ body {
     font-size: 1.85rem !important;
   }
 
-  /* ── Chatbot button — avoid overlapping content ── */
-  .ai-chatbot-toggle {
-    bottom: 16px !important;
-    right: 16px !important;
-    width: 44px !important;
-    height: 44px !important;
-  }
+  /* ── Chatbot widget position managed by ai-chatbot.css ── */
 
   /* Social share button */
   .social-share-btn {
@@ -8642,13 +8664,7 @@ body {
     display: none;
   }
 
-  /* ── Chatbot button ── */
-  .ai-chatbot-toggle {
-    width: 40px !important;
-    height: 40px !important;
-    bottom: 12px !important;
-    right: 12px !important;
-  }
+  /* ── Chatbot position managed by ai-chatbot.css ── */
 
   /* ── Buttons ── */
   .btn-hero-primary,
@@ -8704,4 +8720,322 @@ body {
     font-size: 0.7rem;
     padding: 4px 8px;
   }
+}
+
+
+/* ════════════════════════════════════════════════════════
+   SECTION: UI/UX IMPROVEMENTS — appended
+   ProjectsHub Design System v2
+════════════════════════════════════════════════════════ */
+
+/* ── Extended design tokens ── */
+:root {
+  --shadow-sm:    0 1px 3px rgba(0,0,0,0.18), 0 1px 2px rgba(0,0,0,0.12);
+  --shadow-md:    0 4px 16px rgba(0,0,0,0.22), 0 2px 6px rgba(0,0,0,0.14);
+  --shadow-lg:    0 12px 40px rgba(0,0,0,0.35), 0 4px 12px rgba(0,0,0,0.2);
+  --shadow-glow:  0 0 24px rgba(99,102,241,0.35);
+  --transition-fast:   150ms ease;
+  --transition-base:   250ms ease;
+  --transition-slow:   400ms cubic-bezier(0.23, 1, 0.32, 1);
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+}
+
+/* ── Navbar: sharper active underline ── */
+.nav-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(90deg, #3b82f6, #a855f7);
+  border-radius: 2px;
+  transition: width var(--transition-base);
+}
+
+.nav-link:hover::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40%;
+  height: 2px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 2px;
+}
+
+body.light .nav-link.active::after {
+  background: linear-gradient(90deg, #1d4ed8, #7c3aed);
+}
+
+/* ── Improved navbar scrolled state ── */
+.navbar.scrolled {
+  padding-block: 0;
+}
+
+.navbar.scrolled .logo-combined {
+  height: 90px;
+}
+
+body.light .navbar.scrolled .logo-combined--light {
+  height: 105px;
+}
+
+@media (max-width: 576px) {
+  .navbar.scrolled .logo-combined {
+    height: 52px;
+  }
+  body.light .navbar.scrolled .logo-combined--light {
+    height: 64px;
+  }
+}
+
+/* ── Mega menu refinement ── */
+.mega-menu {
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* ── Nav pill slider refinement ── */
+.pill-slider {
+  position: absolute;
+  height: 36px;
+  border-radius: var(--radius-pill);
+  background: rgba(255,255,255,0.07);
+  transition: left var(--transition-slow), width var(--transition-slow);
+  z-index: 0;
+  pointer-events: none;
+}
+
+body.light .pill-slider {
+  background: rgba(0,0,0,0.06);
+}
+
+/* ── Footer visual hierarchy ── */
+.footer-col-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-bright);
+  margin-bottom: 0.9rem;
+}
+
+body.light .footer-col-title { color: #0f172a; }
+
+.footer-tagline {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-block: 0.4rem 1rem;
+}
+
+body.light .footer-tagline { color: #64748b; }
+
+/* Footer social button size & hover */
+.footer-social {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: var(--text-muted);
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+}
+
+.footer-social:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.2);
+  color: var(--text-bright);
+  transform: translateY(-3px);
+}
+
+body.light .footer-social {
+  border-color: rgba(0,0,0,0.1);
+  background: rgba(0,0,0,0.04);
+  color: #64748b;
+}
+
+body.light .footer-social:hover {
+  background: rgba(0,0,0,0.08);
+  border-color: rgba(0,0,0,0.18);
+  color: #0f172a;
+}
+
+/* Footer social icon sizing */
+.footer-social svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Footer link hover underline sweep */
+.footer-link {
+  position: relative;
+  display: inline-block;
+}
+
+.footer-link::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.5;
+  transition: width 0.22s ease;
+}
+
+.footer-link:hover::after { width: 100%; }
+
+/* ── Focus-visible polish ── */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid rgba(59,130,246,0.7);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── Smooth image fade-in on lazy load ── */
+img[loading="lazy"] {
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+img[loading="lazy"].loaded {
+  opacity: 1;
+}
+
+/* ── Mobile contact group improvements ── */
+.mobile-contact-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem 0.25rem 0.5rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  margin-top: 0.5rem;
+}
+
+body.light .mobile-contact-group {
+  border-top-color: rgba(0,0,0,0.07);
+}
+
+.mobile-contact-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.mobile-contact-btn:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.mobile-contact-btn--call {
+  background: linear-gradient(135deg, #3b82f6, #7c3aed);
+  border: 1px solid transparent;
+  color: #fff !important;
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.35);
+}
+
+.mobile-contact-btn--whatsapp {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  border: 1px solid transparent;
+  color: #fff !important;
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(22, 163, 74, 0.3);
+}
+
+body.light .mobile-contact-btn--call {
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  border-color: transparent;
+  color: #fff !important;
+}
+
+body.light .mobile-contact-btn--whatsapp {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  border-color: transparent;
+  color: #fff !important;
+}
+
+/* Hide floating share widget when mobile nav is open */
+.navbar__mobile.open ~ #socialShare,
+body.nav-open #socialShare {
+  display: none !important;
+}
+
+/* ── Hero trust bar refinement ── */
+.hero-trust-bar {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  row-gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.hero-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 1rem 0 0;
+}
+
+.hero-trust-value {
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--text-bright);
+}
+
+.hero-trust-label {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.hero-trust-icon {
+  color: #3b82f6;
+  flex-shrink: 0;
+}
+
+.hero-trust-divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(255,255,255,0.12);
+  margin: 0 1rem;
+  flex-shrink: 0;
+}
+
+body.light .hero-trust-value { color: #0f172a; }
+body.light .hero-trust-label { color: #64748b; }
+body.light .hero-trust-divider { background: rgba(0,0,0,0.1); }
+
+/* ── Scroll progress bar width via JS (transform override) ── */
+#scrollProgressBar {
+  transform-origin: left;
+  transform: scaleX(0);
 }

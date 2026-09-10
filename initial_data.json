@@ -1,0 +1,6273 @@
+[
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$600000$cjRtLRU4rNXZTupLOWvSXA$zlrUkR/G45QWqSgIaOjaqFnvWKhqfYg0hWa3t+8ptx0=",
+    "last_login": "2026-09-09T16:16:53.604Z",
+    "is_superuser": true,
+    "username": "cheta",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-05-07T10:23:09.522Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$600000$TphWVv92TPXMvbTO4MZNh4$6+FMVrfusfjZJRwzpgi9fRWBrUlMGml+EziFk/e0NuQ=",
+    "last_login": "2026-05-09T16:45:27.633Z",
+    "is_superuser": true,
+    "username": "che",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-05-07T10:42:31.094Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$600000$u8czVlCSKoBdHFJ374s571$48dqxWAUHBOEV+asLLx0hRohvFDZ17WM6Pj/h/Ouegs=",
+    "last_login": "2026-06-23T18:11:31.037Z",
+    "is_superuser": true,
+    "username": "a",
+    "first_name": "",
+    "last_name": "",
+    "email": "a@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-05-08T16:35:19.335Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$600000$pjOniN66ljU3M3OrxJNRXV$sTy4diDKupoeRMasgXsxa6HGyg8Shfj0vFcpquAlgo0=",
+    "last_login": "2026-09-09T03:05:52.313Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-08-15T11:53:33.230Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$600000$rUhKeshJeQ7JpB3EbLN4DC$0r3NvwNQEdxij1CZM+qb5S6+tTtM7P0sHyLJ4hcGdNc=",
+    "last_login": "2026-09-08T18:29:37.053Z",
+    "is_superuser": true,
+    "username": "harsh",
+    "first_name": "",
+    "last_name": "",
+    "email": "Harsh@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-09-05T06:48:39.000Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "09gxa9e9zh5knwa9e8gyg449vaa6qaei",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4AW7:YNC9J6LhC3hJviWb3W7hiTR2BogFk5Kt2oWoKw7DCsU",
+    "expire_date": "2026-09-23T05:06:39.439Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "0tnqr98gbkf3dzztc4t123rlcb0lidsf",
+  "fields": {
+    "session_data": "e30:1x3zLA:2Nhi1vzxS3tJpZGEuLyQP6OnSwYp5xaPu0z68_V-_g4",
+    "expire_date": "2026-09-22T17:10:36.143Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "0vefziaulrpekpef273wwjhr225umrdw",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4Ajq:ZIRESFVXfGAhjo6je-_f1IUQLPozIvnSBmth0gImJPg",
+    "expire_date": "2026-09-23T05:20:50.861Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "13o2es5jbaqgldt0s0k3o2dk3wz4zf49",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSG8GVy69xsIzIBUDU1KuzL-uzbpQrf3nHNfLKZtbXEbZYkTsTMz7PS75YSP0ndA99RvM8e5r8uU-a7wgw5-nak8L4f7d9DSaN86YXWkbTVZgPbO51q81lJjqdK6FGxQAjxUwJJDtZaIwEkQymhARZK9P-yzN78:1x40gd:ZeiFo3t7zA1u2YWq0m81ozEzeikiexbU0DpCsO4o7YA",
+    "expire_date": "2026-09-22T18:36:51.064Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "14smd4a4l9wyvdqto9voi9rtecfiu101",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4AYb:p777nh97xm0oYZ5gwbV_UOs_9KWXw9EVjwSI96EcUuU",
+    "expire_date": "2026-09-23T05:09:13.291Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "2jlxf9gvflna6kx7qrjv38vm5bc93tdr",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQAP-FsyHQZWHx6L3fQBbY2qppkz5Oxn83JD3odWYyb5X42Md0bLKmqaqrcuryyzKXp8xN1AfP90WXZd7XKeuW6NNuul-qvG5n-zcYeRvbNjJ1Ar6L3ojUMHCxOfqBDFEHhsQiAqL3wQkCueApcjYFAlqLBOrzBb_-NkU:1x137Y:JhKYYXOileOeyON-ip5veVAmymiuu0Gf_TX3RmMHMwY",
+    "expire_date": "2026-09-14T14:36:24.002Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "3cuiqrbbrfoy4g12agh0g2j4ljph0lm2",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4ASA:qneY2Z14sHJMuqhjtfduvbm3xeAKIol7UrJdHcdeB84",
+    "expire_date": "2026-09-23T05:02:34.066Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "3ypwoup93654agvdk8vh5bzm8j7ueqo4",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1wxj7G:yd4jzANLQE8OIXMw8bHBhjpH2m92LJ1zKfuiv9IPGos",
+    "expire_date": "2026-09-05T10:38:22.727Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "401t4po44qawe6xcw9tatduhpvzfxj7b",
+  "fields": {
+    "session_data": ".eJxVTEsOwiAQvQtrQygFCi7d9wxkYAapGkhKuzLeXZp0oYuXvP-bedi37PdGq1-QXZlkl18vQHxSOQJ8QLlXHmvZ1iXwo8LPtPG5Ir1uZ_fvIEPLfZ20VQMpSBJitGgNCUvJGBnM6MbOnUQQaezaGZARlTNBTHrQU-qw7PMF7DA3iA:1wKwBk:FoPQ5Kc4bNx1C4RIMG2n5tKhr-a1__MyJYlDcg5a6sI",
+    "expire_date": "2026-05-21T10:42:40.796Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "40iw9aucf202yi8pw8naytgdwjr00ti6",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQAP-FsyHQZWHx6L3fQBbY2qppkz5Oxn83JD3odWYyb5X42Md0bLKmqaqrcuryyzKXp8xN1AfP90WXZd7XKeuW6NNuul-qvG5n-zcYeRvbNjJ1Ar6L3ojUMHCxOfqBDFEHhsQiAqL3wQkCueApcjYFAlqLBOrzBb_-NkU:1x1ofD:24zPwbM7fcy2zPXwbnjGS_k1hGNjVXpp-6Dx9Ew5374",
+    "expire_date": "2026-09-16T17:22:19.894Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "41mhsahtddi3jmoh1gwcj35dp6rs5cqh",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4A4c:kVBvlHlDeoess6p74pjEWBEN0QLAbhAlItVP7vlqyPs",
+    "expire_date": "2026-09-23T04:38:14.335Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "4kgbze5w13tbur98bijvdwd4y9nuuuj1",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSG8GVy69xsIzIBUDU1KuzL-uzbpQrf3nHNfLKZtbXEbZYkTsTMz7PS75YSP0ndA99RvM8e5r8uU-a7wgw5-nak8L4f7d9DSaN86YXWkbTVZgPbO51q81lJjqdK6FGxQAjxUwJJDtZaIwEkQymhARZK9P-yzN78:1x40gu:8nWHqm48CnL4hFYX0uYq-MFEWDR8tW_pVuLhhhseJPU",
+    "expire_date": "2026-09-22T18:37:08.421Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "5tp427vbxibcuij2tklbzqok3yhds65e",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSGMvF267zcQhgGpGkhKuzL-uzbpQrf3nHNfLMRtrWEbeQkzsQtT7PS7YUyP3HZA99hunafe1mVGviv8oINPnfLzerh_BzWO-q09kY3WeQLAXEBgsd4kZYoiJ1EawCKlzkW4dEavpDHodRagLaAB8uz9AfBjN7c:1x48Y0:eA0yu7brltP7PNPiOMW9IchT6oTdO5h7Nc6B9IOdDPQ",
+    "expire_date": "2026-09-23T03:00:28.454Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "6i4oe25fru0jsvew9fn0ddylj890la3m",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4A2X:FAxPZIcYYPM7AhZ95ucgo9YCVKSS2huirVdXOnoiiOw",
+    "expire_date": "2026-09-23T04:36:05.851Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "6pmea2oshs4rmsmxu0setq9xzbqjwvb7",
+  "fields": {
+    "session_data": "eyJjb250YWN0X2NhcHRjaGEiOiJMNFhaOSJ9:1x3zJP:fWeyNRdN84UbF0m46Iqp7nDtIflwx4RdFR_q2Y7VVOA",
+    "expire_date": "2026-09-22T17:08:47.462Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "6z2fm9cwol2xrek6iuih44y63ljjglco",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSGMvF267zcQhgGpGkhKuzL-uzbpQrf3nHNfLMRtrWEbeQkzsQtT7PS7YUyP3HZA99hunafe1mVGviv8oINPnfLzerh_BzWO-q09kY3WeQLAXEBgsd4kZYoiJ1EawCKlzkW4dEavpDHodRagLaAB8uz9AfBjN7c:1x48Yb:1bXiDGGpXslt8bUr0ObEvZlVeVYz7THsw9ww0cO6_9U",
+    "expire_date": "2026-09-23T03:01:05.954Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "72nqrnqk6gr8h9xakqxydndkpyoev8ui",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4Kpq:rg0o2xflm0fEg8_bbHozkFbg_MXH7rSYe9iYoFIpk64",
+    "expire_date": "2026-09-23T16:07:42.564Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "7k0uisy9enyrn00mkg89mdlc16fqoghn",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4AiC:e1n4lOiqagL0cAYe9__Zg9oJONT3V_9ZDoiwwghuLZ8",
+    "expire_date": "2026-09-23T05:19:08.838Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "7mect4fx0gjuw7pzneepi3pryxd8upga",
+  "fields": {
+    "session_data": ".eJxVTEsOwiAQvQtrQygFCi7d9wxkYAapGkhKuzLeXZp0oYuXvP-bedi37PdGq1-QXZlkl18vQHxSOQJ8QLlXHmvZ1iXwo8LPtPG5Ir1uZ_fvIEPLfZ20VQMpSBJitGgNCUvJGBnM6MbOnUQQaezaGZARlTNBTHrQU-qw7PMF7DA3iA:1wLin9:T3Gtl_7F7i3e9lUgWQ4XGaatIR89vSmYgMUMUAskIKo",
+    "expire_date": "2026-05-23T14:36:31.180Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "7tlbc0fbqq1ihro7k1bvzlb5wlryhryx",
+  "fields": {
+    "session_data": "eyJjb250YWN0X2NhcHRjaGEiOiJSTUJKRCJ9:1x4DVS:eOAimsOErSPhlkecfrHGUZPi5n0-tvt2BbrVO-fJQZk",
+    "expire_date": "2026-09-23T08:18:10.109Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "9f4odjfecajqjmphfet7294v1x5svqxk",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4AXb:WcnMONDY9UTHDHcB-lgJ77EZU9MXKkvwZMPAQJvV7XE",
+    "expire_date": "2026-09-23T05:08:11.609Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "9j5fp4rafakct1wu6j9pd6qa19strmkk",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4Ai3:9VlRRmxT9ahZJw3W5Nc9CgCRUxTKqd2L0Ev2YieEAnw",
+    "expire_date": "2026-09-23T05:18:59.264Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "9okq14tvu78e9sjhiyrymhv4uqffqgtc",
+  "fields": {
+    "session_data": ".eJxVTEsOwiAQvQtrQygFCi7d9wxkYAapGkhKuzLeXZp0oYuXvP-bedi37PdGq1-QXZlkl18vQHxSOQJ8QLlXHmvZ1iXwo8LPtPG5Ir1uZ_fvIEPLfZ20VQMpSBJitGgNCUvJGBnM6MbOnUQQaezaGZARlTNBTHrQU-qw7PMF7DA3iA:1wLknv:3ZIC6yLyVLFS7slWsjpUm95YBNj79zhN5ROgkjHtXyw",
+    "expire_date": "2026-05-23T16:45:27.639Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "atw479edflq2uhgkemi7jqzm0ag0826o",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4A2R:fyzk7B9NJxk2TBieTx0FUnZFfrU7nADk_VjgvJyWas8",
+    "expire_date": "2026-09-23T04:35:59.333Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "bu6xw5e9bnhqxaqsaeiazge3dfl9ad15",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSGMvF267zcQhgGpGkhKuzL-uzbpQrf3nHNfLMRtrWEbeQkzsQtT7PS7YUyP3HZA99hunafe1mVGviv8oINPnfLzerh_BzWO-q09kY3WeQLAXEBgsd4kZYoiJ1EawCKlzkW4dEavpDHodRagLaAB8uz9AfBjN7c:1x48d1:YnjDM13j7v_5TnChJ-BFbmgJjEw5zpOpxlmI8EUETFo",
+    "expire_date": "2026-09-23T03:05:39.464Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "c3ib7pnqtn0kdqwe8za1j60xoixhzg53",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQAP-FsyHQZWHx6L3fQBbY2qppkz5Oxn83JD3odWYyb5X42Md0bLKmqaqrcuryyzKXp8xN1AfP90WXZd7XKeuW6NNuul-qvG5n-zcYeRvbNjJ1Ar6L3ojUMHCxOfqBDFEHhsQiAqL3wQkCueApcjYFAlqLBOrzBb_-NkU:1wvDF0:gwPq5WTkbb4fwMvrkAooOgZ4zDf46QDiUBxF-dGWG_w",
+    "expire_date": "2026-08-29T12:11:58.620Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "cf4us3x0dfijgcf14egfdo23tmbxyxz5",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4ATF:fW9860umQWDpnFxKpWfkY3BZbLixmSaMg0ongEfKmOc",
+    "expire_date": "2026-09-23T05:03:41.687Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ck5g35frghs28ximboq8rg9v2lwru9kd",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4KrH:liS0l2g57kNhtB_PkfYGT-sOsuMZEtVBXO_pkRSjqQE",
+    "expire_date": "2026-09-23T16:09:11.649Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "df9pybu9w3z222zhaed7ora48zckufmx",
+  "fields": {
+    "session_data": ".eJxVTEsOwiAQvQtrQygFCi7d9wxkYAapGkhKuzLeXZp0oYuXvP-bedi37PdGq1-QXZlkl18vQHxSOQJ8QLlXHmvZ1iXwo8LPtPG5Ir1uZ_fvIEPLfZ20VQMpSBJitGgNCUvJGBnM6MbOnUQQaezaGZARlTNBTHrQU-qw7PMF7DA3iA:1wKx9T:Alj0m4Aje7O-g5zKxZws2LTu9QWKWXuNK_ouZ9om3s0",
+    "expire_date": "2026-05-21T11:44:23.716Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "dmgi1pi4tyj4w7a0uerywci0e292tx21",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4KyO:pDm-4AhIQBNDm8QmJcnuZN14b-827bDXBnaUlgFF0d0",
+    "expire_date": "2026-09-23T16:16:32.819Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "dvkd5em5s5vdqpp8vybd7hc4empjtih9",
+  "fields": {
+    "session_data": ".eJxVjEEOgjAQRe_StWlg2ing0r1naGY6U4saSCisjHdXEha6_e-9_zKRtrXEreoSRzFn48zpd2NKD512IHeabrNN87QuI9tdsQet9jqLPi-H-3dQqJZv3YchOc2gCVlJGD232nWJe8wg0DOKZseQAAZy1AG26JrcZB_ABxTz_gAQRDhf:1wc5at:fDI7ugu3if7YdO_uJn_PXuQ0lfAaZj3RSKHPPXoIyFA",
+    "expire_date": "2026-07-07T18:11:31.042Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "faski36k2ogxvkaqzbig663zvibve5nc",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4A2K:IVVzVU7AwNdv1B3wTAM6lISR-PHG4stJnkiASuZ4w8w",
+    "expire_date": "2026-09-23T04:35:52.009Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "fqnb0qsoul2eyl0t6ulu8fmy63od014y",
+  "fields": {
+    "session_data": ".eJxVjEEOgjAQRe_StWlg2ing0r1naGY6U4saSCisjHdXEha6_e-9_zKRtrXEreoSRzFn48zpd2NKD512IHeabrNN87QuI9tdsQet9jqLPi-H-3dQqJZv3YchOc2gCVlJGD232nWJe8wg0DOKZseQAAZy1AG26JrcZB_ABxTz_gAQRDhf:1wVsxR:i9gD2sBU5ZHNaT2gQOPpQ6Mhs2x--67NHw1kt2Np9co",
+    "expire_date": "2026-06-20T15:29:09.913Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "fvb5vu4cyw6ncgjk3tdjdwb7ts28uegp",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4AHj:d3ueBa4LoL4d7YnljWI89dSDeC_yrtP0meHyqfpmBHw",
+    "expire_date": "2026-09-23T04:51:47.872Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "g8gwn1orp7bn0ya7wy107ykh57zqaogo",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4ANG:35jcA1_7q7bbQwSCKkH1S1sKVAGKbuG8PWhW7t0TctU",
+    "expire_date": "2026-09-23T04:57:30.772Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "gum9epf3txsaozy9blctaucyjbx122fe",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4Ky8:lCfusI5kNVhJPoxmWGqRv8bHciLFAjwAB9TiKuBXfg0",
+    "expire_date": "2026-09-23T16:16:16.900Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "hjcqxi5x1tb49lesfoox8ieo1qj3w38s",
+  "fields": {
+    "session_data": ".eJxVTEsOwiAQvQtrQygFCi7d9wxkYAapGkhKuzLeXZp0oYuXvP-bedi37PdGq1-QXZlkl18vQHxSOQJ8QLlXHmvZ1iXwo8LPtPG5Ir1uZ_fvIEPLfZ20VQMpSBJitGgNCUvJGBnM6MbOnUQQaezaGZARlTNBTHrQU-qw7PMF7DA3iA:1wLhsg:uWSgxz2Rj6divy2-SiUpikcg3pRsgV_DvVZptd4cCrg",
+    "expire_date": "2026-05-23T13:38:10.338Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "hsjelfo3iej0icfzzm5zhs4q056e7pwr",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4AX7:isAfzZaGianDRjugW4rEoEfwtiPXaVMpwwkzREObXxY",
+    "expire_date": "2026-09-23T05:07:41.804Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "i54pk7x11at7nup1d13d3cec3zkgu7jr",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4KyG:j21uIeqGbxM0HRO8voAsSVvxz4ppQy9eOfI39oIr09I",
+    "expire_date": "2026-09-23T16:16:24.997Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "i9sq3id3oryqojgiwo6lowvprl7euggh",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4A5W:v41uGegXPKnhM7FRMJ36GlYob-uzdZbGJc3VtyrQOag",
+    "expire_date": "2026-09-23T04:39:10.654Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "j3b9grkmwmxvzg6rdd9zf77i5k284fpj",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4APS:D_qnE2BPCjZgldLDCA5n1j8-F9tb8fkBWR4alJsbHak",
+    "expire_date": "2026-09-23T04:59:46.533Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "jptlu97q0al77mgsxg2yuryqfn6l0c7b",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4Kyd:kWcg09xKy0iXC1Dc5TTY9DJVVn5_fKi6YE9S9WRigNw",
+    "expire_date": "2026-09-23T16:16:47.210Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "jyujcuqirsruq64qrt2nldorhqhve2fx",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4Kr9:bHh4RnkuCrprGC6e3FdfA_AZi0PLmiYR38xZ2TJZw8I",
+    "expire_date": "2026-09-23T16:09:03.285Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "lvficopyolk9t9cx8ljydaj8n8xq2lr6",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSG8GVy69xsIzIBUDU1KuzL-uzbpQrf3nHNfLKZtbXEbZYkTsTMz7PS75YSP0ndA99RvM8e5r8uU-a7wgw5-nak8L4f7d9DSaN86YXWkbTVZgPbO51q81lJjqdK6FGxQAjxUwJJDtZaIwEkQymhARZK9P-yzN78:1x40gk:wDkMvP1qHsB9rnx433xCdhB_h49gswscOGjuFyXAp4Q",
+    "expire_date": "2026-09-22T18:36:58.899Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "meuuq207ubak6o0vl3ekod9d7tjiqkco",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSG8GVy69xsIzIBUDU1KuzL-uzbpQrf3nHNfLKZtbXEbZYkTsTMz7PS75YSP0ndA99RvM8e5r8uU-a7wgw5-nak8L4f7d9DSaN86YXWkbTVZgPbO51q81lJjqdK6FGxQAjxUwJJDtZaIwEkQymhARZK9P-yzN78:1x40h6:G1hStazsqh0L8pDLOnJL_QeekEB37AlvJEuiaTUWCug",
+    "expire_date": "2026-09-22T18:37:20.422Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "misolycllyvl59s9zfopwav9b92uw3sd",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1wZpZY:P7o5Rj-A-9GS-n0Tvrw7URskGNzxRtsFIeLjdqkbCbM",
+    "expire_date": "2026-07-01T12:40:48.339Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "oc8q6cjlyod62ksyimx05h4uj5ds87i1",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4AL1:27nS9J-kt8pjAGq9xF0IUZqPcJuSzyPxahPB8LDeJio",
+    "expire_date": "2026-09-23T04:55:11.756Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "p7mmodrdpvmiw3v5rlvx6w16ai8xgy8v",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1woeyb:nHI99Xq5bVhFEcV_aFgTP4SqKHjD0FkehGoq5s80kHU",
+    "expire_date": "2026-08-11T10:23:57.736Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "pr5gbqso4jivs2h6r2izy5ac2157mny7",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4A36:rWS8t2FZ85Y22GN6HNfYNzq4aCSpdBjdtuCsNWT8buw",
+    "expire_date": "2026-09-23T04:36:40.675Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "q1b23lvmh8tpwl06kzpto7uccrhn5jt4",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4KyW:o5f_cJEl_8z01zciqr3flvJDJlI5hwEo_ZXmZiI2K1g",
+    "expire_date": "2026-09-23T16:16:40.715Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "qfvi42g2z0ott51tccep78uai5ey7lj4",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4AEe:N9couR8nKCW-0nmm1pQSxN4zFF6HdPJz_1yHcVFrsEc",
+    "expire_date": "2026-09-23T04:48:36.049Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "rr3owxak3urno1405mzx24ti77c5fkv5",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4A3H:RIsbU2ySijrM-JrRNNAuncdlvONaS9I8X1mi8DR3Wck",
+    "expire_date": "2026-09-23T04:36:51.669Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "tqr4uonjo563svjja4x2s1kvml3ot720",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4Kp6:D7AncOs49mBErtDATjTDS1uY2wXIyDUo2SRApYZdrQQ",
+    "expire_date": "2026-09-23T16:06:56.598Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "tziflpehheg378jt4jj8dne3clrc8qz4",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4Kyj:BlNY3WxmcchdXu3ouro1gtla3WzzQLaIzGn_01vWE-I",
+    "expire_date": "2026-09-23T16:16:53.606Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ugs0op3l3kw7th7pwgsf56olbi6rhf5n",
+  "fields": {
+    "session_data": ".eJxVTEsOwiAQvQtrQygFCi7d9wxkYAapGkhKuzLeXZp0oYuXvP-bedi37PdGq1-QXZlkl18vQHxSOQJ8QLlXHmvZ1iXwo8LPtPG5Ir1uZ_fvIEPLfZ20VQMpSBJitGgNCUvJGBnM6MbOnUQQaezaGZARlTNBTHrQU-qw7PMF7DA3iA:1wLgJH:vY18aO__2XrC6Z2upkbWFfmtBIbg-17iGRi7pV8RIks",
+    "expire_date": "2026-05-23T11:57:31.009Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "v2s7l70d8xg8kuye5540bdpdki7iejr7",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4AKw:_GM52COjNSQytShDuBQgoaffiSJFHV7EuLPW5wayLhk",
+    "expire_date": "2026-09-23T04:55:06.997Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "v4787g4lxhob3s8jb8o76sd71oipsi60",
+  "fields": {
+    "session_data": ".eJxVjEEOgjAQRe_StWlg2ing0r1naGY6U4saSCisjHdXEha6_e-9_zKRtrXEreoSRzFn48zpd2NKD512IHeabrNN87QuI9tdsQet9jqLPi-H-3dQqJZv3YchOc2gCVlJGD232nWJe8wg0DOKZseQAAZy1AG26JrcZB_ABxTz_gAQRDhf:1wc5aj:3rVd_feHiiAthV5jzS_E-frFzGjzcyWojMWVOY_LB1c",
+    "expire_date": "2026-07-07T18:11:21.830Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "vp0oy6nnuizsubjnwqrkiragtbbokoxg",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4Ahp:5uNbe6lODaRYPBsqvEdlbn-3NL4xWicMnsJFUooD8gw",
+    "expire_date": "2026-09-23T05:18:45.798Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "vp32tjk1y5495xg8yjurumkrq8y5awjy",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSGMvF267zcQhgGpGkhKuzL-uzbpQrf3nHNfLMRtrWEbeQkzsQtT7PS7YUyP3HZA99hunafe1mVGviv8oINPnfLzerh_BzWO-q09kY3WeQLAXEBgsd4kZYoiJ1EawCKlzkW4dEavpDHodRagLaAB8uz9AfBjN7c:1x48dE:Wg6ztg9G2AYloYI_B_Da7YheAQTxxQLviSuSuuRMe4o",
+    "expire_date": "2026-09-23T03:05:52.313Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "vs58ewkwg9r9p1lj8xolfx1wyzt43kqm",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4Ahf:Bh7_w5gCb_my8_FntGsMcROEh0tFmrfuni-VbweF2HA",
+    "expire_date": "2026-09-23T05:18:35.986Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "wnpy963bhl63bdrblkwtkkxb9imll07z",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1wevf9:pfWitG6ndUz6ALyr4iMr7JwT6xPPtQ11LTc6wcRk3tM",
+    "expire_date": "2026-07-15T14:11:39.817Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "x2zmlrabtjfzy93icj03hjhgfuqlaogk",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSGMvF267zcQhgGpGkhKuzL-uzbpQrf3nHNfLMRtrWEbeQkzsQtT7PS7YUyP3HZA99hunafe1mVGviv8oINPnfLzerh_BzWO-q09kY3WeQLAXEBgsd4kZYoiJ1EawCKlzkW4dEavpDHodRagLaAB8uz9AfBjN7c:1x48d8:c8P_VB8owWzV6JuPekNM6DuZfh8qOnqfNiP0YLDaifs",
+    "expire_date": "2026-09-23T03:05:46.685Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "xwtli0tdldtrbiw3ykdelga9e9n58833",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEd3rh07zeQAQapGkhKuzL-uzbpQrf3nHNfLOC21rANWsKc2ZlJdvrdIqYHtR3kO7Zb56m3dZkj3xV-0MGvPdPzcrh_BxVH_dYqTUSSIApviylgbEYBBRJ58grBRCgJhHZO20lL5ywgZWFtVk4nodj7A-knN38:1wLOAj:vngfAHI6GJqHZReyowe0sHbhWjIf8poXWSgCd9dCX5E",
+    "expire_date": "2026-05-22T16:35:29.031Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "yrkt730clid7xawosls2dlemea3hb3qd",
+  "fields": {
+    "session_data": ".eJxVjbsOwjAQBP_FNbIcO5cYOhAtJQWVdb67YB5KUOJUiH8nllJAu7M7-1YB55zCPMkYbqx2CtTmN4tID-kL4Dv210HT0OfxFnWp6JVO-jSwPA9r90-QcEpl7dhR6zyYyB6shbqK4ggqaairUSxAdD525My2QhZnkFvuxFrx3kCzSMszUg6Er0wJF-l5f_QX9fkCFIlAoA:1x4MEg:GBnefWVg9YXuzkJT5XDdtY3y14ySOGKtmwAzTBj8Kkg",
+    "expire_date": "2026-09-23T17:37:26.369Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "zeoo3bm7s0td67anxibpjrotr35k8ufm",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSGMvF267zcQhgGpGkhKuzL-uzbpQrf3nHNfLMRtrWEbeQkzsQtT7PS7YUyP3HZA99hunafe1mVGviv8oINPnfLzerh_BzWO-q09kY3WeQLAXEBgsd4kZYoiJ1EawCKlzkW4dEavpDHodRagLaAB8uz9AfBjN7c:1x48Y8:ZeiHWACWKQg1z9vPhjtP8ARVCcw_oVCpPcKxtiQ_zJ0",
+    "expire_date": "2026-09-23T03:00:36.038Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "zn7anm1mwls0z73zrjkp207a2ter3n7v",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4A26:W5gw2LLfl3be2iX-uHuMs6qkgOOiPsLbwnA9s1qvLxg",
+    "expire_date": "2026-09-23T04:35:38.114Z"
+  }
+},
+{
+  "model": "core.sitesettings",
+  "pk": 1,
+  "fields": {
+    "site_name": "ProjectsHub",
+    "tagline": "From Ideas to AI-Powered Products",
+    "primary_email": "support@projectshub.co.in",
+    "phone": "+91 9213472954",
+    "whatsapp_number": "919213472954",
+    "location": "Gujarat, India (Remote-Friendly)",
+    "response_time": "Within 24 hours",
+    "hero_headline_prefix": "Real-World AI Projects &",
+    "hero_headline_highlight": "Free Tools",
+    "hero_subtitle": "Real-world AI and machine learning projects with source code and mentorship for students, plus custom AI development and automation for businesses.",
+    "logo_dark": "",
+    "logo_light": "",
+    "created_at": "2026-09-08T14:52:37.939Z",
+    "updated_at": "2026-09-08T14:53:15.186Z"
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 1,
+  "fields": {
+    "title": "Our Work",
+    "url": "/projects/",
+    "group": "main",
+    "parent": null,
+    "description": "",
+    "badge_text": "",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 1
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 2,
+  "fields": {
+    "title": "Who We Help",
+    "url": "/#about",
+    "group": "main",
+    "parent": null,
+    "description": "",
+    "badge_text": "",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 2
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 3,
+  "fields": {
+    "title": "How We Help",
+    "url": "#how-we-help",
+    "group": "main",
+    "parent": null,
+    "description": "",
+    "badge_text": "",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 3
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 4,
+  "fields": {
+    "title": "Why Projects Hub",
+    "url": "/#why-projectshub",
+    "group": "main",
+    "parent": null,
+    "description": "",
+    "badge_text": "",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 4
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 5,
+  "fields": {
+    "title": "Blog",
+    "url": "/blog/",
+    "group": "main",
+    "parent": null,
+    "description": "",
+    "badge_text": "",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 5
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 6,
+  "fields": {
+    "title": "Contact Us",
+    "url": "/#contact",
+    "group": "main",
+    "parent": null,
+    "description": "",
+    "badge_text": "",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 6
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 7,
+  "fields": {
+    "title": "Our Projects",
+    "url": "/projects/",
+    "group": "our_work",
+    "parent": null,
+    "description": "",
+    "badge_text": "",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 1
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 8,
+  "fields": {
+    "title": "AI Case Studies",
+    "url": "/case-studies/",
+    "group": "our_work",
+    "parent": null,
+    "description": "",
+    "badge_text": "",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 2
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 9,
+  "fields": {
+    "title": "Free AI Tools",
+    "url": "https://tools.projectshub.co.in/",
+    "group": "our_work",
+    "parent": null,
+    "description": "",
+    "badge_text": "",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 3
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 10,
+  "fields": {
+    "title": "1-on-1 Mentorship",
+    "url": "/workshop/",
+    "group": "how_we_help_students",
+    "parent": null,
+    "description": "",
+    "badge_text": "",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 1
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 11,
+  "fields": {
+    "title": "Hands-on Capstone Projects",
+    "url": "/projects/",
+    "group": "how_we_help_students",
+    "parent": null,
+    "description": "Build portfolio-ready full stack AI systems",
+    "badge_text": "Portfolio",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "💻",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 2
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 12,
+  "fields": {
+    "title": "Live Coding Workshops",
+    "url": "/workshop/",
+    "group": "how_we_help_students",
+    "parent": null,
+    "description": "Real-time sessions with code walkthroughs",
+    "badge_text": "Live",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "⚡",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 3
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 13,
+  "fields": {
+    "title": "AI Road Map",
+    "url": "/ai-roadmap/",
+    "group": "how_we_help_students",
+    "parent": null,
+    "description": "",
+    "badge_text": "",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 4
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 14,
+  "fields": {
+    "title": "AI Development",
+    "url": "/services/ai-development/",
+    "group": "how_we_help_business",
+    "parent": null,
+    "description": "",
+    "badge_text": "",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 1
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 15,
+  "fields": {
+    "title": "AI Automation",
+    "url": "/services/ai-automation/",
+    "group": "how_we_help_business",
+    "parent": null,
+    "description": "",
+    "badge_text": "",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 2
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 16,
+  "fields": {
+    "title": "AI Integration & Services",
+    "url": "/services/ai-integration/",
+    "group": "how_we_help_business",
+    "parent": null,
+    "description": "Connect OpenAI, Anthropic & custom models",
+    "badge_text": "API Integration",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "🔌",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 3
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 17,
+  "fields": {
+    "title": "Industries",
+    "url": "/industries/",
+    "group": "how_we_help_business",
+    "parent": null,
+    "description": "",
+    "badge_text": "",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 4
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 18,
+  "fields": {
+    "title": "Curated AI Projects",
+    "url": "/projects/",
+    "group": "our_work",
+    "parent": null,
+    "description": "Production-grade ML models, Django backends & complete computer vision apps.",
+    "badge_text": "50+ Projects",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 1
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 19,
+  "fields": {
+    "title": "Client Case Studies",
+    "url": "/case-studies/",
+    "group": "our_work",
+    "parent": null,
+    "description": "Deep dives into enterprise AI pipelines, automation workflows and ROI.",
+    "badge_text": "Real-World",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 2
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 20,
+  "fields": {
+    "title": "Free Developer Tools",
+    "url": "/tools/",
+    "group": "our_work",
+    "parent": null,
+    "description": "Online prompt engineering suites, model testers & developer utilities.",
+    "badge_text": "10+ Tools",
+    "badge_color": "emerald",
+    "image": "",
+    "icon_svg": "",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 3
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 21,
+  "fields": {
+    "title": "Machine Learning",
+    "url": "/projects/?category=machine-learning",
+    "group": "popular_tags",
+    "parent": null,
+    "description": "",
+    "badge_text": "",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 1
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 22,
+  "fields": {
+    "title": "Django & FastAPI",
+    "url": "/projects/?category=backend",
+    "group": "popular_tags",
+    "parent": null,
+    "description": "",
+    "badge_text": "",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 2
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 23,
+  "fields": {
+    "title": "Data Science",
+    "url": "/projects/?category=data-science",
+    "group": "popular_tags",
+    "parent": null,
+    "description": "",
+    "badge_text": "",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 3
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 24,
+  "fields": {
+    "title": "1-on-1 Mentorship Sessions",
+    "url": "/workshop/",
+    "group": "how_we_help_students",
+    "parent": null,
+    "description": "Personalized guidance from senior engineers",
+    "badge_text": "Mentorship",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "🎯",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 1
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 25,
+  "fields": {
+    "title": "AI Career Road Map",
+    "url": "/ai-roadmap/",
+    "group": "how_we_help_students",
+    "parent": null,
+    "description": "Step-by-step path from beginner to pro",
+    "badge_text": "Roadmap",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "🗺️",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 4
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 26,
+  "fields": {
+    "title": "Custom AI Development",
+    "url": "/services/ai-development/",
+    "group": "how_we_help_business",
+    "parent": null,
+    "description": "Bespoke LLM and computer vision solutions",
+    "badge_text": "Enterprise",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "🤖",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 1
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 27,
+  "fields": {
+    "title": "Workflow AI Automation",
+    "url": "/services/ai-automation/",
+    "group": "how_we_help_business",
+    "parent": null,
+    "description": "Save hours by automating repetitive operations",
+    "badge_text": "Automation",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "⚙️",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 2
+  }
+},
+{
+  "model": "core.navigationitem",
+  "pk": 28,
+  "fields": {
+    "title": "Industry Solutions",
+    "url": "/industries/",
+    "group": "how_we_help_business",
+    "parent": null,
+    "description": "Tailored for FinTech, EdTech, SaaS & Health",
+    "badge_text": "Scalable",
+    "badge_color": "cyan",
+    "image": "",
+    "icon_svg": "🏢",
+    "open_in_new_tab": false,
+    "is_active": true,
+    "order": 4
+  }
+},
+{
+  "model": "core.sociallink",
+  "pk": 1,
+  "fields": {
+    "platform": "github",
+    "label": "GitHub",
+    "url": "https://github.com/ProjectsHub",
+    "icon_svg": "",
+    "is_active": true,
+    "order": 1
+  }
+},
+{
+  "model": "core.sociallink",
+  "pk": 2,
+  "fields": {
+    "platform": "linkedin",
+    "label": "LinkedIn",
+    "url": "https://linkedin.com/company/projectshub",
+    "icon_svg": "",
+    "is_active": true,
+    "order": 2
+  }
+},
+{
+  "model": "core.sociallink",
+  "pk": 3,
+  "fields": {
+    "platform": "whatsapp",
+    "label": "WhatsApp",
+    "url": "https://wa.me/919213472954?text=Hi%20ProjectsHub%2C%20I%20want%20to%20book%20a%20free%20consultation.",
+    "icon_svg": "",
+    "is_active": true,
+    "order": 3
+  }
+},
+{
+  "model": "core.sociallink",
+  "pk": 4,
+  "fields": {
+    "platform": "instagram",
+    "label": "Instagram",
+    "url": "https://instagram.com/projectshub.ai",
+    "icon_svg": "",
+    "is_active": true,
+    "order": 4
+  }
+},
+{
+  "model": "core.sociallink",
+  "pk": 5,
+  "fields": {
+    "platform": "email",
+    "label": "Email Support",
+    "url": "mailto:support@projectshub.co.in",
+    "icon_svg": "",
+    "is_active": true,
+    "order": 5
+  }
+},
+{
+  "model": "core.statitem",
+  "pk": 1,
+  "fields": {
+    "section": "hero",
+    "label": "AI Projects",
+    "value": "50+",
+    "description": "Curated production-ready machine learning projects",
+    "icon": "blue",
+    "is_active": true,
+    "order": 1
+  }
+},
+{
+  "model": "core.statitem",
+  "pk": 2,
+  "fields": {
+    "section": "hero",
+    "label": "Free Tools",
+    "value": "10+",
+    "description": "Instant developer & student utilities with zero signup",
+    "icon": "purple",
+    "is_active": true,
+    "order": 2
+  }
+},
+{
+  "model": "core.statitem",
+  "pk": 3,
+  "fields": {
+    "section": "hero",
+    "label": "Happy Users",
+    "value": "500+",
+    "description": "Students & businesses using our tools daily",
+    "icon": "green",
+    "is_active": true,
+    "order": 3
+  }
+},
+{
+  "model": "core.statitem",
+  "pk": 4,
+  "fields": {
+    "section": "numbers",
+    "label": "Free AI Tools",
+    "value": "10+",
+    "description": "Resume builder, image tools, text utilities & more",
+    "icon": "blue",
+    "is_active": true,
+    "order": 1
+  }
+},
+{
+  "model": "core.statitem",
+  "pk": 5,
+  "fields": {
+    "section": "numbers",
+    "label": "Projects Showcased",
+    "value": "50+",
+    "description": "Machine Learning, Django, APIs & Data Science",
+    "icon": "purple",
+    "is_active": true,
+    "order": 2
+  }
+},
+{
+  "model": "core.statitem",
+  "pk": 6,
+  "fields": {
+    "section": "numbers",
+    "label": "Happy Users",
+    "value": "500+",
+    "description": "Active students, developers & business teams",
+    "icon": "green",
+    "is_active": true,
+    "order": 3
+  }
+},
+{
+  "model": "core.statitem",
+  "pk": 7,
+  "fields": {
+    "section": "numbers",
+    "label": "Support Response",
+    "value": "< 24h",
+    "description": "Guaranteed expert response to all inquiries",
+    "icon": "orange",
+    "is_active": true,
+    "order": 4
+  }
+},
+{
+  "model": "core.statitem",
+  "pk": 8,
+  "fields": {
+    "section": "about",
+    "label": "Projects Delivered",
+    "value": "150+",
+    "description": "Custom AI and software deliveries across India",
+    "icon": "purple",
+    "is_active": true,
+    "order": 1
+  }
+},
+{
+  "model": "core.statitem",
+  "pk": 9,
+  "fields": {
+    "section": "about",
+    "label": "Years Experience",
+    "value": "8+",
+    "description": "Deep engineering expertise in ML and cloud",
+    "icon": "blue",
+    "is_active": true,
+    "order": 2
+  }
+},
+{
+  "model": "core.projectcategory",
+  "pk": 1,
+  "fields": {
+    "name": "Machine Learning",
+    "slug": "ml",
+    "icon": "🧠",
+    "description": "Deep learning, neural networks, predictive models, and classical ML algorithms.",
+    "order": 1
+  }
+},
+{
+  "model": "core.projectcategory",
+  "pk": 2,
+  "fields": {
+    "name": "Django & Backend",
+    "slug": "backend",
+    "icon": "⚡",
+    "description": "Scalable REST APIs, ASGI websockets, microservices, and backend pipelines.",
+    "order": 2
+  }
+},
+{
+  "model": "core.projectcategory",
+  "pk": 3,
+  "fields": {
+    "name": "Data Science",
+    "slug": "data",
+    "icon": "📊",
+    "description": "Data analytics, automated dashboards, feature engineering, and big data ETL.",
+    "order": 3
+  }
+},
+{
+  "model": "core.projectcategory",
+  "pk": 4,
+  "fields": {
+    "name": "Cloud & DevOps",
+    "slug": "cloud",
+    "icon": "☁️",
+    "description": "Dockerized microservices, Kubernetes clusters, and automated AWS/GCP pipelines.",
+    "order": 4
+  }
+},
+{
+  "model": "core.projectcategory",
+  "pk": 5,
+  "fields": {
+    "name": "NLP & LLMs",
+    "slug": "nlp",
+    "icon": "💬",
+    "description": "Retrieval-Augmented Generation (RAG), vector embeddings, and LLM fine-tuning.",
+    "order": 5
+  }
+},
+{
+  "model": "core.projectcategory",
+  "pk": 6,
+  "fields": {
+    "name": "Full Stack AI",
+    "slug": "full-stack",
+    "icon": "🚀",
+    "description": "End-to-end applications combining modern frontend with intelligent AI inference.",
+    "order": 6
+  }
+},
+{
+  "model": "core.technology",
+  "pk": 1,
+  "fields": {
+    "name": "Python",
+    "slug": "python",
+    "icon": "python",
+    "website_url": "https://python.org",
+    "description": "",
+    "order": 1
+  }
+},
+{
+  "model": "core.technology",
+  "pk": 2,
+  "fields": {
+    "name": "Django",
+    "slug": "django",
+    "icon": "django",
+    "website_url": "https://djangoproject.com",
+    "description": "",
+    "order": 2
+  }
+},
+{
+  "model": "core.technology",
+  "pk": 3,
+  "fields": {
+    "name": "FastAPI",
+    "slug": "fastapi",
+    "icon": "fastapi",
+    "website_url": "https://fastapi.tiangolo.com",
+    "description": "",
+    "order": 3
+  }
+},
+{
+  "model": "core.technology",
+  "pk": 4,
+  "fields": {
+    "name": "React",
+    "slug": "react",
+    "icon": "react",
+    "website_url": "https://react.dev",
+    "description": "",
+    "order": 4
+  }
+},
+{
+  "model": "core.technology",
+  "pk": 5,
+  "fields": {
+    "name": "PyTorch",
+    "slug": "pytorch",
+    "icon": "pytorch",
+    "website_url": "https://pytorch.org",
+    "description": "",
+    "order": 5
+  }
+},
+{
+  "model": "core.technology",
+  "pk": 6,
+  "fields": {
+    "name": "TensorFlow",
+    "slug": "tensorflow",
+    "icon": "tensorflow",
+    "website_url": "https://tensorflow.org",
+    "description": "",
+    "order": 6
+  }
+},
+{
+  "model": "core.technology",
+  "pk": 7,
+  "fields": {
+    "name": "PostgreSQL",
+    "slug": "postgresql",
+    "icon": "postgresql",
+    "website_url": "https://postgresql.org",
+    "description": "",
+    "order": 7
+  }
+},
+{
+  "model": "core.technology",
+  "pk": 8,
+  "fields": {
+    "name": "Redis",
+    "slug": "redis",
+    "icon": "redis",
+    "website_url": "https://redis.io",
+    "description": "",
+    "order": 8
+  }
+},
+{
+  "model": "core.technology",
+  "pk": 9,
+  "fields": {
+    "name": "Docker",
+    "slug": "docker",
+    "icon": "docker",
+    "website_url": "https://docker.com",
+    "description": "",
+    "order": 9
+  }
+},
+{
+  "model": "core.technology",
+  "pk": 10,
+  "fields": {
+    "name": "Kubernetes",
+    "slug": "kubernetes",
+    "icon": "kubernetes",
+    "website_url": "https://kubernetes.io",
+    "description": "",
+    "order": 10
+  }
+},
+{
+  "model": "core.technology",
+  "pk": 11,
+  "fields": {
+    "name": "AWS",
+    "slug": "aws",
+    "icon": "amazonaws",
+    "website_url": "https://aws.amazon.com",
+    "description": "",
+    "order": 11
+  }
+},
+{
+  "model": "core.technology",
+  "pk": 12,
+  "fields": {
+    "name": "NLP",
+    "slug": "nlp",
+    "icon": "nlp",
+    "website_url": "https://projectshub.co.in",
+    "description": "",
+    "order": 12
+  }
+},
+{
+  "model": "core.technology",
+  "pk": 13,
+  "fields": {
+    "name": "RAG",
+    "slug": "rag",
+    "icon": "rag",
+    "website_url": "https://projectshub.co.in",
+    "description": "",
+    "order": 13
+  }
+},
+{
+  "model": "core.technology",
+  "pk": 14,
+  "fields": {
+    "name": "BERT",
+    "slug": "bert",
+    "icon": "bert",
+    "website_url": "https://huggingface.co",
+    "description": "",
+    "order": 14
+  }
+},
+{
+  "model": "core.technology",
+  "pk": 15,
+  "fields": {
+    "name": "Scikit-learn",
+    "slug": "scikit-learn",
+    "icon": "scikitlearn",
+    "website_url": "https://scikit-learn.org",
+    "description": "",
+    "order": 15
+  }
+},
+{
+  "model": "core.technology",
+  "pk": 16,
+  "fields": {
+    "name": "Pandas",
+    "slug": "pandas",
+    "icon": "pandas",
+    "website_url": "https://pandas.pydata.org",
+    "description": "",
+    "order": 16
+  }
+},
+{
+  "model": "core.project",
+  "pk": 1,
+  "fields": {
+    "title": "AI Sentiment Analyser",
+    "slug": "ai-sentiment-analyser",
+    "description": "Real-time sentiment analysis of customer reviews using fine-tuned BERT with a FastAPI backend and React dashboard processing 100K+ reviews daily.",
+    "detailed_description": "This project implements a production-ready NLP sentiment analysis pipeline. A domain-fine-tuned BERT-base model classifies customer reviews as positive, negative, or neutral with 94% accuracy. The async FastAPI backend handles both single-text and batch inference, while Redis queuing smooths out traffic spikes. The React dashboard visualises sentiment trends over time with interactive filters by product, date range, and confidence score.\n\nThe biggest engineering challenge was latency — naive BERT inference was 350ms per request. By switching to ONNX Runtime with 8-bit quantisation and implementing intelligent request batching, average latency dropped to under 80ms while GPU memory usage fell by 40%. The result is a system that can handle bursts of 500+ concurrent users without degradation.",
+    "category": "ml",
+    "category_ref": 1,
+    "tags": "PyTorch, BERT, FastAPI, React, Docker, Redis, ONNX",
+    "image": "projects/5cce966bbfd0773ff7f37f60210e23c9.webp",
+    "thumbnail": "",
+    "image_url": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&auto=format&fit=crop",
+    "project_url": "",
+    "github_url": "https://github.com/ProjectsHub/ai-sentiment-analyser",
+    "demo_url": "",
+    "external_url": "",
+    "youtube_url": "",
+    "download_file": "",
+    "subtitle": "Production-grade NLP pipeline processing 100K+ customer reviews daily at sub-80ms latency.",
+    "year": "2025",
+    "role": "ML Engineer",
+    "duration": "3 Months",
+    "team_size": "Solo Project",
+    "difficulty": "Intermediate",
+    "case_study_url": "",
+    "price": "2999.00",
+    "price_label": "₹2,999",
+    "featured": false,
+    "show_on_index": true,
+    "is_active": true,
+    "is_published": true,
+    "order": 1,
+    "meta_title": "AI Sentiment Analyser | AI ProjectsHub",
+    "meta_description": "Real-time sentiment analysis of customer reviews using fine-tuned BERT with a FastAPI backend and React dashboard processing 100K+ reviews daily.",
+    "canonical_url": "",
+    "og_title": "",
+    "og_description": "",
+    "og_image": "",
+    "created_at": "2026-05-07T10:22:22.119Z",
+    "updated_at": "2026-09-08T14:53:15.395Z",
+    "technologies": [
+      3,
+      4,
+      5,
+      8,
+      9,
+      14
+    ]
+  }
+},
+{
+  "model": "core.project",
+  "pk": 2,
+  "fields": {
+    "title": "Stock Price Predictor",
+    "slug": "stock-price-predictor",
+    "description": "LSTM-based time-series forecasting model with Monte Carlo dropout confidence bands, deployed serverlessly on AWS Lambda for under 200ms predictions.",
+    "detailed_description": "A multi-layer LSTM architecture trained on 10 years of historical OHLCV data for 50+ equities. Technical indicators — RSI, MACD, Bollinger Bands, OBV — are engineered as additional features. Walk-forward validation prevents look-ahead bias, and Monte Carlo Dropout generates uncertainty quantification bands around each forecast. The entire model is packaged as an AWS Lambda function with a DynamoDB cache layer to serve repeat queries instantly.\n\nThe core challenge was keeping inference cold-start under 3 seconds while running a 4-layer LSTM on Lambda. This was solved by serialising the model to TorchScript, stripping unused weights, and using Lambda SnapStart. Cache hit rate on repeat tickers reached 78%, dropping average end-to-end latency below 200ms.",
+    "category": "ml",
+    "category_ref": 1,
+    "tags": "TensorFlow, LSTM, AWS Lambda, DynamoDB, yfinance, TorchScript",
+    "image": "",
+    "thumbnail": "",
+    "image_url": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop",
+    "project_url": "",
+    "github_url": "https://github.com/ProjectsHub/stock-price-predictor",
+    "demo_url": "",
+    "external_url": "",
+    "youtube_url": "",
+    "download_file": "",
+    "subtitle": "LSTM forecasting with Monte Carlo uncertainty bands, served serverlessly under 200ms.",
+    "year": "2025",
+    "role": "ML Engineer",
+    "duration": "2 Months",
+    "team_size": "Solo Project",
+    "difficulty": "Intermediate",
+    "case_study_url": "",
+    "price": "3999.00",
+    "price_label": "₹3,999",
+    "featured": false,
+    "show_on_index": true,
+    "is_active": true,
+    "is_published": true,
+    "order": 2,
+    "meta_title": "Stock Price Predictor | AI ProjectsHub",
+    "meta_description": "LSTM-based time-series forecasting model with Monte Carlo dropout confidence bands, deployed serverlessly on AWS Lambda for under 200ms predictions.",
+    "canonical_url": "",
+    "og_title": "",
+    "og_description": "",
+    "og_image": "",
+    "created_at": "2026-05-07T10:22:22.123Z",
+    "updated_at": "2026-09-08T14:53:15.423Z",
+    "technologies": [
+      6,
+      11
+    ]
+  }
+},
+{
+  "model": "core.project",
+  "pk": 3,
+  "fields": {
+    "title": "Customer Churn Pipeline",
+    "slug": "customer-churn-pipeline",
+    "description": "End-to-end MLOps pipeline for churn prediction with automated retraining, data drift detection, and Grafana monitoring — built on MLflow, Prefect, and XGBoost.",
+    "detailed_description": "An enterprise-grade MLOps pipeline that ingests raw CRM data, applies a feature engineering layer (normalisation, ordinal encoding, interaction terms), trains an XGBoost classifier, and pushes churn probability scores to a PostgreSQL dashboard consumed by the CRM team. Great Expectations validates data quality at each stage; Prefect orchestrates the schedule; MLflow tracks every experiment with full model registry support.\n\nThe standout feature is drift detection: Kolmogorov–Smirnov tests run nightly on each feature. When any feature drifts beyond a configurable threshold, Prefect automatically triggers a retraining job with fresh data. In production, the model stayed accurate 3 months beyond the initial training cutoff thanks to this feedback loop — a critical win for a SaaS client with 50K active users.",
+    "category": "data",
+    "category_ref": 3,
+    "tags": "XGBoost, MLflow, Prefect, PostgreSQL, Grafana, Great Expectations",
+    "image": "",
+    "thumbnail": "",
+    "image_url": "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&auto=format&fit=crop",
+    "project_url": "",
+    "github_url": "https://github.com/ProjectsHub/customer-churn-pipeline",
+    "demo_url": "",
+    "external_url": "",
+    "youtube_url": "",
+    "download_file": "",
+    "subtitle": "Self-retraining MLOps pipeline with drift detection that keeps churn predictions fresh automatically.",
+    "year": "2025",
+    "role": "ML Engineer / MLOps",
+    "duration": "4 Months",
+    "team_size": "Solo Project",
+    "difficulty": "Intermediate",
+    "case_study_url": "",
+    "price": "4999.00",
+    "price_label": "₹4,999",
+    "featured": false,
+    "show_on_index": true,
+    "is_active": true,
+    "is_published": true,
+    "order": 3,
+    "meta_title": "Customer Churn Pipeline | AI ProjectsHub",
+    "meta_description": "End-to-end MLOps pipeline for churn prediction with automated retraining, data drift detection, and Grafana monitoring — built on MLflow, Prefect, and XGBo",
+    "canonical_url": "",
+    "og_title": "",
+    "og_description": "",
+    "og_image": "",
+    "created_at": "2026-05-07T10:22:22.128Z",
+    "updated_at": "2026-09-08T14:53:15.435Z",
+    "technologies": [
+      7
+    ]
+  }
+},
+{
+  "model": "core.project",
+  "pk": 4,
+  "fields": {
+    "title": "RAG Document Q&A",
+    "slug": "rag-document-qa",
+    "description": "Retrieval-Augmented Generation system for private document Q&A using LangChain, FAISS vector search, and GPT-4 — supporting conversational follow-up questions.",
+    "detailed_description": "Upload any set of PDFs or text documents and ask questions in plain English. The system chunks documents using a recursive character splitter, embeds each chunk with OpenAI text-embedding-3-small, and stores vectors in a FAISS index on disk. At query time, a custom LangChain RetrievalQA chain performs MMR (Maximum Marginal Relevance) retrieval followed by a cross-encoder re-ranking step to surface the most relevant context before passing it to GPT-4. A conversation buffer memory window enables multi-turn follow-up questions that reference prior answers.\n\nKey innovations: a hybrid sparse-dense retrieval step (BM25 + FAISS) that outperforms pure dense retrieval by 9% on domain-specific corpora, and a citation overlay that highlights the exact document passage used to generate each answer — critical for legal and compliance use cases where auditability matters.",
+    "category": "ml",
+    "category_ref": 1,
+    "tags": "LangChain, FAISS, GPT-4, FastAPI, Streamlit, BM25",
+    "image": "",
+    "thumbnail": "",
+    "image_url": "https://images.unsplash.com/photo-1607705703571-c5a8695f18f6?w=900&auto=format&fit=crop",
+    "project_url": "",
+    "github_url": "https://github.com/ProjectsHub/rag-document-qa",
+    "demo_url": "",
+    "external_url": "",
+    "youtube_url": "",
+    "download_file": "",
+    "subtitle": "Private document Q&A with hybrid retrieval, citation overlay, and multi-turn conversation.",
+    "year": "2025",
+    "role": "AI Engineer",
+    "duration": "6 Weeks",
+    "team_size": "Solo Project",
+    "difficulty": "Intermediate",
+    "case_study_url": "",
+    "price": "5999.00",
+    "price_label": "₹5,999",
+    "featured": false,
+    "show_on_index": false,
+    "is_active": true,
+    "is_published": true,
+    "order": 4,
+    "meta_title": "RAG Document Q&A | AI ProjectsHub",
+    "meta_description": "Retrieval-Augmented Generation system for private document Q&A using LangChain, FAISS vector search, and GPT-4 — supporting conversational follow-up questi",
+    "canonical_url": "",
+    "og_title": "",
+    "og_description": "",
+    "og_image": "",
+    "created_at": "2026-05-07T10:22:22.133Z",
+    "updated_at": "2026-09-08T14:53:15.442Z",
+    "technologies": [
+      3
+    ]
+  }
+},
+{
+  "model": "core.project",
+  "pk": 5,
+  "fields": {
+    "title": "Real-time Data Dashboard",
+    "slug": "real-time-data-dashboard",
+    "description": "Scalable Kafka → Spark Streaming → ClickHouse pipeline ingesting 100K+ events/second, visualised in a self-service Apache Superset dashboard on Kubernetes.",
+    "detailed_description": "A fully cloud-native streaming analytics stack built for a FinTech client needing sub-second visibility into transaction events. Apache Kafka ingests 100K+ events per second across 12 topics. Spark Structured Streaming consumers apply windowed aggregations (1-min, 5-min, 1-hour), detect anomalies using a streaming z-score algorithm, and land results into ClickHouse. ClickHouse materialized views serve the Superset dashboards with query response times under 300ms even at 100M+ row tables.\n\nThe entire stack runs on Kubernetes with Helm charts. Kafka and ClickHouse are horizontally scaled via custom HPA policies triggered by consumer lag and query throughput respectively. A GitOps workflow (ArgoCD) handles deployments, making environment promotion from staging to production a one-click operation.",
+    "category": "data",
+    "category_ref": 3,
+    "tags": "Kafka, Spark, ClickHouse, Superset, Kubernetes, Helm, ArgoCD",
+    "image": "",
+    "thumbnail": "",
+    "image_url": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=800&auto=format&fit=crop",
+    "project_url": "",
+    "github_url": "https://github.com/ProjectsHub/realtime-data-dashboard",
+    "demo_url": "",
+    "external_url": "",
+    "youtube_url": "",
+    "download_file": "",
+    "subtitle": "Kafka-to-ClickHouse streaming analytics handling 100K events/second with sub-300ms query response.",
+    "year": "2024",
+    "role": "Data Engineer",
+    "duration": "5 Months",
+    "team_size": "2-person team",
+    "difficulty": "Intermediate",
+    "case_study_url": "",
+    "price": "6999.00",
+    "price_label": "₹6,999",
+    "featured": false,
+    "show_on_index": false,
+    "is_active": true,
+    "is_published": true,
+    "order": 5,
+    "meta_title": "Real-time Data Dashboard | AI ProjectsHub",
+    "meta_description": "Scalable Kafka → Spark Streaming → ClickHouse pipeline ingesting 100K+ events/second, visualised in a self-service Apache Superset dashboard on Kubernetes.",
+    "canonical_url": "",
+    "og_title": "",
+    "og_description": "",
+    "og_image": "",
+    "created_at": "2026-05-07T10:22:22.136Z",
+    "updated_at": "2026-09-08T14:53:15.450Z",
+    "technologies": [
+      10
+    ]
+  }
+},
+{
+  "model": "core.project",
+  "pk": 6,
+  "fields": {
+    "title": "Multi-Cloud Cost Optimiser",
+    "slug": "multi-cloud-cost-optimiser",
+    "description": "Python automation tool that analyses AWS and GCP billing APIs, identifies waste (idle instances, unused EBS, orphaned snapshots), and auto-generates Terraform remediation scripts.",
+    "detailed_description": "A CLI and scheduled-job tool that pulls granular billing data from AWS Cost Explorer and the GCP Billing API, normalises it into a unified cost model, and runs a rule engine against it. Rules catch common waste patterns: instances idle >80% over 7 days, unattached EBS volumes older than 30 days, orphaned snapshots, reserved instance coverage gaps, and data transfer anomalies. Each finding is ranked by monthly savings potential and exported to a pandas-powered HTML report.\n\nFor findings that can be safely automated, the tool generates ready-to-apply Terraform snippets (right-sizing, snapshot cleanup, RI purchase recommendations). In production for a Series-B SaaS startup, the first run identified $3,400/month in savings; after applying the generated scripts, the client achieved a 37% infrastructure cost reduction within one billing cycle — with zero disruption to running workloads.",
+    "category": "cloud",
+    "category_ref": 4,
+    "tags": "Python, AWS, GCP, Terraform, pandas, boto3, Click",
+    "image": "",
+    "thumbnail": "",
+    "image_url": "https://images.unsplash.com/photo-1607705703571-c5a8695f18f6?w=800&auto=format&fit=crop",
+    "project_url": "",
+    "github_url": "https://github.com/ProjectsHub/multi-cloud-cost-optimiser",
+    "demo_url": "",
+    "external_url": "",
+    "youtube_url": "",
+    "download_file": "",
+    "subtitle": "Automated cloud waste detection that cut infrastructure spend by 37% for a SaaS startup.",
+    "year": "2024",
+    "role": "Cloud Engineer",
+    "duration": "6 Weeks",
+    "team_size": "Solo Project",
+    "difficulty": "Intermediate",
+    "case_study_url": "",
+    "price": "3499.00",
+    "price_label": "₹3,499",
+    "featured": false,
+    "show_on_index": false,
+    "is_active": true,
+    "is_published": true,
+    "order": 6,
+    "meta_title": "Multi-Cloud Cost Optimiser | AI ProjectsHub",
+    "meta_description": "Python automation tool that analyses AWS and GCP billing APIs, identifies waste (idle instances, unused EBS, orphaned snapshots), and auto-generates Terraf",
+    "canonical_url": "",
+    "og_title": "",
+    "og_description": "",
+    "og_image": "",
+    "created_at": "2026-05-07T10:22:22.142Z",
+    "updated_at": "2026-09-08T14:53:15.460Z",
+    "technologies": [
+      1,
+      11,
+      16
+    ]
+  }
+},
+{
+  "model": "core.project",
+  "pk": 8,
+  "fields": {
+    "title": "llm base code reviewer",
+    "slug": "llm-base-code-reviewer",
+    "description": "**LLM-Powered Code Reviewer** is an AI tool that automatically analyzes source code to detect bugs, security vulnerabilities, performance issues, code smells, and style problems. It provides intelligent explanations, refactoring suggestions, and code quality improvements using a local Large Language Model and static code analysis.",
+    "detailed_description": "",
+    "category": "ml",
+    "category_ref": 1,
+    "tags": "collab,python,llm",
+    "image": "projects/llm_power_code_review_1.webp",
+    "thumbnail": "",
+    "image_url": "",
+    "project_url": "https://drive.google.com/file/d/1ZASPxZP0EwtTRjG_89qa9iSf_F1FDCFq/view?usp=sharing",
+    "github_url": "",
+    "demo_url": "",
+    "external_url": "",
+    "youtube_url": "",
+    "download_file": "",
+    "subtitle": "",
+    "year": "",
+    "role": "",
+    "duration": "",
+    "team_size": "Solo Project",
+    "difficulty": "Intermediate",
+    "case_study_url": "",
+    "price": "0.00",
+    "price_label": "",
+    "featured": false,
+    "show_on_index": false,
+    "is_active": false,
+    "is_published": false,
+    "order": 0,
+    "meta_title": "llm base code reviewer | AI ProjectsHub",
+    "meta_description": "**LLM-Powered Code Reviewer** is an AI tool that automatically analyzes source code to detect bugs, security vulnerabilities, performance issues, code smel",
+    "canonical_url": "",
+    "og_title": "",
+    "og_description": "",
+    "og_image": "",
+    "created_at": "2026-07-28T10:30:52.757Z",
+    "updated_at": "2026-09-09T04:45:09.604Z",
+    "technologies": [
+      1
+    ]
+  }
+},
+{
+  "model": "core.project",
+  "pk": 9,
+  "fields": {
+    "title": "test",
+    "slug": "test",
+    "description": "test",
+    "detailed_description": "ettettetete",
+    "category": "backend",
+    "category_ref": 2,
+    "tags": "ycchhcio",
+    "image": "projects/wallpaper.webp",
+    "thumbnail": "",
+    "image_url": "",
+    "project_url": "http://cckcn.com",
+    "github_url": "http://cjcji.com",
+    "demo_url": "",
+    "external_url": "",
+    "youtube_url": "",
+    "download_file": "",
+    "subtitle": "testt",
+    "year": "2025",
+    "role": "ML Engineer",
+    "duration": "3 Months",
+    "team_size": "Solo Project",
+    "difficulty": "Intermediate",
+    "case_study_url": "http://cici.com",
+    "price": "67890.00",
+    "price_label": "56789",
+    "featured": false,
+    "show_on_index": false,
+    "is_active": false,
+    "is_published": false,
+    "order": 1,
+    "meta_title": "test | AI ProjectsHub",
+    "meta_description": "test",
+    "canonical_url": "",
+    "og_title": "",
+    "og_description": "",
+    "og_image": "",
+    "created_at": "2026-08-31T10:19:24.749Z",
+    "updated_at": "2026-09-08T14:53:15.388Z",
+    "technologies": []
+  }
+},
+{
+  "model": "core.project",
+  "pk": 10,
+  "fields": {
+    "title": "SO it is the titile",
+    "slug": "so-it-is-the-titile",
+    "description": "DESC",
+    "detailed_description": "detail DESC",
+    "category": "ml",
+    "category_ref": 1,
+    "tags": "PyTorch, BERT, FastAPI, React, Docker, Redis, ONNX",
+    "image": "",
+    "thumbnail": "",
+    "image_url": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&auto=format&fit=crop",
+    "project_url": "http://cckcn.com",
+    "github_url": "https://github.com/ProjectsHub/ai-sentiment-analyser",
+    "demo_url": "",
+    "external_url": "",
+    "youtube_url": "",
+    "download_file": "",
+    "subtitle": "and salso dont miss the subtitle",
+    "year": "2025",
+    "role": "ML Engineer",
+    "duration": "3 Months",
+    "team_size": "Solo Project",
+    "difficulty": "Intermediate",
+    "case_study_url": "http://cici.com",
+    "price": "50000.00",
+    "price_label": "400000",
+    "featured": false,
+    "show_on_index": false,
+    "is_active": false,
+    "is_published": false,
+    "order": 0,
+    "meta_title": "SO it is the titile | AI ProjectsHub",
+    "meta_description": "DESC",
+    "canonical_url": "",
+    "og_title": "",
+    "og_description": "",
+    "og_image": "",
+    "created_at": "2026-09-02T11:51:00.178Z",
+    "updated_at": "2026-09-08T14:53:15.357Z",
+    "technologies": [
+      3,
+      4,
+      5,
+      8,
+      9,
+      14
+    ]
+  }
+},
+{
+  "model": "core.project",
+  "pk": 12,
+  "fields": {
+    "title": "test",
+    "slug": "test-2",
+    "description": "Hold down “Control”, or “Command” on a Mac, to select more than one.\r\nHold down “Control”, or “Command” on a Mac, to select more than one.",
+    "detailed_description": "Hold down “Control”, or “Command” on a Mac, to select more than one.",
+    "category": "ml",
+    "category_ref": 1,
+    "tags": "test",
+    "image": "",
+    "thumbnail": "",
+    "image_url": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&auto=format&fit=crop",
+    "project_url": "",
+    "github_url": "",
+    "demo_url": "",
+    "external_url": "",
+    "youtube_url": "",
+    "download_file": "",
+    "subtitle": "test",
+    "year": "2025",
+    "role": "AI/ML Engineer",
+    "duration": "2-4 Weeks",
+    "team_size": "Solo Project",
+    "difficulty": "Intermediate",
+    "case_study_url": "",
+    "price": "0.00",
+    "price_label": "Free",
+    "featured": false,
+    "show_on_index": false,
+    "is_active": true,
+    "is_published": true,
+    "order": 0,
+    "meta_title": "test | AI ProjectsHub",
+    "meta_description": "Hold down “Control”, or “Command” on a Mac, to select more than one.\r\nHold down “Control”, or “Command” on a Mac, to select more than one.",
+    "canonical_url": "",
+    "og_title": "",
+    "og_description": "",
+    "og_image": "",
+    "created_at": "2026-09-09T08:27:51.273Z",
+    "updated_at": "2026-09-09T08:27:51.273Z",
+    "technologies": [
+      1
+    ]
+  }
+},
+{
+  "model": "core.projectimage",
+  "pk": 4,
+  "fields": {
+    "project": 12,
+    "image": "projects/detail/WhatsApp_Image_2026-09-02_at_3.47.15_PM.webp",
+    "caption": "test image",
+    "alt": "test",
+    "order": 2
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 5,
+  "fields": {
+    "project": 10,
+    "icon": "chart",
+    "value": "540",
+    "label": "jj",
+    "order": 0
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 6,
+  "fields": {
+    "project": 1,
+    "icon": "chart",
+    "value": "94.2%",
+    "label": "Accuracy",
+    "order": 0
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 7,
+  "fields": {
+    "project": 1,
+    "icon": "clock",
+    "value": "<80ms",
+    "label": "Avg Latency",
+    "order": 1
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 8,
+  "fields": {
+    "project": 1,
+    "icon": "users",
+    "value": "100K+",
+    "label": "Daily Reviews",
+    "order": 2
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 9,
+  "fields": {
+    "project": 1,
+    "icon": "star",
+    "value": "4.8★",
+    "label": "Client Rating",
+    "order": 3
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 10,
+  "fields": {
+    "project": 2,
+    "icon": "chart",
+    "value": "87.3%",
+    "label": "Direction Accuracy",
+    "order": 0
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 11,
+  "fields": {
+    "project": 2,
+    "icon": "clock",
+    "value": "<200ms",
+    "label": "Serverless Latency",
+    "order": 1
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 12,
+  "fields": {
+    "project": 2,
+    "icon": "users",
+    "value": "10yr",
+    "label": "Training Data",
+    "order": 2
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 13,
+  "fields": {
+    "project": 2,
+    "icon": "star",
+    "value": "4.7★",
+    "label": "User Rating",
+    "order": 3
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 14,
+  "fields": {
+    "project": 3,
+    "icon": "chart",
+    "value": "91.5%",
+    "label": "Churn Recall",
+    "order": 0
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 15,
+  "fields": {
+    "project": 3,
+    "icon": "users",
+    "value": "50K+",
+    "label": "Users Monitored",
+    "order": 1
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 16,
+  "fields": {
+    "project": 3,
+    "icon": "clock",
+    "value": "Nightly",
+    "label": "Drift Checks",
+    "order": 2
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 17,
+  "fields": {
+    "project": 3,
+    "icon": "star",
+    "value": "4.9★",
+    "label": "Client Rating",
+    "order": 3
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 18,
+  "fields": {
+    "project": 4,
+    "icon": "chart",
+    "value": "9%",
+    "label": "Retrieval Gain",
+    "order": 0
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 19,
+  "fields": {
+    "project": 4,
+    "icon": "clock",
+    "value": "<2s",
+    "label": "Answer Latency",
+    "order": 1
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 20,
+  "fields": {
+    "project": 4,
+    "icon": "users",
+    "value": "500+",
+    "label": "Docs Supported",
+    "order": 2
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 21,
+  "fields": {
+    "project": 4,
+    "icon": "star",
+    "value": "4.9★",
+    "label": "User Rating",
+    "order": 3
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 22,
+  "fields": {
+    "project": 5,
+    "icon": "users",
+    "value": "100K+",
+    "label": "Events/Second",
+    "order": 0
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 23,
+  "fields": {
+    "project": 5,
+    "icon": "clock",
+    "value": "<300ms",
+    "label": "Query Latency",
+    "order": 1
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 24,
+  "fields": {
+    "project": 5,
+    "icon": "chart",
+    "value": "100M+",
+    "label": "Rows in ClickHouse",
+    "order": 2
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 25,
+  "fields": {
+    "project": 5,
+    "icon": "star",
+    "value": "4.8★",
+    "label": "Client Rating",
+    "order": 3
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 26,
+  "fields": {
+    "project": 6,
+    "icon": "chart",
+    "value": "37%",
+    "label": "Cost Reduction",
+    "order": 0
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 27,
+  "fields": {
+    "project": 6,
+    "icon": "users",
+    "value": "$3.4K",
+    "label": "Monthly Savings Found",
+    "order": 1
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 28,
+  "fields": {
+    "project": 6,
+    "icon": "clock",
+    "value": "2 clouds",
+    "label": "AWS + GCP",
+    "order": 2
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 29,
+  "fields": {
+    "project": 6,
+    "icon": "star",
+    "value": "4.9★",
+    "label": "Client Rating",
+    "order": 3
+  }
+},
+{
+  "model": "core.projecthighlight",
+  "pk": 30,
+  "fields": {
+    "project": 12,
+    "icon": "chart",
+    "value": "20",
+    "label": "test",
+    "order": 1
+  }
+},
+{
+  "model": "core.projectdiagram",
+  "pk": 3,
+  "fields": {
+    "project": 10,
+    "image": "projects/diagrams/ChatGPT_Image_Jun_15_2026_10_28_02_AM.webp",
+    "label": "Architecture",
+    "title": "bkeko",
+    "desc": "",
+    "order": 0
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 5,
+  "fields": {
+    "project": 10,
+    "phase": "1",
+    "date": "21-08-2024",
+    "title": "hello",
+    "desc": "hello",
+    "order": 0
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 6,
+  "fields": {
+    "project": 1,
+    "phase": "Phase 01",
+    "date": "Aug 2025",
+    "title": "Data Collection & EDA",
+    "desc": "Scraped and cleaned 500K customer reviews across e-commerce domains. Conducted EDA on class distribution, text length, and domain vocabulary shift.",
+    "order": 0
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 7,
+  "fields": {
+    "project": 1,
+    "phase": "Phase 02",
+    "date": "Sep 2025",
+    "title": "Model Fine-tuning & Optimisation",
+    "desc": "Fine-tuned BERT-base on domain data, compared DistilBERT and RoBERTa, then applied ONNX quantisation to cut latency from 350ms to 80ms.",
+    "order": 1
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 8,
+  "fields": {
+    "project": 1,
+    "phase": "Phase 03",
+    "date": "Oct 2025",
+    "title": "API & Dashboard Build",
+    "desc": "Built async FastAPI server with batch queuing and Redis caching. Built React dashboard with live sentiment charts, product filters, and CSV export.",
+    "order": 2
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 9,
+  "fields": {
+    "project": 1,
+    "phase": "Phase 04",
+    "date": "Nov 2025",
+    "title": "Deployment & Monitoring",
+    "desc": "Dockerised and deployed on AWS ECS Fargate. Set up CloudWatch alarms, load-tested to 500 concurrent users, and implemented automated rollbacks.",
+    "order": 3
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 10,
+  "fields": {
+    "project": 2,
+    "phase": "Phase 01",
+    "date": "Sep 2025",
+    "title": "Data Engineering & Feature Design",
+    "desc": "Fetched 10 years of OHLCV data via yfinance for 50 equities. Engineered 22 technical indicators and normalised with rolling z-score to prevent leakage.",
+    "order": 0
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 11,
+  "fields": {
+    "project": 2,
+    "phase": "Phase 02",
+    "date": "Oct 2025",
+    "title": "Model Training & Validation",
+    "desc": "Built 4-layer LSTM with dropout, ran walk-forward cross-validation, and implemented Monte Carlo Dropout for prediction intervals.",
+    "order": 1
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 12,
+  "fields": {
+    "project": 2,
+    "phase": "Phase 03",
+    "date": "Oct 2025",
+    "title": "Serverless Packaging",
+    "desc": "Converted model to TorchScript, stripped unused weights, and packaged for AWS Lambda. Implemented DynamoDB caching layer to serve repeat tickers instantly.",
+    "order": 2
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 13,
+  "fields": {
+    "project": 2,
+    "phase": "Phase 04",
+    "date": "Nov 2025",
+    "title": "API & Monitoring",
+    "desc": "Built REST API with API Gateway, added CloudWatch dashboards for latency and cache-hit tracking, and load-tested to 100 concurrent users.",
+    "order": 3
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 14,
+  "fields": {
+    "project": 3,
+    "phase": "Phase 01",
+    "date": "Jul 2025",
+    "title": "Data Audit & Feature Engineering",
+    "desc": "Audited 18 months of CRM data, handled 12% missing values, and engineered 35 features including RFM scores and tenure-based interaction terms.",
+    "order": 0
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 15,
+  "fields": {
+    "project": 3,
+    "phase": "Phase 02",
+    "date": "Aug 2025",
+    "title": "Model Training & MLflow Tracking",
+    "desc": "Trained XGBoost with Optuna hyperparameter search over 100 trials, tracked every run in MLflow, and registered the best model with full artifact logging.",
+    "order": 1
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 16,
+  "fields": {
+    "project": 3,
+    "phase": "Phase 03",
+    "date": "Sep 2025",
+    "title": "Orchestration & Data Validation",
+    "desc": "Built Prefect DAG for nightly runs, integrated Great Expectations data quality checks, and set up KS-test drift detection with configurable thresholds.",
+    "order": 2
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 17,
+  "fields": {
+    "project": 3,
+    "phase": "Phase 04",
+    "date": "Oct 2025",
+    "title": "Dashboard & Production Rollout",
+    "desc": "Pushed churn scores to PostgreSQL, built Grafana monitoring boards, and rolled out to production serving 50K users with zero downtime.",
+    "order": 3
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 18,
+  "fields": {
+    "project": 4,
+    "phase": "Phase 01",
+    "date": "Oct 2025",
+    "title": "Ingestion & Embedding Pipeline",
+    "desc": "Built PDF loader, recursive character chunker, and OpenAI embedding pipeline. Benchmarked chunk sizes from 256 to 1024 tokens on retrieval quality.",
+    "order": 0
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 19,
+  "fields": {
+    "project": 4,
+    "phase": "Phase 02",
+    "date": "Oct 2025",
+    "title": "Hybrid Retrieval & Re-ranking",
+    "desc": "Implemented BM25 sparse retrieval, merged with FAISS dense results, and added cross-encoder re-ranking step — lifting retrieval precision by 9%.",
+    "order": 1
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 20,
+  "fields": {
+    "project": 4,
+    "phase": "Phase 03",
+    "date": "Nov 2025",
+    "title": "LangChain Chain & Conversation Memory",
+    "desc": "Wired custom RetrievalQA chain with conversation buffer window memory for multi-turn Q&A and built citation passage highlighting logic.",
+    "order": 2
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 21,
+  "fields": {
+    "project": 4,
+    "phase": "Phase 04",
+    "date": "Nov 2025",
+    "title": "Streamlit UI & FastAPI Deployment",
+    "desc": "Built Streamlit frontend with chat UI, deployed FastAPI backend on Railway, and added role-based document access control.",
+    "order": 3
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 22,
+  "fields": {
+    "project": 5,
+    "phase": "Phase 01",
+    "date": "Jun 2024",
+    "title": "Infrastructure & Kafka Setup",
+    "desc": "Provisioned Kubernetes cluster on GKE, deployed Kafka via Helm with 12-topic configuration, and load-tested to 150K events/second.",
+    "order": 0
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 23,
+  "fields": {
+    "project": 5,
+    "phase": "Phase 02",
+    "date": "Aug 2024",
+    "title": "Spark Streaming Consumers",
+    "desc": "Built Spark Structured Streaming jobs for 1-min, 5-min, and 1-hour windowed aggregations with exactly-once semantics and a streaming anomaly detector.",
+    "order": 1
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 24,
+  "fields": {
+    "project": 5,
+    "phase": "Phase 03",
+    "date": "Sep 2024",
+    "title": "ClickHouse & Superset",
+    "desc": "Designed ClickHouse schema with materialized views for common aggregation patterns. Built 8 Superset dashboards with drilldown filters for the client BI team.",
+    "order": 2
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 25,
+  "fields": {
+    "project": 5,
+    "phase": "Phase 04",
+    "date": "Oct 2024",
+    "title": "GitOps & Autoscaling",
+    "desc": "Set up ArgoCD for GitOps deployments, configured HPA policies, and handed over runbooks for on-call operations to the client team.",
+    "order": 3
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 26,
+  "fields": {
+    "project": 6,
+    "phase": "Phase 01",
+    "date": "Aug 2024",
+    "title": "Billing API Integration",
+    "desc": "Integrated AWS Cost Explorer and GCP Billing API via boto3 and google-cloud-billing. Built unified cost model to normalise spend data across clouds.",
+    "order": 0
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 27,
+  "fields": {
+    "project": 6,
+    "phase": "Phase 02",
+    "date": "Aug 2024",
+    "title": "Rule Engine Development",
+    "desc": "Designed 14 waste-detection rules covering idle EC2/GCE instances, unattached volumes, orphaned snapshots, and RI coverage gaps. Each rule outputs a monthly savings estimate.",
+    "order": 1
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 28,
+  "fields": {
+    "project": 6,
+    "phase": "Phase 03",
+    "date": "Sep 2024",
+    "title": "Terraform Generation & Reports",
+    "desc": "Built Terraform snippet generator for safe remediations and a pandas-powered HTML report ranked by savings potential. CLI packaged with Click and distributed via PyPI.",
+    "order": 2
+  }
+},
+{
+  "model": "core.projecttimelinephase",
+  "pk": 29,
+  "fields": {
+    "project": 6,
+    "phase": "Phase 04",
+    "date": "Sep 2024",
+    "title": "Production Deployment & Results",
+    "desc": "Deployed as a weekly Lambda scheduled job for the client. First run identified $3,400/month savings; scripts applied with zero disruption achieved 37% cost reduction.",
+    "order": 3
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 7,
+  "fields": {
+    "project": 8,
+    "text": "Full FastAPI + Celery + Redis source code",
+    "order": 0
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 8,
+  "fields": {
+    "project": 8,
+    "text": "Full FastAPI + Celery + Redis source code",
+    "order": 0
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 9,
+  "fields": {
+    "project": 8,
+    "text": "Full FastAPI + Celery + Redis source code",
+    "order": 0
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 10,
+  "fields": {
+    "project": 10,
+    "text": "nothing to see",
+    "order": 0
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 11,
+  "fields": {
+    "project": 1,
+    "text": "Complete source code (FastAPI + React frontend)",
+    "order": 0
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 12,
+  "fields": {
+    "project": 1,
+    "text": "Fine-tuned BERT model weights (ONNX format)",
+    "order": 1
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 13,
+  "fields": {
+    "project": 1,
+    "text": "Docker Compose for local development",
+    "order": 2
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 14,
+  "fields": {
+    "project": 1,
+    "text": "AWS ECS Fargate deployment guide (PDF)",
+    "order": 3
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 15,
+  "fields": {
+    "project": 1,
+    "text": "60-minute video walkthrough",
+    "order": 4
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 16,
+  "fields": {
+    "project": 1,
+    "text": "30-day email support",
+    "order": 5
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 17,
+  "fields": {
+    "project": 2,
+    "text": "Full source code (training + Lambda function)",
+    "order": 0
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 18,
+  "fields": {
+    "project": 2,
+    "text": "Pre-trained TorchScript model weights",
+    "order": 1
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 19,
+  "fields": {
+    "project": 2,
+    "text": "AWS Lambda + API Gateway deployment template (SAM)",
+    "order": 2
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 20,
+  "fields": {
+    "project": 2,
+    "text": "Feature engineering notebook with explanations",
+    "order": 3
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 21,
+  "fields": {
+    "project": 2,
+    "text": "45-minute video walkthrough",
+    "order": 4
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 22,
+  "fields": {
+    "project": 2,
+    "text": "30-day email support",
+    "order": 5
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 23,
+  "fields": {
+    "project": 3,
+    "text": "Full pipeline source code (Prefect DAGs + training scripts)",
+    "order": 0
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 24,
+  "fields": {
+    "project": 3,
+    "text": "Pre-trained XGBoost model + MLflow experiment logs",
+    "order": 1
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 25,
+  "fields": {
+    "project": 3,
+    "text": "Docker Compose stack (Prefect, MLflow, Grafana, PostgreSQL)",
+    "order": 2
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 26,
+  "fields": {
+    "project": 3,
+    "text": "Great Expectations data suite configuration",
+    "order": 3
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 27,
+  "fields": {
+    "project": 3,
+    "text": "75-minute video walkthrough",
+    "order": 4
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 28,
+  "fields": {
+    "project": 3,
+    "text": "45-day email support",
+    "order": 5
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 29,
+  "fields": {
+    "project": 4,
+    "text": "Full source code (FastAPI backend + Streamlit UI)",
+    "order": 0
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 30,
+  "fields": {
+    "project": 4,
+    "text": "Pre-built FAISS index on a sample legal corpus",
+    "order": 1
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 31,
+  "fields": {
+    "project": 4,
+    "text": "Docker Compose deployment setup",
+    "order": 2
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 32,
+  "fields": {
+    "project": 4,
+    "text": "LangChain custom chain explanation notebook",
+    "order": 3
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 33,
+  "fields": {
+    "project": 4,
+    "text": "90-minute video walkthrough",
+    "order": 4
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 34,
+  "fields": {
+    "project": 4,
+    "text": "60-day email support",
+    "order": 5
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 35,
+  "fields": {
+    "project": 5,
+    "text": "Full source code (Kafka producers, Spark jobs, Helm charts)",
+    "order": 0
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 36,
+  "fields": {
+    "project": 5,
+    "text": "ClickHouse schema + materialized view definitions",
+    "order": 1
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 37,
+  "fields": {
+    "project": 5,
+    "text": "ArgoCD GitOps pipeline configuration",
+    "order": 2
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 38,
+  "fields": {
+    "project": 5,
+    "text": "Superset dashboard JSON exports",
+    "order": 3
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 39,
+  "fields": {
+    "project": 5,
+    "text": "90-minute video walkthrough",
+    "order": 4
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 40,
+  "fields": {
+    "project": 5,
+    "text": "60-day email support",
+    "order": 5
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 41,
+  "fields": {
+    "project": 6,
+    "text": "Full Python source code (CLI + Lambda scheduler)",
+    "order": 0
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 42,
+  "fields": {
+    "project": 6,
+    "text": "All 14 waste-detection rules with documentation",
+    "order": 1
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 43,
+  "fields": {
+    "project": 6,
+    "text": "Terraform snippet generator templates",
+    "order": 2
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 44,
+  "fields": {
+    "project": 6,
+    "text": "AWS + GCP IAM permission setup guide",
+    "order": 3
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 45,
+  "fields": {
+    "project": 6,
+    "text": "60-minute video walkthrough",
+    "order": 4
+  }
+},
+{
+  "model": "core.projectfeature",
+  "pk": 46,
+  "fields": {
+    "project": 6,
+    "text": "30-day email support",
+    "order": 5
+  }
+},
+{
+  "model": "core.toolcategory",
+  "pk": 1,
+  "fields": {
+    "name": "Writing & Text",
+    "slug": "text",
+    "order": 1
+  }
+},
+{
+  "model": "core.toolcategory",
+  "pk": 2,
+  "fields": {
+    "name": "Developer & Code",
+    "slug": "dev",
+    "order": 2
+  }
+},
+{
+  "model": "core.toolcategory",
+  "pk": 3,
+  "fields": {
+    "name": "Chatbots & LLMs",
+    "slug": "chat",
+    "order": 3
+  }
+},
+{
+  "model": "core.toolcategory",
+  "pk": 4,
+  "fields": {
+    "name": "Career & Interview",
+    "slug": "career",
+    "order": 4
+  }
+},
+{
+  "model": "core.toolcategory",
+  "pk": 5,
+  "fields": {
+    "name": "SEO & Growth",
+    "slug": "seo",
+    "order": 5
+  }
+},
+{
+  "model": "core.toolcategory",
+  "pk": 6,
+  "fields": {
+    "name": "Utilities",
+    "slug": "utils",
+    "order": 6
+  }
+},
+{
+  "model": "core.aitool",
+  "pk": 1,
+  "fields": {
+    "name": "AI Text Generator",
+    "slug": "ai-text-generator",
+    "description": "Generate high-quality blog posts, product descriptions, emails, and documentation in seconds using GPT-powered models.",
+    "category": 1,
+    "category_slug": "text",
+    "icon": "🤖",
+    "icon_bg_gradient": "linear-gradient(135deg, #1e40af, #3b82f6)",
+    "image": "",
+    "external_url": "https://tools.projectshub.co.in/",
+    "is_free": true,
+    "featured": true,
+    "is_published": true,
+    "sort_order": 1,
+    "created_at": "2026-09-08T14:53:15.519Z"
+  }
+},
+{
+  "model": "core.aitool",
+  "pk": 2,
+  "fields": {
+    "name": "Code Explainer",
+    "slug": "code-explainer",
+    "description": "Paste any code snippet in Python, JavaScript, SQL, or C++ and get a step-by-step plain-English explanation with optimization tips.",
+    "category": 2,
+    "category_slug": "dev",
+    "icon": "🧠",
+    "icon_bg_gradient": "linear-gradient(135deg, #1e3a5f, #6366f1)",
+    "image": "",
+    "external_url": "https://tools.projectshub.co.in/",
+    "is_free": true,
+    "featured": true,
+    "is_published": true,
+    "sort_order": 2,
+    "created_at": "2026-09-08T14:53:15.524Z"
+  }
+},
+{
+  "model": "core.aitool",
+  "pk": 3,
+  "fields": {
+    "name": "AI Chatbot Builder",
+    "slug": "ai-chatbot-builder",
+    "description": "Design custom AI conversational assistants for websites in minutes without coding. Configure knowledge base and tone effortlessly.",
+    "category": 3,
+    "category_slug": "chat",
+    "icon": "💬",
+    "icon_bg_gradient": "linear-gradient(135deg, #065f46, #10b981)",
+    "image": "",
+    "external_url": "https://tools.projectshub.co.in/",
+    "is_free": true,
+    "featured": true,
+    "is_published": true,
+    "sort_order": 3,
+    "created_at": "2026-09-08T14:53:15.529Z"
+  }
+},
+{
+  "model": "core.aitool",
+  "pk": 4,
+  "fields": {
+    "name": "Interview Prep AI",
+    "slug": "interview-prep-ai",
+    "description": "Enter your target role and get 20 tailored technical + behavioral interview questions complete with ideal STAR answer frameworks.",
+    "category": 4,
+    "category_slug": "career",
+    "icon": "🎙️",
+    "icon_bg_gradient": "linear-gradient(135deg, #881337, #f43f5e)",
+    "image": "",
+    "external_url": "https://tools.projectshub.co.in/",
+    "is_free": true,
+    "featured": true,
+    "is_published": true,
+    "sort_order": 4,
+    "created_at": "2026-09-08T14:53:15.534Z"
+  }
+},
+{
+  "model": "core.aitool",
+  "pk": 5,
+  "fields": {
+    "name": "SEO Keyword Analyzer",
+    "slug": "seo-keyword-analyzer",
+    "description": "Analyze content for SEO ranking strength. Check keyword density, readability scores, search intent, and structural suggestions.",
+    "category": 5,
+    "category_slug": "seo",
+    "icon": "🔍",
+    "icon_bg_gradient": "linear-gradient(135deg, #4c1d95, #7c3aed)",
+    "image": "",
+    "external_url": "https://tools.projectshub.co.in/",
+    "is_free": true,
+    "featured": true,
+    "is_published": true,
+    "sort_order": 5,
+    "created_at": "2026-09-08T14:53:15.540Z"
+  }
+},
+{
+  "model": "core.aitool",
+  "pk": 6,
+  "fields": {
+    "name": "Cold Email Writer",
+    "slug": "cold-email-writer",
+    "description": "Write hyper-personalized cold outreach emails for job hunting, client acquisition, or investor pitches with proven response rates.",
+    "category": 1,
+    "category_slug": "text",
+    "icon": "✉️",
+    "icon_bg_gradient": "linear-gradient(135deg, #134e4a, #14b8a6)",
+    "image": "",
+    "external_url": "https://tools.projectshub.co.in/",
+    "is_free": true,
+    "featured": true,
+    "is_published": true,
+    "sort_order": 6,
+    "created_at": "2026-09-08T14:53:15.545Z"
+  }
+},
+{
+  "model": "core.aitool",
+  "pk": 7,
+  "fields": {
+    "name": "Free Resume Builder",
+    "slug": "free-resume-builder",
+    "description": "Create ATS-friendly software engineering and AI resumes with pre-built bullet point suggestions and one-click PDF export.",
+    "category": 4,
+    "category_slug": "career",
+    "icon": "📄",
+    "icon_bg_gradient": "linear-gradient(135deg, #312e81, #4f46e5)",
+    "image": "",
+    "external_url": "https://tools.projectshub.co.in/",
+    "is_free": true,
+    "featured": true,
+    "is_published": true,
+    "sort_order": 7,
+    "created_at": "2026-09-08T14:53:15.549Z"
+  }
+},
+{
+  "model": "core.aitool",
+  "pk": 8,
+  "fields": {
+    "name": "PDF Utilities & Converters",
+    "slug": "pdf-utilities",
+    "description": "Split, merge, compress, and extract text and tables from PDF documents completely client-side with no uploads stored.",
+    "category": 6,
+    "category_slug": "utils",
+    "icon": "📑",
+    "icon_bg_gradient": "linear-gradient(135deg, #7c2d12, #ea580c)",
+    "image": "",
+    "external_url": "https://tools.projectshub.co.in/",
+    "is_free": true,
+    "featured": true,
+    "is_published": true,
+    "sort_order": 8,
+    "created_at": "2026-09-08T14:53:15.555Z"
+  }
+},
+{
+  "model": "core.aitool",
+  "pk": 9,
+  "fields": {
+    "name": "Image to Text & OCR",
+    "slug": "image-to-text-ocr",
+    "description": "Extract printed or handwritten text from screenshots, scanned notes, and charts with deep OCR precision.",
+    "category": 6,
+    "category_slug": "utils",
+    "icon": "🖼️",
+    "icon_bg_gradient": "linear-gradient(135deg, #164e63, #06b6d4)",
+    "image": "",
+    "external_url": "https://tools.projectshub.co.in/",
+    "is_free": true,
+    "featured": true,
+    "is_published": true,
+    "sort_order": 9,
+    "created_at": "2026-09-08T14:53:15.561Z"
+  }
+},
+{
+  "model": "core.service",
+  "pk": 1,
+  "fields": {
+    "title": "AI Development",
+    "slug": "ai-development",
+    "target_audience": "business",
+    "short_description": "Custom AI applications, proprietary fine-tuned LLMs, and intelligent automation built for production scale.",
+    "full_description": "",
+    "hero_image": "",
+    "icon": "cpu",
+    "cta_label": "Explore Services",
+    "cta_url": "/#contact",
+    "is_published": true,
+    "sort_order": 1,
+    "meta_title": "AI Development | ProjectsHub",
+    "meta_description": "Custom AI applications, proprietary fine-tuned LLMs, and intelligent automation built for production scale."
+  }
+},
+{
+  "model": "core.service",
+  "pk": 2,
+  "fields": {
+    "title": "AI Automation",
+    "slug": "ai-automation",
+    "target_audience": "business",
+    "short_description": "Eliminate repetitive workflows and human bottlenecks with autonomous AI background pipelines.",
+    "full_description": "",
+    "hero_image": "",
+    "icon": "zap",
+    "cta_label": "Explore Services",
+    "cta_url": "/#contact",
+    "is_published": true,
+    "sort_order": 2,
+    "meta_title": "AI Automation | ProjectsHub",
+    "meta_description": "Eliminate repetitive workflows and human bottlenecks with autonomous AI background pipelines."
+  }
+},
+{
+  "model": "core.service",
+  "pk": 3,
+  "fields": {
+    "title": "AI Integration & Services",
+    "slug": "ai-integration",
+    "target_audience": "business",
+    "short_description": "Seamlessly connect OpenAI, Anthropic, Gemini, or local open-source models into your existing stack.",
+    "full_description": "",
+    "hero_image": "",
+    "icon": "layers",
+    "cta_label": "Explore Services",
+    "cta_url": "/#contact",
+    "is_published": true,
+    "sort_order": 3,
+    "meta_title": "AI Integration & Services | ProjectsHub",
+    "meta_description": "Seamlessly connect OpenAI, Anthropic, Gemini, or local open-source models into your existing stack."
+  }
+},
+{
+  "model": "core.service",
+  "pk": 4,
+  "fields": {
+    "title": "Hands-on Capstone Projects",
+    "slug": "capstone-projects",
+    "target_audience": "student",
+    "short_description": "Production-ready AI/ML projects with full source code, architecture diagrams, and complete documentation for final year submissions.",
+    "full_description": "",
+    "hero_image": "",
+    "icon": "folder",
+    "cta_label": "Explore Services",
+    "cta_url": "/#contact",
+    "is_published": true,
+    "sort_order": 4,
+    "meta_title": "Hands-on Capstone Projects | ProjectsHub",
+    "meta_description": "Production-ready AI/ML projects with full source code, architecture diagrams, and complete documentation for final year submissions."
+  }
+},
+{
+  "model": "core.service",
+  "pk": 5,
+  "fields": {
+    "title": "1-on-1 Mentorship Sessions",
+    "slug": "1-on-1-mentorship",
+    "target_audience": "student",
+    "short_description": "Direct private code review, project debugging, and concept clarity with experienced AI engineers.",
+    "full_description": "",
+    "hero_image": "",
+    "icon": "users",
+    "cta_label": "Explore Services",
+    "cta_url": "/#contact",
+    "is_published": true,
+    "sort_order": 5,
+    "meta_title": "1-on-1 Mentorship Sessions | ProjectsHub",
+    "meta_description": "Direct private code review, project debugging, and concept clarity with experienced AI engineers."
+  }
+},
+{
+  "model": "core.service",
+  "pk": 6,
+  "fields": {
+    "title": "Live Coding Workshops",
+    "slug": "live-coding-workshops",
+    "target_audience": "student",
+    "short_description": "Intensive multi-day bootcamps building AI systems from zero to live deployment on cloud.",
+    "full_description": "",
+    "hero_image": "",
+    "icon": "video",
+    "cta_label": "Explore Services",
+    "cta_url": "/#contact",
+    "is_published": true,
+    "sort_order": 6,
+    "meta_title": "Live Coding Workshops | ProjectsHub",
+    "meta_description": "Intensive multi-day bootcamps building AI systems from zero to live deployment on cloud."
+  }
+},
+{
+  "model": "core.service",
+  "pk": 7,
+  "fields": {
+    "title": "AI Road Map",
+    "slug": "ai-roadmap",
+    "target_audience": "student",
+    "short_description": "Curated step-by-step career pathway from Python fundamentals to MLOps and LLM engineering.",
+    "full_description": "",
+    "hero_image": "",
+    "icon": "map",
+    "cta_label": "Explore Services",
+    "cta_url": "/#contact",
+    "is_published": true,
+    "sort_order": 7,
+    "meta_title": "AI Road Map | ProjectsHub",
+    "meta_description": "Curated step-by-step career pathway from Python fundamentals to MLOps and LLM engineering."
+  }
+},
+{
+  "model": "core.service",
+  "pk": 8,
+  "fields": {
+    "title": "Career Support & Review",
+    "slug": "career-support",
+    "target_audience": "student",
+    "short_description": "ATS-friendly resume audits, GitHub profile optimizations, and mock interview guidance.",
+    "full_description": "",
+    "hero_image": "",
+    "icon": "award",
+    "cta_label": "Explore Services",
+    "cta_url": "/#contact",
+    "is_published": true,
+    "sort_order": 8,
+    "meta_title": "Career Support & Review | ProjectsHub",
+    "meta_description": "ATS-friendly resume audits, GitHub profile optimizations, and mock interview guidance."
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 1,
+  "fields": {
+    "service": 1,
+    "title": "Custom LLM Fine-Tuning & Prompt Engineering",
+    "description": "",
+    "icon": "",
+    "order": 1
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 2,
+  "fields": {
+    "service": 1,
+    "title": "Retrieval-Augmented Generation (RAG) Architecture",
+    "description": "",
+    "icon": "",
+    "order": 2
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 3,
+  "fields": {
+    "service": 1,
+    "title": "Computer Vision & Object Detection Pipelines",
+    "description": "",
+    "icon": "",
+    "order": 3
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 4,
+  "fields": {
+    "service": 1,
+    "title": "Autonomous AI Agents & Tool Calling",
+    "description": "",
+    "icon": "",
+    "order": 4
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 5,
+  "fields": {
+    "service": 2,
+    "title": "Intelligent Document & Invoice Processing",
+    "description": "",
+    "icon": "",
+    "order": 1
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 6,
+  "fields": {
+    "service": 2,
+    "title": "Customer Support Ticket Auto-Resolution",
+    "description": "",
+    "icon": "",
+    "order": 2
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 7,
+  "fields": {
+    "service": 2,
+    "title": "CRM & Database Automated Syncing",
+    "description": "",
+    "icon": "",
+    "order": 3
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 8,
+  "fields": {
+    "service": 2,
+    "title": "24/7 Background Data Ingestion & Alerts",
+    "description": "",
+    "icon": "",
+    "order": 4
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 9,
+  "fields": {
+    "service": 3,
+    "title": "Secure Enterprise API Gateway Setup",
+    "description": "",
+    "icon": "",
+    "order": 1
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 10,
+  "fields": {
+    "service": 3,
+    "title": "PostgreSQL Vector Search & Embeddings Setup",
+    "description": "",
+    "icon": "",
+    "order": 2
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 11,
+  "fields": {
+    "service": 3,
+    "title": "Latency & Cost Optimization Architecture",
+    "description": "",
+    "icon": "",
+    "order": 3
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 12,
+  "fields": {
+    "service": 3,
+    "title": "Full SOC-2 & HIPAA Compliant Data Flow",
+    "description": "",
+    "icon": "",
+    "order": 4
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 13,
+  "fields": {
+    "service": 4,
+    "title": "Complete Clean Python/Django/FastAPI Source Code",
+    "description": "",
+    "icon": "",
+    "order": 1
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 14,
+  "fields": {
+    "service": 4,
+    "title": "Step-by-step Setup & Execution Guide",
+    "description": "",
+    "icon": "",
+    "order": 2
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 15,
+  "fields": {
+    "service": 4,
+    "title": "System Architecture Diagrams & Flowcharts",
+    "description": "",
+    "icon": "",
+    "order": 3
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 16,
+  "fields": {
+    "service": 4,
+    "title": "Final Year Project Report & Presentation Slides",
+    "description": "",
+    "icon": "",
+    "order": 4
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 17,
+  "fields": {
+    "service": 5,
+    "title": "Live Screen-sharing Debugging Sessions",
+    "description": "",
+    "icon": "",
+    "order": 1
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 18,
+  "fields": {
+    "service": 5,
+    "title": "Code Architecture & Performance Optimization",
+    "description": "",
+    "icon": "",
+    "order": 2
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 19,
+  "fields": {
+    "service": 5,
+    "title": "Viva Voce & Technical Defense Prep",
+    "description": "",
+    "icon": "",
+    "order": 3
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 20,
+  "fields": {
+    "service": 5,
+    "title": "Personalized Learning Track & Code Best Practices",
+    "description": "",
+    "icon": "",
+    "order": 4
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 21,
+  "fields": {
+    "service": 6,
+    "title": "Live Project Build with Industry Mentors",
+    "description": "",
+    "icon": "",
+    "order": 1
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 22,
+  "fields": {
+    "service": 6,
+    "title": "Q&A and Hands-on Coding Assignments",
+    "description": "",
+    "icon": "",
+    "order": 2
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 23,
+  "fields": {
+    "service": 6,
+    "title": "Certificate of Completion for Resumes",
+    "description": "",
+    "icon": "",
+    "order": 3
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 24,
+  "fields": {
+    "service": 6,
+    "title": "Lifetime Access to Code Repos & Recordings",
+    "description": "",
+    "icon": "",
+    "order": 4
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 25,
+  "fields": {
+    "service": 7,
+    "title": "Structured Beginner-to-Advanced Milestones",
+    "description": "",
+    "icon": "",
+    "order": 1
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 26,
+  "fields": {
+    "service": 7,
+    "title": "Curated Free Tools & Open-Source Repositories",
+    "description": "",
+    "icon": "",
+    "order": 2
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 27,
+  "fields": {
+    "service": 7,
+    "title": "Portfolio Project Recommendations",
+    "description": "",
+    "icon": "",
+    "order": 3
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 28,
+  "fields": {
+    "service": 7,
+    "title": "Interview Preparation Benchmarks",
+    "description": "",
+    "icon": "",
+    "order": 4
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 29,
+  "fields": {
+    "service": 8,
+    "title": "In-depth Resume Review with Specific Action Items",
+    "description": "",
+    "icon": "",
+    "order": 1
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 30,
+  "fields": {
+    "service": 8,
+    "title": "GitHub Portfolio Cleanup & README Polish",
+    "description": "",
+    "icon": "",
+    "order": 2
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 31,
+  "fields": {
+    "service": 8,
+    "title": "Mock Technical & Behavioral Interviews",
+    "description": "",
+    "icon": "",
+    "order": 3
+  }
+},
+{
+  "model": "core.servicefeature",
+  "pk": 32,
+  "fields": {
+    "service": 8,
+    "title": "Referral Network & Industry Insights",
+    "description": "",
+    "icon": "",
+    "order": 4
+  }
+},
+{
+  "model": "core.casestudy",
+  "pk": 1,
+  "fields": {
+    "title": "AI Document Summarizer for Law Firms — From Zero to MVP in 3 Weeks",
+    "slug": "ai-document-summarizer-law-firms",
+    "client": "LexAI — Startup",
+    "industry": "LegalTech",
+    "challenge": "",
+    "solution": "",
+    "results": "",
+    "summary": "A law firm startup needed an AI-powered document summarizer before an investor demo. We designed, built, and deployed a full Django + GPT-4 SaaS product in 21 days — helping them close a seed round.",
+    "featured_image": "case_studies/lexai_doc_summarizer.webp",
+    "icon_emoji": "⚖️",
+    "band_gradient": "linear-gradient(135deg, #1e3a5f, #3b82f6)",
+    "timeline": "3 Weeks",
+    "is_featured": true,
+    "is_published": true,
+    "sort_order": 1,
+    "created_at": "2026-09-08T14:53:15.771Z"
+  }
+},
+{
+  "model": "core.casestudy",
+  "pk": 2,
+  "fields": {
+    "title": "AI-Powered Product Recommendation Engine that Boosted Revenue by 38%",
+    "slug": "ai-product-recommendation-engine",
+    "client": "ShopSmart — D2C Brand",
+    "industry": "E-Commerce",
+    "challenge": "",
+    "solution": "",
+    "results": "",
+    "summary": "A D2C fashion brand was losing customers due to irrelevant product suggestions. We built a collaborative filtering recommendation engine integrated into their existing Shopify store.",
+    "featured_image": "case_studies/shopsmart_recommendation.webp",
+    "icon_emoji": "🛒",
+    "band_gradient": "linear-gradient(135deg, #064e3b, #10b981)",
+    "timeline": "6 Weeks",
+    "is_featured": true,
+    "is_published": true,
+    "sort_order": 2,
+    "created_at": "2026-09-08T14:53:15.789Z"
+  }
+},
+{
+  "model": "core.casestudy",
+  "pk": 3,
+  "fields": {
+    "title": "Personalized Learning Assistant that Reduced Student Drop-off by 45%",
+    "slug": "personalized-learning-assistant-edtech",
+    "client": "EduPath — EdTech Platform",
+    "industry": "EdTech",
+    "challenge": "",
+    "solution": "",
+    "results": "",
+    "summary": "An online learning platform was losing students mid-course. We built an AI tutor that adapts to each student's pace, detects confusion, and sends personalized nudges — dramatically improving completion rates.",
+    "featured_image": "case_studies/edupath_learning_assistant.webp",
+    "icon_emoji": "🎓",
+    "band_gradient": "linear-gradient(135deg, #4c1d95, #7c3aed)",
+    "timeline": "8 Weeks",
+    "is_featured": true,
+    "is_published": true,
+    "sort_order": 3,
+    "created_at": "2026-09-08T14:53:15.804Z"
+  }
+},
+{
+  "model": "core.casestudy",
+  "pk": 4,
+  "fields": {
+    "title": "Automated Patient Report Analyzer Saving 4 Hours Per Day Per Doctor",
+    "slug": "automated-patient-report-analyzer",
+    "client": "MedTrack — HealthTech",
+    "industry": "Healthcare",
+    "challenge": "",
+    "solution": "",
+    "results": "",
+    "summary": "Doctors were spending hours manually reading lab reports. We built a FastAPI + OpenAI system that extracts key values, flags anomalies, and generates plain-language summaries instantly.",
+    "featured_image": "case_studies/medtrack_patient_report.webp",
+    "icon_emoji": "🏥",
+    "band_gradient": "linear-gradient(135deg, #7c2d12, #f97316)",
+    "timeline": "5 Weeks",
+    "is_featured": true,
+    "is_published": true,
+    "sort_order": 4,
+    "created_at": "2026-09-08T14:53:15.826Z"
+  }
+},
+{
+  "model": "core.casestudy",
+  "pk": 5,
+  "fields": {
+    "title": "Natural Language Analytics Dashboard — Ask Your Data a Question",
+    "slug": "natural-language-analytics-dashboard",
+    "client": "DataPulse — Analytics SaaS",
+    "industry": "SaaS",
+    "challenge": "",
+    "solution": "",
+    "results": "",
+    "summary": "A SaaS analytics company wanted users to query their dashboards in plain English. We built an NLP-to-SQL engine that lets non-technical users ask business questions and get instant chart answers.",
+    "featured_image": "case_studies/datapulse_nlp_analytics.webp",
+    "icon_emoji": "📊",
+    "band_gradient": "linear-gradient(135deg, #1e1b4b, #6366f1)",
+    "timeline": "10 Weeks",
+    "is_featured": true,
+    "is_published": true,
+    "sort_order": 5,
+    "created_at": "2026-09-08T14:53:15.842Z"
+  }
+},
+{
+  "model": "core.casestudy",
+  "pk": 6,
+  "fields": {
+    "title": "AI Route Optimizer that Cut Delivery Costs by 27% in 60 Days",
+    "slug": "ai-route-optimizer-logistics",
+    "client": "SwiftMove — Logistics Startup",
+    "industry": "Logistics",
+    "challenge": "",
+    "solution": "",
+    "results": "",
+    "summary": "A last-mile delivery startup was burning money on inefficient routes. We built a machine learning route optimizer that factors in traffic, weather, and delivery windows — cutting costs significantly.",
+    "featured_image": "case_studies/swiftmove_route_optimizer.webp",
+    "icon_emoji": "🚚",
+    "band_gradient": "linear-gradient(135deg, #0c4a6e, #0ea5e9)",
+    "timeline": "60 Days",
+    "is_featured": true,
+    "is_published": true,
+    "sort_order": 6,
+    "created_at": "2026-09-08T14:53:15.862Z"
+  }
+},
+{
+  "model": "core.casestudymetric",
+  "pk": 1,
+  "fields": {
+    "case_study": 1,
+    "label": "MVP Delivery",
+    "value": "3 Weeks",
+    "description": "Zero to production deployment",
+    "order": 1
+  }
+},
+{
+  "model": "core.casestudymetric",
+  "pk": 2,
+  "fields": {
+    "case_study": 1,
+    "label": "Beta Users",
+    "value": "100+",
+    "description": "Active legal professionals",
+    "order": 2
+  }
+},
+{
+  "model": "core.casestudymetric",
+  "pk": 3,
+  "fields": {
+    "case_study": 1,
+    "label": "Seed Round",
+    "value": "Closed",
+    "description": "Funded post-demo",
+    "order": 3
+  }
+},
+{
+  "model": "core.casestudymetric",
+  "pk": 4,
+  "fields": {
+    "case_study": 2,
+    "label": "Revenue",
+    "value": "+38%",
+    "description": "Quarter-over-quarter growth",
+    "order": 1
+  }
+},
+{
+  "model": "core.casestudymetric",
+  "pk": 5,
+  "fields": {
+    "case_study": 2,
+    "label": "Click-Through",
+    "value": "+62%",
+    "description": "On recommended products",
+    "order": 2
+  }
+},
+{
+  "model": "core.casestudymetric",
+  "pk": 6,
+  "fields": {
+    "case_study": 2,
+    "label": "To Ship",
+    "value": "6 Weeks",
+    "description": "End-to-end delivery",
+    "order": 3
+  }
+},
+{
+  "model": "core.casestudymetric",
+  "pk": 7,
+  "fields": {
+    "case_study": 3,
+    "label": "Drop-off",
+    "value": "-45%",
+    "description": "Reduced student churn",
+    "order": 1
+  }
+},
+{
+  "model": "core.casestudymetric",
+  "pk": 8,
+  "fields": {
+    "case_study": 3,
+    "label": "Completion",
+    "value": "+3x",
+    "description": "Course finish rates",
+    "order": 2
+  }
+},
+{
+  "model": "core.casestudymetric",
+  "pk": 9,
+  "fields": {
+    "case_study": 3,
+    "label": "To Launch",
+    "value": "8 Weeks",
+    "description": "Complete rollout",
+    "order": 3
+  }
+},
+{
+  "model": "core.casestudymetric",
+  "pk": 10,
+  "fields": {
+    "case_study": 4,
+    "label": "Saved/Day",
+    "value": "4 hrs",
+    "description": "Per physician on charts",
+    "order": 1
+  }
+},
+{
+  "model": "core.casestudymetric",
+  "pk": 11,
+  "fields": {
+    "case_study": 4,
+    "label": "Accuracy",
+    "value": "98%",
+    "description": "Verified clinical extraction",
+    "order": 2
+  }
+},
+{
+  "model": "core.casestudymetric",
+  "pk": 12,
+  "fields": {
+    "case_study": 4,
+    "label": "To Deploy",
+    "value": "5 Weeks",
+    "description": "Pilot rollout in hospital",
+    "order": 3
+  }
+},
+{
+  "model": "core.casestudymetric",
+  "pk": 13,
+  "fields": {
+    "case_study": 5,
+    "label": "User Retention",
+    "value": "+210%",
+    "description": "Increase in daily usage",
+    "order": 1
+  }
+},
+{
+  "model": "core.casestudymetric",
+  "pk": 14,
+  "fields": {
+    "case_study": 5,
+    "label": "SQL Knowledge",
+    "value": "0 SQL",
+    "description": "Natural language interface",
+    "order": 2
+  }
+},
+{
+  "model": "core.casestudymetric",
+  "pk": 15,
+  "fields": {
+    "case_study": 5,
+    "label": "To Launch",
+    "value": "10 Weeks",
+    "description": "Full SaaS integration",
+    "order": 3
+  }
+},
+{
+  "model": "core.casestudymetric",
+  "pk": 16,
+  "fields": {
+    "case_study": 6,
+    "label": "Delivery Cost",
+    "value": "-27%",
+    "description": "Reduction in fuel & labor",
+    "order": 1
+  }
+},
+{
+  "model": "core.casestudymetric",
+  "pk": 17,
+  "fields": {
+    "case_study": 6,
+    "label": "On-Time Rate",
+    "value": "+19%",
+    "description": "SLA compliance improved",
+    "order": 2
+  }
+},
+{
+  "model": "core.casestudymetric",
+  "pk": 18,
+  "fields": {
+    "case_study": 6,
+    "label": "To Results",
+    "value": "60 Days",
+    "description": "Measured ROI timeframe",
+    "order": 3
+  }
+},
+{
+  "model": "core.testimonial",
+  "pk": 1,
+  "fields": {
+    "name": "Sarah J.",
+    "role": "CS Student",
+    "company": "Stanford University",
+    "avatar": "",
+    "avatar_color": "purple",
+    "rating": 5,
+    "content": "ProjectsHub's free AI tools are incredible. The resume builder helped me land my first software engineering internship within weeks!",
+    "is_featured": true,
+    "is_published": true,
+    "sort_order": 1
+  }
+},
+{
+  "model": "core.testimonial",
+  "pk": 2,
+  "fields": {
+    "name": "David M.",
+    "role": "Data Scientist",
+    "company": "FinTech Corp",
+    "avatar": "",
+    "avatar_color": "cyan",
+    "rating": 5,
+    "content": "The production-ready Machine Learning projects gave me exactly what I needed to understand real-world model deployment.",
+    "is_featured": true,
+    "is_published": true,
+    "sort_order": 2
+  }
+},
+{
+  "model": "core.testimonial",
+  "pk": 3,
+  "fields": {
+    "name": "Elena R.",
+    "role": "Startup Founder",
+    "company": "HealthTech Innovations",
+    "avatar": "",
+    "avatar_color": "orange",
+    "rating": 5,
+    "content": "We requested a custom internal tool for our startup and they delivered a flawless, scalable Django backend in record time.",
+    "is_featured": true,
+    "is_published": true,
+    "sort_order": 3
+  }
+},
+{
+  "model": "core.testimonial",
+  "pk": 4,
+  "fields": {
+    "name": "Michael T.",
+    "role": "UX Designer",
+    "company": "Creative Tech Labs",
+    "avatar": "",
+    "avatar_color": "purple",
+    "rating": 5,
+    "content": "The UI/UX is unmatched. Using the image generation and text tools on this platform feels so much better than any premium tool I've used.",
+    "is_featured": true,
+    "is_published": true,
+    "sort_order": 4
+  }
+},
+{
+  "model": "core.testimonial",
+  "pk": 5,
+  "fields": {
+    "name": "James K.",
+    "role": "Backend Dev",
+    "company": "Logistics Co",
+    "avatar": "",
+    "avatar_color": "blue",
+    "rating": 5,
+    "content": "The free API integrations they showcase are incredibly well-documented. Saved me countless hours of debugging.",
+    "is_featured": true,
+    "is_published": true,
+    "sort_order": 5
+  }
+},
+{
+  "model": "core.testimonial",
+  "pk": 6,
+  "fields": {
+    "name": "Anita P.",
+    "role": "Machine Learning Eng",
+    "company": "Enterprise AI",
+    "avatar": "",
+    "avatar_color": "green",
+    "rating": 5,
+    "content": "Support is lightning fast. I had a question about one of the data science repos and got a detailed reply the same day.",
+    "is_featured": true,
+    "is_published": true,
+    "sort_order": 6
+  }
+},
+{
+  "model": "core.testimonial",
+  "pk": 7,
+  "fields": {
+    "name": "test",
+    "role": "bew",
+    "company": "qa",
+    "avatar": "",
+    "avatar_color": "purple",
+    "rating": 5,
+    "content": "test database",
+    "is_featured": true,
+    "is_published": true,
+    "sort_order": 0
+  }
+},
+{
+  "model": "core.faqcategory",
+  "pk": 1,
+  "fields": {
+    "name": "General",
+    "slug": "general",
+    "order": 1
+  }
+},
+{
+  "model": "core.faq",
+  "pk": 1,
+  "fields": {
+    "category": 1,
+    "question": "Are the AI tools completely free to use?",
+    "answer": "Yes! All our free AI tools — including the resume builder, PDF tools, image tools, and text utilities — are completely free to use, with no signup required. We believe in providing accessible AI tools for students and businesses.",
+    "sort_order": 1,
+    "is_published": true
+  }
+},
+{
+  "model": "core.faq",
+  "pk": 2,
+  "fields": {
+    "category": 1,
+    "question": "What kind of AI projects are showcased on ProjectsHub?",
+    "answer": "We showcase production-ready AI and machine learning projects with source code — including Machine Learning models, Django and FastAPI backends, Data Science analytics, NLP, RAG, and full-stack applications for students and businesses.",
+    "sort_order": 2,
+    "is_published": true
+  }
+},
+{
+  "model": "core.faq",
+  "pk": 3,
+  "fields": {
+    "category": 1,
+    "question": "Can I request custom AI development for my business?",
+    "answer": "Absolutely. We provide custom AI development and automation tailored to your needs — whether you are a student, a startup, or a growing business in India. Use the contact form below to get in touch!",
+    "sort_order": 3,
+    "is_published": true
+  }
+},
+{
+  "model": "core.faq",
+  "pk": 4,
+  "fields": {
+    "category": 1,
+    "question": "Do I need to create an account to use the tools?",
+    "answer": "No account is required to use our free AI tools. You can jump right in and start building resumes, converting PDFs, or editing images instantly — no signup needed.",
+    "sort_order": 4,
+    "is_published": true
+  }
+},
+{
+  "model": "core.faq",
+  "pk": 5,
+  "fields": {
+    "category": 1,
+    "question": "How fast is your support response time?",
+    "answer": "We take pride in our rapid support. If you reach out to us with a question or project inquiry, you will typically receive a personalized response in under 24 hours.",
+    "sort_order": 5,
+    "is_published": true
+  }
+},
+{
+  "model": "core.faq",
+  "pk": 6,
+  "fields": {
+    "category": 1,
+    "question": "Are the AI and ML projects suitable for beginners and final-year students?",
+    "answer": "Yes! Our AI and machine learning projects are designed to be highly educational, with clean code and full documentation — ideal for final-year projects and beginners of all skill levels.",
+    "sort_order": 6,
+    "is_published": true
+  }
+},
+{
+  "model": "core.blogcategory",
+  "pk": 1,
+  "fields": {
+    "name": "AI Tutorials",
+    "slug": "ai-tutorials"
+  }
+},
+{
+  "model": "core.blogpost",
+  "pk": 1,
+  "fields": {
+    "title": "Building Your First LLM App with Python",
+    "slug": "building-your-first-llm-app-with-python",
+    "category": "ai-tutorials",
+    "category_ref": null,
+    "excerpt": "Learn step-by-step how to integrate the OpenAI API into a Django web application and create a smart chatbot.",
+    "lead": "Large Language Models (LLMs) have revolutionized the way we build software. In this tutorial, we will explore how to set up your environment, connect to the OpenAI API, and build your very first AI-powered application using Django.",
+    "content": "",
+    "emoji": "🤖",
+    "gradient_from": "#2563eb",
+    "gradient_to": "#3b82f6",
+    "accent": "#3b82f6",
+    "featured_image": "",
+    "image": "",
+    "image_url": "/static/image/ai-machine-learning-project-code.webp",
+    "read_time": "5 min read",
+    "published_at": "2026-07-13",
+    "author_name": "Raj Makhijani",
+    "author_role": "Founder, ProjectsHub",
+    "author_initials": "RM",
+    "is_active": true,
+    "is_published": true,
+    "is_featured": false,
+    "order": 1,
+    "created_at": "2026-08-31T12:42:27.697Z",
+    "updated_at": "2026-09-08T16:56:30.338Z",
+    "tags": []
+  }
+},
+{
+  "model": "core.blogpost",
+  "pk": 2,
+  "fields": {
+    "title": "How to Stand Out in Tech Interviews",
+    "slug": "how-to-stand-out-in-tech-interviews",
+    "category": "career",
+    "category_ref": null,
+    "excerpt": "Stop grinding LeetCode all day. Here is what engineering managers are actually looking for when hiring new developers.",
+    "lead": "Stop grinding LeetCode all day. Here is what engineering managers are actually looking for when hiring new developers — and how you can stand out in every round.",
+    "content": "",
+    "emoji": "💼",
+    "gradient_from": "#10b981",
+    "gradient_to": "#34d399",
+    "accent": "#10b981",
+    "featured_image": "",
+    "image": "",
+    "image_url": "/static/image/careersupport.jpg",
+    "read_time": "7 min read",
+    "published_at": "2026-07-10",
+    "author_name": "Raj Makhijani",
+    "author_role": "Founder, ProjectsHub",
+    "author_initials": "RM",
+    "is_active": true,
+    "is_published": true,
+    "is_featured": false,
+    "order": 2,
+    "created_at": "2026-08-31T12:42:27.699Z",
+    "updated_at": "2026-09-08T16:56:30.343Z",
+    "tags": []
+  }
+},
+{
+  "model": "core.blogpost",
+  "pk": 3,
+  "fields": {
+    "title": "From Zero to MVP in 3 Weeks",
+    "slug": "from-zero-to-mvp-in-3-weeks",
+    "category": "case-study",
+    "category_ref": null,
+    "excerpt": "A deep dive into how we helped a startup launch their AI-powered SaaS product and acquire their first 100 users.",
+    "lead": "A deep dive into how we helped a startup launch their AI-powered SaaS product and acquire their first 100 users — all within 3 weeks of kickoff.",
+    "content": "",
+    "emoji": "🚀",
+    "gradient_from": "#f59e0b",
+    "gradient_to": "#fbbf24",
+    "accent": "#f59e0b",
+    "featured_image": "",
+    "image": "",
+    "image_url": "/static/image/analytics_dashboard.png",
+    "read_time": "4 min read",
+    "published_at": "2026-07-05",
+    "author_name": "Raj Makhijani",
+    "author_role": "Founder, ProjectsHub",
+    "author_initials": "RM",
+    "is_active": true,
+    "is_published": true,
+    "is_featured": false,
+    "order": 3,
+    "created_at": "2026-08-31T12:42:27.701Z",
+    "updated_at": "2026-09-08T16:56:30.348Z",
+    "tags": []
+  }
+},
+{
+  "model": "core.blogpost",
+  "pk": 4,
+  "fields": {
+    "title": "Deploying AI Applications to Production",
+    "slug": "deploying-ai-applications-to-production",
+    "category": "project",
+    "category_ref": null,
+    "excerpt": "A practical engineer's guide to containerizing and deploying LLM applications with Docker, FastAPI, and Kubernetes.",
+    "lead": "",
+    "content": "",
+    "emoji": "no emoji",
+    "gradient_from": "#2563eb",
+    "gradient_to": "#3b82f6",
+    "accent": "#3b82f6",
+    "featured_image": "",
+    "image": "",
+    "image_url": "/static/image/projectshub-ai-developer-workspace.webp",
+    "read_time": "6 min read",
+    "published_at": "2026-08-31",
+    "author_name": "ProjectsHub Team",
+    "author_role": "Founder, ProjectsHub",
+    "author_initials": "RM",
+    "is_active": true,
+    "is_published": false,
+    "is_featured": false,
+    "order": 0,
+    "created_at": "2026-08-31T12:44:13.277Z",
+    "updated_at": "2026-09-08T16:56:30.352Z",
+    "tags": []
+  }
+},
+{
+  "model": "core.blogpost",
+  "pk": 5,
+  "fields": {
+    "title": "AI market",
+    "slug": "ai-market",
+    "category": "ai-tutorials",
+    "category_ref": null,
+    "excerpt": "so what is happing in the ai",
+    "lead": "SO AI is evolving",
+    "content": "",
+    "emoji": "📝",
+    "gradient_from": "#2563eb",
+    "gradient_to": "#3b82f6",
+    "accent": "#3b82f6",
+    "featured_image": "",
+    "image": "blog/ChatGPT_Image_Jun_15_2026_06_08_49_PM.webp",
+    "image_url": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&auto=format&fit=crop",
+    "read_time": "5 min read",
+    "published_at": "2026-08-31",
+    "author_name": "Raj Makhijani",
+    "author_role": "Founder, ProjectsHub",
+    "author_initials": "RM",
+    "is_active": true,
+    "is_published": false,
+    "is_featured": false,
+    "order": 0,
+    "created_at": "2026-09-02T11:46:27.183Z",
+    "updated_at": "2026-09-08T18:34:42.039Z",
+    "tags": []
+  }
+},
+{
+  "model": "core.blogsection",
+  "pk": 1,
+  "fields": {
+    "post": 1,
+    "heading": "1. Setting up the Environment",
+    "body": "Before we start writing code, we need to ensure our Python environment is ready. It is highly recommended to use a virtual environment to manage dependencies.",
+    "code": "python -m venv venv\nsource venv/bin/activate\npip install django openai",
+    "order": 0
+  }
+},
+{
+  "model": "core.blogsection",
+  "pk": 2,
+  "fields": {
+    "post": 1,
+    "heading": "2. Writing the Integration Code",
+    "body": "Once the dependencies are installed, you can create a simple utility function that interacts with the OpenAI ChatCompletion endpoint. Keep your API keys secure!",
+    "code": "import openai\n\ndef get_ai_response(prompt):\n    response = openai.ChatCompletion.create(\n        model=\"gpt-4\",\n        messages=[{\"role\": \"user\", \"content\": prompt}]\n    )\n    return response.choices[0].message.content",
+    "order": 1
+  }
+},
+{
+  "model": "core.blogsection",
+  "pk": 3,
+  "fields": {
+    "post": 1,
+    "heading": "Conclusion",
+    "body": "Building AI applications is easier than ever. With just a few lines of code, you can unlock incredible capabilities. Stay tuned for our next post where we'll discuss deploying your Django app to production!",
+    "code": "",
+    "order": 2
+  }
+},
+{
+  "model": "core.blogsection",
+  "pk": 4,
+  "fields": {
+    "post": 2,
+    "heading": "1. Show Your Thinking, Not Just Your Answer",
+    "body": "Interviewers care far more about how you approach a problem than whether you get the perfect solution. Talk through your thought process out loud. Ask clarifying questions before jumping to code.",
+    "code": "",
+    "order": 0
+  }
+},
+{
+  "model": "core.blogsection",
+  "pk": 5,
+  "fields": {
+    "post": 2,
+    "heading": "2. Build Real Projects",
+    "body": "A GitHub with 3 strong, complete projects beats 100 half-finished repos. Pick projects that solve a real problem and explain the business impact in your README and resume. Recruiters notice.",
+    "code": "# Good README structure\n## Problem Statement\n## Solution & Architecture\n## Demo / Screenshots\n## How to Run",
+    "order": 1
+  }
+},
+{
+  "model": "core.blogsection",
+  "pk": 6,
+  "fields": {
+    "post": 2,
+    "heading": "3. Prepare Behavioral Questions",
+    "body": "Most interviews fail not on the technical side but on soft skills. Prepare 5–7 strong STAR (Situation, Task, Action, Result) stories that you can adapt to different questions about teamwork, failure, and leadership.",
+    "code": "",
+    "order": 2
+  }
+},
+{
+  "model": "core.blogsection",
+  "pk": 7,
+  "fields": {
+    "post": 2,
+    "heading": "Conclusion",
+    "body": "Tech interviews are a skill you can learn. Focus on communication, real projects, and consistent practice — and you will land the offer.",
+    "code": "",
+    "order": 3
+  }
+},
+{
+  "model": "core.blogsection",
+  "pk": 8,
+  "fields": {
+    "post": 3,
+    "heading": "The Challenge",
+    "body": "Our client had a great idea for an AI document summarizer for law firms. They had no technical team, a tight budget, and a demo deadline set by a potential investor in 3 weeks.",
+    "code": "",
+    "order": 0
+  }
+},
+{
+  "model": "core.blogsection",
+  "pk": 9,
+  "fields": {
+    "post": 3,
+    "heading": "Week 1 — Design & Architecture",
+    "body": "We spent the first week defining the core feature set, designing the UI in Figma, and setting up the Django + OpenAI backend. Scope discipline was critical — we said no to 80% of the initial feature wishlist.",
+    "code": "",
+    "order": 1
+  }
+},
+{
+  "model": "core.blogsection",
+  "pk": 10,
+  "fields": {
+    "post": 3,
+    "heading": "Week 2 — Build & Integrate",
+    "body": "Core development: PDF upload, OpenAI GPT-4 integration for summarization, user authentication, and a clean results dashboard. We shipped to a staging URL at the end of Day 12.",
+    "code": "",
+    "order": 2
+  }
+},
+{
+  "model": "core.blogsection",
+  "pk": 11,
+  "fields": {
+    "post": 3,
+    "heading": "Week 3 — Launch & First Users",
+    "body": "We deployed to production, ran a soft launch on LinkedIn, and helped the client acquire their first 100 beta users. The investor demo went ahead — and they closed a seed round the following month.",
+    "code": "",
+    "order": 3
+  }
+},
+{
+  "model": "core.blogsection",
+  "pk": 12,
+  "fields": {
+    "post": 3,
+    "heading": "Key Takeaway",
+    "body": "Speed wins when you have discipline. A focused MVP with one killer feature beats a bloated product every time. If you have an idea, start small and ship fast.",
+    "code": "",
+    "order": 4
+  }
+},
+{
+  "model": "core.blogsection",
+  "pk": 13,
+  "fields": {
+    "post": 5,
+    "heading": "Helllo guys",
+    "body": "SO we will disuse about the ai",
+    "code": "def create(nothing):",
+    "order": 0
+  }
+},
+{
+  "model": "core.blogsection",
+  "pk": 14,
+  "fields": {
+    "post": 5,
+    "heading": "Heading 2",
+    "body": "hello",
+    "code": "def create(nothing):",
+    "order": 0
+  }
+},
+{
+  "model": "core.contactinquiry",
+  "pk": 1,
+  "fields": {
+    "name": "Legitimate User",
+    "email": "legit@example.com",
+    "phone": "",
+    "subject": "Real Project Inquiry",
+    "message": "Testing with correct catch code",
+    "source_page": "/#contact",
+    "status": "new",
+    "admin_notes": "",
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-09-08T17:10:32.042Z"
+  }
+},
+{
+  "model": "core.contactinquiry",
+  "pk": 2,
+  "fields": {
+    "name": "Harsh Sharma",
+    "email": "harshsharmaqa@gmail.com",
+    "phone": "",
+    "subject": "test",
+    "message": "qa",
+    "source_page": "/#contact",
+    "status": "spam",
+    "admin_notes": "",
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-09-09T02:53:37.015Z"
+  }
+},
+{
+  "model": "core.contactinquiry",
+  "pk": 3,
+  "fields": {
+    "name": "Harsh Sharma",
+    "email": "harshsharmaqa@gmail.com",
+    "phone": "",
+    "subject": "test",
+    "message": "fsdf",
+    "source_page": "/#contact",
+    "status": "spam",
+    "admin_notes": "",
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-09-09T08:32:37.388Z"
+  }
+},
+{
+  "model": "core.contactmessage",
+  "pk": 3,
+  "fields": {
+    "full_name": "Harsh",
+    "email": "harshsharmaqa@gmail.com",
+    "subject": "",
+    "message": "qa",
+    "status": "new",
+    "admin_notes": "",
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-09-05T07:58:30.872Z"
+  }
+},
+{
+  "model": "core.contactmessage",
+  "pk": 5,
+  "fields": {
+    "full_name": "Legitimate User",
+    "email": "legit@example.com",
+    "subject": "Real Project Inquiry",
+    "message": "Testing with correct catch code",
+    "status": "new",
+    "admin_notes": "",
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-09-08T17:10:32.047Z"
+  }
+},
+{
+  "model": "core.contactmessage",
+  "pk": 6,
+  "fields": {
+    "full_name": "Harsh Sharma",
+    "email": "harshsharmaqa@gmail.com",
+    "subject": "test",
+    "message": "qa",
+    "status": "new",
+    "admin_notes": "",
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-09-09T02:53:37.015Z"
+  }
+},
+{
+  "model": "core.contactmessage",
+  "pk": 7,
+  "fields": {
+    "full_name": "Harsh Sharma",
+    "email": "harshsharmaqa@gmail.com",
+    "subject": "test",
+    "message": "fsdf",
+    "status": "new",
+    "admin_notes": "",
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-09-09T08:32:37.393Z"
+  }
+},
+{
+  "model": "core.projectgatelead",
+  "pk": 3,
+  "fields": {
+    "full_name": "fgh",
+    "email": "dev.projectshub.co.in@gmail.com",
+    "college_or_org": "fgh",
+    "ip_address": "49.36.65.255",
+    "created_at": "2026-07-04T10:36:52.220Z"
+  }
+},
+{
+  "model": "core.projectgatelead",
+  "pk": 4,
+  "fields": {
+    "full_name": "fdg",
+    "email": "rajmakhijani428@gmail.com",
+    "college_or_org": "IANT",
+    "ip_address": "49.36.65.51",
+    "created_at": "2026-07-15T04:04:11.029Z"
+  }
+},
+{
+  "model": "core.workshopcard",
+  "pk": 1,
+  "fields": {
+    "title": "End-to-End ML Engineering Bootcamp",
+    "subtitle": "From data to deployment in 4 intensive days",
+    "description": "Master the full machine-learning lifecycle — from EDA and feature engineering to model training, evaluation, and production deployment. You will leave with three portfolio-ready projects and hands-on MLOps experience.",
+    "date": "Jun 7 – 10, 2026",
+    "time": "10 AM – 5 PM IST",
+    "seats": 25,
+    "mode": "Online (Live)",
+    "price": "999.00",
+    "price_label": "₹999",
+    "enroll_url": "",
+    "is_active": true,
+    "is_featured": true,
+    "order": 1,
+    "created_at": "2026-05-07T10:22:22.147Z"
+  }
+},
+{
+  "model": "core.workshopday",
+  "pk": 1,
+  "fields": {
+    "workshop": 1,
+    "day_number": 1,
+    "title": "Data & EDA",
+    "date_label": "Saturday, Jun 7",
+    "description": "Deep dive into real-world datasets. Pandas, Matplotlib, Seaborn, missing-value strategies, and correlation analysis.",
+    "topics": "",
+    "outcome": "A polished EDA notebook you can include in your portfolio"
+  }
+},
+{
+  "model": "core.workshopday",
+  "pk": 2,
+  "fields": {
+    "workshop": 1,
+    "day_number": 2,
+    "title": "Feature Engineering & Modelling",
+    "date_label": "Sunday, Jun 8",
+    "description": "Build feature pipelines with sklearn. Train and compare multiple algorithms, tune hyperparameters, and interpret results.",
+    "topics": "",
+    "outcome": "Trained, tuned, and documented ML model"
+  }
+},
+{
+  "model": "core.workshopday",
+  "pk": 3,
+  "fields": {
+    "workshop": 1,
+    "day_number": 3,
+    "title": "Deep Learning & Computer Vision",
+    "date_label": "Saturday, Jun 9",
+    "description": "PyTorch fundamentals, CNN architectures, transfer learning with ResNet, and real-time inference.",
+    "topics": "",
+    "outcome": "Working image classifier with >90% accuracy"
+  }
+},
+{
+  "model": "core.workshopday",
+  "pk": 4,
+  "fields": {
+    "workshop": 1,
+    "day_number": 4,
+    "title": "MLOps & Deployment",
+    "date_label": "Sunday, Jun 10",
+    "description": "Package models with FastAPI, containerise with Docker, run CI/CD with GitHub Actions, and deploy to the cloud.",
+    "topics": "",
+    "outcome": "Deployed API endpoint accessible from anywhere"
+  }
+},
+{
+  "model": "core.workshopday",
+  "pk": 5,
+  "fields": {
+    "workshop": 1,
+    "day_number": 5,
+    "title": "Doubts & Future Guidance",
+    "date_label": "Sunday, Jun 11",
+    "description": "Live Q&A on All 4 Days\r\nAI Career Paths & Roles\r\nPortfolio & GitHub Profile Review\r\nResume & LinkedIn Optimization\r\nOpen-Source Contribution Guide\r\nPersonalized Learning Roadmap",
+    "topics": "",
+    "outcome": "Deployed API endpoint accessible from anywhere"
+  }
+},
+{
+  "model": "core.workshopenrollment",
+  "pk": 1,
+  "fields": {
+    "workshop": 1,
+    "full_name": "ProjectsHub",
+    "email": "dev.projectshub.co.in@gmail.com",
+    "phone": "+919033893037",
+    "experience": "intermediate",
+    "referral": "",
+    "message": "kh",
+    "agreed_to_terms": true,
+    "status": "pending",
+    "admin_notes": "",
+    "ip_address": "106.194.60.221",
+    "created_at": "2026-06-09T14:08:37.373Z"
+  }
+},
+{
+  "model": "core.workshopenrollment",
+  "pk": 2,
+  "fields": {
+    "workshop": 1,
+    "full_name": "ProjectsHub",
+    "email": "dev1.projectshub.co.in@gmail.com",
+    "phone": "+91903389306",
+    "experience": "advanced",
+    "referral": "",
+    "message": "",
+    "agreed_to_terms": true,
+    "status": "cancelled",
+    "admin_notes": "",
+    "ip_address": "106.194.60.221",
+    "created_at": "2026-06-09T14:09:48.904Z"
+  }
+},
+{
+  "model": "core.workshopenrollment",
+  "pk": 3,
+  "fields": {
+    "workshop": 1,
+    "full_name": "ProjectsHub",
+    "email": "dev33.projectshub.co.in@gmail.com",
+    "phone": "+919033893037",
+    "experience": "intermediate",
+    "referral": "",
+    "message": "",
+    "agreed_to_terms": true,
+    "status": "cancelled",
+    "admin_notes": "",
+    "ip_address": "106.194.60.221",
+    "created_at": "2026-06-09T14:15:16.464Z"
+  }
+},
+{
+  "model": "core.pricingplan",
+  "pk": 1,
+  "fields": {
+    "name": "Starter",
+    "icon_type": "basic",
+    "description": "Perfect for students and solo learners",
+    "monthly_price": "0.00",
+    "yearly_price": "0.00",
+    "monthly_original": "0.00",
+    "yearly_original": "0.00",
+    "is_featured": false,
+    "is_free": true,
+    "is_active": true,
+    "order": 1,
+    "cta_label": "Get Started Free",
+    "created_at": "2026-05-07T10:22:22.172Z"
+  }
+},
+{
+  "model": "core.pricingplan",
+  "pk": 2,
+  "fields": {
+    "name": "Pro",
+    "icon_type": "pro",
+    "description": "For serious ML practitioners",
+    "monthly_price": "999.00",
+    "yearly_price": "799.00",
+    "monthly_original": "1499.00",
+    "yearly_original": "1199.00",
+    "is_featured": true,
+    "is_free": false,
+    "is_active": true,
+    "order": 2,
+    "cta_label": "Start Pro",
+    "created_at": "2026-05-07T10:22:22.192Z"
+  }
+},
+{
+  "model": "core.pricingplan",
+  "pk": 3,
+  "fields": {
+    "name": "Enterprise",
+    "icon_type": "enterprise",
+    "description": "For teams and organisations",
+    "monthly_price": "4999.00",
+    "yearly_price": "3999.00",
+    "monthly_original": "0.00",
+    "yearly_original": "0.00",
+    "is_featured": false,
+    "is_free": false,
+    "is_active": true,
+    "order": 3,
+    "cta_label": "Contact Us",
+    "created_at": "2026-05-07T10:22:22.221Z"
+  }
+},
+{
+  "model": "core.pricingfeature",
+  "pk": 1,
+  "fields": {
+    "plan": 1,
+    "feature": "Access to 3 free projects",
+    "order": 0
+  }
+},
+{
+  "model": "core.pricingfeature",
+  "pk": 2,
+  "fields": {
+    "plan": 1,
+    "feature": "Community Discord access",
+    "order": 1
+  }
+},
+{
+  "model": "core.pricingfeature",
+  "pk": 3,
+  "fields": {
+    "plan": 1,
+    "feature": "Monthly newsletter",
+    "order": 2
+  }
+},
+{
+  "model": "core.pricingfeature",
+  "pk": 4,
+  "fields": {
+    "plan": 1,
+    "feature": "Basic tutorials",
+    "order": 3
+  }
+},
+{
+  "model": "core.pricingfeature",
+  "pk": 5,
+  "fields": {
+    "plan": 2,
+    "feature": "All projects with source code",
+    "order": 0
+  }
+},
+{
+  "model": "core.pricingfeature",
+  "pk": 6,
+  "fields": {
+    "plan": 2,
+    "feature": "Priority Discord support",
+    "order": 1
+  }
+},
+{
+  "model": "core.pricingfeature",
+  "pk": 7,
+  "fields": {
+    "plan": 2,
+    "feature": "Monthly live Q&A sessions",
+    "order": 2
+  }
+},
+{
+  "model": "core.pricingfeature",
+  "pk": 8,
+  "fields": {
+    "plan": 2,
+    "feature": "Workshop discounts (20%)",
+    "order": 3
+  }
+},
+{
+  "model": "core.pricingfeature",
+  "pk": 9,
+  "fields": {
+    "plan": 2,
+    "feature": "Certificate of completion",
+    "order": 4
+  }
+},
+{
+  "model": "core.pricingfeature",
+  "pk": 10,
+  "fields": {
+    "plan": 2,
+    "feature": "Private project reviews",
+    "order": 5
+  }
+},
+{
+  "model": "core.pricingfeature",
+  "pk": 11,
+  "fields": {
+    "plan": 3,
+    "feature": "Everything in Pro",
+    "order": 0
+  }
+},
+{
+  "model": "core.pricingfeature",
+  "pk": 12,
+  "fields": {
+    "plan": 3,
+    "feature": "Custom project builds",
+    "order": 1
+  }
+},
+{
+  "model": "core.pricingfeature",
+  "pk": 13,
+  "fields": {
+    "plan": 3,
+    "feature": "Dedicated mentor sessions",
+    "order": 2
+  }
+},
+{
+  "model": "core.pricingfeature",
+  "pk": 14,
+  "fields": {
+    "plan": 3,
+    "feature": "Team seat management",
+    "order": 3
+  }
+},
+{
+  "model": "core.pricingfeature",
+  "pk": 15,
+  "fields": {
+    "plan": 3,
+    "feature": "Invoicing & GST receipts",
+    "order": 4
+  }
+},
+{
+  "model": "core.pricingfeature",
+  "pk": 16,
+  "fields": {
+    "plan": 3,
+    "feature": "SLA support",
+    "order": 5
+  }
+},
+{
+  "model": "core.seodata",
+  "pk": 1,
+  "fields": {
+    "path": "/",
+    "meta_title": "ProjectsHub — From Ideas to AI-Powered Products",
+    "meta_description": "Explore 50+ production-grade AI & ML projects, free developer utilities, and expert-led 3-day bootcamps to build scalable intelligence.",
+    "canonical_url": "https://projectshub.co.in/",
+    "og_title": "ProjectsHub — From Ideas to AI-Powered Products",
+    "og_description": "Explore 50+ production-grade AI & ML projects, free developer utilities, and expert-led 3-day bootcamps to build scalable intelligence.",
+    "og_image": "",
+    "robots": "noindex, nofollow",
+    "schema_type": "Organization, WebSite",
+    "custom_json_ld": "",
+    "is_indexable": false,
+    "updated_at": "2026-09-09T16:16:53.643Z"
+  }
+},
+{
+  "model": "core.seodata",
+  "pk": 2,
+  "fields": {
+    "path": "/projects/",
+    "meta_title": "Curated AI Projects & Production Architectures | ProjectsHub",
+    "meta_description": "Browse 50+ production-ready AI, ML, computer vision, and full-stack Django projects complete with source code, live demos, and documentation.",
+    "canonical_url": "https://projectshub.co.in/projects/",
+    "og_title": "Curated AI Projects & Production Architectures | ProjectsHub",
+    "og_description": "Browse 50+ production-ready AI, ML, computer vision, and full-stack Django projects complete with source code, live demos, and documentation.",
+    "og_image": "",
+    "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+    "schema_type": "BreadcrumbList",
+    "custom_json_ld": "",
+    "is_indexable": true,
+    "updated_at": "2026-09-09T16:16:53.646Z"
+  }
+},
+{
+  "model": "core.seodata",
+  "pk": 3,
+  "fields": {
+    "path": "/tools/",
+    "meta_title": "Free AI Developer Tools & Productivity Suites | ProjectsHub",
+    "meta_description": "Explore curated developer tools: prompt optimizers, model latency testers, token calculators, and utility suites for modern engineering.",
+    "canonical_url": "https://projectshub.co.in/tools/",
+    "og_title": "Free AI Developer Tools & Productivity Suites | ProjectsHub",
+    "og_description": "Explore curated developer tools: prompt optimizers, model latency testers, token calculators, and utility suites for modern engineering.",
+    "og_image": "",
+    "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+    "schema_type": "BreadcrumbList",
+    "custom_json_ld": "",
+    "is_indexable": true,
+    "updated_at": "2026-09-09T16:16:53.649Z"
+  }
+},
+{
+  "model": "core.seodata",
+  "pk": 4,
+  "fields": {
+    "path": "/workshop/",
+    "meta_title": "3-Day Live Full-Stack AI Bootcamp | ProjectsHub",
+    "meta_description": "Intensive hands-on live coding workshop: Build production LLM systems, FastAPI microservices, and deploy real AI applications in 72 hours.",
+    "canonical_url": "https://projectshub.co.in/workshop/",
+    "og_title": "3-Day Live Full-Stack AI Bootcamp | ProjectsHub",
+    "og_description": "Intensive hands-on live coding workshop: Build production LLM systems, FastAPI microservices, and deploy real AI applications in 72 hours.",
+    "og_image": "",
+    "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+    "schema_type": "BreadcrumbList, Course",
+    "custom_json_ld": "",
+    "is_indexable": true,
+    "updated_at": "2026-09-09T16:16:53.652Z"
+  }
+},
+{
+  "model": "core.seodata",
+  "pk": 5,
+  "fields": {
+    "path": "/case-studies/",
+    "meta_title": "Real-World AI Case Studies & Client Success Stories | ProjectsHub",
+    "meta_description": "Detailed technical case studies showcasing computer vision deployments, LLM workflow automation, and measurable enterprise ROI.",
+    "canonical_url": "https://projectshub.co.in/case-studies/",
+    "og_title": "Real-World AI Case Studies & Client Success Stories | ProjectsHub",
+    "og_description": "Detailed technical case studies showcasing computer vision deployments, LLM workflow automation, and measurable enterprise ROI.",
+    "og_image": "",
+    "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+    "schema_type": "BreadcrumbList",
+    "custom_json_ld": "",
+    "is_indexable": true,
+    "updated_at": "2026-09-09T16:16:53.654Z"
+  }
+},
+{
+  "model": "core.seodata",
+  "pk": 6,
+  "fields": {
+    "path": "/ai-roadmap/",
+    "meta_title": "ProjectsHub — Enterprise AI, Real-World Projects & Developer Tools",
+    "meta_description": "Empowering developers and modern enterprises with production-ready AI systems, curated machine learning pipelines, and intensive 1-on-1 mentorship.",
+    "canonical_url": "https://projectshub.co.in/ai-roadmap/",
+    "og_title": "ProjectsHub — Enterprise AI, Real-World Projects & Developer Tools",
+    "og_description": "Empowering developers and modern enterprises with production-ready AI systems, curated machine learning pipelines, and intensive 1-on-1 mentorship.",
+    "og_image": "",
+    "robots": "noindex, nofollow",
+    "schema_type": "Auto",
+    "custom_json_ld": "",
+    "is_indexable": false,
+    "updated_at": "2026-09-09T16:16:53.658Z"
+  }
+},
+{
+  "model": "core.seodata",
+  "pk": 7,
+  "fields": {
+    "path": "/blog/",
+    "meta_title": "AI Insights, Engineering Guides & Tutorials | ProjectsHub Blog",
+    "meta_description": "Read cutting-edge tutorials on LLM fine-tuning, computer vision architectures, FastAPI scalability, and career roadmaps by senior AI practitioners.",
+    "canonical_url": "https://projectshub.co.in/blog/",
+    "og_title": "AI Insights, Engineering Guides & Tutorials | ProjectsHub Blog",
+    "og_description": "Read cutting-edge tutorials on LLM fine-tuning, computer vision architectures, FastAPI scalability, and career roadmaps by senior AI practitioners.",
+    "og_image": "",
+    "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+    "schema_type": "BreadcrumbList",
+    "custom_json_ld": "",
+    "is_indexable": true,
+    "updated_at": "2026-09-09T16:16:53.660Z"
+  }
+},
+{
+  "model": "core.seodata",
+  "pk": 8,
+  "fields": {
+    "path": "/privacy-policy/",
+    "meta_title": "Privacy Policy | ProjectsHub",
+    "meta_description": "Learn how ProjectsHub respects your personal data, privacy rights, and adheres to strict security standards.",
+    "canonical_url": "https://projectshub.co.in/privacy-policy/",
+    "og_title": "Privacy Policy | ProjectsHub",
+    "og_description": "Learn how ProjectsHub respects your personal data, privacy rights, and adheres to strict security standards.",
+    "og_image": "",
+    "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+    "schema_type": "Auto",
+    "custom_json_ld": "",
+    "is_indexable": true,
+    "updated_at": "2026-09-09T16:09:12.378Z"
+  }
+},
+{
+  "model": "core.seodata",
+  "pk": 9,
+  "fields": {
+    "path": "/terms/",
+    "meta_title": "Terms of Service | ProjectsHub",
+    "meta_description": "Read the ProjectsHub terms of service, platform usage conditions, and developer policies.",
+    "canonical_url": "https://projectshub.co.in/terms/",
+    "og_title": "Terms of Service | ProjectsHub",
+    "og_description": "Read the ProjectsHub terms of service, platform usage conditions, and developer policies.",
+    "og_image": "",
+    "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+    "schema_type": "Auto",
+    "custom_json_ld": "",
+    "is_indexable": true,
+    "updated_at": "2026-09-09T16:16:53.666Z"
+  }
+},
+{
+  "model": "core.seodata",
+  "pk": 10,
+  "fields": {
+    "path": "/refund-policy/",
+    "meta_title": "ProjectsHub — Enterprise AI, Real-World Projects & Developer Tools",
+    "meta_description": "Empowering developers and modern enterprises with production-ready AI systems, curated machine learning pipelines, and intensive 1-on-1 mentorship.",
+    "canonical_url": "https://projectshub.co.in/refund-policy/",
+    "og_title": "ProjectsHub — Enterprise AI, Real-World Projects & Developer Tools",
+    "og_description": "Empowering developers and modern enterprises with production-ready AI systems, curated machine learning pipelines, and intensive 1-on-1 mentorship.",
+    "og_image": "",
+    "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+    "schema_type": "Auto",
+    "custom_json_ld": "",
+    "is_indexable": true,
+    "updated_at": "2026-09-09T16:09:12.384Z"
+  }
+},
+{
+  "model": "core.seodata",
+  "pk": 11,
+  "fields": {
+    "path": "/privacy/",
+    "meta_title": "Privacy Policy | ProjectsHub",
+    "meta_description": "Learn how ProjectsHub respects your personal data, privacy rights, and adheres to strict security standards.",
+    "canonical_url": "https://projectshub.co.in/privacy/",
+    "og_title": "Privacy Policy | ProjectsHub",
+    "og_description": "Learn how ProjectsHub respects your personal data, privacy rights, and adheres to strict security standards.",
+    "og_image": "",
+    "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+    "schema_type": "Auto",
+    "custom_json_ld": "",
+    "is_indexable": true,
+    "updated_at": "2026-09-09T16:16:53.663Z"
+  }
+},
+{
+  "model": "core.seodata",
+  "pk": 12,
+  "fields": {
+    "path": "/refund/",
+    "meta_title": "Refund & Cancellation Policy | ProjectsHub",
+    "meta_description": "Read about ProjectsHub refund terms, workshop cancellation policies, and satisfaction guarantees.",
+    "canonical_url": "https://projectshub.co.in/refund/",
+    "og_title": "Refund & Cancellation Policy | ProjectsHub",
+    "og_description": "Read about ProjectsHub refund terms, workshop cancellation policies, and satisfaction guarantees.",
+    "og_image": "",
+    "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+    "schema_type": "Auto",
+    "custom_json_ld": "",
+    "is_indexable": true,
+    "updated_at": "2026-09-09T16:16:53.669Z"
+  }
+},
+{
+  "model": "core.redirect",
+  "pk": 1,
+  "fields": {
+    "old_path": "/portfolio/",
+    "new_path": "/projects/",
+    "status_code": 301,
+    "is_active": true,
+    "notes": "Legacy portfolio link"
+  }
+},
+{
+  "model": "core.redirect",
+  "pk": 2,
+  "fields": {
+    "old_path": "/ai-tools/",
+    "new_path": "/tools/",
+    "status_code": 301,
+    "is_active": true,
+    "notes": "Legacy tools link"
+  }
+},
+{
+  "model": "core.redirect",
+  "pk": 3,
+  "fields": {
+    "old_path": "/services/",
+    "new_path": "/services/ai-development/",
+    "status_code": 301,
+    "is_active": true,
+    "notes": "General services redirect"
+  }
+},
+{
+  "model": "core.redirect",
+  "pk": 4,
+  "fields": {
+    "old_path": "/workshop-day1/",
+    "new_path": "/workshop/",
+    "status_code": 301,
+    "is_active": true,
+    "notes": "Legacy day 1 workshop redirect"
+  }
+},
+{
+  "model": "core.redirect",
+  "pk": 5,
+  "fields": {
+    "old_path": "/privacy-policy/",
+    "new_path": "/privacy/",
+    "status_code": 301,
+    "is_active": true,
+    "notes": "Auto-redirect legacy privacy path"
+  }
+},
+{
+  "model": "core.redirect",
+  "pk": 6,
+  "fields": {
+    "old_path": "/refund-policy/",
+    "new_path": "/refund/",
+    "status_code": 301,
+    "is_active": true,
+    "notes": "Auto-redirect legacy refund path"
+  }
+},
+{
+  "model": "core.chatbotconversation",
+  "pk": 2,
+  "fields": {
+    "session_id": "test_session_verification_9999",
+    "user_name": "",
+    "user_email": "client@innovate.org",
+    "user_phone": "+1 (415) 555-2671",
+    "service_interest": "Custom AI Development",
+    "ip_address": "127.0.0.1",
+    "user_agent": "",
+    "page_url": "/",
+    "status": "resolved",
+    "admin_notes": "",
+    "created_at": "2026-09-09T05:18:59.681Z",
+    "updated_at": "2026-09-09T05:18:59.699Z"
+  }
+},
+{
+  "model": "core.chatbotmessage",
+  "pk": 3,
+  "fields": {
+    "conversation": 2,
+    "sender": "user",
+    "message": "Hello, I want a custom Python Django web application. You can reach me at client@innovate.org or +1 (415) 555-2671",
+    "timestamp": "2026-09-09T05:18:59.689Z"
+  }
+},
+{
+  "model": "core.chatbotmessage",
+  "pk": 4,
+  "fields": {
+    "conversation": 2,
+    "sender": "bot",
+    "message": "We specialize in Python Django web development! Our team will contact you shortly at client@innovate.org.",
+    "timestamp": "2026-09-09T05:18:59.699Z"
+  }
+},
+{
+  "model": "core.adminguidenote",
+  "pk": 1,
+  "fields": {
+    "title": "1. Customize Site Identity, Logo & Hero Headline",
+    "category": "branding",
+    "content": "To update the site name, primary contact email, phone/WhatsApp numbers, or the large hero text and badges on the homepage: go to General Settings. Upload dark and light SVG/PNG logos for header and footer branding.",
+    "action_url": "/admin/core/sitesettings/1/change/",
+    "action_label": "Edit Site Settings",
+    "is_pinned": true,
+    "is_completed": false,
+    "order": 10,
+    "created_at": "2026-09-09T16:33:51.572Z",
+    "updated_at": "2026-09-09T16:33:51.572Z"
+  }
+},
+{
+  "model": "core.adminguidenote",
+  "pk": 2,
+  "fields": {
+    "title": "2. Manage Header Navbar & Mega Menus",
+    "category": "navigation",
+    "content": "Add, reorder, or edit navigation links and cards in the top menu and footer. Assign groups like Primary Top Navigation, Mega Menu — Our Work, or Mega Menu — How We Help. You can configure custom badge texts (NEW, HOT, FREE) and badge colors.",
+    "action_url": "/admin/core/navigationitem/",
+    "action_label": "Manage Navigation",
+    "is_pinned": true,
+    "is_completed": false,
+    "order": 20,
+    "created_at": "2026-09-09T16:33:51.576Z",
+    "updated_at": "2026-09-09T16:33:51.576Z"
+  }
+},
+{
+  "model": "core.adminguidenote",
+  "pk": 3,
+  "fields": {
+    "title": "3. Launching & Featuring New AI Projects",
+    "category": "projects",
+    "content": "When adding a new AI project: provide a title, clear description, tech stack tags, demo link, and GitHub repository URL. Check Show on Index and Is Active to feature it on the homepage. Attach screenshots using the Project Images inline table.",
+    "action_url": "/admin/core/project/add/",
+    "action_label": "Add New Project",
+    "is_pinned": true,
+    "is_completed": false,
+    "order": 30,
+    "created_at": "2026-09-09T16:33:51.578Z",
+    "updated_at": "2026-09-09T16:33:51.579Z"
+  }
+},
+{
+  "model": "core.adminguidenote",
+  "pk": 4,
+  "fields": {
+    "title": "4. Curating Free AI Tools in the Directory",
+    "category": "tools",
+    "content": "Tools appear at /tools/. Select a category (Writing, Developer, Chatbots), enter the tool name, external link, and an icon/emoji. Check Featured to spotlight it in the top banner. Use admin bulk actions to publish or unpublish multiple tools at once.",
+    "action_url": "/admin/core/aitool/",
+    "action_label": "Manage AI Tools",
+    "is_pinned": false,
+    "is_completed": false,
+    "order": 40,
+    "created_at": "2026-09-09T16:33:51.581Z",
+    "updated_at": "2026-09-09T16:33:51.581Z"
+  }
+},
+{
+  "model": "core.adminguidenote",
+  "pk": 5,
+  "fields": {
+    "title": "5. Triaging Inquiries & AI Chatbot Lead Captures",
+    "category": "crm",
+    "content": "Visitor inquiries arrive from contact forms, idea submissions, project code gate downloads, and the live AI chatbot. Review new submissions, verify contact info (email/phone), and update their status from New to Contacted or Converted. Export leads anytime using CSV.",
+    "action_url": "/admin/core/contactinquiry/",
+    "action_label": "Triage Inquiries",
+    "is_pinned": false,
+    "is_completed": false,
+    "order": 50,
+    "created_at": "2026-09-09T16:33:51.584Z",
+    "updated_at": "2026-09-09T16:33:51.584Z"
+  }
+},
+{
+  "model": "core.adminguidenote",
+  "pk": 6,
+  "fields": {
+    "title": "6. Managing 3-Day Bootcamps & Student Enrollments",
+    "category": "workshops",
+    "content": "Update bootcamp pricing, schedule dates, and daily curriculum modules in Curriculum Days. Review incoming student enrollments in Workshop Enrollments and mark them as Confirmed once payment or onboarding is complete.",
+    "action_url": "/admin/core/workshopcard/",
+    "action_label": "Manage Workshops",
+    "is_pinned": false,
+    "is_completed": false,
+    "order": 60,
+    "created_at": "2026-09-09T16:33:51.584Z",
+    "updated_at": "2026-09-09T16:33:51.584Z"
+  }
+},
+{
+  "model": "core.adminguidenote",
+  "pk": 7,
+  "fields": {
+    "title": "7. Configuring SEO Metadata & 301 Redirects",
+    "category": "seo",
+    "content": "Set custom meta titles, descriptions, and OpenGraph social share previews for any path on the site. If you rename a page slug or deprecate an old route, add a 301 permanent redirect in Redirects to protect search rankings and prevent 404s.",
+    "action_url": "/admin/core/seodata/",
+    "action_label": "Configure SEO",
+    "is_pinned": false,
+    "is_completed": false,
+    "order": 70,
+    "created_at": "2026-09-09T16:33:51.584Z",
+    "updated_at": "2026-09-09T16:33:51.584Z"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2026-05-07T10:53:20.346Z",
+    "user": [
+      "che"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "1",
+    "object_repr": "AI Sentiment Analyser",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image\", \"Pricing plans\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2026-05-09T14:37:32.426Z",
+    "user": [
+      "che"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "7",
+    "object_repr": "LLM Code Review Bot",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Detailed description\", \"Project url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2026-05-09T14:46:24.686Z",
+    "user": [
+      "che"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "7",
+    "object_repr": "LLM Code Review Bot",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Youtube url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2026-05-09T15:08:30.634Z",
+    "user": [
+      "che"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "7",
+    "object_repr": "LLM Code Review Bot",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Youtube url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2026-06-06T15:47:59.222Z",
+    "user": [
+      "a"
+    ],
+    "content_type": [
+      "core",
+      "workshopcard"
+    ],
+    "object_id": "1",
+    "object_repr": "End-to-End ML Engineering Bootcamp",
+    "action_flag": 2,
+    "change_message": "[{\"added\": {\"name\": \"Workshop Day\", \"object\": \"Day 5: Doubts & Future Guidance\"}}, {\"changed\": {\"name\": \"Workshop Day\", \"object\": \"Day 1: Data & EDA\", \"fields\": [\"Description\"]}}, {\"changed\": {\"name\": \"Workshop Day\", \"object\": \"Day 2: Feature Engineering & Modelling\", \"fields\": [\"Description\"]}}, {\"changed\": {\"name\": \"Workshop Day\", \"object\": \"Day 3: Deep Learning & Computer Vision\", \"fields\": [\"Description\"]}}, {\"changed\": {\"name\": \"Workshop Day\", \"object\": \"Day 4: MLOps & Deployment\", \"fields\": [\"Description\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2026-06-06T16:33:37.589Z",
+    "user": [
+      "a"
+    ],
+    "content_type": [
+      "core",
+      "workshopcard"
+    ],
+    "object_id": "1",
+    "object_repr": "End-to-End ML Engineering Bootcamp",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"name\": \"Workshop Day\", \"object\": \"Day 5: Doubts & Future Guidance\", \"fields\": [\"Outcome\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2026-06-06T17:43:35.945Z",
+    "user": [
+      "a"
+    ],
+    "content_type": [
+      "core",
+      "workshopcard"
+    ],
+    "object_id": "1",
+    "object_repr": "End-to-End ML Engineering Bootcamp",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"name\": \"Workshop Day\", \"object\": \"Day 1: Python Foundations & Data Science\", \"fields\": [\"Title\"]}}, {\"changed\": {\"name\": \"Workshop Day\", \"object\": \"Day 2: Machine Learning Core\", \"fields\": [\"Title\"]}}, {\"changed\": {\"name\": \"Workshop Day\", \"object\": \"Day 3: Deep Learning & Neural Networks\", \"fields\": [\"Title\"]}}, {\"changed\": {\"name\": \"Workshop Day\", \"object\": \"Day 4: AI Deployment & MLOps\", \"fields\": [\"Title\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2026-06-06T18:22:30.223Z",
+    "user": [
+      "a"
+    ],
+    "content_type": [
+      "core",
+      "workshopcard"
+    ],
+    "object_id": "1",
+    "object_repr": "End-to-End ML Engineering Bootcamp",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"name\": \"Workshop Day\", \"object\": \"Day 1: Python Foundations & Data Science\", \"fields\": [\"Description\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2026-06-09T13:54:30.800Z",
+    "user": [
+      "a"
+    ],
+    "content_type": [
+      "core",
+      "projectgatelead"
+    ],
+    "object_id": "2",
+    "object_repr": "ProjectsHub (dev.projectshub.co.in@gmail.com)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2026-06-09T13:54:30.810Z",
+    "user": [
+      "a"
+    ],
+    "content_type": [
+      "core",
+      "projectgatelead"
+    ],
+    "object_id": "1",
+    "object_repr": "raj makhijani (rajmakhijani428@gmail.com)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2026-06-09T20:17:36.225Z",
+    "user": [
+      "a"
+    ],
+    "content_type": [
+      "core",
+      "ideasubmission"
+    ],
+    "object_id": "2",
+    "object_repr": "raj makhijani — hgjgj (09 May 2026)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2026-06-09T20:17:36.244Z",
+    "user": [
+      "a"
+    ],
+    "content_type": [
+      "core",
+      "ideasubmission"
+    ],
+    "object_id": "1",
+    "object_repr": "cht — abc (07 May 2026)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2026-06-09T20:17:42.199Z",
+    "user": [
+      "a"
+    ],
+    "content_type": [
+      "core",
+      "contactmessage"
+    ],
+    "object_id": "2",
+    "object_repr": "r — No subject (09 May 2026)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2026-06-09T20:17:42.207Z",
+    "user": [
+      "a"
+    ],
+    "content_type": [
+      "core",
+      "contactmessage"
+    ],
+    "object_id": "1",
+    "object_repr": "chetan — No subject (07 May 2026)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2026-07-28T10:28:05.783Z",
+    "user": [
+      "cheta"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "7",
+    "object_repr": "LLM Code Review Bot",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2026-07-28T10:30:52.760Z",
+    "user": [
+      "cheta"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "8",
+    "object_repr": "llm base code reviewer",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2026-07-28T16:58:51.331Z",
+    "user": [
+      "cheta"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "8",
+    "object_repr": "llm base code reviewer",
+    "action_flag": 2,
+    "change_message": "[{\"added\": {\"name\": \"What's Included Feature\", \"object\": \"llm base code reviewer \\u2014 Full FastAPI + Celery + Redis source code\"}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2026-07-28T16:58:52.128Z",
+    "user": [
+      "cheta"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "8",
+    "object_repr": "llm base code reviewer",
+    "action_flag": 2,
+    "change_message": "[{\"added\": {\"name\": \"What's Included Feature\", \"object\": \"llm base code reviewer \\u2014 Full FastAPI + Celery + Redis source code\"}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2026-07-28T16:58:53.239Z",
+    "user": [
+      "cheta"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "8",
+    "object_repr": "llm base code reviewer",
+    "action_flag": 2,
+    "change_message": "[{\"added\": {\"name\": \"What's Included Feature\", \"object\": \"llm base code reviewer \\u2014 Full FastAPI + Celery + Redis source code\"}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2026-08-29T13:51:01.636Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "1",
+    "object_repr": "AI Sentiment Analyser",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Detailed description\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 21,
+  "fields": {
+    "action_time": "2026-08-31T10:19:24.751Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "9",
+    "object_repr": "test",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 22,
+  "fields": {
+    "action_time": "2026-08-31T10:20:31.565Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "9",
+    "object_repr": "test",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 23,
+  "fields": {
+    "action_time": "2026-08-31T12:44:13.279Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "blogpost"
+    ],
+    "object_id": "4",
+    "object_repr": "test",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 24,
+  "fields": {
+    "action_time": "2026-09-02T11:44:02.270Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "blogpost"
+    ],
+    "object_id": "4",
+    "object_repr": "test",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Is active\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 25,
+  "fields": {
+    "action_time": "2026-09-02T11:44:02.277Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "blogpost"
+    ],
+    "object_id": "1",
+    "object_repr": "Building Your First LLM App with Python",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Is active\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 26,
+  "fields": {
+    "action_time": "2026-09-02T11:44:02.278Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "blogpost"
+    ],
+    "object_id": "2",
+    "object_repr": "How to Stand Out in Tech Interviews",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Is active\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 27,
+  "fields": {
+    "action_time": "2026-09-02T11:44:02.279Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "blogpost"
+    ],
+    "object_id": "3",
+    "object_repr": "From Zero to MVP in 3 Weeks",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Is active\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 28,
+  "fields": {
+    "action_time": "2026-09-02T11:46:27.187Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "blogpost"
+    ],
+    "object_id": "5",
+    "object_repr": "AI market",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"Section\", \"object\": \"AI market \\u2014 Helllo guys\"}}, {\"added\": {\"name\": \"Section\", \"object\": \"AI market \\u2014 Heading 2\"}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 29,
+  "fields": {
+    "action_time": "2026-09-02T11:47:18.212Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "8",
+    "object_repr": "llm base code reviewer",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Is active\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 30,
+  "fields": {
+    "action_time": "2026-09-02T11:47:18.214Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "9",
+    "object_repr": "test",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Show on index\", \"Is active\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 31,
+  "fields": {
+    "action_time": "2026-09-02T11:47:18.215Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "1",
+    "object_repr": "AI Sentiment Analyser",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Show on index\", \"Is active\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 32,
+  "fields": {
+    "action_time": "2026-09-02T11:47:18.217Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "2",
+    "object_repr": "Stock Price Predictor",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Show on index\", \"Is active\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 33,
+  "fields": {
+    "action_time": "2026-09-02T11:47:18.218Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "3",
+    "object_repr": "Customer Churn Pipeline",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Show on index\", \"Is active\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 34,
+  "fields": {
+    "action_time": "2026-09-02T11:47:18.219Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "4",
+    "object_repr": "RAG Document Q&A",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Is active\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 35,
+  "fields": {
+    "action_time": "2026-09-02T11:47:18.221Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "5",
+    "object_repr": "Real-time Data Dashboard",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Is active\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 36,
+  "fields": {
+    "action_time": "2026-09-02T11:47:18.222Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "6",
+    "object_repr": "Multi-Cloud Cost Optimiser",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Is active\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 37,
+  "fields": {
+    "action_time": "2026-09-02T11:51:00.193Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "10",
+    "object_repr": "SO it is the titile",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"Key Highlight\", \"object\": \"SO it is the titile \\u2014 jj: 540\"}}, {\"added\": {\"name\": \"Architecture Diagram\", \"object\": \"SO it is the titile \\u2014 bkeko\"}}, {\"added\": {\"name\": \"Timeline Phase\", \"object\": \"SO it is the titile \\u2014 1: hello\"}}, {\"added\": {\"name\": \"What's Included Feature\", \"object\": \"SO it is the titile \\u2014 nothing to see\"}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 38,
+  "fields": {
+    "action_time": "2026-09-08T18:34:22.151Z",
+    "user": [
+      "harsh"
+    ],
+    "content_type": [
+      "core",
+      "blogcategory"
+    ],
+    "object_id": "1",
+    "object_repr": "AI Tutorials",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 39,
+  "fields": {
+    "action_time": "2026-09-08T18:34:42.043Z",
+    "user": [
+      "harsh"
+    ],
+    "content_type": [
+      "core",
+      "blogpost"
+    ],
+    "object_id": "5",
+    "object_repr": "AI market",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 40,
+  "fields": {
+    "action_time": "2026-09-09T04:45:09.604Z",
+    "user": [
+      "harsh"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "8",
+    "object_repr": "llm base code reviewer",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 41,
+  "fields": {
+    "action_time": "2026-09-09T05:10:31.220Z",
+    "user": [
+      "harsh"
+    ],
+    "content_type": [
+      "core",
+      "redirect"
+    ],
+    "object_id": "4",
+    "object_repr": "/workshop-day1/ -> /workshop/ (301)",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 42,
+  "fields": {
+    "action_time": "2026-09-09T08:27:51.285Z",
+    "user": [
+      "harsh"
+    ],
+    "content_type": [
+      "core",
+      "project"
+    ],
+    "object_id": "12",
+    "object_repr": "test",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"Project Highlight\", \"object\": \"test \\u2014 test: 20\"}}, {\"added\": {\"name\": \"Project Image\", \"object\": \"test image 2\"}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 43,
+  "fields": {
+    "action_time": "2026-09-09T08:31:32.019Z",
+    "user": [
+      "harsh"
+    ],
+    "content_type": [
+      "core",
+      "testimonial"
+    ],
+    "object_id": "7",
+    "object_repr": "test (bew)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+}
+]
