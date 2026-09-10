@@ -1,0 +1,349 @@
+/* ── Workshop Detail Page Styles ── */
+
+/* Hero meta row */
+.wd-hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.wd-hero-meta__item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.wd-hero-meta__item svg {
+  width: 16px;
+  height: 16px;
+  color: var(--blue-400);
+  flex-shrink: 0;
+}
+
+/* Hero CTA row */
+.wd-hero-ctas {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1.75rem;
+}
+
+/* Curriculum section */
+.wd-curriculum {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.wd-curriculum-item {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-radius: var(--radius-card);
+  transition: border-color 0.25s, transform 0.2s;
+}
+
+.wd-curriculum-item:hover {
+  transform: translateY(-2px);
+  border-color: rgba(96, 165, 250, 0.25);
+}
+
+.wd-curriculum-item--featured {
+  border-color: rgba(139, 92, 246, 0.3);
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.06), rgba(96, 165, 250, 0.04));
+}
+
+.wd-curriculum-item__left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 64px;
+  padding-top: 0.25rem;
+}
+
+.wd-curriculum-item__day-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--blue-500), var(--purple));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  line-height: 1.2;
+  padding: 0.25rem;
+  flex-shrink: 0;
+}
+
+.wd-curriculum-item--featured .wd-curriculum-item__day-badge {
+  background: linear-gradient(135deg, var(--purple), #ec4899);
+}
+
+.wd-curriculum-item__date {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.wd-curriculum-item__right {
+  flex: 1;
+  min-width: 0;
+}
+
+.wd-curriculum-item__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin: 0 0 0.5rem;
+}
+
+.wd-curriculum-item__desc {
+  font-size: 0.875rem;
+  color: var(--text-body);
+  line-height: 1.6;
+  margin: 0 0 0.75rem;
+}
+
+.wd-curriculum-item__topics {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.wd-curriculum-item__topics li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.83rem;
+  color: var(--text-body);
+}
+
+.wd-curriculum-item__topics li svg {
+  color: var(--blue-400);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.wd-curriculum-item--featured .wd-curriculum-item__topics li svg {
+  color: #a78bfa;
+}
+
+.wd-curriculum-item__outcome {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--blue-400);
+  margin-bottom: 0.85rem;
+}
+
+.wd-curriculum-item__outcome svg {
+  flex-shrink: 0;
+}
+
+.wd-curriculum-item__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--blue-400);
+  text-decoration: none;
+  transition: gap 0.2s, color 0.2s;
+}
+
+.wd-curriculum-item__link:hover {
+  color: var(--blue-300);
+  gap: 0.65rem;
+}
+
+/* Features grid */
+.wd-features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 600px) {
+  .wd-features-grid { grid-template-columns: 1fr; }
+}
+
+.wd-feature-card {
+  padding: 1.25rem;
+  border-radius: var(--radius-card);
+  transition: transform 0.2s, border-color 0.25s;
+}
+
+.wd-feature-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(96, 165, 250, 0.2);
+}
+
+.wd-feature-card__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(96, 165, 250, 0.1);
+  border: 1px solid rgba(96, 165, 250, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--blue-400);
+  margin-bottom: 0.75rem;
+}
+
+.wd-feature-card__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.wd-feature-card__title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin: 0 0 0.35rem;
+}
+
+.wd-feature-card__desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Enroll CTA strip */
+.wd-enroll-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.5rem 1.75rem;
+  flex-wrap: wrap;
+}
+
+.wd-enroll-cta__price {
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #a78bfa, #60a5fa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.wd-enroll-cta__note {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
+
+/* Sidebar price */
+.wd-sidebar-price {
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-glass);
+}
+
+.wd-sidebar-price__amount {
+  font-size: 1.75rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #a78bfa, #60a5fa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  line-height: 1.1;
+}
+
+.wd-sidebar-price__note {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 0.35rem;
+}
+
+/* Day nav list in sidebar */
+.wd-day-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.wd-day-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  background: transparent;
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.wd-day-nav-link:hover {
+  background: rgba(96, 165, 250, 0.07);
+  border-color: rgba(96, 165, 250, 0.15);
+}
+
+.wd-day-nav-link__num {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(96, 165, 250, 0.1);
+  border: 1px solid rgba(96, 165, 250, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--blue-400);
+  flex-shrink: 0;
+}
+
+.wd-day-nav-link__text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.wd-day-nav-link__label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.wd-day-nav-link__title {
+  font-size: 0.82rem;
+  color: var(--text-bright);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* Light mode overrides */
+body.light .wd-curriculum-item__title { color: #0f172a; }
+body.light .wd-curriculum-item__desc { color: #4b5563; }
+body.light .wd-feature-card__title { color: #0f172a; }
+body.light .wd-feature-card__desc { color: #64748b; }
+body.light .wd-day-nav-link__title { color: #0f172a; }
+
+@media (max-width: 640px) {
+  .wd-curriculum-item { flex-direction: column; gap: 0.75rem; }
+  .wd-curriculum-item__left { flex-direction: row; align-items: center; min-width: auto; }
+  .wd-enroll-cta { flex-direction: column; align-items: flex-start; }
+}

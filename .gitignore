@@ -17,11 +17,11 @@ virtualenv/
 .env.*
 !.env.example
 
-# User-uploaded/generated files
-media/
+# User-uploaded/generated files (seeded media tracked for Vercel)
+# media/
 
-# Django generated static files
-staticfiles/
+# Django generated static files (tracked for Vercel WhiteNoise & static build)
+# staticfiles/
 
 # Archives / backups
 *.zip

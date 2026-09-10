@@ -20,4 +20,10 @@ python3 manage.py loaddata initial_data.json || true
 # Collect static files into staticfiles directory
 python3 manage.py collectstatic --noinput --clear
 
+# Copy media assets into staticfiles for direct CDN serving
+if [ -d "media" ]; then
+    mkdir -p staticfiles/media
+    cp -rn media/* staticfiles/media/ 2>/dev/null || cp -r media/* staticfiles/media/ || true
+fi
+
 echo "=== Build finished successfully ==="
