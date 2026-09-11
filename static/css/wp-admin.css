@@ -83,26 +83,36 @@ a:hover, a:focus {
   align-items: center;
 }
 
-.wpab-link {
+#wpadminbar button,
+#wpadminbar .wpab-link {
   color: var(--wp-admin-bar-text) !important;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0 10px;
-  height: 100%;
-  font-size: 13px;
-  line-height: 32px;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 0 10px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  max-height: 32px !important;
+  font-size: 13px !important;
+  line-height: 32px !important;
   text-decoration: none !important;
-  cursor: pointer;
-  background: transparent;
-  border: none;
-  font-family: inherit;
+  cursor: pointer !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-family: inherit !important;
+  outline: none !important;
+  margin: 0 !important;
 }
 
-.wpab-item:hover > .wpab-link,
-.wpab-item.active > .wpab-link,
-.wpab-item:focus-within > .wpab-link {
-  background: var(--wp-menu-submenu-bg);
+#wpadminbar .wpab-item:hover > button,
+#wpadminbar .wpab-item:hover > .wpab-link,
+#wpadminbar .wpab-item.active > button,
+#wpadminbar .wpab-item.active > .wpab-link,
+#wpadminbar .wpab-item:focus-within > button,
+#wpadminbar .wpab-item:focus-within > .wpab-link {
+  background: var(--wp-menu-submenu-bg) !important;
   color: #72aee6 !important;
 }
 
@@ -750,13 +760,20 @@ a:hover, a:focus {
 }
 
 .welcome-panel-column ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  list-style: none !important;
+  list-style-type: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 .welcome-panel-column li {
-  margin-bottom: 8px;
-  font-size: 13px;
+  list-style: none !important;
+  list-style-type: none !important;
+  margin-bottom: 8px !important;
+  font-size: 13px !important;
+}
+.welcome-panel-column li::marker {
+  display: none !important;
+  content: "" !important;
 }
 .welcome-panel-column li a {
   display: inline-flex;
@@ -767,6 +784,28 @@ a:hover, a:focus {
 .welcome-panel-column li a:hover {
   color: var(--wp-link-hover);
   text-decoration: underline;
+}
+
+.welcome-panel-close {
+  position: absolute !important;
+  top: 14px !important;
+  right: 16px !important;
+  padding: 4px 10px !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  min-height: auto !important;
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  border-radius: 3px !important;
+  color: #646970 !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+}
+.welcome-panel-close:hover {
+  color: #d63638 !important;
+  background: #f6f7f7 !important;
+  border-color: #dcdcde !important;
 }
 
 .button.button-hero {
@@ -909,36 +948,37 @@ a:hover, a:focus {
 }
 
 /* ── WordPress Standard Buttons ── */
-.button, 
-button, 
-input[type="submit"], 
-input[type="button"], 
+.button:not(.bk-btn):not(.am-btn), 
+button:not(.wpab-link):not(.welcome-panel-close):not(#collapse-menu):not(.screen-meta-btn):not(.bk-btn):not(.am-btn):not(.wp-hide-pw-btn):not(.notice-dismiss):not(#id_technologies_add_link):not(#id_technologies_remove_link), 
+input[type="submit"]:not(.bk-btn):not(.am-btn), 
+input[type="button"]:not(.bk-btn):not(.am-btn), 
 .submit-row input {
-  display: inline-block !important;
-  font-family: inherit !important;
-  font-size: 13px !important;
-  line-height: 2.15384615 !important; /* ~28px */
-  min-height: 30px !important;
-  margin: 0 !important;
-  padding: 0 10px !important;
-  cursor: pointer !important;
-  border-width: 1px !important;
-  border-style: solid !important;
-  border-radius: 3px !important;
-  white-space: nowrap !important;
-  box-sizing: border-box !important;
-  text-decoration: none !important;
-  background: #f6f7f7 !important;
-  border-color: #2271b1 !important;
-  color: #2271b1 !important;
-  transition: all 0.15s ease-in-out !important;
+  display: inline-block;
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 2.15384615; /* ~28px */
+  min-height: 30px;
+  margin: 0;
+  padding: 0 10px;
+  cursor: pointer;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 3px;
+  white-space: nowrap;
+  box-sizing: border-box;
+  text-decoration: none;
+  background: #f6f7f7;
+  border-color: #2271b1;
+  color: #2271b1;
+  transition: all 0.15s ease-in-out;
 }
 
-.button:hover,
-input[type="submit"]:hover {
-  background: #f0f0f1 !important;
-  border-color: #135e96 !important;
-  color: #135e96 !important;
+.button:not(.bk-btn):not(.am-btn):hover,
+button:not(.wpab-link):not(.welcome-panel-close):not(#collapse-menu):not(.screen-meta-btn):not(.bk-btn):not(.am-btn):not(.wp-hide-pw-btn):hover,
+input[type="submit"]:not(.bk-btn):not(.am-btn):hover {
+  background: #f0f0f1;
+  border-color: #135e96;
+  color: #135e96;
 }
 
 .button.button-primary,
@@ -1075,32 +1115,48 @@ ul.object-tools {
   text-decoration: underline !important;
 }
 
-/* ── ChangeList Search & Filter (Side-by-Side Layout) ── */
+/* ── ChangeList Search & Filter (Side-by-Side Grid Layout) ── */
 #changelist {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: flex-start !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 250px !important;
   gap: 20px !important;
   width: 100% !important;
   max-width: 100% !important;
   box-sizing: border-box !important;
   clear: both !important;
   position: relative !important;
+  align-items: start !important;
 }
 
+#changelist:not(.filtered):not(:has(#changelist-filter)) {
+  grid-template-columns: 1fr !important;
+}
+
+#changelist .changelist-form-container,
 .changelist-form-container {
-  flex: 1 1 0% !important;
+  width: 100% !important;
   min-width: 0 !important;
   max-width: 100% !important;
-  order: 1 !important;
   box-sizing: border-box !important;
+  overflow: hidden !important;
+  float: none !important;
+}
+
+#changelist-form {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  float: none !important;
 }
 
 #changelist-form .results,
+#changelist .results,
 .results {
   width: 100% !important;
   max-width: 100% !important;
   overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
   box-sizing: border-box !important;
 }
 
@@ -1263,6 +1319,11 @@ ul.object-tools {
   flex: 0 0 250px !important;
   flex-shrink: 0 !important;
   order: 2 !important;
+  float: none !important;
+  position: sticky !important;
+  top: 45px !important;
+  right: auto !important;
+  left: auto !important;
   background: #ffffff !important;
   border: 1px solid var(--wp-card-border) !important;
   border-radius: 4px !important;
@@ -1271,8 +1332,6 @@ ul.object-tools {
   margin-top: 0 !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
-  position: sticky !important;
-  top: 45px !important;
   max-height: calc(100vh - 65px) !important;
   overflow-y: auto !important;
   box-sizing: border-box !important;
@@ -1894,11 +1953,11 @@ body.login #wpbody-content {
 /* ══════════════════════════════════════════════════════════════════════════════
    UNIVERSAL HIGH-VISIBILITY FORM SELECTS & DROPDOWNS
    ══════════════════════════════════════════════════════════════════════════════ */
-select,
+select:not([multiple]):not([size]),
 .actions select,
-.change-form select,
+.change-form select:not([multiple]):not([size]),
 #changelist-filter select,
-.form-row select {
+.form-row select:not([multiple]):not([size]) {
   color-scheme: light !important;
   background-color: #ffffff !important;
   color: #1d2327 !important;
@@ -1918,11 +1977,11 @@ select,
   -moz-appearance: none !important;
 }
 
-select:focus,
+select:not([multiple]):not([size]):focus,
 .actions select:focus,
-.change-form select:focus,
+.change-form select:not([multiple]):not([size]):focus,
 #changelist-filter select:focus,
-.form-row select:focus {
+.form-row select:not([multiple]):not([size]):focus {
   border-color: #2271b1 !important;
   box-shadow: 0 0 0 1px #2271b1 !important;
   outline: none !important;
@@ -1931,7 +1990,7 @@ select:focus,
 select option {
   background-color: #ffffff !important;
   color: #1d2327 !important;
-  padding: 8px 10px !important;
+  padding: 6px 10px !important;
   font-size: 13px !important;
 }
 
@@ -1939,6 +1998,147 @@ select option:checked {
   background-color: #f0f6fc !important;
   color: #2271b1 !important;
   font-weight: 600 !important;
+}
+
+/* ── Multi-select & Scrollable Selects ── */
+select[multiple],
+select[size]:not([size="1"]),
+.form-row select[multiple],
+.change-form select[multiple],
+.selector select {
+  color-scheme: light !important;
+  background-color: #ffffff !important;
+  color: #1d2327 !important;
+  border: 1px solid #8c8f94 !important;
+  border-radius: 4px !important;
+  padding: 6px !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  min-height: 160px !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  background-image: none !important;
+  appearance: auto !important;
+  -webkit-appearance: auto !important;
+  -moz-appearance: auto !important;
+  width: 100% !important;
+}
+
+select[multiple]:focus,
+.selector select:focus {
+  border-color: #2271b1 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 1px #2271b1 !important;
+}
+
+/* ── Django Filter Horizontal (.selector dual-box widget) ── */
+.selector {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+  max-width: 820px !important;
+  box-sizing: border-box !important;
+  margin-top: 4px !important;
+}
+.selector-available,
+.selector-chosen {
+  flex: 1 1 0% !important;
+  min-width: 240px !important;
+  border: 1px solid #c3c4c7 !important;
+  border-radius: 4px !important;
+  background: #ffffff !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
+}
+.selector h2 {
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  margin: 0 !important;
+  padding: 8px 12px !important;
+  background: #f6f7f7 !important;
+  border-bottom: 1px solid #dcdcde !important;
+  color: #1d2327 !important;
+}
+.selector-filter {
+  padding: 6px 10px !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid #f0f0f1 !important;
+  margin: 0 !important;
+}
+.selector-filter label {
+  margin-right: 6px !important;
+}
+.selector-filter input {
+  width: 85% !important;
+  height: 28px !important;
+  font-size: 12px !important;
+  padding: 2px 8px !important;
+  border: 1px solid #c3c4c7 !important;
+  border-radius: 3px !important;
+  box-sizing: border-box !important;
+}
+.selector select {
+  border: none !important;
+  border-radius: 0 !important;
+  height: 180px !important;
+  min-height: 180px !important;
+  box-shadow: none !important;
+}
+.selector-chooseall,
+.selector-clearall {
+  display: block !important;
+  padding: 6px 10px !important;
+  text-align: center !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  color: #2271b1 !important;
+  background: #f6f7f7 !important;
+  border-top: 1px solid #dcdcde !important;
+  text-decoration: none !important;
+}
+.selector-chooseall:hover,
+.selector-clearall:hover {
+  background: #f0f0f1 !important;
+  text-decoration: underline !important;
+}
+.selector-chooser {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.selector-chooser li {
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+.selector-add,
+.selector-remove {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  background: #f6f7f7 !important;
+  border: 1px solid #c3c4c7 !important;
+  color: #2271b1 !important;
+  font-size: 14px !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+.selector-add:hover,
+.selector-remove:hover {
+  background: #2271b1 !important;
+  color: #ffffff !important;
+  border-color: #2271b1 !important;
 }
 
 /* Autocomplete & Select2 Compatibility */
@@ -1967,5 +2167,39 @@ select option:checked {
   background-color: #2271b1 !important;
   color: #ffffff !important;
 }
+
+/* ── Responsive Rules for Mobile & Tablet Viewports ── */
+@media screen and (max-width: 960px) {
+  #changelist {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  #changelist .changelist-form-container {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  #changelist-filter {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    position: static !important;
+    margin-top: 14px !important;
+    max-height: none !important;
+  }
+}
+
+@media screen and (max-width: 782px) {
+  #wpcontent {
+    margin-left: 0 !important;
+    padding: 10px 12px 30px !important;
+  }
+  #adminmenumain {
+    display: none;
+  }
+  #collapse-menu {
+    display: none !important;
+  }
+}
+
 
 

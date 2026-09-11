@@ -275,12 +275,15 @@
     background: var(--am-danger-hover);
   }
   .am-btn-secondary {
-    background: #f8fafc;
-    border-color: #cbd5e1;
-    color: #334155 !important;
+    background: #f1f5f9 !important;
+    border: 1px solid #94a3b8 !important;
+    color: #1e293b !important;
+    font-weight: 600 !important;
   }
   .am-btn-secondary:hover {
-    background: #e2e8f0;
+    background: #2271b1 !important;
+    border-color: #2271b1 !important;
+    color: #ffffff !important;
   }
 
   /* ── Bulk Action Banner (Floating) ── */
@@ -307,7 +310,8 @@
     background: var(--am-card-bg);
     border: 1px solid var(--am-border);
     border-radius: var(--am-radius);
-    overflow: hidden;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   }
   .am-table {

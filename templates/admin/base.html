@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="{% static 'admin/css/base.css' %}">
   <link rel="stylesheet" href="{% static 'admin/css/responsive.css' %}">
   {% block extrastyle %}{% endblock %}
-  <link rel="stylesheet" href="{% static 'css/wp-admin.css' %}?v=6">
+  <link rel="stylesheet" href="{% static 'css/wp-admin.css' %}?v=9">
   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'image/Favicon-new/favicon-32x32.png' %}">
   
   {% block extrahead %}{% endblock %}
@@ -133,7 +133,7 @@
       <ul id="adminmenu">
 
         <!-- 1. Dashboard -->
-        <li class="wp-menu-item" data-path="/admin/">
+        <li class="wp-menu-item {% if request.path == '/admin/' or request.path == '/admin' %}current{% endif %}" data-path="/admin/">
           <a href="{% url 'admin:index' %}" class="wp-menu-link">
             <span class="wp-menu-icon">📊</span>
             <span class="wp-menu-name">Dashboard</span>
@@ -141,12 +141,12 @@
           <ul class="wp-submenu">
             <li class="wp-submenu-head">Dashboard</li>
             <li><a href="{% url 'admin:index' %}">Home</a></li>
-            <li><a href="/admin/core/sitesettings/1/change/">Site Telemetry</a></li>
+            <li><a href="/admin/core/sitesettings/">Site Telemetry</a></li>
           </ul>
         </li>
 
         <!-- Project Guide & Operations Manual -->
-        <li class="wp-menu-item" data-path="/admin/guide/">
+        <li class="wp-menu-item {% if '/admin/guide/' in request.path or '/admin/core/adminguidenote/' in request.path %}current{% endif %}" data-path="/admin/guide/">
           <a href="/admin/guide/" class="wp-menu-link">
             <span class="wp-menu-icon">📖</span>
             <span class="wp-menu-name">Project Guide</span>
@@ -161,7 +161,7 @@
         </li>
 
         <!-- Media & Storage Assets Manager -->
-        <li class="wp-menu-item" data-path="/admin/assets/">
+        <li class="wp-menu-item {% if '/admin/assets/' in request.path %}current{% endif %}" data-path="/admin/assets/">
           <a href="/admin/assets/" class="wp-menu-link">
             <span class="wp-menu-icon">📁</span>
             <span class="wp-menu-name">Media &amp; Assets</span>
@@ -180,7 +180,7 @@
         <li class="wp-menu-separator"></li>
 
         <!-- 2. AI Projects -->
-        <li class="wp-menu-item" data-path="/admin/core/project/">
+        <li class="wp-menu-item {% if '/admin/core/project/' in request.path or '/admin/core/projectcategory/' in request.path or '/admin/core/technology/' in request.path %}current{% endif %}" data-path="/admin/core/project/">
           <a href="/admin/core/project/" class="wp-menu-link">
             <span class="wp-menu-icon">🚀</span>
             <span class="wp-menu-name">Projects</span>
@@ -197,7 +197,7 @@
         </li>
 
         <!-- 3. Posts (Blog) -->
-        <li class="wp-menu-item" data-path="/admin/core/blogpost/">
+        <li class="wp-menu-item {% if '/admin/core/blogpost/' in request.path or '/admin/core/blogcategory/' in request.path or '/admin/core/tag/' in request.path %}current{% endif %}" data-path="/admin/core/blogpost/">
           <a href="/admin/core/blogpost/" class="wp-menu-link">
             <span class="wp-menu-icon">📝</span>
             <span class="wp-menu-name">Posts</span>
@@ -213,7 +213,7 @@
         </li>
 
         <!-- 4. AI Tools -->
-        <li class="wp-menu-item" data-path="/admin/core/aitool/">
+        <li class="wp-menu-item {% if '/admin/core/aitool/' in request.path or '/admin/core/toolcategory/' in request.path %}current{% endif %}" data-path="/admin/core/aitool/">
           <a href="/admin/core/aitool/" class="wp-menu-link">
             <span class="wp-menu-icon">🛠️</span>
             <span class="wp-menu-name">AI Tools</span>
@@ -228,7 +228,7 @@
         </li>
 
         <!-- 5. Workshops -->
-        <li class="wp-menu-item" data-path="/admin/core/workshop">
+        <li class="wp-menu-item {% if '/admin/core/workshop' in request.path %}current{% endif %}" data-path="/admin/core/workshop">
           <a href="/admin/core/workshopcard/" class="wp-menu-link">
             <span class="wp-menu-icon">🎓</span>
             <span class="wp-menu-name">Workshops</span>
@@ -245,7 +245,7 @@
         </li>
 
         <!-- 6. Services & Work -->
-        <li class="wp-menu-item" data-path="/admin/core/service/">
+        <li class="wp-menu-item {% if '/admin/core/service' in request.path or '/admin/core/casestudy' in request.path or '/admin/core/pricingplan' in request.path %}current{% endif %}" data-path="/admin/core/service/">
           <a href="/admin/core/service/" class="wp-menu-link">
             <span class="wp-menu-icon">💼</span>
             <span class="wp-menu-name">Services</span>
@@ -260,7 +260,7 @@
         </li>
 
         <!-- 7. Testimonials & FAQ -->
-        <li class="wp-menu-item" data-path="/admin/core/testimonial/">
+        <li class="wp-menu-item {% if '/admin/core/testimonial/' in request.path or '/admin/core/faq' in request.path %}current{% endif %}" data-path="/admin/core/testimonial/">
           <a href="/admin/core/testimonial/" class="wp-menu-link">
             <span class="wp-menu-icon">💬</span>
             <span class="wp-menu-name">Feedback</span>
@@ -274,7 +274,7 @@
         </li>
 
         <!-- 8. CRM & Inquiries -->
-        <li class="wp-menu-item" data-path="/admin/core/contactinquiry/">
+        <li class="wp-menu-item {% if '/admin/core/contactinquiry/' in request.path or '/admin/core/ideasubmission/' in request.path or '/admin/core/projectgatelead/' in request.path or '/admin/core/contactmessage/' in request.path or '/admin/core/chatbotconversation/' in request.path %}current{% endif %}" data-path="/admin/core/contactinquiry/">
           <a href="/admin/core/contactinquiry/" class="wp-menu-link">
             <span class="wp-menu-icon">📬</span>
             <span class="wp-menu-name">Inquiries</span>
@@ -297,7 +297,7 @@
         <li class="wp-menu-separator"></li>
 
         <!-- 9. Appearance -->
-        <li class="wp-menu-item" data-path="/admin/core/navigationitem/">
+        <li class="wp-menu-item {% if '/admin/core/navigationitem/' in request.path or '/admin/core/megamenutag/' in request.path or '/admin/core/sociallink/' in request.path or '/admin/core/statitem/' in request.path %}current{% endif %}" data-path="/admin/core/navigationitem/">
           <a href="/admin/core/navigationitem/" class="wp-menu-link">
             <span class="wp-menu-icon">🎨</span>
             <span class="wp-menu-name">Appearance</span>
@@ -312,7 +312,7 @@
         </li>
 
         <!-- 10. SEO & Redirects -->
-        <li class="wp-menu-item" data-path="/admin/core/seodata/">
+        <li class="wp-menu-item {% if '/admin/core/seodata/' in request.path or '/admin/core/redirect/' in request.path %}current{% endif %}" data-path="/admin/core/seodata/">
           <a href="/admin/core/seodata/" class="wp-menu-link">
             <span class="wp-menu-icon">🔍</span>
             <span class="wp-menu-name">SEO &amp; Tools</span>
@@ -328,7 +328,7 @@
         </li>
 
         <!-- 11. Users -->
-        <li class="wp-menu-item" data-path="/admin/auth/">
+        <li class="wp-menu-item {% if '/admin/auth/' in request.path %}current{% endif %}" data-path="/admin/auth/">
           <a href="/admin/auth/user/" class="wp-menu-link">
             <span class="wp-menu-icon">👥</span>
             <span class="wp-menu-name">Users</span>
@@ -344,14 +344,14 @@
         </li>
 
         <!-- 12. Settings -->
-        <li class="wp-menu-item" data-path="/admin/core/sitesettings/">
-          <a href="/admin/core/sitesettings/1/change/" class="wp-menu-link">
+        <li class="wp-menu-item {% if '/admin/core/sitesettings' in request.path or '/admin/backup/' in request.path %}current{% endif %}" data-path="/admin/core/sitesettings/">
+          <a href="/admin/core/sitesettings/" class="wp-menu-link">
             <span class="wp-menu-icon">⚙️</span>
             <span class="wp-menu-name">Settings</span>
           </a>
           <ul class="wp-submenu">
             <li class="wp-submenu-head">Settings</li>
-            <li><a href="/admin/core/sitesettings/1/change/">General Settings</a></li>
+            <li><a href="/admin/core/sitesettings/">General Settings</a></li>
             <li><a href="/admin/backup/" style="font-weight:600;color:#72aee6;">💾 Backup &amp; Export</a></li>
           </ul>
         </li>
@@ -459,31 +459,20 @@
         });
       }
 
-      // 2. Active Menu Item Highlighter
+      // 2. Active Menu Sublink Highlighter (Longest Matching Prefix)
       var currentPath = window.location.pathname;
-      var menuItems = document.querySelectorAll('#adminmenu > li.wp-menu-item');
-      var matched = false;
-      menuItems.forEach(function(item) {
-        var itemPath = item.getAttribute('data-path');
-        var hasSublink = false;
-        item.querySelectorAll('.wp-submenu a').forEach(function(sublink) {
-          var subHref = sublink.getAttribute('href');
-          if (subHref && subHref !== '#' && currentPath.indexOf(subHref) === 0) {
-            hasSublink = true;
-            sublink.style.fontWeight = '700';
-            sublink.style.color = '#fff';
-          }
-        });
-        if (itemPath === '/admin/' && (currentPath === '/admin/' || currentPath === '/admin')) {
-          item.classList.add('current');
-          matched = true;
-        } else if (hasSublink || (itemPath && itemPath !== '/admin/' && currentPath.indexOf(itemPath) === 0)) {
-          item.classList.add('current');
-          matched = true;
+      var bestSublink = null;
+      var bestLength = 0;
+      document.querySelectorAll('#adminmenu .wp-submenu a').forEach(function(sublink) {
+        var subHref = sublink.getAttribute('href');
+        if (subHref && subHref !== '#' && currentPath.indexOf(subHref) === 0 && subHref.length > bestLength) {
+          bestSublink = sublink;
+          bestLength = subHref.length;
         }
       });
-      if (!matched && menuItems[0]) {
-        menuItems[0].classList.add('current');
+      if (bestSublink) {
+        bestSublink.style.fontWeight = '700';
+        bestSublink.style.color = '#fff';
       }
 
       // 3. Dismissible Notices

@@ -316,11 +316,36 @@ class ProjectAdmin(admin.ModelAdmin):
             project.is_published = False
             project.show_on_index = False
             project.save()
-            # Copy M2M technologies
+            # Copy M2M technologies & child inlines
             orig_obj = Project.objects.get(pk=orig_pk)
             project.technologies.set(orig_obj.technologies.all())
+            for h in orig_obj.highlights.all():
+                h.pk = None
+                h.id = None
+                h.project = project
+                h.save()
+            for img in orig_obj.detail_images.all():
+                img.pk = None
+                img.id = None
+                img.project = project
+                img.save()
+            for d in orig_obj.diagrams.all():
+                d.pk = None
+                d.id = None
+                d.project = project
+                d.save()
+            for tp in orig_obj.timeline_phases.all():
+                tp.pk = None
+                tp.id = None
+                tp.project = project
+                tp.save()
+            for pf in orig_obj.price_features.all():
+                pf.pk = None
+                pf.id = None
+                pf.project = project
+                pf.save()
             count += 1
-        self.message_user(request, f"Successfully duplicated {count} project(s) as draft.")
+        self.message_user(request, f"Successfully duplicated {count} project(s) with all sections as draft.")
     duplicate_project.short_description = "Duplicate selected project(s) as draft"
 
 

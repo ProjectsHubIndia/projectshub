@@ -5,11 +5,11 @@ from django.core.cache import cache
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, Permission
 from core.models import (
-    SiteSettings, NavigationItem, SocialLink, StatItem,
+    SiteSettings, NavigationItem, MegaMenuTag, SocialLink, StatItem,
     Project, ProjectCategory, Technology,
     AITool, ToolCategory,
-    Service, CaseStudy, PricingPlan, Testimonial,
-    ContactInquiry, IdeaSubmission, WorkshopEnrollment, ProjectGateLead, ContactMessage,
+    Service, ServiceFeature, CaseStudy, CaseStudyMetric, PricingPlan, PricingFeature, Testimonial,
+    ContactInquiry, IdeaSubmission, WorkshopCard, WorkshopDay, WorkshopEnrollment, ProjectGateLead, ContactMessage,
     BlogPost, BlogCategory, Tag, FAQ, FAQCategory,
     SEOData, Redirect, ChatbotConversation, AdminGuideNote
 )
@@ -133,11 +133,16 @@ def site_context(request):
                 'aitool': total_tools,
                 'toolcategory': ToolCategory.objects.count(),
                 'service': Service.objects.count(),
+                'servicefeature': ServiceFeature.objects.count(),
                 'casestudy': CaseStudy.objects.count(),
+                'casestudymetric': CaseStudyMetric.objects.count(),
                 'pricingplan': PricingPlan.objects.count(),
+                'pricingfeature': PricingFeature.objects.count(),
                 'testimonial': Testimonial.objects.count(),
                 'contactinquiry': total_inquiries,
                 'ideasubmission': total_ideas,
+                'workshopcard': WorkshopCard.objects.count(),
+                'workshopday': WorkshopDay.objects.count(),
                 'workshopenrollment': total_enrollments,
                 'projectgatelead': ProjectGateLead.objects.count(),
                 'contactmessage': ContactMessage.objects.count(),
@@ -148,6 +153,7 @@ def site_context(request):
                 'faqcategory': FAQCategory.objects.count(),
                 'sitesettings': 1,
                 'navigationitem': NavigationItem.objects.count(),
+                'megamenutag': MegaMenuTag.objects.count(),
                 'sociallink': SocialLink.objects.count(),
                 'statitem': StatItem.objects.count(),
                 'seodata': SEOData.objects.count(),
