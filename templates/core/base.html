@@ -17,7 +17,7 @@
   <meta name="csrf-token" content="{{ csrf_token }}" />
 
   <!-- Canonical -->
-  <link rel="canonical" href="{% block canonical %}{{ seo.canonical_url|default:'https://projectshub.co.in/' }}{% endblock %}" />
+  <link rel="canonical" href="{% block canonical %}{{ seo.canonical_url|default:site_url }}{% endblock %}" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="{% block og_type %}{{ seo.og_type|default:'website' }}{% endblock %}" />
@@ -25,8 +25,8 @@
     content="{% block og_title %}{{ seo.og_title|default:seo.meta_title|default:'ProjectsHub — Free AI Tools & Real-World Projects' }}{% endblock %}" />
   <meta property="og:description"
     content="{% block og_description %}{{ seo.og_description|default:seo.meta_description|default:'Explore 50+ AI & ML projects and free tools built for students and businesses.' }}{% endblock %}" />
-  <meta property="og:image" content="{% block og_image %}{{ seo.og_image|default:'https://projectshub.co.in/static/image/favicon_io/og-image.png' }}{% endblock %}" />
-  <meta property="og:url" content="{% block og_url %}{{ seo.canonical_url|default:'https://projectshub.co.in/' }}{% endblock %}" />
+  <meta property="og:image" content="{% block og_image %}{{ seo.og_image|default:site_url|add:'/static/image/favicon_io/og-image.png' }}{% endblock %}" />
+  <meta property="og:url" content="{% block og_url %}{{ seo.canonical_url|default:site_url }}{% endblock %}" />
   <meta property="og:site_name" content="ProjectsHub" />
 
   <!-- Twitter Card -->
@@ -36,7 +36,7 @@
   <meta name="twitter:description"
     content="{% block twitter_description %}{{ seo.og_description|default:seo.meta_description|default:'Explore 50+ AI & ML projects and free tools built for students and businesses.' }}{% endblock %}" />
   <meta name="twitter:image"
-    content="{% block twitter_image %}{{ seo.og_image|default:'https://projectshub.co.in/static/image/favicon_io/og-image.png' }}{% endblock %}" />
+    content="{% block twitter_image %}{{ seo.og_image|default:site_url|add:'/static/image/favicon_io/og-image.png' }}{% endblock %}" />
 
   <!-- Favicons -->
   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'image/Favicon-new/favicon-32x32.png' %}?v=7" />
@@ -55,8 +55,8 @@
         "@context": "https://schema.org",
         "@type": "Organization",
         "name": "ProjectsHub",
-        "url": "https://projectshub.co.in/",
-        "logo": "https://projectshub.co.in/static/image/favicon_io/logo.png",
+        "url": "{{ site_url }}/",
+        "logo": "{{ site_url }}/static/image/favicon_io/logo.png",
         "contactPoint": {
           "@type": "ContactPoint",
           "telephone": "+91-9213472954",

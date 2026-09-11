@@ -1,0 +1,69 @@
+﻿{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block title %}Page not found (404) | ProjectsHub Admin{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">Home</a>
+  &rsaquo; Page not found (404)
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="wp-screen-header">
+  <div>
+    <h1 class="wp-heading-inline">
+      <span>Page Not Found</span>
+    </h1>
+  </div>
+</div>
+
+<div class="postbox" style="max-width: 860px; margin-top: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border-radius: 4px;">
+  <div class="postbox-header" style="background: #fff8e5; border-bottom: 1px solid #f0c33c; padding: 12px 18px;">
+    <h2 style="color: #614400; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; margin: 0;">
+      <span>The requested admin page or resource does not exist (404)</span>
+    </h2>
+  </div>
+  <div class="inside" style="padding: 24px;">
+    <p style="font-size: 14px; color: #2c3338; margin: 0 0 16px 0; line-height: 1.6;">
+      We are sorry, but the requested admin URL, model changelist, edit form, or utility screen could not be found. The item may have been moved, deleted, or you might have followed an outdated link.
+    </p>
+
+    <div style="margin: 20px 0; padding: 16px; background: #f6f7f7; border: 1px solid #dcdcde; border-radius: 4px;">
+      <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: #646970; letter-spacing: 0.05em; margin-bottom: 12px;">
+        Helpful Admin Shortcuts
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px;">
+        <a href="/admin/" style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #ffffff; border: 1px solid #c3c4c7; border-radius: 3px; font-weight: 600; color: #2271b1; text-decoration: none;">
+          <span>Admin Dashboard</span>
+        </a>
+        <a href="/admin/core/project/" style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #ffffff; border: 1px solid #c3c4c7; border-radius: 3px; font-weight: 600; color: #2271b1; text-decoration: none;">
+          <span>Projects Showcase</span>
+        </a>
+        <a href="/admin/assets/" style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #ffffff; border: 1px solid #c3c4c7; border-radius: 3px; font-weight: 600; color: #2271b1; text-decoration: none;">
+          <span>Media & Storage Assets</span>
+        </a>
+        <a href="/admin/backup/" style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #ffffff; border: 1px solid #c3c4c7; border-radius: 3px; font-weight: 600; color: #2271b1; text-decoration: none;">
+          <span>Backup & Export Data</span>
+        </a>
+        <a href="/admin/core/sitesettings/" style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #ffffff; border: 1px solid #c3c4c7; border-radius: 3px; font-weight: 600; color: #2271b1; text-decoration: none;">
+          <span>General Site Settings</span>
+        </a>
+        <a href="/admin/guide/" style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #ffffff; border: 1px solid #c3c4c7; border-radius: 3px; font-weight: 600; color: #2271b1; text-decoration: none;">
+          <span>Master Project Guide</span>
+        </a>
+      </div>
+    </div>
+
+    <div style="margin-top: 24px; display: flex; align-items: center; gap: 12px;">
+      <a href="/admin/" class="button button-primary" style="display: inline-flex; align-items: center; gap: 6px;">
+        <span>Return to Dashboard</span>
+      </a>
+      <a href="/" target="_blank" class="button" style="display: inline-flex; align-items: center; gap: 6px;">
+        <span>Visit Live Website</span>
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -3,7 +3,7 @@
 
 {% block title %}{{ workshop.title }} | ProjectsHub Workshop{% endblock %}
 {% block meta_description %}{{ workshop.description|truncatechars:160 }}{% endblock %}
-{% block canonical %}https://projectshub.co.in{% url 'workshop_detail' workshop.id %}{% endblock %}
+{% block canonical %}{{ site_url }}{% url 'workshop_detail' workshop.id %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/workshop.css' %}" />

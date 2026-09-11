@@ -18,7 +18,7 @@ free AI tools, Django projects, final year AI projects, NLP, RAG, AI automation 
 
 
 
-{% block canonical %}https://projectshub.co.in/
+{% block canonical %}{{ site_url }}/
 {% endblock %}
 
 
@@ -28,7 +28,7 @@ free AI tools, Django projects, final year AI projects, NLP, RAG, AI automation 
 students and businesses. No signup needed.{% endblock %}
 
 
-{% block og_url %}https://projectshub.co.in/
+{% block og_url %}{{ site_url }}/
 {% endblock %}
 
 
@@ -41,20 +41,20 @@ students and businesses. No signup needed.{% endblock %}
     {
       "@type": "WebSite",
       "name": "ProjectsHub",
-      "url": "https://projectshub.co.in/",
+      "url": "{{ site_url }}/",
       "description": "Real-world AI & ML projects with source code for students, and custom AI development for businesses.",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://projectshub.co.in/projects/?q={search_term_string}",
+        "target": "{{ site_url }}/projects/?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     },
     {
       "@type": "Organization",
       "name": "ProjectsHub",
-      "url": "https://projectshub.co.in/",
-      "logo": "https://projectshub.co.in/static/image/logo.png",
-      "email": "support@projectshub.co.in",
+      "url": "{{ site_url }}/",
+      "logo": "{{ site_url }}/static/image/logo.png",
+      "email": "{{ site_settings.primary_email|default:'support@projectshub.co.in' }}",
       "areaServed": "IN",
       "description": "AI projects, free AI tools, and custom AI development for students and businesses.",
       "sameAs": []

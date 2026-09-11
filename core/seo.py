@@ -5,6 +5,7 @@ robots index control, and multi-entity Schema.org structured data.
 """
 
 import json
+from urllib.parse import urlparse
 from django.conf import settings
 from django.utils.html import strip_tags
 from core.models import SEOData
@@ -20,7 +21,10 @@ def get_base_url(request=None):
             return request.build_absolute_uri('/').rstrip('/')
         except Exception:
             pass
-    return getattr(settings, 'SITE_URL', DEFAULT_DOMAIN).rstrip('/')
+    site_url = getattr(settings, 'SITE_URL', '').rstrip('/')
+    if site_url:
+        return site_url
+    return DEFAULT_DOMAIN.rstrip('/')
 
 
 def build_organization_schema(base_url):
@@ -288,7 +292,21 @@ def get_seo_for_request(request, view_context=None):
         if custom_seo.meta_description:
             meta_description = custom_seo.meta_description
         if custom_seo.canonical_url:
-            canonical_url = custom_seo.canonical_url
+            raw_canonical = custom_seo.canonical_url.strip()
+            if raw_canonical.startswith('/'):
+                canonical_url = f"{base_url}{raw_canonical}"
+            else:
+                parsed_c = urlparse(raw_canonical)
+                internal_hosts = {'projectshub.co.in', 'www.projectshub.co.in', 'localhost', '127.0.0.1'}
+                if request:
+                    internal_hosts.add(request.get_host().split(':')[0])
+                if parsed_c.netloc.split(':')[0] in internal_hosts or not parsed_c.netloc:
+                    path_part = parsed_c.path if parsed_c.path else '/'
+                    if parsed_c.query:
+                        path_part += f"?{parsed_c.query}"
+                    canonical_url = f"{base_url}{path_part}"
+                else:
+                    canonical_url = raw_canonical
         if custom_seo.og_title:
             og_title = custom_seo.og_title
         if custom_seo.og_description:
@@ -343,17 +361,23 @@ def get_seo_for_request(request, view_context=None):
     }
 
 
-def get_all_site_routes_seo_status():
+def get_all_site_routes_seo_status(request=None):
     """
     Audits all primary site routes and models for the SEO & Index Status Telemetry Dashboard.
     Returns structured list of routes with indexability status, title score, description score,
     canonical validity, and schema types.
     """
+    base_url = get_base_url(request)
+
     class MockRequest:
         def __init__(self, path):
             self.path = path
         def build_absolute_uri(self, p='/'):
-            return f"{DEFAULT_DOMAIN}{p}"
+            return f"{base_url}{p}"
+        def get_host(self):
+            return base_url.replace('http://', '').replace('https://', '').split('/')[0]
+        def is_secure(self):
+            return base_url.startswith('https://')
 
     routes = [
         ('/', 'Home Page', 'Core'),
@@ -395,11 +419,11 @@ def get_all_site_routes_seo_status():
     return results
 
 
-def auto_generate_all_seo_data():
+def auto_generate_all_seo_data(request=None):
     """
     Populates or synchronizes SEOData database records with the automated best-practice values.
     """
-    statuses = get_all_site_routes_seo_status()
+    statuses = get_all_site_routes_seo_status(request)
     created_or_updated = 0
     for s in statuses:
         obj, _ = SEOData.objects.update_or_create(

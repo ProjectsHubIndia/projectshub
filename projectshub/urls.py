@@ -5,12 +5,18 @@ from django.views.static import serve
 from core.views import (
     admin_guide_view, toggle_guide_note, admin_assets_view, admin_asset_delete_view,
     admin_backup_view, admin_backup_download_json, admin_backup_download_db,
-    admin_backup_sync_initial, admin_backup_restore
+    admin_backup_sync_initial, admin_backup_restore,
+    error_404, error_500
 )
+
+from django.shortcuts import render
 
 admin.site.site_header = "AI ProjectsHub Admin"
 admin.site.site_title = "AI ProjectsHub"
 admin.site.index_title = "Dashboard"
+
+# Seamlessly render custom admin 404 template even in local dev with DEBUG=True
+admin.site.catch_all_view = lambda request, url: render(request, 'admin/404.html', status=404)
 
 urlpatterns = [
     path('admin/guide/toggle/<int:note_id>/', toggle_guide_note, name='toggle_guide_note'),
@@ -39,7 +45,15 @@ urlpatterns = [
         {'document_root': settings.STATICFILES_DIRS[0]},
     ),
 
+    # Direct preview routes for custom error pages (accessible even during local development with DEBUG=True)
+    path('404/', error_404, name='preview_404'),
+    path('admin-404/', lambda request: error_404(request), name='preview_admin_404'),
+    path('500/', error_500, name='preview_500'),
+
     path('', include('core.urls')),
+
+    # Catch-all fallback: seamlessly renders custom 404 page even in local dev (DEBUG=True)
+    re_path(r'^.*$', error_404, name='catch_all_404'),
 ]
 handler404 = 'core.views.error_404'
 handler500 = 'core.views.error_500'

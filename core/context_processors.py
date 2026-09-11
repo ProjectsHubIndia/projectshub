@@ -52,6 +52,21 @@ def site_context(request):
         mega_business_items = []
         primary_nav_items = []
 
+    # Dynamic Domain and Site URL (automatically detected from incoming request)
+    site_url = ""
+    current_domain = ""
+    if request:
+        try:
+            site_url = request.build_absolute_uri('/').rstrip('/')
+            current_domain = request.get_host()
+        except Exception:
+            pass
+    if not site_url:
+        site_url = getattr(settings, 'SITE_URL', 'https://projectshub.co.in').rstrip('/')
+        current_domain = getattr(settings, 'SITE_DOMAIN', 'projectshub.co.in')
+
+    scheme = 'https' if (request and request.is_secure()) else 'http'
+
     context = {
         'site_settings': settings_obj,
         'social_links': social_links,
@@ -61,6 +76,9 @@ def site_context(request):
         'mega_student_items': mega_student_items,
         'mega_business_items': mega_business_items,
         'primary_nav_items': primary_nav_items,
+        'site_url': site_url,
+        'current_domain': current_domain,
+        'site_scheme': scheme,
     }
 
     # Automated SEO Engine for public pages

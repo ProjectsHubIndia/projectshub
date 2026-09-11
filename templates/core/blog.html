@@ -3,10 +3,10 @@
 
 {% block title %}Blog — AI Insights, Tutorials & Projects | ProjectsHub{% endblock %}
 {% block meta_description %}Read the latest AI tutorials, ML project walkthroughs, and tech insights from the ProjectsHub team.{% endblock %}
-{% block canonical %}https://projectshub.co.in/blog/{% endblock %}
+{% block canonical %}{{ site_url }}/blog/{% endblock %}
 {% block og_title %}ProjectsHub Blog — AI Insights & Tutorials{% endblock %}
 {% block og_description %}Explore tutorials, case studies and career tips from our AI engineers. Updated regularly.{% endblock %}
-{% block og_url %}https://projectshub.co.in/blog/{% endblock %}
+{% block og_url %}{{ site_url }}/blog/{% endblock %}
 {% block nav_resources %}active{% endblock %}
 
 {% block schema %}
@@ -16,11 +16,11 @@
   "@type": "Blog",
   "name": "ProjectsHub Blog",
   "description": "AI tutorials, ML project walkthroughs, and tech insights from ProjectsHub.",
-  "url": "https://projectshub.co.in/blog/",
+  "url": "{{ site_url }}/blog/",
   "publisher": {
     "@type": "Organization",
     "name": "ProjectsHub",
-    "url": "https://projectshub.co.in"
+    "url": "{{ site_url }}"
   }
 }
 </script>

@@ -11,11 +11,11 @@ Learn about our usage policies, intellectual property rights, and legal informat
 
 {% block meta_keywords %}ProjectsHub terms, terms and conditions, AI tools policy, usage policy, ProjectsHub legal{% endblock %}
 
-{% block canonical %}https://projectshub.co.in/terms/{% endblock %}
+{% block canonical %}{{ site_url }}/terms/{% endblock %}
 
 {% block og_title %}Terms & Conditions — ProjectsHub{% endblock %}
 {% block og_description %}Terms and Conditions governing your use of ProjectsHub's AI tools, projects, and services.{% endblock %}
-{% block og_url %}https://projectshub.co.in/terms/{% endblock %}
+{% block og_url %}{{ site_url }}/terms/{% endblock %}
 
 {% block schema %}
 <script type="application/ld+json">
@@ -23,12 +23,12 @@ Learn about our usage policies, intellectual property rights, and legal informat
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "Terms & Conditions",
-  "url": "https://projectshub.co.in/terms/",
+  "url": "{{ site_url }}/terms/",
   "description": "Terms and Conditions for ProjectsHub AI tools and services.",
   "publisher": {
     "@type": "Organization",
     "name": "ProjectsHub",
-    "url": "https://projectshub.co.in/"
+    "url": "{{ site_url }}/"
   }
 }
 </script>

@@ -8,12 +8,12 @@
 
 {% block meta_keywords %} Python to AI workshop, AI workshop India, machine learning workshop, Python AI training, deep learning course, ProjectsHub workshop, data science bootcamp, ML hands-on training, 5 day AI workshop {% endblock %}
 
-{% block canonical %} https://projectshub.co.in/workshop/ {% endblock %}
+{% block canonical %}{{ site_url }}/workshop/{% endblock %}
 
 {% block og_title %} 5-Day Python to AI Workshop — ProjectsHub {% endblock %}
 {% block og_description %} Hands-on 1-on-1 Python to AI workshop — 4 days building real projects from Python basics to AI deployment, plus a Q&A and career-guidance day. Limited seats. {% endblock %}
 
-{% block og_url %} https://projectshub.co.in/workshop/ {% endblock %}
+{% block og_url %}{{ site_url }}/workshop/{% endblock %}
 
 {% block schema %}
 {# BreadcrumbList — shows "ProjectsHub > Workshop" in Google results #}
@@ -26,13 +26,13 @@
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://projectshub.co.in/"
+        "item": "{{ site_url }}/"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Workshop",
-        "item": "https://projectshub.co.in/workshop/"
+        "item": "{{ site_url }}/workshop/"
       }
     ]
   }
@@ -46,7 +46,7 @@
     "@type": "EducationEvent",
     "name": "{{ workshop.days.count }}-Day Intensive {{ workshop.title|escapejs }}",
     "description": "{% if workshop.subtitle %}{{ workshop.subtitle|escapejs }}{% else %}{{ workshop.description|truncatechars:300|escapejs }}{% endif %}",
-    "url": "https://projectshub.co.in/workshop/",
+    "url": "{{ site_url }}/workshop/",
     "eventStatus": "https://schema.org/EventScheduled",
     "eventAttendanceMode": "https://schema.org/{% if workshop.mode and 'online' in workshop.mode|lower %}OnlineEventAttendanceMode{% else %}OfflineEventAttendanceMode{% endif %}",
     {% if workshop.date %}
@@ -55,16 +55,16 @@
     "organizer": {
       "@type": "Organization",
       "name": "ProjectsHub",
-      "url": "https://projectshub.co.in",
+      "url": "{{ site_url }}",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://projectshub.co.in/static/image/favicon_io/logo.png"
+        "url": "{{ site_url }}/static/image/favicon_io/logo.png"
       }
     },
     "offers": {
       "@type": "Offer",
       "availability": "https://schema.org/{% if workshop.seats %}LimitedAvailability{% else %}InStock{% endif %}",
-      "url": "https://projectshub.co.in/workshop/",
+      "url": "{{ site_url }}/workshop/",
       "priceCurrency": "INR"
     }{% if workshop.seats %},
     "remainingAttendeeCapacity": {{ workshop.seats }}

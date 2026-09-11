@@ -4,10 +4,10 @@
 {% block title %}Free AI Tools Directory | 50+ Webapps for Students & Developers — ProjectsHub{% endblock %}
 {% block meta_description %}Explore 50+ free, production-ready AI tools and webapps for students, developers, and researchers. Code explainers, text generators, OCR, and resume builders with zero signup required.{% endblock %}
 {% block meta_keywords %}free AI tools, AI tools for students, code explainer AI, free resume builder AI, AI text generator, OCR tool online, ProjectsHub tools{% endblock %}
-{% block canonical %}https://projectshub.co.in/tools/{% endblock %}
+{% block canonical %}{{ site_url }}/tools/{% endblock %}
 {% block og_title %}Free AI Tools Directory — ProjectsHub{% endblock %}
 {% block og_description %}Discover free AI webapps for coding, writing, research, and career prep. Instant browser access, zero signups or API keys needed.{% endblock %}
-{% block og_url %}https://projectshub.co.in/tools/{% endblock %}
+{% block og_url %}{{ site_url }}/tools/{% endblock %}
 
 {% block schema %}
 {# BreadcrumbList Schema #}
@@ -20,13 +20,13 @@
       "@type": "ListItem",
       "position": 1,
       "name": "Home",
-      "item": "https://projectshub.co.in/"
+      "item": "{{ site_url }}/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "Free AI Tools",
-      "item": "https://projectshub.co.in/tools/"
+      "item": "{{ site_url }}/tools/"
     }
   ]
 }
@@ -39,14 +39,14 @@
   "@type": "CollectionPage",
   "name": "Free AI Tools Directory — ProjectsHub",
   "description": "Curated directory of 50+ free AI tools and web applications built for developers, students, and researchers.",
-  "url": "https://projectshub.co.in/tools/",
+  "url": "{{ site_url }}/tools/",
   "publisher": {
     "@type": "Organization",
     "name": "ProjectsHub",
-    "url": "https://projectshub.co.in/",
+    "url": "{{ site_url }}/",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://projectshub.co.in/static/image/favicon_io/logo.png"
+      "url": "{{ site_url }}/static/image/favicon_io/logo.png"
     }
   }
 }

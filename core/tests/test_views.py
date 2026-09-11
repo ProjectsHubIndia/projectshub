@@ -60,14 +60,22 @@ class ViewTests(TestCase):
         res = self.client.get('/sitemap.xml')
         self.assertEqual(res.status_code, 200)
         self.assertEqual(res['Content-Type'], 'application/xml')
-        self.assertContains(res, 'https://projectshub.co.in/projects/')
+        self.assertContains(res, 'http://testserver/projects/')
+
+        # Test custom domain via host header
+        res_custom = self.client.get('/sitemap.xml', HTTP_HOST='projectshub.co.in', secure=True)
+        self.assertContains(res_custom, 'https://projectshub.co.in/projects/')
 
     def test_robots_txt(self):
         res = self.client.get('/robots.txt')
         self.assertEqual(res.status_code, 200)
         self.assertEqual(res['Content-Type'], 'text/plain')
         self.assertContains(res, 'User-agent: *')
-        self.assertContains(res, 'Sitemap: https://projectshub.co.in/sitemap.xml')
+        self.assertContains(res, 'Sitemap: http://testserver/sitemap.xml')
+
+        # Test custom domain via host header
+        res_custom = self.client.get('/robots.txt', HTTP_HOST='projectshub.co.in', secure=True)
+        self.assertContains(res_custom, 'Sitemap: https://projectshub.co.in/sitemap.xml')
 
     def test_api_captcha(self):
         res = self.client.get(reverse('api_captcha'))

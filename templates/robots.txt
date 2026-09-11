@@ -8,4 +8,4 @@ Disallow: /idea/
 Disallow: /enroll/
 Disallow: /api/
 
-Sitemap: https://projectshub.co.in/sitemap.xml
+Sitemap: {{ site_url }}/sitemap.xml

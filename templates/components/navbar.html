@@ -299,7 +299,7 @@
             </div>
           </a>
 
-          <a href="mailto:support@projectshub.co.in?subject=Free%20Consultation%20Inquiry" class="call-dropdown__item"
+          <a href="mailto:{{ site_settings.primary_email|default:'support@projectshub.co.in' }}?subject=Free%20Consultation%20Inquiry" class="call-dropdown__item"
             role="menuitem">
             <div class="call-dropdown__icon">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2"
@@ -310,7 +310,7 @@
             </div>
             <div class="call-dropdown__text">
               <strong>Email Us</strong>
-              <small>support@projectshub.co.in</small>
+              <small>{{ site_settings.primary_email|default:'support@projectshub.co.in' }}</small>
             </div>
           </a>
         </div>

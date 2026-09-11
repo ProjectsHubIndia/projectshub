@@ -7,11 +7,11 @@
 
 {% block meta_keywords %}ProjectsHub privacy policy, data protection, personal information, cookies policy, ProjectsHub legal{% endblock %}
 
-{% block canonical %}https://projectshub.co.in/privacy/{% endblock %}
+{% block canonical %}{{ site_url }}/privacy/{% endblock %}
 
 {% block og_title %}Privacy Policy — ProjectsHub{% endblock %}
 {% block og_description %}How ProjectsHub collects, uses, and protects your personal data.{% endblock %}
-{% block og_url %}https://projectshub.co.in/privacy/{% endblock %}
+{% block og_url %}{{ site_url }}/privacy/{% endblock %}
 
 {% block schema %}
 <script type="application/ld+json">
@@ -19,12 +19,12 @@
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "Privacy Policy",
-  "url": "https://projectshub.co.in/privacy/",
+  "url": "{{ site_url }}/privacy/",
   "description": "Privacy Policy for ProjectsHub AI tools and services.",
   "publisher": {
     "@type": "Organization",
     "name": "ProjectsHub",
-    "url": "https://projectshub.co.in/"
+    "url": "{{ site_url }}/"
   }
 }
 </script>

@@ -34,11 +34,14 @@ from .models import (
     ChatbotConversation, ChatbotMessage,
     AdminGuideNote
 )
+from .seo import get_base_url
 
 logger = logging.getLogger(__name__)
 
 
 def error_404(request, exception=None):
+    if request.path.startswith('/admin/') or request.path.startswith('/admin-404'):
+        return render(request, 'admin/404.html', status=404)
     return render(request, 'core/error404.html', status=404)
 
 
@@ -684,6 +687,7 @@ def api_blog(request):
 # ── SEO Endpoints ─────────────────────────────────────────────────────────────
 
 def robots_txt(request):
+    base_url = get_base_url(request)
     lines = [
         'User-agent: *',
         'Allow: /',
@@ -694,13 +698,13 @@ def robots_txt(request):
         'Disallow: /enroll/',
         'Disallow: /api/',
         '',
-        'Sitemap: https://projectshub.co.in/sitemap.xml',
+        f'Sitemap: {base_url}/sitemap.xml',
     ]
     return HttpResponse('\n'.join(lines), content_type='text/plain')
 
 
 def sitemap_xml(request):
-    base_url = "https://projectshub.co.in"
+    base_url = get_base_url(request)
     xml = ['<?xml version="1.0" encoding="UTF-8"?>']
     xml.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
 

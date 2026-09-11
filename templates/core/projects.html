@@ -7,10 +7,10 @@
 {% block title %}AI & ML Projects — ProjectsHub | Real-World Projects for Students & Businesses{% endblock %}
 {% block meta_description %}Explore 50+ real-world AI, Machine Learning, Django, FastAPI and Data Science projects by ProjectsHub. Source code, documentation and mentorship included.{% endblock %}
 {% block meta_keywords %}AI projects, machine learning projects India, Django projects with source code, data science projects, NLP projects, final year AI projects, free ML projects, ProjectsHub{% endblock %}
-{% block canonical %}https://projectshub.co.in/projects/{% endblock %}
+{% block canonical %}{{ site_url }}/projects/{% endblock %}
 {% block og_title %}50+ Real-World AI & ML Projects — ProjectsHub{% endblock %}
 {% block og_description %}Browse machine learning, Django, FastAPI and data science projects with full source code. Built for students and businesses. Explore free.{% endblock %}
-{% block og_url %}https://projectshub.co.in/projects/{% endblock %}
+{% block og_url %}{{ site_url }}/projects/{% endblock %}
 
 {% block schema %}
 <script type="application/ld+json">
@@ -18,8 +18,8 @@
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-    {"@type":"ListItem","position":1,"name":"Home","item":"https://projectshub.co.in/"},
-    {"@type":"ListItem","position":2,"name":"Projects","item":"https://projectshub.co.in/projects/"}
+    {"@type":"ListItem","position":1,"name":"Home","item":"{{ site_url }}/"},
+    {"@type":"ListItem","position":2,"name":"Projects","item":"{{ site_url }}/projects/"}
   ]
 }
 </script>
@@ -29,8 +29,8 @@
   "@type": "CollectionPage",
   "name": "AI & ML Projects — ProjectsHub",
   "description": "Real-world AI, machine learning, Django, FastAPI and data science projects built by ProjectsHub.",
-  "url": "https://projectshub.co.in/projects/",
-  "publisher": {"@type":"Organization","name":"ProjectsHub","url":"https://projectshub.co.in","logo":{"@type":"ImageObject","url":"https://projectshub.co.in/static/image/favicon_io/logo.png"}}
+  "url": "{{ site_url }}/projects/",
+  "publisher": {"@type":"Organization","name":"ProjectsHub","url":"{{ site_url }}","logo":{"@type":"ImageObject","url":"{{ site_url }}/static/image/favicon_io/logo.png"}}
 }
 </script>
 {% if projects %}
@@ -39,11 +39,11 @@
   "@context": "https://schema.org",
   "@type": "ItemList",
   "name": "AI & ML Projects by ProjectsHub",
-  "url": "https://projectshub.co.in/projects/",
+  "url": "{{ site_url }}/projects/",
   "numberOfItems": {{ projects|length }},
   "itemListElement": [
     {% for project in projects %}
-    {"@type":"ListItem","position":{{ forloop.counter }},"url":"https://projectshub.co.in{% url 'project_detail' project.id %}","name":"{{ project.title|escapejs }}","description":"{{ project.description|truncatechars:160|escapejs }}"}{% if not forloop.last %},{% endif %}
+    {"@type":"ListItem","position":{{ forloop.counter }},"url":"{{ site_url }}{% url 'project_detail' project.id %}","name":"{{ project.title|escapejs }}","description":"{{ project.description|truncatechars:160|escapejs }}"}{% if not forloop.last %},{% endif %}
     {% endfor %}
   ]
 }

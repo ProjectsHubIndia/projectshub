@@ -3,10 +3,10 @@
 
 {% block title %}{{ post.title }} | ProjectsHub Blog{% endblock %}
 {% block meta_description %}{{ post.excerpt|truncatechars:160 }}{% endblock %}
-{% block canonical %}https://projectshub.co.in{% url 'blog_detail' post.slug %}{% endblock %}
+{% block canonical %}{{ site_url }}{% url 'blog_detail' post.slug %}{% endblock %}
 {% block og_title %}{{ post.title }} | ProjectsHub{% endblock %}
 {% block og_description %}{{ post.excerpt|truncatechars:160 }}{% endblock %}
-{% block og_url %}https://projectshub.co.in{% url 'blog_detail' post.slug %}{% endblock %}
+{% block og_url %}{{ site_url }}{% url 'blog_detail' post.slug %}{% endblock %}
 {% if post.get_image_src %}{% block og_image %}{{ post.get_image_src }}{% endblock %}{% endif %}
 {% block nav_resources %}active{% endblock %}
 
@@ -19,13 +19,13 @@
   "description": "{{ post.excerpt|truncatechars:160|escapejs }}",
   "datePublished": "{{ post.published_at|date:'Y-m-d' }}",
   "dateModified": "{{ post.updated_at|date:'Y-m-d' }}",
-  "url": "https://projectshub.co.in{% url 'blog_detail' post.slug %}",
+  "url": "{{ site_url }}{% url 'blog_detail' post.slug %}",
   {% if post.get_image_src %}"image": "{{ post.get_image_src }}",{% endif %}
   "author": {"@type": "Person", "name": "{{ post.author_name|escapejs }}"},
   "publisher": {
     "@type": "Organization",
     "name": "ProjectsHub",
-    "logo": {"@type": "ImageObject", "url": "https://projectshub.co.in/static/image/favicon_io/logo.png"}
+    "logo": {"@type": "ImageObject", "url": "{{ site_url }}/static/image/favicon_io/logo.png"}
   }
 }
 </script>
@@ -116,7 +116,7 @@
   <div class="bd-share">
     <span class="bd-share__label">Share</span>
     <a
-      href="https://twitter.com/intent/tweet?text={{ post.title|urlencode }}&url=https://projectshub.co.in{% url 'blog_detail' post.slug %}"
+      href="https://twitter.com/intent/tweet?text={{ post.title|urlencode }}&url={{ site_url }}{% url 'blog_detail' post.slug %}"
       target="_blank" rel="noopener noreferrer"
       class="bd-share__btn"
       aria-label="Share on Twitter/X"
@@ -127,7 +127,7 @@
       X (Twitter)
     </a>
     <a
-      href="https://www.linkedin.com/shareArticle?mini=true&url=https://projectshub.co.in{% url 'blog_detail' post.slug %}&title={{ post.title|urlencode }}"
+      href="https://www.linkedin.com/shareArticle?mini=true&url={{ site_url }}{% url 'blog_detail' post.slug %}&title={{ post.title|urlencode }}"
       target="_blank" rel="noopener noreferrer"
       class="bd-share__btn"
       aria-label="Share on LinkedIn"
@@ -138,7 +138,7 @@
       LinkedIn
     </a>
     <a
-      href="https://wa.me/?text={{ post.title|urlencode }}%20https://projectshub.co.in{% url 'blog_detail' post.slug %}"
+      href="https://wa.me/?text={{ post.title|urlencode }}%20{{ site_url }}{% url 'blog_detail' post.slug %}"
       target="_blank" rel="noopener noreferrer"
       class="bd-share__btn"
       aria-label="Share on WhatsApp"

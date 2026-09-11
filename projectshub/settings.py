@@ -59,8 +59,12 @@ extra_origins = os.environ.get('CSRF_TRUSTED_ORIGINS', '')
 if extra_origins:
     CSRF_TRUSTED_ORIGINS.extend([o.strip() for o in extra_origins.split(',') if o.strip()])
 
-# Reverse proxy SSL header for Vercel
+# Reverse proxy SSL header for Vercel & Railway
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Base site domain / URL configuration (empty by default to enable full dynamic auto-detection)
+SITE_URL = os.environ.get('SITE_URL', '').rstrip('/')
+SITE_DOMAIN = os.environ.get('SITE_DOMAIN', 'projectshub.co.in')
 
 if not DEBUG:
     SESSION_COOKIE_SECURE = True

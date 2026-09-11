@@ -11,11 +11,11 @@ SEO — Workshop day detail page
 
 {% block meta_keywords %}{{ day.title }}, {{ workshop.title }}, AI workshop day {{ day.day_number }}, machine learning training, ProjectsHub workshop, hands-on AI{% endblock %}
 
-{% block canonical %}https://projectshub.co.in{% url 'workshop_day_detail' workshop.id day.day_number %}{% endblock %}
+{% block canonical %}{{ site_url }}{% url 'workshop_day_detail' workshop.id day.day_number %}{% endblock %}
 
 {% block og_title %}Day {{ day.day_number }}: {{ day.title }} — {{ workshop.title }} | ProjectsHub{% endblock %}
 {% block og_description %}{% if day.outcome %}{{ day.outcome }}{% else %}{{ day.description|truncatechars:160 }}{% endif %}{% endblock %}
-{% block og_url %}https://projectshub.co.in{% url 'workshop_day_detail' workshop.id day.day_number %}{% endblock %}
+{% block og_url %}{{ site_url }}{% url 'workshop_day_detail' workshop.id day.day_number %}{% endblock %}
 
 {% block schema %}
 {# BreadcrumbList — shows "ProjectsHub > Day N" in Google results #}
@@ -28,25 +28,25 @@ SEO — Workshop day detail page
       "@type": "ListItem",
       "position": 1,
       "name": "Home",
-      "item": "https://projectshub.co.in/"
+      "item": "{{ site_url }}/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "Workshop",
-      "item": "https://projectshub.co.in/workshop/"
+      "item": "{{ site_url }}/workshop/"
     },
     {
       "@type": "ListItem",
       "position": 3,
       "name": "{{ workshop.title|escapejs }}",
-      "item": "https://projectshub.co.in{% url 'workshop_detail' workshop.id %}"
+      "item": "{{ site_url }}{% url 'workshop_detail' workshop.id %}"
     },
     {
       "@type": "ListItem",
       "position": 4,
       "name": "Day {{ day.day_number }}: {{ day.title|escapejs }}",
-      "item": "https://projectshub.co.in{% url 'workshop_day_detail' workshop.id day.day_number %}"
+      "item": "{{ site_url }}{% url 'workshop_day_detail' workshop.id day.day_number %}"
     }
   ]
 }
@@ -59,20 +59,20 @@ SEO — Workshop day detail page
   "@type": "Course",
   "name": "Day {{ day.day_number }}: {{ day.title|escapejs }}",
   "description": "{{ day.description|truncatechars:300|escapejs }}",
-  "url": "https://projectshub.co.in{% url 'workshop_day_detail' workshop.id day.day_number %}",
+  "url": "{{ site_url }}{% url 'workshop_day_detail' workshop.id day.day_number %}",
   "provider": {
     "@type": "Organization",
     "name": "ProjectsHub",
-    "url": "https://projectshub.co.in",
+    "url": "{{ site_url }}",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://projectshub.co.in/static/image/favicon_io/logo.png"
+      "url": "{{ site_url }}/static/image/favicon_io/logo.png"
     }
   },
   "isPartOf": {
     "@type": "EducationEvent",
     "name": "{{ workshop.title|escapejs }}",
-    "url": "https://projectshub.co.in/workshop/"{% if workshop.date %},
+    "url": "{{ site_url }}/workshop/"{% if workshop.date %},
     "startDate": "{{ workshop.date }}"{% endif %}
   },
   "hasCourseInstance": {
