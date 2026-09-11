@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="{% static 'admin/css/base.css' %}">
   <link rel="stylesheet" href="{% static 'admin/css/responsive.css' %}">
   {% block extrastyle %}{% endblock %}
-  <link rel="stylesheet" href="{% static 'css/wp-admin.css' %}?v=5">
+  <link rel="stylesheet" href="{% static 'css/wp-admin.css' %}?v=6">
   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'image/Favicon-new/favicon-32x32.png' %}">
   
   {% block extrahead %}{% endblock %}
@@ -33,6 +33,7 @@
         </a>
         <ul class="wpab-submenu">
           <li><a href="{% url 'admin:index' %}">About ProjectsHub</a></li>
+          <li><a href="/admin/backup/" style="font-weight:600;color:#72aee6;">💾 Backup &amp; Export Data</a></li>
           <li><a href="https://docs.djangoproject.com/" target="_blank">Django 4.2 Documentation ↗</a></li>
           <li><a href="/sitemap/" target="_blank">View Site Map ↗</a></li>
         </ul>
@@ -83,6 +84,7 @@
         </button>
         <ul class="wpab-submenu">
           <li><a href="/admin/core/project/add/">AI Project</a></li>
+          <li><a href="/admin/core/megamenutag/add/">🏷️ Popular Tag (Mega Menu)</a></li>
           <li><a href="/admin/core/blogpost/add/">Blog Post</a></li>
           <li><a href="/admin/core/aitool/add/">AI Tool</a></li>
           <li><a href="/admin/core/workshopcard/add/">Workshop</a></li>
@@ -190,6 +192,7 @@
             <li><a href="/admin/core/project/add/">Add New</a></li>
             <li><a href="/admin/core/projectcategory/">Categories</a></li>
             <li><a href="/admin/core/technology/">Technologies</a></li>
+            <li><a href="/admin/core/megamenutag/">🏷️ Popular Tags (Mega Menu)</a></li>
           </ul>
         </li>
 
@@ -302,6 +305,7 @@
           <ul class="wp-submenu">
             <li class="wp-submenu-head">Appearance</li>
             <li><a href="/admin/core/navigationitem/">Menus &amp; Navigation</a></li>
+            <li><a href="/admin/core/megamenutag/" style="font-weight:600;color:#2271b1;">🏷️ Popular Tags (Mega Menu)</a></li>
             <li><a href="/admin/core/sociallink/">Social Links</a></li>
             <li><a href="/admin/core/statitem/">Hero Stats</a></li>
           </ul>
@@ -317,6 +321,7 @@
             <li class="wp-submenu-head">SEO &amp; Redirects</li>
             <li><a href="/admin/core/seodata/">SEO Metadata</a></li>
             <li><a href="/admin/core/redirect/">301/302 Redirects</a></li>
+            <li><a href="/admin/backup/">💾 Backup Database</a></li>
             <li><a href="/sitemap.xml" target="_blank">XML Sitemap ↗</a></li>
             <li><a href="/robots.txt" target="_blank">Robots.txt ↗</a></li>
           </ul>
@@ -347,6 +352,7 @@
           <ul class="wp-submenu">
             <li class="wp-submenu-head">Settings</li>
             <li><a href="/admin/core/sitesettings/1/change/">General Settings</a></li>
+            <li><a href="/admin/backup/" style="font-weight:600;color:#72aee6;">💾 Backup &amp; Export</a></li>
           </ul>
         </li>
 
@@ -488,6 +494,45 @@
         btn.style.cssText = 'background:none;border:none;color:#787c82;cursor:pointer;margin-left:auto;font-size:12px;padding:2px 6px;';
         btn.onclick = function() { notice.remove(); };
         notice.appendChild(btn);
+      });
+
+      // 4. Flyout Submenu Viewport Positioning (Prevents clipping by sidebar scroll boundaries)
+      var menuListItems = document.querySelectorAll('#adminmenu > li.wp-menu-item');
+      menuListItems.forEach(function(item) {
+        var sub = item.querySelector('.wp-submenu');
+        if (!sub) return;
+
+        item.addEventListener('mouseenter', function() {
+          var isCurrent = item.classList.contains('current');
+          var folded = wpwrap && wpwrap.classList.contains('folded');
+
+          if (folded || !isCurrent) {
+            var rect = item.getBoundingClientRect();
+            var left = folded ? 44 : 240;
+            var top = rect.top;
+            var subHeight = sub.offsetHeight || 220;
+            if (top + subHeight > window.innerHeight - 10) {
+              top = Math.max(36, window.innerHeight - subHeight - 10);
+            }
+            sub.style.position = 'fixed';
+            sub.style.top = top + 'px';
+            sub.style.left = left + 'px';
+            sub.style.zIndex = '999999';
+            sub.style.display = 'block';
+          }
+        });
+
+        item.addEventListener('mouseleave', function() {
+          var isCurrent = item.classList.contains('current');
+          var folded = wpwrap && wpwrap.classList.contains('folded');
+          if (folded || !isCurrent) {
+            sub.style.display = '';
+            sub.style.position = '';
+            sub.style.top = '';
+            sub.style.left = '';
+            sub.style.zIndex = '';
+          }
+        });
       });
     })();
 

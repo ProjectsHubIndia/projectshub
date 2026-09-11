@@ -131,13 +131,15 @@ a:hover, a:focus {
   position: absolute;
   top: 32px;
   left: 0;
-  min-width: 180px;
-  background: var(--wp-menu-submenu-bg);
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
-  padding: 4px 0;
-  list-style: none;
-  margin: 0;
-  z-index: 100000;
+  min-width: 200px;
+  background: #1d2327 !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+  padding: 6px 0 !important;
+  list-style: none !important;
+  margin: 0 !important;
+  z-index: 1000000 !important;
+  border-radius: 0 0 4px 4px;
 }
 .wpab-submenu.align-right {
   left: auto;
@@ -162,17 +164,19 @@ a:hover, a:focus {
 }
 
 .wpab-submenu li a {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 7px 14px;
-  color: #c3c4c7 !important;
-  font-size: 12px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 8px 16px !important;
+  color: #f0f0f1 !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
   text-decoration: none !important;
-  white-space: nowrap;
+  white-space: nowrap !important;
+  transition: background 0.12s ease, color 0.12s ease;
 }
 .wpab-submenu li a:hover {
-  background: var(--wp-admin-bar-hover);
+  background: var(--wp-admin-bar-hover) !important;
   color: #ffffff !important;
 }
 
@@ -359,81 +363,93 @@ a:hover, a:focus {
   position: absolute;
   top: 0;
   left: var(--wp-sidebar-width);
-  min-width: 220px;
-  max-width: 320px;
+  min-width: 230px;
+  max-width: 340px;
   width: max-content;
-  background: var(--wp-menu-submenu-bg);
-  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.35);
-  padding: 4px 0;
-  list-style: none;
-  margin: 0;
-  z-index: 10000;
-  box-sizing: border-box;
+  background: #1d2327 !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  border-left: 3px solid var(--wp-link) !important;
+  box-shadow: 4px 4px 18px rgba(0, 0, 0, 0.45) !important;
+  padding: 6px 0 !important;
+  list-style: none !important;
+  margin: 0 !important;
+  z-index: 999999 !important;
+  box-sizing: border-box !important;
+  border-radius: 0 4px 4px 0;
 }
 
 .wp-submenu-head {
-  padding: 8px 16px 5px;
-  font-size: 11px;
-  font-weight: 700;
-  color: #a7aaad;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  margin-bottom: 4px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  padding: 8px 16px 6px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: #72aee6 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+  margin-bottom: 4px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 .wp-submenu li a {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 6px 14px;
-  color: #c3c4c7 !important;
-  font-size: 12px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 7px 16px !important;
+  color: #f0f0f1 !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
   text-decoration: none !important;
-  line-height: 1.4;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  box-sizing: border-box;
-  width: 100%;
-  min-width: 0;
-  gap: 8px;
+  line-height: 1.4 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  gap: 8px !important;
+  transition: background 0.12s ease, color 0.12s ease;
 }
 .wp-submenu li a:hover {
-  background: var(--wp-menu-hover);
+  background: var(--wp-menu-hover) !important;
   color: #ffffff !important;
 }
 .wp-submenu li.current a {
   color: #ffffff !important;
-  font-weight: 700;
+  font-weight: 700 !important;
 }
 
 /* Active Menu Item has Submenu open inline when sidebar is expanded */
 #wpwrap:not(.folded) .wp-menu-item.current .wp-submenu {
-  display: block;
-  position: static;
-  background: var(--wp-menu-submenu-bg);
-  box-shadow: none;
-  padding: 4px 0 6px;
-  width: 100%;
-  min-width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
+  display: block !important;
+  position: static !important;
+  background: #14181c !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 4px 0 6px !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  border-radius: 0 !important;
 }
 #wpwrap:not(.folded) .wp-menu-item.current .wp-submenu .wp-submenu-head {
-  display: none;
+  display: none !important;
 }
 #wpwrap:not(.folded) .wp-menu-item.current .wp-submenu li a {
-  padding-left: 36px;
-  padding-right: 14px;
-  box-sizing: border-box;
-  width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  padding-left: 36px !important;
+  padding-right: 14px !important;
+  color: #dcdcde !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+#wpwrap:not(.folded) .wp-menu-item.current .wp-submenu li a:hover {
+  color: #72aee6 !important;
+  background: transparent !important;
 }
 
 /* Hover flyout for other items or when folded */
@@ -1874,4 +1890,82 @@ body.login #wpbody-content {
     grid-template-columns: 1fr;
   }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   UNIVERSAL HIGH-VISIBILITY FORM SELECTS & DROPDOWNS
+   ══════════════════════════════════════════════════════════════════════════════ */
+select,
+.actions select,
+.change-form select,
+#changelist-filter select,
+.form-row select {
+  color-scheme: light !important;
+  background-color: #ffffff !important;
+  color: #1d2327 !important;
+  border: 1px solid #8c8f94 !important;
+  border-radius: 4px !important;
+  padding: 5px 28px 5px 10px !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  min-height: 32px !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%2350575e' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 8px center !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+}
+
+select:focus,
+.actions select:focus,
+.change-form select:focus,
+#changelist-filter select:focus,
+.form-row select:focus {
+  border-color: #2271b1 !important;
+  box-shadow: 0 0 0 1px #2271b1 !important;
+  outline: none !important;
+}
+
+select option {
+  background-color: #ffffff !important;
+  color: #1d2327 !important;
+  padding: 8px 10px !important;
+  font-size: 13px !important;
+}
+
+select option:checked {
+  background-color: #f0f6fc !important;
+  color: #2271b1 !important;
+  font-weight: 600 !important;
+}
+
+/* Autocomplete & Select2 Compatibility */
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--multiple {
+  background-color: #ffffff !important;
+  border: 1px solid #8c8f94 !important;
+  border-radius: 4px !important;
+  min-height: 32px !important;
+  color: #1d2327 !important;
+}
+.select2-dropdown {
+  background-color: #ffffff !important;
+  color: #1d2327 !important;
+  border: 1px solid #8c8f94 !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15) !important;
+  z-index: 1000000 !important;
+}
+.select2-results__option {
+  color: #1d2327 !important;
+  background-color: #ffffff !important;
+  padding: 7px 12px !important;
+  font-size: 13px !important;
+}
+.select2-results__option--highlighted {
+  background-color: #2271b1 !important;
+  color: #ffffff !important;
+}
+
 

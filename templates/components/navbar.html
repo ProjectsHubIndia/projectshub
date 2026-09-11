@@ -124,7 +124,7 @@
           <!-- Quick categories bottom bar -->
           <div class="mega-menu-bottom">
             <div class="mega-menu-bottom__tags">
-              <span class="mega-menu-bottom__label">Popular:</span>
+              <span class="mega-menu-bottom__label">{{ site_settings.mega_popular_label|default:'Popular:' }}</span>
               {% if mega_work_tags %}
               {% for tag in mega_work_tags %}
               <a href="{{ tag.url }}" class="mega-pill-tag" {% if tag.open_in_new_tab %}target="_blank"
@@ -136,7 +136,7 @@
               <a href="/projects/?category=data" class="mega-pill-tag">Data Science</a>
               {% endif %}
             </div>
-            <a href="/projects/" class="mega-menu-bottom__cta">Browse All Projects &rarr;</a>
+            <a href="{{ site_settings.mega_browse_all_url|default:'/projects/' }}" class="mega-menu-bottom__cta">{{ site_settings.mega_browse_all_text|default:'Browse All Projects &rarr;' }}</a>
           </div>
         </div>
       </div>

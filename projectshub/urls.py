@@ -2,7 +2,11 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf import settings
 from django.views.static import serve
-from core.views import admin_guide_view, toggle_guide_note, admin_assets_view, admin_asset_delete_view
+from core.views import (
+    admin_guide_view, toggle_guide_note, admin_assets_view, admin_asset_delete_view,
+    admin_backup_view, admin_backup_download_json, admin_backup_download_db,
+    admin_backup_sync_initial, admin_backup_restore
+)
 
 admin.site.site_header = "AI ProjectsHub Admin"
 admin.site.site_title = "AI ProjectsHub"
@@ -13,6 +17,11 @@ urlpatterns = [
     path('admin/guide/', admin_guide_view, name='admin_guide'),
     path('admin/assets/delete/', admin_asset_delete_view, name='admin_asset_delete'),
     path('admin/assets/', admin_assets_view, name='admin_assets'),
+    path('admin/backup/download-json/', admin_backup_download_json, name='admin_backup_download_json'),
+    path('admin/backup/download-db/', admin_backup_download_db, name='admin_backup_download_db'),
+    path('admin/backup/sync-initial/', admin_backup_sync_initial, name='admin_backup_sync_initial'),
+    path('admin/backup/restore/', admin_backup_restore, name='admin_backup_restore'),
+    path('admin/backup/', admin_backup_view, name='admin_backup'),
     path('admin/', admin.site.urls),
 
     # Serve user-uploaded media unconditionally (production host has no

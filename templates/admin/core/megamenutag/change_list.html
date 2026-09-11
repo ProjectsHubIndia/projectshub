@@ -1,0 +1,29 @@
+{% extends "admin/change_list.html" %}
+{% load i18n static %}
+
+{% block content %}
+<div class="postbox" style="margin-bottom:18px;border-left:4px solid #6366f1;">
+  <div class="postbox-header" style="display:flex;align-items:center;justify-content:space-between;">
+    <h2 style="display:flex;align-items:center;gap:8px;">
+      <span>🏷️</span>
+      <span>Mega Menu Popular Tags (Bottom Pill Quick Links)</span>
+    </h2>
+    <div style="display:flex;gap:8px;">
+      <a href="/admin/core/sitesettings/1/change/#id_mega_popular_label" class="button button-secondary button-small">
+        ⚙️ Edit "POPULAR:" Label &amp; CTA
+      </a>
+      <a href="/" target="_blank" class="button button-secondary button-small">
+        Preview on Website ↗
+      </a>
+    </div>
+  </div>
+  <div class="inside" style="padding:14px 18px;">
+    <p style="margin:0 0 10px 0;font-size:13px;color:#1d2327;">
+      These tags appear in the bottom bar of the <strong>Our Work</strong> Mega Menu dropdown on the navbar (next to <em>POPULAR:</em>).
+      Click <strong>"Add Popular Tag"</strong> in the top right to add a new tag (e.g. <em>Computer Vision</em>, <em>NLP &amp; LLMs</em>), or edit/reorder existing tags below.
+    </p>
+  </div>
+</div>
+
+{{ block.super }}
+{% endblock %}

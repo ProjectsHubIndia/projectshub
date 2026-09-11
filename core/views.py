@@ -1382,4 +1382,294 @@ def admin_asset_delete_view(request):
     })
 
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# ADMIN BACKUP & DATA MANAGEMENT
+# ═══════════════════════════════════════════════════════════════════════════════
+
+@staff_member_required(login_url='admin:login')
+def admin_backup_view(request):
+    """
+    Renders the Backup & Export Data Manager dashboard in Django admin.
+    Displays live database records, file sizes, and provides buttons for
+    exporting JSON snapshots, downloading SQLite db, syncing initial_data.json,
+    and restoring backups.
+    """
+    from django.apps import apps
+    import os
+    import datetime
+
+    sections = [
+        {
+            'title': 'Core Settings & Branding',
+            'icon': '⚙️',
+            'models': [
+                ('Site Settings', apps.get_model('core', 'SiteSettings')),
+                ('Navigation Items', apps.get_model('core', 'NavigationItem')),
+                ('Popular Tags', apps.get_model('core', 'MegaMenuTag')),
+                ('Social Links', apps.get_model('core', 'SocialLink')),
+                ('Hero Stats', apps.get_model('core', 'StatItem')),
+            ]
+        },
+        {
+            'title': 'Projects & Portfolio Showcase',
+            'icon': '🚀',
+            'models': [
+                ('Projects', apps.get_model('core', 'Project')),
+                ('Project Categories', apps.get_model('core', 'ProjectCategory')),
+                ('Technologies', apps.get_model('core', 'Technology')),
+                ('Project Highlights', apps.get_model('core', 'ProjectHighlight')),
+                ('Project Diagrams', apps.get_model('core', 'ProjectDiagram')),
+                ('Timeline Phases', apps.get_model('core', 'ProjectTimelinePhase')),
+                ('Project Features', apps.get_model('core', 'ProjectFeature')),
+            ]
+        },
+        {
+            'title': 'Blog & Technical Articles',
+            'icon': '📝',
+            'models': [
+                ('Blog Posts', apps.get_model('core', 'BlogPost')),
+                ('Blog Sections', apps.get_model('core', 'BlogSection')),
+                ('Blog Categories', apps.get_model('core', 'BlogCategory')),
+                ('Tags', apps.get_model('core', 'Tag')),
+            ]
+        },
+        {
+            'title': 'Free AI Tools & Utilities',
+            'icon': '🛠️',
+            'models': [
+                ('AI Tools', apps.get_model('core', 'AITool')),
+                ('Tool Categories', apps.get_model('core', 'ToolCategory')),
+            ]
+        },
+        {
+            'title': 'Bootcamps & Workshops',
+            'icon': '🎓',
+            'models': [
+                ('Workshops', apps.get_model('core', 'WorkshopCard')),
+                ('Curriculum Days', apps.get_model('core', 'WorkshopDay')),
+                ('Student Enrollments', apps.get_model('core', 'WorkshopEnrollment')),
+            ]
+        },
+        {
+            'title': 'Services & Client Case Studies',
+            'icon': '💼',
+            'models': [
+                ('Services', apps.get_model('core', 'Service')),
+                ('Service Features', apps.get_model('core', 'ServiceFeature')),
+                ('Case Studies', apps.get_model('core', 'CaseStudy')),
+                ('Case Study Metrics', apps.get_model('core', 'CaseStudyMetric')),
+                ('Pricing Plans', apps.get_model('core', 'PricingPlan')),
+            ]
+        },
+        {
+            'title': 'CRM, Leads & Inquiries',
+            'icon': '📬',
+            'models': [
+                ('Contact Inquiries', apps.get_model('core', 'ContactInquiry')),
+                ('Direct Messages', apps.get_model('core', 'ContactMessage')),
+                ('Project Gate Leads', apps.get_model('core', 'ProjectGateLead')),
+                ('Idea Proposals', apps.get_model('core', 'IdeaSubmission')),
+                ('Chatbot Conversations', apps.get_model('core', 'ChatbotConversation')),
+                ('Chatbot Messages', apps.get_model('core', 'ChatbotMessage')),
+            ]
+        },
+        {
+            'title': 'SEO, Operations & Feedback',
+            'icon': '🔍',
+            'models': [
+                ('SEO Metadata', apps.get_model('core', 'SEOData')),
+                ('301/302 Redirects', apps.get_model('core', 'Redirect')),
+                ('Testimonials', apps.get_model('core', 'Testimonial')),
+                ('FAQs', apps.get_model('core', 'FAQ')),
+                ('FAQ Categories', apps.get_model('core', 'FAQCategory')),
+                ('Admin Guide Notes', apps.get_model('core', 'AdminGuideNote')),
+            ]
+        },
+    ]
+
+    total_records = 0
+    section_data = []
+    for s in sections:
+        items = []
+        sec_total = 0
+        for name, model_cls in s['models']:
+            try:
+                cnt = model_cls.objects.count()
+            except Exception:
+                cnt = 0
+            sec_total += cnt
+            items.append({'name': name, 'count': cnt})
+        total_records += sec_total
+        section_data.append({
+            'title': s['title'],
+            'icon': s['icon'],
+            'total': sec_total,
+            'items': items,
+        })
+
+    # Database file telemetry
+    db_config = settings.DATABASES.get('default', {})
+    db_engine = db_config.get('ENGINE', 'sqlite3').split('.')[-1]
+    db_name = str(db_config.get('NAME', ''))
+    db_size_kb = 0
+    db_size_mb = 0
+    db_exists = False
+    db_modified = None
+    if os.path.exists(db_name) and os.path.isfile(db_name):
+        db_exists = True
+        b = os.path.getsize(db_name)
+        db_size_kb = round(b / 1024, 1)
+        db_size_mb = round(b / (1024 * 1024), 2)
+        db_modified = datetime.datetime.fromtimestamp(os.path.getmtime(db_name))
+
+    # initial_data.json telemetry
+    initial_path = os.path.join(settings.BASE_DIR, 'initial_data.json')
+    initial_exists = os.path.exists(initial_path)
+    initial_size_kb = round(os.path.getsize(initial_path) / 1024, 1) if initial_exists else 0
+    initial_modified = datetime.datetime.fromtimestamp(os.path.getmtime(initial_path)) if initial_exists else None
+
+    context = {
+        'sections': section_data,
+        'total_records': total_records,
+        'db_engine': db_engine,
+        'db_name': os.path.basename(db_name),
+        'db_path': db_name,
+        'db_size_kb': db_size_kb,
+        'db_size_mb': db_size_mb,
+        'db_exists': db_exists,
+        'db_modified': db_modified,
+        'initial_exists': initial_exists,
+        'initial_size_kb': initial_size_kb,
+        'initial_modified': initial_modified,
+        'title': 'Database Backup & Export Manager',
+    }
+    return render(request, 'admin/backup.html', context)
+
+
+@staff_member_required(login_url='admin:login')
+def admin_backup_download_json(request):
+    """Generates and streams a JSON dump of all current models and settings."""
+    import io
+    from django.core.management import call_command
+    from django.utils import timezone
+
+    scope = request.GET.get('scope', 'all').lower()
+    timestamp = timezone.now().strftime('%Y-%m-%d_%H-%M')
+    
+    scope_map = {
+        'all': ['core', 'auth.user'],
+        'settings': ['core.sitesettings', 'core.navigationitem', 'core.sociallink', 'core.statitem'],
+        'projects': ['core.project', 'core.projectcategory', 'core.technology', 'core.projecthighlight', 'core.projectdiagram', 'core.projecttimelinephase', 'core.projectfeature'],
+        'blog': ['core.blogpost', 'core.blogsection', 'core.blogcategory', 'core.tag'],
+        'crm': ['core.contactinquiry', 'core.contactmessage', 'core.projectgatelead', 'core.ideasubmission', 'core.chatbotconversation', 'core.chatbotmessage'],
+        'workshops': ['core.workshopcard', 'core.workshopday', 'core.workshopenrollment'],
+    }
+
+    target_apps = scope_map.get(scope, ['core', 'auth.user'])
+    buf = io.StringIO()
+    try:
+        call_command('dumpdata', *target_apps, natural_foreign=True, natural_primary=True, indent=2, stdout=buf)
+        data = buf.getvalue()
+    except Exception as e:
+        logger.exception("Failed to dumpdata for backup")
+        return HttpResponse(f"Backup generation error: {str(e)}", status=500, content_type='text/plain')
+
+    filename = f"projectshub_{scope}_backup_{timestamp}.json"
+    response = HttpResponse(data, content_type='application/json; charset=utf-8')
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    return response
+
+
+@staff_member_required(login_url='admin:login')
+def admin_backup_download_db(request):
+    """Directly streams the raw sqlite3 database file for download."""
+    import os
+    from django.http import FileResponse, Http404
+    from django.conf import settings
+    from django.utils import timezone
+
+    db_config = settings.DATABASES.get('default', {})
+    db_path = str(db_config.get('NAME', ''))
+
+    if not os.path.exists(db_path) or not os.path.isfile(db_path):
+        raise Http404("Database file not found or not on local filesystem.")
+
+    timestamp = timezone.now().strftime('%Y-%m-%d_%H-%M')
+    filename = f"projectshub_db_{timestamp}.sqlite3"
+    response = FileResponse(open(db_path, 'rb'), content_type='application/x-sqlite3')
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    return response
+
+
+@staff_member_required(login_url='admin:login')
+@require_POST
+def admin_backup_sync_initial(request):
+    """
+    Dumps all current models into initial_data.json so that
+    deployments (Vercel, Railway, Docker) immediately boot with current data.
+    """
+    import os
+    import io
+    from django.core.management import call_command
+    from django.conf import settings
+    from django.contrib import messages
+    from django.shortcuts import redirect
+
+    initial_path = os.path.join(settings.BASE_DIR, 'initial_data.json')
+    buf = io.StringIO()
+    try:
+        call_command('dumpdata', 'core', 'auth.user', natural_foreign=True, natural_primary=True, indent=2, stdout=buf)
+        content = buf.getvalue()
+        with open(initial_path, 'w', encoding='utf-8') as f:
+            f.write(content)
+        size_kb = round(os.path.getsize(initial_path) / 1024, 1)
+        messages.success(
+            request,
+            f"Successfully updated initial_data.json ({size_kb} KB)! Your current site settings, projects, popular tags, and content are now synced for future deploys."
+        )
+    except Exception as e:
+        logger.exception("Failed to sync initial_data.json")
+        messages.error(request, f"Failed to sync initial_data.json: {str(e)}")
+
+    return redirect('admin_backup')
+
+
+@staff_member_required(login_url='admin:login')
+@require_POST
+def admin_backup_restore(request):
+    """Restores database from an uploaded JSON backup file using loaddata."""
+    import os
+    import tempfile
+    from django.core.management import call_command
+    from django.contrib import messages
+    from django.shortcuts import redirect
+
+    uploaded_file = request.FILES.get('backup_file')
+    if not uploaded_file:
+        messages.error(request, "No backup file uploaded.")
+        return redirect('admin_backup')
+
+    if not uploaded_file.name.endswith('.json'):
+        messages.error(request, "Invalid file format. Please upload a .json backup file.")
+        return redirect('admin_backup')
+
+    fd, tmp_path = tempfile.mkstemp(suffix='.json')
+    try:
+        with os.fdopen(fd, 'wb') as dest:
+            for chunk in uploaded_file.chunks():
+                dest.write(chunk)
+        
+        call_command('loaddata', tmp_path)
+        messages.success(request, f"Successfully restored database from '{uploaded_file.name}'!")
+    except Exception as e:
+        logger.exception("Failed to restore data from backup")
+        messages.error(request, f"Restore failed: {str(e)}")
+    finally:
+        if os.path.exists(tmp_path):
+            os.remove(tmp_path)
+
+    return redirect('admin_backup')
+
+
+
 

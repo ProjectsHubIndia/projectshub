@@ -5,7 +5,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.http import HttpResponse
 from django.utils.html import format_html
 from .models import (
-    SiteSettings, NavigationItem, SocialLink, StatItem,
+    SiteSettings, NavigationItem, MegaMenuTag, SocialLink, StatItem,
     ProjectCategory, Technology, Project, ProjectImage, ProjectHighlight,
     ProjectDiagram, ProjectTimelinePhase, ProjectFeature,
     ToolCategory, AITool,
@@ -119,6 +119,10 @@ class SiteSettingsAdmin(admin.ModelAdmin):
         ('Logos', {
             'fields': ('logo_dark', 'logo_light')
         }),
+        ('Mega Menu "Our Work" Footer Bar', {
+            'fields': ('mega_popular_label', 'mega_browse_all_text', 'mega_browse_all_url'),
+            'description': 'Configure the bottom bar of the "Our Work" dropdown menu (popular tags label, CTA button text, and link).'
+        }),
     )
 
     def has_add_permission(self, request):
@@ -169,6 +173,21 @@ class NavigationItemAdmin(admin.ModelAdmin):
             bg, obj.badge_text
         )
     badge_preview.short_description = 'Badge'
+
+
+@admin.register(MegaMenuTag)
+class MegaMenuTagAdmin(admin.ModelAdmin):
+    list_display = ('title', 'url', 'order', 'is_active', 'open_in_new_tab')
+    list_editable = ('order', 'is_active')
+    search_fields = ('title', 'url')
+    fields = ('title', 'url', 'order', 'is_active', 'open_in_new_tab')
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).filter(group='popular_tags')
+
+    def save_model(self, request, obj, form, change):
+        obj.group = 'popular_tags'
+        super().save_model(request, obj, form, change)
 
 
 

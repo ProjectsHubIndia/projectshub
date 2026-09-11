@@ -1,0 +1,461 @@
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block title %}Database Backup & Export Manager | ProjectsHub{% endblock %}
+{% block content_title %}💾 Database Backup & Export Manager{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+  :root {
+    --bk-primary: #2271b1;
+    --bk-primary-hover: #135e96;
+    --bk-card-bg: #ffffff;
+    --bk-border: #c3c4c7;
+    --bk-border-subtle: #dcdcde;
+    --bk-text-main: #2c3338;
+    --bk-text-muted: #646970;
+    --bk-accent-green: #00a32a;
+    --bk-accent-blue: #6366f1;
+    --bk-radius: 8px;
+  }
+
+  .bk-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 10px 0 40px 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  }
+
+  /* Hero Banner */
+  .bk-hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    color: #ffffff;
+    border-radius: var(--bk-radius);
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+  }
+
+  .bk-hero__info h1 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .bk-hero__info p {
+    margin: 0;
+    font-size: 13px;
+    color: #cbd5e1;
+    line-height: 1.5;
+  }
+
+  .bk-hero__badges {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .bk-badge {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 90px;
+  }
+  .bk-badge strong {
+    font-size: 16px;
+    color: #ffffff;
+    line-height: 1.2;
+  }
+  .bk-badge span {
+    font-size: 11px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* Grid of Primary Action Cards */
+  .bk-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 18px;
+    margin-bottom: 28px;
+  }
+
+  .bk-card {
+    background: var(--bk-card-bg);
+    border: 1px solid var(--bk-border);
+    border-radius: var(--bk-radius);
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .bk-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .bk-card__head {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .bk-card__icon {
+    font-size: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    background: #f0f6fc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .bk-card__title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--bk-text-main);
+    margin: 0 0 4px 0;
+  }
+  .bk-card__desc {
+    font-size: 12.5px;
+    color: var(--bk-text-muted);
+    line-height: 1.45;
+    margin: 0;
+  }
+
+  .bk-card__actions {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--bk-border-subtle);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .bk-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none !important;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: background-color 0.15s, color 0.15s;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+  }
+  .bk-btn--primary {
+    background: var(--bk-primary);
+    color: #ffffff !important;
+    border-color: var(--bk-primary);
+  }
+  .bk-btn--primary:hover {
+    background: var(--bk-primary-hover);
+  }
+  .bk-btn--success {
+    background: var(--bk-accent-green);
+    color: #ffffff !important;
+    border-color: var(--bk-accent-green);
+  }
+  .bk-btn--success:hover {
+    background: #008a20;
+  }
+  .bk-btn--secondary {
+    background: #f6f7f7;
+    color: var(--bk-primary) !important;
+    border-color: var(--bk-border);
+  }
+  .bk-btn--secondary:hover {
+    background: #f0f0f1;
+    color: var(--bk-primary-hover) !important;
+  }
+
+  /* Scoped Export Sub-bar */
+  .bk-scoped-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .bk-pill-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: #f0f6fc;
+    color: var(--bk-primary) !important;
+    border: 1px solid #cce0ff;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 600;
+    text-decoration: none !important;
+  }
+  .bk-pill-btn:hover {
+    background: var(--bk-primary);
+    color: #ffffff !important;
+  }
+
+  /* Sections Overview Grid */
+  .bk-sections-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 16px;
+  }
+
+  .bk-section-box {
+    background: var(--bk-card-bg);
+    border: 1px solid var(--bk-border);
+    border-radius: var(--bk-radius);
+    overflow: hidden;
+  }
+  .bk-section-box__head {
+    background: #f6f7f7;
+    border-bottom: 1px solid var(--bk-border-subtle);
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .bk-section-box__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .bk-section-box__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    font-size: 12.5px;
+    border-bottom: 1px solid #f6f7f7;
+    color: var(--bk-text-main);
+  }
+  .bk-section-box__item:last-child {
+    border-bottom: none;
+  }
+  .bk-count-badge {
+    background: #f0f0f1;
+    color: var(--bk-text-main);
+    font-weight: 700;
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 10px;
+  }
+
+  /* Upload form */
+  .bk-upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .bk-upload-form input[type="file"] {
+    font-size: 12px;
+    border: 1px dashed var(--bk-border);
+    padding: 10px;
+    border-radius: 4px;
+    background: #fafafa;
+    cursor: pointer;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="bk-container">
+
+  <!-- 1. Hero Banner with Telemetry -->
+  <div class="bk-hero">
+    <div class="bk-hero__info">
+      <h1><span>💾</span> Database Backup &amp; Disaster Recovery</h1>
+      <p>
+        Create instantaneous snapshots of all your ProjectsHub content, site configurations, SEO metadata, blogs, and CRM inquiries.<br>
+        Download portable backups or sync your current live database directly to <code>initial_data.json</code> for seamless zero-data-loss deployments.
+      </p>
+    </div>
+    <div class="bk-hero__badges">
+      <div class="bk-badge">
+        <strong>{{ total_records }}</strong>
+        <span>Total Records</span>
+      </div>
+      <div class="bk-badge">
+        <strong>{{ db_size_kb }} KB</strong>
+        <span>{{ db_engine|upper }} Storage</span>
+      </div>
+      {% if initial_exists %}
+      <div class="bk-badge" title="Last synced: {{ initial_modified|date:'M d, Y H:i' }}">
+        <strong>{{ initial_size_kb }} KB</strong>
+        <span>Seed Fixture</span>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- 2. Primary Action Cards -->
+  <div class="bk-grid">
+
+    <!-- Card 1: Complete JSON Snapshot -->
+    <div class="bk-card">
+      <div>
+        <div class="bk-card__head">
+          <div class="bk-card__icon">📦</div>
+          <div>
+            <h3 class="bk-card__title">Complete JSON Snapshot</h3>
+            <p class="bk-card__desc">
+              Exports all 40+ system models (SiteSettings, Popular Tags, Projects, Blog, CRM Leads, Users) into a formatted JSON file with natural keys.
+            </p>
+          </div>
+        </div>
+        <div class="bk-scoped-bar">
+          <a href="{% url 'admin_backup_download_json' %}?scope=settings" class="bk-pill-btn" title="Settings, Popular Tags & Navigation only">⚙️ Settings Only</a>
+          <a href="{% url 'admin_backup_download_json' %}?scope=projects" class="bk-pill-btn" title="Projects & Categories only">🚀 Projects</a>
+          <a href="{% url 'admin_backup_download_json' %}?scope=blog" class="bk-pill-btn" title="Blog Posts & Sections only">📝 Blog</a>
+          <a href="{% url 'admin_backup_download_json' %}?scope=crm" class="bk-pill-btn" title="Inquiries & Chatbot leads only">📬 CRM Leads</a>
+        </div>
+      </div>
+      <div class="bk-card__actions">
+        <a href="{% url 'admin_backup_download_json' %}?scope=all" class="bk-btn bk-btn--primary">
+          <span>📥</span> Download Full JSON Backup
+        </a>
+      </div>
+    </div>
+
+    <!-- Card 2: SQLite Binary DB Download -->
+    <div class="bk-card">
+      <div>
+        <div class="bk-card__head">
+          <div class="bk-card__icon">🗄️</div>
+          <div>
+            <h3 class="bk-card__title">Physical SQLite Database File</h3>
+            <p class="bk-card__desc">
+              Download the exact binary <code>{{ db_name }}</code> file ({{ db_size_mb }} MB).
+              Can be opened with DB Browser for SQLite or stored offline as a raw database snapshot.
+            </p>
+          </div>
+        </div>
+        {% if db_modified %}
+        <p style="font-size:11.5px;color:#646970;margin:4px 0 0 0;">
+          🕒 Last modified: <strong>{{ db_modified|date:'M d, Y H:i:s' }}</strong>
+        </p>
+        {% endif %}
+      </div>
+      <div class="bk-card__actions">
+        <a href="{% url 'admin_backup_download_db' %}" class="bk-btn bk-btn--secondary">
+          <span>💾</span> Download {{ db_name }} ({{ db_size_kb }} KB)
+        </a>
+      </div>
+    </div>
+
+    <!-- Card 3: Sync to initial_data.json -->
+    <div class="bk-card">
+      <div>
+        <div class="bk-card__head">
+          <div class="bk-card__icon">⚡</div>
+          <div>
+            <h3 class="bk-card__title">Sync to initial_data.json</h3>
+            <p class="bk-card__desc">
+              Syncs your current database directly into <code>initial_data.json</code> on the server.
+              When deployed to Vercel, Railway, or Docker, the platform boots with this exact file!
+            </p>
+          </div>
+        </div>
+        {% if initial_exists %}
+        <p style="font-size:11.5px;color:#00a32a;margin:4px 0 0 0;font-weight:600;">
+          ✓ Fixture is present ({{ initial_size_kb }} KB) · Synced: {{ initial_modified|date:'M d, Y H:i' }}
+        </p>
+        {% else %}
+        <p style="font-size:11.5px;color:#d63638;margin:4px 0 0 0;">
+          ⚠ initial_data.json has not been created yet.
+        </p>
+        {% endif %}
+      </div>
+      <div class="bk-card__actions">
+        <form method="post" action="{% url 'admin_backup_sync_initial' %}" style="margin:0;">
+          {% csrf_token %}
+          <button type="submit" class="bk-btn bk-btn--success">
+            <span>🔄</span> Sync Current DB to initial_data.json
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Card 4: Restore Backup -->
+    <div class="bk-card">
+      <div>
+        <div class="bk-card__head">
+          <div class="bk-card__icon">📥</div>
+          <div>
+            <h3 class="bk-card__title">Restore from Backup (.json)</h3>
+            <p class="bk-card__desc">
+              Upload a previously exported <code>.json</code> backup file to restore your models and configurations using Django's <code>loaddata</code> engine.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="bk-card__actions">
+        <form method="post" action="{% url 'admin_backup_restore' %}" enctype="multipart/form-data" class="bk-upload-form" onsubmit="return confirm('Are you sure you want to restore this backup? Existing matching records will be updated.');">
+          {% csrf_token %}
+          <input type="file" name="backup_file" accept=".json" required>
+          <button type="submit" class="bk-btn bk-btn--secondary" style="font-weight:600;">
+            <span>⬆️</span> Upload &amp; Restore
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 3. Detailed Model Inventory Breakdown -->
+  <div style="margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">
+    <h2 style="font-size:16px;font-weight:700;margin:0;color:var(--bk-text-main);display:flex;align-items:center;gap:8px;">
+      <span>📊</span> Live Model Inventory &amp; Record Counts ({{ total_records }} total)
+    </h2>
+    <span style="font-size:12px;color:var(--bk-text-muted);">All records included in full snapshot</span>
+  </div>
+
+  <div class="bk-sections-grid">
+    {% for sec in sections %}
+    <div class="bk-section-box">
+      <div class="bk-section-box__head">
+        <span>{{ sec.icon }} {{ sec.title }}</span>
+        <span class="bk-count-badge" style="background:#2271b1;color:#fff;">{{ sec.total }}</span>
+      </div>
+      <ul class="bk-section-box__list">
+        {% for item in sec.items %}
+        <li class="bk-section-box__item">
+          <span>{{ item.name }}</span>
+          <span class="bk-count-badge">{{ item.count }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+{% endblock %}

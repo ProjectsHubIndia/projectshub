@@ -1,618 +1,5 @@
 [
 {
-  "model": "auth.user",
-  "fields": {
-    "password": "pbkdf2_sha256$600000$cjRtLRU4rNXZTupLOWvSXA$zlrUkR/G45QWqSgIaOjaqFnvWKhqfYg0hWa3t+8ptx0=",
-    "last_login": "2026-09-09T16:16:53.604Z",
-    "is_superuser": true,
-    "username": "cheta",
-    "first_name": "",
-    "last_name": "",
-    "email": "",
-    "is_staff": true,
-    "is_active": true,
-    "date_joined": "2026-05-07T10:23:09.522Z",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "auth.user",
-  "fields": {
-    "password": "pbkdf2_sha256$600000$TphWVv92TPXMvbTO4MZNh4$6+FMVrfusfjZJRwzpgi9fRWBrUlMGml+EziFk/e0NuQ=",
-    "last_login": "2026-05-09T16:45:27.633Z",
-    "is_superuser": true,
-    "username": "che",
-    "first_name": "",
-    "last_name": "",
-    "email": "",
-    "is_staff": true,
-    "is_active": true,
-    "date_joined": "2026-05-07T10:42:31.094Z",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "auth.user",
-  "fields": {
-    "password": "pbkdf2_sha256$600000$u8czVlCSKoBdHFJ374s571$48dqxWAUHBOEV+asLLx0hRohvFDZ17WM6Pj/h/Ouegs=",
-    "last_login": "2026-06-23T18:11:31.037Z",
-    "is_superuser": true,
-    "username": "a",
-    "first_name": "",
-    "last_name": "",
-    "email": "a@gmail.com",
-    "is_staff": true,
-    "is_active": true,
-    "date_joined": "2026-05-08T16:35:19.335Z",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "auth.user",
-  "fields": {
-    "password": "pbkdf2_sha256$600000$pjOniN66ljU3M3OrxJNRXV$sTy4diDKupoeRMasgXsxa6HGyg8Shfj0vFcpquAlgo0=",
-    "last_login": "2026-09-09T03:05:52.313Z",
-    "is_superuser": true,
-    "username": "admin",
-    "first_name": "",
-    "last_name": "",
-    "email": "",
-    "is_staff": true,
-    "is_active": true,
-    "date_joined": "2026-08-15T11:53:33.230Z",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "auth.user",
-  "fields": {
-    "password": "pbkdf2_sha256$600000$rUhKeshJeQ7JpB3EbLN4DC$0r3NvwNQEdxij1CZM+qb5S6+tTtM7P0sHyLJ4hcGdNc=",
-    "last_login": "2026-09-08T18:29:37.053Z",
-    "is_superuser": true,
-    "username": "harsh",
-    "first_name": "",
-    "last_name": "",
-    "email": "Harsh@gmail.com",
-    "is_staff": true,
-    "is_active": true,
-    "date_joined": "2026-09-05T06:48:39.000Z",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "09gxa9e9zh5knwa9e8gyg449vaa6qaei",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4AW7:YNC9J6LhC3hJviWb3W7hiTR2BogFk5Kt2oWoKw7DCsU",
-    "expire_date": "2026-09-23T05:06:39.439Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "0tnqr98gbkf3dzztc4t123rlcb0lidsf",
-  "fields": {
-    "session_data": "e30:1x3zLA:2Nhi1vzxS3tJpZGEuLyQP6OnSwYp5xaPu0z68_V-_g4",
-    "expire_date": "2026-09-22T17:10:36.143Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "0vefziaulrpekpef273wwjhr225umrdw",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4Ajq:ZIRESFVXfGAhjo6je-_f1IUQLPozIvnSBmth0gImJPg",
-    "expire_date": "2026-09-23T05:20:50.861Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "13o2es5jbaqgldt0s0k3o2dk3wz4zf49",
-  "fields": {
-    "session_data": ".eJxVjMsOwiAQRf-FtSG8GVy69xsIzIBUDU1KuzL-uzbpQrf3nHNfLKZtbXEbZYkTsTMz7PS75YSP0ndA99RvM8e5r8uU-a7wgw5-nak8L4f7d9DSaN86YXWkbTVZgPbO51q81lJjqdK6FGxQAjxUwJJDtZaIwEkQymhARZK9P-yzN78:1x40gd:ZeiFo3t7zA1u2YWq0m81ozEzeikiexbU0DpCsO4o7YA",
-    "expire_date": "2026-09-22T18:36:51.064Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "14smd4a4l9wyvdqto9voi9rtecfiu101",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4AYb:p777nh97xm0oYZ5gwbV_UOs_9KWXw9EVjwSI96EcUuU",
-    "expire_date": "2026-09-23T05:09:13.291Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "2jlxf9gvflna6kx7qrjv38vm5bc93tdr",
-  "fields": {
-    "session_data": ".eJxVjMsOwiAQAP-FsyHQZWHx6L3fQBbY2qppkz5Oxn83JD3odWYyb5X42Md0bLKmqaqrcuryyzKXp8xN1AfP90WXZd7XKeuW6NNuul-qvG5n-zcYeRvbNjJ1Ar6L3ojUMHCxOfqBDFEHhsQiAqL3wQkCueApcjYFAlqLBOrzBb_-NkU:1x137Y:JhKYYXOileOeyON-ip5veVAmymiuu0Gf_TX3RmMHMwY",
-    "expire_date": "2026-09-14T14:36:24.002Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "3cuiqrbbrfoy4g12agh0g2j4ljph0lm2",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4ASA:qneY2Z14sHJMuqhjtfduvbm3xeAKIol7UrJdHcdeB84",
-    "expire_date": "2026-09-23T05:02:34.066Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "3ypwoup93654agvdk8vh5bzm8j7ueqo4",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1wxj7G:yd4jzANLQE8OIXMw8bHBhjpH2m92LJ1zKfuiv9IPGos",
-    "expire_date": "2026-09-05T10:38:22.727Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "401t4po44qawe6xcw9tatduhpvzfxj7b",
-  "fields": {
-    "session_data": ".eJxVTEsOwiAQvQtrQygFCi7d9wxkYAapGkhKuzLeXZp0oYuXvP-bedi37PdGq1-QXZlkl18vQHxSOQJ8QLlXHmvZ1iXwo8LPtPG5Ir1uZ_fvIEPLfZ20VQMpSBJitGgNCUvJGBnM6MbOnUQQaezaGZARlTNBTHrQU-qw7PMF7DA3iA:1wKwBk:FoPQ5Kc4bNx1C4RIMG2n5tKhr-a1__MyJYlDcg5a6sI",
-    "expire_date": "2026-05-21T10:42:40.796Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "40iw9aucf202yi8pw8naytgdwjr00ti6",
-  "fields": {
-    "session_data": ".eJxVjMsOwiAQAP-FsyHQZWHx6L3fQBbY2qppkz5Oxn83JD3odWYyb5X42Md0bLKmqaqrcuryyzKXp8xN1AfP90WXZd7XKeuW6NNuul-qvG5n-zcYeRvbNjJ1Ar6L3ojUMHCxOfqBDFEHhsQiAqL3wQkCueApcjYFAlqLBOrzBb_-NkU:1x1ofD:24zPwbM7fcy2zPXwbnjGS_k1hGNjVXpp-6Dx9Ew5374",
-    "expire_date": "2026-09-16T17:22:19.894Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "41mhsahtddi3jmoh1gwcj35dp6rs5cqh",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4A4c:kVBvlHlDeoess6p74pjEWBEN0QLAbhAlItVP7vlqyPs",
-    "expire_date": "2026-09-23T04:38:14.335Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "4kgbze5w13tbur98bijvdwd4y9nuuuj1",
-  "fields": {
-    "session_data": ".eJxVjMsOwiAQRf-FtSG8GVy69xsIzIBUDU1KuzL-uzbpQrf3nHNfLKZtbXEbZYkTsTMz7PS75YSP0ndA99RvM8e5r8uU-a7wgw5-nak8L4f7d9DSaN86YXWkbTVZgPbO51q81lJjqdK6FGxQAjxUwJJDtZaIwEkQymhARZK9P-yzN78:1x40gu:8nWHqm48CnL4hFYX0uYq-MFEWDR8tW_pVuLhhhseJPU",
-    "expire_date": "2026-09-22T18:37:08.421Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "5tp427vbxibcuij2tklbzqok3yhds65e",
-  "fields": {
-    "session_data": ".eJxVjMsOwiAQRf-FtSGMvF267zcQhgGpGkhKuzL-uzbpQrf3nHNfLMRtrWEbeQkzsQtT7PS7YUyP3HZA99hunafe1mVGviv8oINPnfLzerh_BzWO-q09kY3WeQLAXEBgsd4kZYoiJ1EawCKlzkW4dEavpDHodRagLaAB8uz9AfBjN7c:1x48Y0:eA0yu7brltP7PNPiOMW9IchT6oTdO5h7Nc6B9IOdDPQ",
-    "expire_date": "2026-09-23T03:00:28.454Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "6i4oe25fru0jsvew9fn0ddylj890la3m",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4A2X:FAxPZIcYYPM7AhZ95ucgo9YCVKSS2huirVdXOnoiiOw",
-    "expire_date": "2026-09-23T04:36:05.851Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "6pmea2oshs4rmsmxu0setq9xzbqjwvb7",
-  "fields": {
-    "session_data": "eyJjb250YWN0X2NhcHRjaGEiOiJMNFhaOSJ9:1x3zJP:fWeyNRdN84UbF0m46Iqp7nDtIflwx4RdFR_q2Y7VVOA",
-    "expire_date": "2026-09-22T17:08:47.462Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "6z2fm9cwol2xrek6iuih44y63ljjglco",
-  "fields": {
-    "session_data": ".eJxVjMsOwiAQRf-FtSGMvF267zcQhgGpGkhKuzL-uzbpQrf3nHNfLMRtrWEbeQkzsQtT7PS7YUyP3HZA99hunafe1mVGviv8oINPnfLzerh_BzWO-q09kY3WeQLAXEBgsd4kZYoiJ1EawCKlzkW4dEavpDHodRagLaAB8uz9AfBjN7c:1x48Yb:1bXiDGGpXslt8bUr0ObEvZlVeVYz7THsw9ww0cO6_9U",
-    "expire_date": "2026-09-23T03:01:05.954Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "72nqrnqk6gr8h9xakqxydndkpyoev8ui",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4Kpq:rg0o2xflm0fEg8_bbHozkFbg_MXH7rSYe9iYoFIpk64",
-    "expire_date": "2026-09-23T16:07:42.564Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "7k0uisy9enyrn00mkg89mdlc16fqoghn",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4AiC:e1n4lOiqagL0cAYe9__Zg9oJONT3V_9ZDoiwwghuLZ8",
-    "expire_date": "2026-09-23T05:19:08.838Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "7mect4fx0gjuw7pzneepi3pryxd8upga",
-  "fields": {
-    "session_data": ".eJxVTEsOwiAQvQtrQygFCi7d9wxkYAapGkhKuzLeXZp0oYuXvP-bedi37PdGq1-QXZlkl18vQHxSOQJ8QLlXHmvZ1iXwo8LPtPG5Ir1uZ_fvIEPLfZ20VQMpSBJitGgNCUvJGBnM6MbOnUQQaezaGZARlTNBTHrQU-qw7PMF7DA3iA:1wLin9:T3Gtl_7F7i3e9lUgWQ4XGaatIR89vSmYgMUMUAskIKo",
-    "expire_date": "2026-05-23T14:36:31.180Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "7tlbc0fbqq1ihro7k1bvzlb5wlryhryx",
-  "fields": {
-    "session_data": "eyJjb250YWN0X2NhcHRjaGEiOiJSTUJKRCJ9:1x4DVS:eOAimsOErSPhlkecfrHGUZPi5n0-tvt2BbrVO-fJQZk",
-    "expire_date": "2026-09-23T08:18:10.109Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "9f4odjfecajqjmphfet7294v1x5svqxk",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4AXb:WcnMONDY9UTHDHcB-lgJ77EZU9MXKkvwZMPAQJvV7XE",
-    "expire_date": "2026-09-23T05:08:11.609Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "9j5fp4rafakct1wu6j9pd6qa19strmkk",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4Ai3:9VlRRmxT9ahZJw3W5Nc9CgCRUxTKqd2L0Ev2YieEAnw",
-    "expire_date": "2026-09-23T05:18:59.264Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "9okq14tvu78e9sjhiyrymhv4uqffqgtc",
-  "fields": {
-    "session_data": ".eJxVTEsOwiAQvQtrQygFCi7d9wxkYAapGkhKuzLeXZp0oYuXvP-bedi37PdGq1-QXZlkl18vQHxSOQJ8QLlXHmvZ1iXwo8LPtPG5Ir1uZ_fvIEPLfZ20VQMpSBJitGgNCUvJGBnM6MbOnUQQaezaGZARlTNBTHrQU-qw7PMF7DA3iA:1wLknv:3ZIC6yLyVLFS7slWsjpUm95YBNj79zhN5ROgkjHtXyw",
-    "expire_date": "2026-05-23T16:45:27.639Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "atw479edflq2uhgkemi7jqzm0ag0826o",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4A2R:fyzk7B9NJxk2TBieTx0FUnZFfrU7nADk_VjgvJyWas8",
-    "expire_date": "2026-09-23T04:35:59.333Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "bu6xw5e9bnhqxaqsaeiazge3dfl9ad15",
-  "fields": {
-    "session_data": ".eJxVjMsOwiAQRf-FtSGMvF267zcQhgGpGkhKuzL-uzbpQrf3nHNfLMRtrWEbeQkzsQtT7PS7YUyP3HZA99hunafe1mVGviv8oINPnfLzerh_BzWO-q09kY3WeQLAXEBgsd4kZYoiJ1EawCKlzkW4dEavpDHodRagLaAB8uz9AfBjN7c:1x48d1:YnjDM13j7v_5TnChJ-BFbmgJjEw5zpOpxlmI8EUETFo",
-    "expire_date": "2026-09-23T03:05:39.464Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "c3ib7pnqtn0kdqwe8za1j60xoixhzg53",
-  "fields": {
-    "session_data": ".eJxVjMsOwiAQAP-FsyHQZWHx6L3fQBbY2qppkz5Oxn83JD3odWYyb5X42Md0bLKmqaqrcuryyzKXp8xN1AfP90WXZd7XKeuW6NNuul-qvG5n-zcYeRvbNjJ1Ar6L3ojUMHCxOfqBDFEHhsQiAqL3wQkCueApcjYFAlqLBOrzBb_-NkU:1wvDF0:gwPq5WTkbb4fwMvrkAooOgZ4zDf46QDiUBxF-dGWG_w",
-    "expire_date": "2026-08-29T12:11:58.620Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "cf4us3x0dfijgcf14egfdo23tmbxyxz5",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4ATF:fW9860umQWDpnFxKpWfkY3BZbLixmSaMg0ongEfKmOc",
-    "expire_date": "2026-09-23T05:03:41.687Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "ck5g35frghs28ximboq8rg9v2lwru9kd",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4KrH:liS0l2g57kNhtB_PkfYGT-sOsuMZEtVBXO_pkRSjqQE",
-    "expire_date": "2026-09-23T16:09:11.649Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "df9pybu9w3z222zhaed7ora48zckufmx",
-  "fields": {
-    "session_data": ".eJxVTEsOwiAQvQtrQygFCi7d9wxkYAapGkhKuzLeXZp0oYuXvP-bedi37PdGq1-QXZlkl18vQHxSOQJ8QLlXHmvZ1iXwo8LPtPG5Ir1uZ_fvIEPLfZ20VQMpSBJitGgNCUvJGBnM6MbOnUQQaezaGZARlTNBTHrQU-qw7PMF7DA3iA:1wKx9T:Alj0m4Aje7O-g5zKxZws2LTu9QWKWXuNK_ouZ9om3s0",
-    "expire_date": "2026-05-21T11:44:23.716Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "dmgi1pi4tyj4w7a0uerywci0e292tx21",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4KyO:pDm-4AhIQBNDm8QmJcnuZN14b-827bDXBnaUlgFF0d0",
-    "expire_date": "2026-09-23T16:16:32.819Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "dvkd5em5s5vdqpp8vybd7hc4empjtih9",
-  "fields": {
-    "session_data": ".eJxVjEEOgjAQRe_StWlg2ing0r1naGY6U4saSCisjHdXEha6_e-9_zKRtrXEreoSRzFn48zpd2NKD512IHeabrNN87QuI9tdsQet9jqLPi-H-3dQqJZv3YchOc2gCVlJGD232nWJe8wg0DOKZseQAAZy1AG26JrcZB_ABxTz_gAQRDhf:1wc5at:fDI7ugu3if7YdO_uJn_PXuQ0lfAaZj3RSKHPPXoIyFA",
-    "expire_date": "2026-07-07T18:11:31.042Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "faski36k2ogxvkaqzbig663zvibve5nc",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4A2K:IVVzVU7AwNdv1B3wTAM6lISR-PHG4stJnkiASuZ4w8w",
-    "expire_date": "2026-09-23T04:35:52.009Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "fqnb0qsoul2eyl0t6ulu8fmy63od014y",
-  "fields": {
-    "session_data": ".eJxVjEEOgjAQRe_StWlg2ing0r1naGY6U4saSCisjHdXEha6_e-9_zKRtrXEreoSRzFn48zpd2NKD512IHeabrNN87QuI9tdsQet9jqLPi-H-3dQqJZv3YchOc2gCVlJGD232nWJe8wg0DOKZseQAAZy1AG26JrcZB_ABxTz_gAQRDhf:1wVsxR:i9gD2sBU5ZHNaT2gQOPpQ6Mhs2x--67NHw1kt2Np9co",
-    "expire_date": "2026-06-20T15:29:09.913Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "fvb5vu4cyw6ncgjk3tdjdwb7ts28uegp",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4AHj:d3ueBa4LoL4d7YnljWI89dSDeC_yrtP0meHyqfpmBHw",
-    "expire_date": "2026-09-23T04:51:47.872Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "g8gwn1orp7bn0ya7wy107ykh57zqaogo",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4ANG:35jcA1_7q7bbQwSCKkH1S1sKVAGKbuG8PWhW7t0TctU",
-    "expire_date": "2026-09-23T04:57:30.772Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "gum9epf3txsaozy9blctaucyjbx122fe",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4Ky8:lCfusI5kNVhJPoxmWGqRv8bHciLFAjwAB9TiKuBXfg0",
-    "expire_date": "2026-09-23T16:16:16.900Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "hjcqxi5x1tb49lesfoox8ieo1qj3w38s",
-  "fields": {
-    "session_data": ".eJxVTEsOwiAQvQtrQygFCi7d9wxkYAapGkhKuzLeXZp0oYuXvP-bedi37PdGq1-QXZlkl18vQHxSOQJ8QLlXHmvZ1iXwo8LPtPG5Ir1uZ_fvIEPLfZ20VQMpSBJitGgNCUvJGBnM6MbOnUQQaezaGZARlTNBTHrQU-qw7PMF7DA3iA:1wLhsg:uWSgxz2Rj6divy2-SiUpikcg3pRsgV_DvVZptd4cCrg",
-    "expire_date": "2026-05-23T13:38:10.338Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "hsjelfo3iej0icfzzm5zhs4q056e7pwr",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4AX7:isAfzZaGianDRjugW4rEoEfwtiPXaVMpwwkzREObXxY",
-    "expire_date": "2026-09-23T05:07:41.804Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "i54pk7x11at7nup1d13d3cec3zkgu7jr",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4KyG:j21uIeqGbxM0HRO8voAsSVvxz4ppQy9eOfI39oIr09I",
-    "expire_date": "2026-09-23T16:16:24.997Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "i9sq3id3oryqojgiwo6lowvprl7euggh",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4A5W:v41uGegXPKnhM7FRMJ36GlYob-uzdZbGJc3VtyrQOag",
-    "expire_date": "2026-09-23T04:39:10.654Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "j3b9grkmwmxvzg6rdd9zf77i5k284fpj",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4APS:D_qnE2BPCjZgldLDCA5n1j8-F9tb8fkBWR4alJsbHak",
-    "expire_date": "2026-09-23T04:59:46.533Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "jptlu97q0al77mgsxg2yuryqfn6l0c7b",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4Kyd:kWcg09xKy0iXC1Dc5TTY9DJVVn5_fKi6YE9S9WRigNw",
-    "expire_date": "2026-09-23T16:16:47.210Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "jyujcuqirsruq64qrt2nldorhqhve2fx",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4Kr9:bHh4RnkuCrprGC6e3FdfA_AZi0PLmiYR38xZ2TJZw8I",
-    "expire_date": "2026-09-23T16:09:03.285Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "lvficopyolk9t9cx8ljydaj8n8xq2lr6",
-  "fields": {
-    "session_data": ".eJxVjMsOwiAQRf-FtSG8GVy69xsIzIBUDU1KuzL-uzbpQrf3nHNfLKZtbXEbZYkTsTMz7PS75YSP0ndA99RvM8e5r8uU-a7wgw5-nak8L4f7d9DSaN86YXWkbTVZgPbO51q81lJjqdK6FGxQAjxUwJJDtZaIwEkQymhARZK9P-yzN78:1x40gk:wDkMvP1qHsB9rnx433xCdhB_h49gswscOGjuFyXAp4Q",
-    "expire_date": "2026-09-22T18:36:58.899Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "meuuq207ubak6o0vl3ekod9d7tjiqkco",
-  "fields": {
-    "session_data": ".eJxVjMsOwiAQRf-FtSG8GVy69xsIzIBUDU1KuzL-uzbpQrf3nHNfLKZtbXEbZYkTsTMz7PS75YSP0ndA99RvM8e5r8uU-a7wgw5-nak8L4f7d9DSaN86YXWkbTVZgPbO51q81lJjqdK6FGxQAjxUwJJDtZaIwEkQymhARZK9P-yzN78:1x40h6:G1hStazsqh0L8pDLOnJL_QeekEB37AlvJEuiaTUWCug",
-    "expire_date": "2026-09-22T18:37:20.422Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "misolycllyvl59s9zfopwav9b92uw3sd",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1wZpZY:P7o5Rj-A-9GS-n0Tvrw7URskGNzxRtsFIeLjdqkbCbM",
-    "expire_date": "2026-07-01T12:40:48.339Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "oc8q6cjlyod62ksyimx05h4uj5ds87i1",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4AL1:27nS9J-kt8pjAGq9xF0IUZqPcJuSzyPxahPB8LDeJio",
-    "expire_date": "2026-09-23T04:55:11.756Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "p7mmodrdpvmiw3v5rlvx6w16ai8xgy8v",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1woeyb:nHI99Xq5bVhFEcV_aFgTP4SqKHjD0FkehGoq5s80kHU",
-    "expire_date": "2026-08-11T10:23:57.736Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "pr5gbqso4jivs2h6r2izy5ac2157mny7",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4A36:rWS8t2FZ85Y22GN6HNfYNzq4aCSpdBjdtuCsNWT8buw",
-    "expire_date": "2026-09-23T04:36:40.675Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "q1b23lvmh8tpwl06kzpto7uccrhn5jt4",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4KyW:o5f_cJEl_8z01zciqr3flvJDJlI5hwEo_ZXmZiI2K1g",
-    "expire_date": "2026-09-23T16:16:40.715Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "qfvi42g2z0ott51tccep78uai5ey7lj4",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4AEe:N9couR8nKCW-0nmm1pQSxN4zFF6HdPJz_1yHcVFrsEc",
-    "expire_date": "2026-09-23T04:48:36.049Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "rr3owxak3urno1405mzx24ti77c5fkv5",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4A3H:RIsbU2ySijrM-JrRNNAuncdlvONaS9I8X1mi8DR3Wck",
-    "expire_date": "2026-09-23T04:36:51.669Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "tqr4uonjo563svjja4x2s1kvml3ot720",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4Kp6:D7AncOs49mBErtDATjTDS1uY2wXIyDUo2SRApYZdrQQ",
-    "expire_date": "2026-09-23T16:06:56.598Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "tziflpehheg378jt4jj8dne3clrc8qz4",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4Kyj:BlNY3WxmcchdXu3ouro1gtla3WzzQLaIzGn_01vWE-I",
-    "expire_date": "2026-09-23T16:16:53.606Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "ugs0op3l3kw7th7pwgsf56olbi6rhf5n",
-  "fields": {
-    "session_data": ".eJxVTEsOwiAQvQtrQygFCi7d9wxkYAapGkhKuzLeXZp0oYuXvP-bedi37PdGq1-QXZlkl18vQHxSOQJ8QLlXHmvZ1iXwo8LPtPG5Ir1uZ_fvIEPLfZ20VQMpSBJitGgNCUvJGBnM6MbOnUQQaezaGZARlTNBTHrQU-qw7PMF7DA3iA:1wLgJH:vY18aO__2XrC6Z2upkbWFfmtBIbg-17iGRi7pV8RIks",
-    "expire_date": "2026-05-23T11:57:31.009Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "v2s7l70d8xg8kuye5540bdpdki7iejr7",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4AKw:_GM52COjNSQytShDuBQgoaffiSJFHV7EuLPW5wayLhk",
-    "expire_date": "2026-09-23T04:55:06.997Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "v4787g4lxhob3s8jb8o76sd71oipsi60",
-  "fields": {
-    "session_data": ".eJxVjEEOgjAQRe_StWlg2ing0r1naGY6U4saSCisjHdXEha6_e-9_zKRtrXEreoSRzFn48zpd2NKD512IHeabrNN87QuI9tdsQet9jqLPi-H-3dQqJZv3YchOc2gCVlJGD232nWJe8wg0DOKZseQAAZy1AG26JrcZB_ABxTz_gAQRDhf:1wc5aj:3rVd_feHiiAthV5jzS_E-frFzGjzcyWojMWVOY_LB1c",
-    "expire_date": "2026-07-07T18:11:21.830Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "vp0oy6nnuizsubjnwqrkiragtbbokoxg",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4Ahp:5uNbe6lODaRYPBsqvEdlbn-3NL4xWicMnsJFUooD8gw",
-    "expire_date": "2026-09-23T05:18:45.798Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "vp32tjk1y5495xg8yjurumkrq8y5awjy",
-  "fields": {
-    "session_data": ".eJxVjMsOwiAQRf-FtSGMvF267zcQhgGpGkhKuzL-uzbpQrf3nHNfLMRtrWEbeQkzsQtT7PS7YUyP3HZA99hunafe1mVGviv8oINPnfLzerh_BzWO-q09kY3WeQLAXEBgsd4kZYoiJ1EawCKlzkW4dEavpDHodRagLaAB8uz9AfBjN7c:1x48dE:Wg6ztg9G2AYloYI_B_Da7YheAQTxxQLviSuSuuRMe4o",
-    "expire_date": "2026-09-23T03:05:52.313Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "vs58ewkwg9r9p1lj8xolfx1wyzt43kqm",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4Ahf:Bh7_w5gCb_my8_FntGsMcROEh0tFmrfuni-VbweF2HA",
-    "expire_date": "2026-09-23T05:18:35.986Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "wnpy963bhl63bdrblkwtkkxb9imll07z",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1wevf9:pfWitG6ndUz6ALyr4iMr7JwT6xPPtQ11LTc6wcRk3tM",
-    "expire_date": "2026-07-15T14:11:39.817Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "x2zmlrabtjfzy93icj03hjhgfuqlaogk",
-  "fields": {
-    "session_data": ".eJxVjMsOwiAQRf-FtSGMvF267zcQhgGpGkhKuzL-uzbpQrf3nHNfLMRtrWEbeQkzsQtT7PS7YUyP3HZA99hunafe1mVGviv8oINPnfLzerh_BzWO-q09kY3WeQLAXEBgsd4kZYoiJ1EawCKlzkW4dEavpDHodRagLaAB8uz9AfBjN7c:1x48d8:c8P_VB8owWzV6JuPekNM6DuZfh8qOnqfNiP0YLDaifs",
-    "expire_date": "2026-09-23T03:05:46.685Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "xwtli0tdldtrbiw3ykdelga9e9n58833",
-  "fields": {
-    "session_data": ".eJxVjMsOwiAQRf-FtSEd3rh07zeQAQapGkhKuzL-uzbpQrf3nHNfLOC21rANWsKc2ZlJdvrdIqYHtR3kO7Zb56m3dZkj3xV-0MGvPdPzcrh_BxVH_dYqTUSSIApviylgbEYBBRJ58grBRCgJhHZO20lL5ywgZWFtVk4nodj7A-knN38:1wLOAj:vngfAHI6GJqHZReyowe0sHbhWjIf8poXWSgCd9dCX5E",
-    "expire_date": "2026-05-22T16:35:29.031Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "yrkt730clid7xawosls2dlemea3hb3qd",
-  "fields": {
-    "session_data": ".eJxVjbsOwjAQBP_FNbIcO5cYOhAtJQWVdb67YB5KUOJUiH8nllJAu7M7-1YB55zCPMkYbqx2CtTmN4tID-kL4Dv210HT0OfxFnWp6JVO-jSwPA9r90-QcEpl7dhR6zyYyB6shbqK4ggqaairUSxAdD525My2QhZnkFvuxFrx3kCzSMszUg6Er0wJF-l5f_QX9fkCFIlAoA:1x4MEg:GBnefWVg9YXuzkJT5XDdtY3y14ySOGKtmwAzTBj8Kkg",
-    "expire_date": "2026-09-23T17:37:26.369Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "zeoo3bm7s0td67anxibpjrotr35k8ufm",
-  "fields": {
-    "session_data": ".eJxVjMsOwiAQRf-FtSGMvF267zcQhgGpGkhKuzL-uzbpQrf3nHNfLMRtrWEbeQkzsQtT7PS7YUyP3HZA99hunafe1mVGviv8oINPnfLzerh_BzWO-q09kY3WeQLAXEBgsd4kZYoiJ1EawCKlzkW4dEavpDHodRagLaAB8uz9AfBjN7c:1x48Y8:ZeiHWACWKQg1z9vPhjtP8ARVCcw_oVCpPcKxtiQ_zJ0",
-    "expire_date": "2026-09-23T03:00:36.038Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "zn7anm1mwls0z73zrjkp207a2ter3n7v",
-  "fields": {
-    "session_data": ".eJxVjMEOwiAQRP-FsyEsBmQ9evcbyMJupWpoUtpT479Lkx70NnnzZjYVaV1KXJvMcWR1VaBOvyxRfkndC35SfUw6T3WZx6R3RR9t0_eJ5X073L-DQq30tQO5BE509h5N8mzQWujAZUYnMgAlDAOxCcE5631OPbCzYhkZAdTnC-bWN-g:1x4A26:W5gw2LLfl3be2iX-uHuMs6qkgOOiPsLbwnA9s1qvLxg",
-    "expire_date": "2026-09-23T04:35:38.114Z"
-  }
-},
-{
   "model": "core.sitesettings",
   "pk": 1,
   "fields": {
@@ -626,10 +13,13 @@
     "hero_headline_prefix": "Real-World AI Projects &",
     "hero_headline_highlight": "Free Tools",
     "hero_subtitle": "Real-world AI and machine learning projects with source code and mentorship for students, plus custom AI development and automation for businesses.",
-    "logo_dark": "",
+    "logo_dark": "branding/PM-World-logo-1.jpg",
     "logo_light": "",
+    "mega_popular_label": "Trending:",
+    "mega_browse_all_text": "Browse All Projects →",
+    "mega_browse_all_url": "/projects/",
     "created_at": "2026-09-08T14:52:37.939Z",
-    "updated_at": "2026-09-08T14:53:15.186Z"
+    "updated_at": "2026-09-11T15:15:31.970Z"
   }
 },
 {
@@ -646,7 +36,7 @@
     "image": "",
     "icon_svg": "",
     "open_in_new_tab": false,
-    "is_active": true,
+    "is_active": false,
     "order": 1
   }
 },
@@ -754,7 +144,7 @@
     "image": "",
     "icon_svg": "",
     "open_in_new_tab": false,
-    "is_active": true,
+    "is_active": false,
     "order": 1
   }
 },
@@ -772,7 +162,7 @@
     "image": "",
     "icon_svg": "",
     "open_in_new_tab": false,
-    "is_active": true,
+    "is_active": false,
     "order": 2
   }
 },
@@ -790,7 +180,7 @@
     "image": "",
     "icon_svg": "",
     "open_in_new_tab": false,
-    "is_active": true,
+    "is_active": false,
     "order": 3
   }
 },
@@ -808,7 +198,7 @@
     "image": "",
     "icon_svg": "",
     "open_in_new_tab": false,
-    "is_active": true,
+    "is_active": false,
     "order": 1
   }
 },
@@ -862,7 +252,7 @@
     "image": "",
     "icon_svg": "",
     "open_in_new_tab": false,
-    "is_active": true,
+    "is_active": false,
     "order": 4
   }
 },
@@ -880,7 +270,7 @@
     "image": "",
     "icon_svg": "",
     "open_in_new_tab": false,
-    "is_active": true,
+    "is_active": false,
     "order": 1
   }
 },
@@ -898,7 +288,7 @@
     "image": "",
     "icon_svg": "",
     "open_in_new_tab": false,
-    "is_active": true,
+    "is_active": false,
     "order": 2
   }
 },
@@ -934,7 +324,7 @@
     "image": "",
     "icon_svg": "",
     "open_in_new_tab": false,
-    "is_active": true,
+    "is_active": false,
     "order": 4
   }
 },
@@ -1600,7 +990,7 @@
     "case_study_url": "",
     "price": "2999.00",
     "price_label": "₹2,999",
-    "featured": false,
+    "featured": true,
     "show_on_index": true,
     "is_active": true,
     "is_published": true,
@@ -1612,7 +1002,7 @@
     "og_description": "",
     "og_image": "",
     "created_at": "2026-05-07T10:22:22.119Z",
-    "updated_at": "2026-09-08T14:53:15.395Z",
+    "updated_at": "2026-09-11T15:11:09.388Z",
     "technologies": [
       3,
       4,
@@ -1630,9 +1020,9 @@
     "title": "Stock Price Predictor",
     "slug": "stock-price-predictor",
     "description": "LSTM-based time-series forecasting model with Monte Carlo dropout confidence bands, deployed serverlessly on AWS Lambda for under 200ms predictions.",
-    "detailed_description": "A multi-layer LSTM architecture trained on 10 years of historical OHLCV data for 50+ equities. Technical indicators — RSI, MACD, Bollinger Bands, OBV — are engineered as additional features. Walk-forward validation prevents look-ahead bias, and Monte Carlo Dropout generates uncertainty quantification bands around each forecast. The entire model is packaged as an AWS Lambda function with a DynamoDB cache layer to serve repeat queries instantly.\n\nThe core challenge was keeping inference cold-start under 3 seconds while running a 4-layer LSTM on Lambda. This was solved by serialising the model to TorchScript, stripping unused weights, and using Lambda SnapStart. Cache hit rate on repeat tickers reached 78%, dropping average end-to-end latency below 200ms.",
+    "detailed_description": "A multi-layer LSTM architecture trained on 10 years of historical OHLCV data for 50+ equities. Technical indicators — RSI, MACD, Bollinger Bands, OBV — are engineered as additional features. Walk-forward validation prevents look-ahead bias, and Monte Carlo Dropout generates uncertainty quantification bands around each forecast. The entire model is packaged as an AWS Lambda function with a DynamoDB cache layer to serve repeat queries instantly.\r\n\r\nThe core challenge was keeping inference cold-start under 3 seconds while running a 4-layer LSTM on Lambda. This was solved by serialising the model to TorchScript, stripping unused weights, and using Lambda SnapStart. Cache hit rate on repeat tickers reached 78%, dropping average end-to-end latency below 200ms.",
     "category": "ml",
-    "category_ref": 1,
+    "category_ref": 5,
     "tags": "TensorFlow, LSTM, AWS Lambda, DynamoDB, yfinance, TorchScript",
     "image": "",
     "thumbnail": "",
@@ -1652,7 +1042,7 @@
     "case_study_url": "",
     "price": "3999.00",
     "price_label": "₹3,999",
-    "featured": false,
+    "featured": true,
     "show_on_index": true,
     "is_active": true,
     "is_published": true,
@@ -1664,7 +1054,7 @@
     "og_description": "",
     "og_image": "",
     "created_at": "2026-05-07T10:22:22.123Z",
-    "updated_at": "2026-09-08T14:53:15.423Z",
+    "updated_at": "2026-09-11T15:28:34.715Z",
     "technologies": [
       6,
       11
@@ -1700,7 +1090,7 @@
     "case_study_url": "",
     "price": "4999.00",
     "price_label": "₹4,999",
-    "featured": false,
+    "featured": true,
     "show_on_index": true,
     "is_active": true,
     "is_published": true,
@@ -1712,7 +1102,7 @@
     "og_description": "",
     "og_image": "",
     "created_at": "2026-05-07T10:22:22.128Z",
-    "updated_at": "2026-09-08T14:53:15.435Z",
+    "updated_at": "2026-09-11T15:11:09.390Z",
     "technologies": [
       7
     ]
@@ -1906,172 +1296,6 @@
     "technologies": [
       1
     ]
-  }
-},
-{
-  "model": "core.project",
-  "pk": 9,
-  "fields": {
-    "title": "test",
-    "slug": "test",
-    "description": "test",
-    "detailed_description": "ettettetete",
-    "category": "backend",
-    "category_ref": 2,
-    "tags": "ycchhcio",
-    "image": "projects/wallpaper.webp",
-    "thumbnail": "",
-    "image_url": "",
-    "project_url": "http://cckcn.com",
-    "github_url": "http://cjcji.com",
-    "demo_url": "",
-    "external_url": "",
-    "youtube_url": "",
-    "download_file": "",
-    "subtitle": "testt",
-    "year": "2025",
-    "role": "ML Engineer",
-    "duration": "3 Months",
-    "team_size": "Solo Project",
-    "difficulty": "Intermediate",
-    "case_study_url": "http://cici.com",
-    "price": "67890.00",
-    "price_label": "56789",
-    "featured": false,
-    "show_on_index": false,
-    "is_active": false,
-    "is_published": false,
-    "order": 1,
-    "meta_title": "test | AI ProjectsHub",
-    "meta_description": "test",
-    "canonical_url": "",
-    "og_title": "",
-    "og_description": "",
-    "og_image": "",
-    "created_at": "2026-08-31T10:19:24.749Z",
-    "updated_at": "2026-09-08T14:53:15.388Z",
-    "technologies": []
-  }
-},
-{
-  "model": "core.project",
-  "pk": 10,
-  "fields": {
-    "title": "SO it is the titile",
-    "slug": "so-it-is-the-titile",
-    "description": "DESC",
-    "detailed_description": "detail DESC",
-    "category": "ml",
-    "category_ref": 1,
-    "tags": "PyTorch, BERT, FastAPI, React, Docker, Redis, ONNX",
-    "image": "",
-    "thumbnail": "",
-    "image_url": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&auto=format&fit=crop",
-    "project_url": "http://cckcn.com",
-    "github_url": "https://github.com/ProjectsHub/ai-sentiment-analyser",
-    "demo_url": "",
-    "external_url": "",
-    "youtube_url": "",
-    "download_file": "",
-    "subtitle": "and salso dont miss the subtitle",
-    "year": "2025",
-    "role": "ML Engineer",
-    "duration": "3 Months",
-    "team_size": "Solo Project",
-    "difficulty": "Intermediate",
-    "case_study_url": "http://cici.com",
-    "price": "50000.00",
-    "price_label": "400000",
-    "featured": false,
-    "show_on_index": false,
-    "is_active": false,
-    "is_published": false,
-    "order": 0,
-    "meta_title": "SO it is the titile | AI ProjectsHub",
-    "meta_description": "DESC",
-    "canonical_url": "",
-    "og_title": "",
-    "og_description": "",
-    "og_image": "",
-    "created_at": "2026-09-02T11:51:00.178Z",
-    "updated_at": "2026-09-08T14:53:15.357Z",
-    "technologies": [
-      3,
-      4,
-      5,
-      8,
-      9,
-      14
-    ]
-  }
-},
-{
-  "model": "core.project",
-  "pk": 12,
-  "fields": {
-    "title": "test",
-    "slug": "test-2",
-    "description": "Hold down “Control”, or “Command” on a Mac, to select more than one.\r\nHold down “Control”, or “Command” on a Mac, to select more than one.",
-    "detailed_description": "Hold down “Control”, or “Command” on a Mac, to select more than one.",
-    "category": "ml",
-    "category_ref": 1,
-    "tags": "test",
-    "image": "",
-    "thumbnail": "",
-    "image_url": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&auto=format&fit=crop",
-    "project_url": "",
-    "github_url": "",
-    "demo_url": "",
-    "external_url": "",
-    "youtube_url": "",
-    "download_file": "",
-    "subtitle": "test",
-    "year": "2025",
-    "role": "AI/ML Engineer",
-    "duration": "2-4 Weeks",
-    "team_size": "Solo Project",
-    "difficulty": "Intermediate",
-    "case_study_url": "",
-    "price": "0.00",
-    "price_label": "Free",
-    "featured": false,
-    "show_on_index": false,
-    "is_active": true,
-    "is_published": true,
-    "order": 0,
-    "meta_title": "test | AI ProjectsHub",
-    "meta_description": "Hold down “Control”, or “Command” on a Mac, to select more than one.\r\nHold down “Control”, or “Command” on a Mac, to select more than one.",
-    "canonical_url": "",
-    "og_title": "",
-    "og_description": "",
-    "og_image": "",
-    "created_at": "2026-09-09T08:27:51.273Z",
-    "updated_at": "2026-09-09T08:27:51.273Z",
-    "technologies": [
-      1
-    ]
-  }
-},
-{
-  "model": "core.projectimage",
-  "pk": 4,
-  "fields": {
-    "project": 12,
-    "image": "projects/detail/WhatsApp_Image_2026-09-02_at_3.47.15_PM.webp",
-    "caption": "test image",
-    "alt": "test",
-    "order": 2
-  }
-},
-{
-  "model": "core.projecthighlight",
-  "pk": 5,
-  "fields": {
-    "project": 10,
-    "icon": "chart",
-    "value": "540",
-    "label": "jj",
-    "order": 0
   }
 },
 {
@@ -2339,37 +1563,14 @@
   }
 },
 {
-  "model": "core.projecthighlight",
-  "pk": 30,
-  "fields": {
-    "project": 12,
-    "icon": "chart",
-    "value": "20",
-    "label": "test",
-    "order": 1
-  }
-},
-{
   "model": "core.projectdiagram",
-  "pk": 3,
+  "pk": 4,
   "fields": {
-    "project": 10,
-    "image": "projects/diagrams/ChatGPT_Image_Jun_15_2026_10_28_02_AM.webp",
+    "project": 2,
+    "image": "projects/diagrams/WhatsApp_Image_2026-09-02_at_3.47.15_PM.jpeg",
     "label": "Architecture",
-    "title": "bkeko",
+    "title": "tes6",
     "desc": "",
-    "order": 0
-  }
-},
-{
-  "model": "core.projecttimelinephase",
-  "pk": 5,
-  "fields": {
-    "project": 10,
-    "phase": "1",
-    "date": "21-08-2024",
-    "title": "hello",
-    "desc": "hello",
     "order": 0
   }
 },
@@ -2685,15 +1886,6 @@
   "fields": {
     "project": 8,
     "text": "Full FastAPI + Celery + Redis source code",
-    "order": 0
-  }
-},
-{
-  "model": "core.projectfeature",
-  "pk": 10,
-  "fields": {
-    "project": 10,
-    "text": "nothing to see",
     "order": 0
   }
 },
@@ -4186,22 +3378,6 @@
   }
 },
 {
-  "model": "core.testimonial",
-  "pk": 7,
-  "fields": {
-    "name": "test",
-    "role": "bew",
-    "company": "qa",
-    "avatar": "",
-    "avatar_color": "purple",
-    "rating": 5,
-    "content": "test database",
-    "is_featured": true,
-    "is_published": true,
-    "sort_order": 0
-  }
-},
-{
   "model": "core.faqcategory",
   "pk": 1,
   "fields": {
@@ -5079,7 +4255,7 @@
     "schema_type": "Organization, WebSite",
     "custom_json_ld": "",
     "is_indexable": false,
-    "updated_at": "2026-09-09T16:16:53.643Z"
+    "updated_at": "2026-09-11T15:14:15.136Z"
   }
 },
 {
@@ -5097,7 +4273,7 @@
     "schema_type": "BreadcrumbList",
     "custom_json_ld": "",
     "is_indexable": true,
-    "updated_at": "2026-09-09T16:16:53.646Z"
+    "updated_at": "2026-09-11T15:14:15.141Z"
   }
 },
 {
@@ -5115,7 +4291,7 @@
     "schema_type": "BreadcrumbList",
     "custom_json_ld": "",
     "is_indexable": true,
-    "updated_at": "2026-09-09T16:16:53.649Z"
+    "updated_at": "2026-09-11T15:14:15.145Z"
   }
 },
 {
@@ -5133,7 +4309,7 @@
     "schema_type": "BreadcrumbList, Course",
     "custom_json_ld": "",
     "is_indexable": true,
-    "updated_at": "2026-09-09T16:16:53.652Z"
+    "updated_at": "2026-09-11T15:14:15.145Z"
   }
 },
 {
@@ -5151,7 +4327,7 @@
     "schema_type": "BreadcrumbList",
     "custom_json_ld": "",
     "is_indexable": true,
-    "updated_at": "2026-09-09T16:16:53.654Z"
+    "updated_at": "2026-09-11T15:14:15.152Z"
   }
 },
 {
@@ -5165,11 +4341,11 @@
     "og_title": "ProjectsHub — Enterprise AI, Real-World Projects & Developer Tools",
     "og_description": "Empowering developers and modern enterprises with production-ready AI systems, curated machine learning pipelines, and intensive 1-on-1 mentorship.",
     "og_image": "",
-    "robots": "noindex, nofollow",
+    "robots": "index,follow",
     "schema_type": "Auto",
     "custom_json_ld": "",
-    "is_indexable": false,
-    "updated_at": "2026-09-09T16:16:53.658Z"
+    "is_indexable": true,
+    "updated_at": "2026-09-11T15:14:15.152Z"
   }
 },
 {
@@ -5187,7 +4363,7 @@
     "schema_type": "BreadcrumbList",
     "custom_json_ld": "",
     "is_indexable": true,
-    "updated_at": "2026-09-09T16:16:53.660Z"
+    "updated_at": "2026-09-11T15:14:15.152Z"
   }
 },
 {
@@ -5223,7 +4399,7 @@
     "schema_type": "Auto",
     "custom_json_ld": "",
     "is_indexable": true,
-    "updated_at": "2026-09-09T16:16:53.666Z"
+    "updated_at": "2026-09-11T15:14:15.163Z"
   }
 },
 {
@@ -5259,7 +4435,7 @@
     "schema_type": "Auto",
     "custom_json_ld": "",
     "is_indexable": true,
-    "updated_at": "2026-09-09T16:16:53.663Z"
+    "updated_at": "2026-09-11T15:14:15.161Z"
   }
 },
 {
@@ -5277,7 +4453,7 @@
     "schema_type": "Auto",
     "custom_json_ld": "",
     "is_indexable": true,
-    "updated_at": "2026-09-09T16:16:53.669Z"
+    "updated_at": "2026-09-11T15:14:15.169Z"
   }
 },
 {
@@ -5365,6 +4541,312 @@
   }
 },
 {
+  "model": "core.chatbotconversation",
+  "pk": 3,
+  "fields": {
+    "session_id": "chat_jujqlvm0_mtvf8nry",
+    "user_name": "",
+    "user_email": "",
+    "user_phone": "",
+    "service_interest": "",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "page_url": "/",
+    "status": "active",
+    "admin_notes": "",
+    "created_at": "2026-09-10T11:05:47.635Z",
+    "updated_at": "2026-09-10T11:05:47.645Z"
+  }
+},
+{
+  "model": "core.chatbotconversation",
+  "pk": 4,
+  "fields": {
+    "session_id": "",
+    "user_name": "",
+    "user_email": "",
+    "user_phone": "",
+    "service_interest": "",
+    "ip_address": null,
+    "user_agent": "",
+    "page_url": "/",
+    "status": "active",
+    "admin_notes": "",
+    "created_at": "2026-09-11T08:25:15.749Z",
+    "updated_at": "2026-09-11T08:25:15.749Z"
+  }
+},
+{
+  "model": "core.chatbotconversation",
+  "pk": 5,
+  "fields": {
+    "session_id": "chat_k7m2vpon_mttnlset",
+    "user_name": "",
+    "user_email": "",
+    "user_phone": "8347223122",
+    "service_interest": "",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "page_url": "/",
+    "status": "lead",
+    "admin_notes": "",
+    "created_at": "2026-09-11T08:56:31.302Z",
+    "updated_at": "2026-09-11T08:56:41.267Z"
+  }
+},
+{
+  "model": "core.chatbotconversation",
+  "pk": 6,
+  "fields": {
+    "session_id": "chat_qrupno1y_mtwu6l5k",
+    "user_name": "",
+    "user_email": "",
+    "user_phone": "",
+    "service_interest": "",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+    "page_url": "/",
+    "status": "active",
+    "admin_notes": "",
+    "created_at": "2026-09-11T10:51:51.339Z",
+    "updated_at": "2026-09-11T10:51:51.348Z"
+  }
+},
+{
+  "model": "core.chatbotconversation",
+  "pk": 7,
+  "fields": {
+    "session_id": "chat_zk9lc0dz_mtwu73q2",
+    "user_name": "",
+    "user_email": "",
+    "user_phone": "",
+    "service_interest": "",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+    "page_url": "/",
+    "status": "active",
+    "admin_notes": "",
+    "created_at": "2026-09-11T10:52:15.414Z",
+    "updated_at": "2026-09-11T10:52:15.438Z"
+  }
+},
+{
+  "model": "core.chatbotconversation",
+  "pk": 8,
+  "fields": {
+    "session_id": "chat_fybg0pyf_mtwu7xob",
+    "user_name": "",
+    "user_email": "",
+    "user_phone": "",
+    "service_interest": "",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+    "page_url": "/blog/",
+    "status": "active",
+    "admin_notes": "",
+    "created_at": "2026-09-11T10:52:54.212Z",
+    "updated_at": "2026-09-11T10:52:54.216Z"
+  }
+},
+{
+  "model": "core.chatbotconversation",
+  "pk": 9,
+  "fields": {
+    "session_id": "chat_fzdzkunu_mtwugauk",
+    "user_name": "",
+    "user_email": "",
+    "user_phone": "",
+    "service_interest": "",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+    "page_url": "/",
+    "status": "active",
+    "admin_notes": "",
+    "created_at": "2026-09-11T10:59:24.541Z",
+    "updated_at": "2026-09-11T10:59:24.551Z"
+  }
+},
+{
+  "model": "core.chatbotconversation",
+  "pk": 10,
+  "fields": {
+    "session_id": "chat_dnh164b5_mtwuito9",
+    "user_name": "",
+    "user_email": "",
+    "user_phone": "",
+    "service_interest": "",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+    "page_url": "/",
+    "status": "active",
+    "admin_notes": "",
+    "created_at": "2026-09-11T11:01:22.245Z",
+    "updated_at": "2026-09-11T11:01:22.269Z"
+  }
+},
+{
+  "model": "core.chatbotconversation",
+  "pk": 11,
+  "fields": {
+    "session_id": "chat_0csurbzo_mtwuj12z",
+    "user_name": "",
+    "user_email": "",
+    "user_phone": "",
+    "service_interest": "",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+    "page_url": "/",
+    "status": "active",
+    "admin_notes": "",
+    "created_at": "2026-09-11T11:01:31.855Z",
+    "updated_at": "2026-09-11T11:01:31.874Z"
+  }
+},
+{
+  "model": "core.chatbotconversation",
+  "pk": 12,
+  "fields": {
+    "session_id": "chat_t63fytup_mtwujgmi",
+    "user_name": "",
+    "user_email": "",
+    "user_phone": "",
+    "service_interest": "",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+    "page_url": "/",
+    "status": "active",
+    "admin_notes": "",
+    "created_at": "2026-09-11T11:01:52.001Z",
+    "updated_at": "2026-09-11T11:01:52.010Z"
+  }
+},
+{
+  "model": "core.chatbotconversation",
+  "pk": 13,
+  "fields": {
+    "session_id": "chat_pkzksyet_mtwvo6jm",
+    "user_name": "",
+    "user_email": "",
+    "user_phone": "",
+    "service_interest": "",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "page_url": "/",
+    "status": "active",
+    "admin_notes": "",
+    "created_at": "2026-09-11T11:33:31.829Z",
+    "updated_at": "2026-09-11T11:33:31.847Z"
+  }
+},
+{
+  "model": "core.chatbotconversation",
+  "pk": 14,
+  "fields": {
+    "session_id": "chat_okmu3vgw_mtwvq6jo",
+    "user_name": "",
+    "user_email": "",
+    "user_phone": "",
+    "service_interest": "",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+    "page_url": "/",
+    "status": "active",
+    "admin_notes": "",
+    "created_at": "2026-09-11T11:35:05.139Z",
+    "updated_at": "2026-09-11T11:35:05.148Z"
+  }
+},
+{
+  "model": "core.chatbotconversation",
+  "pk": 15,
+  "fields": {
+    "session_id": "chat_zvggetqs_mtwvxzag",
+    "user_name": "",
+    "user_email": "",
+    "user_phone": "",
+    "service_interest": "",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+    "page_url": "/",
+    "status": "active",
+    "admin_notes": "",
+    "created_at": "2026-09-11T11:41:08.979Z",
+    "updated_at": "2026-09-11T11:41:08.985Z"
+  }
+},
+{
+  "model": "core.chatbotconversation",
+  "pk": 16,
+  "fields": {
+    "session_id": "chat_3dojz9lb_mtwvyfm2",
+    "user_name": "",
+    "user_email": "",
+    "user_phone": "",
+    "service_interest": "",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+    "page_url": "/",
+    "status": "active",
+    "admin_notes": "",
+    "created_at": "2026-09-11T11:41:30.133Z",
+    "updated_at": "2026-09-11T11:41:30.139Z"
+  }
+},
+{
+  "model": "core.chatbotconversation",
+  "pk": 17,
+  "fields": {
+    "session_id": "chat_54ok7r0o_mtwvyphl",
+    "user_name": "",
+    "user_email": "",
+    "user_phone": "",
+    "service_interest": "",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+    "page_url": "/",
+    "status": "active",
+    "admin_notes": "",
+    "created_at": "2026-09-11T11:41:42.927Z",
+    "updated_at": "2026-09-11T11:41:42.935Z"
+  }
+},
+{
+  "model": "core.chatbotconversation",
+  "pk": 18,
+  "fields": {
+    "session_id": "chat_rfqh88gr_mtww91xv",
+    "user_name": "",
+    "user_email": "",
+    "user_phone": "",
+    "service_interest": "",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+    "page_url": "/",
+    "status": "active",
+    "admin_notes": "",
+    "created_at": "2026-09-11T11:49:45.634Z",
+    "updated_at": "2026-09-11T11:49:45.641Z"
+  }
+},
+{
+  "model": "core.chatbotconversation",
+  "pk": 19,
+  "fields": {
+    "session_id": "chat_riautsgx_mtww94mt",
+    "user_name": "",
+    "user_email": "",
+    "user_phone": "",
+    "service_interest": "",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+    "page_url": "/",
+    "status": "active",
+    "admin_notes": "",
+    "created_at": "2026-09-11T11:49:49.121Z",
+    "updated_at": "2026-09-11T11:49:49.128Z"
+  }
+},
+{
   "model": "core.chatbotmessage",
   "pk": 3,
   "fields": {
@@ -5382,6 +4864,196 @@
     "sender": "bot",
     "message": "We specialize in Python Django web development! Our team will contact you shortly at client@innovate.org.",
     "timestamp": "2026-09-09T05:18:59.699Z"
+  }
+},
+{
+  "model": "core.chatbotmessage",
+  "pk": 5,
+  "fields": {
+    "conversation": 3,
+    "sender": "bot",
+    "message": "Hi there! 👋 I'm ProjectsHub AI. How can I help you today?",
+    "timestamp": "2026-09-10T11:05:47.650Z"
+  }
+},
+{
+  "model": "core.chatbotmessage",
+  "pk": 6,
+  "fields": {
+    "conversation": 5,
+    "sender": "user",
+    "message": "hi",
+    "timestamp": "2026-09-11T08:56:31.320Z"
+  }
+},
+{
+  "model": "core.chatbotmessage",
+  "pk": 7,
+  "fields": {
+    "conversation": 5,
+    "sender": "bot",
+    "message": "Hey! Nice to meet you. What's on your mind?",
+    "timestamp": "2026-09-11T08:56:32.992Z"
+  }
+},
+{
+  "model": "core.chatbotmessage",
+  "pk": 8,
+  "fields": {
+    "conversation": 5,
+    "sender": "user",
+    "message": "this is my nuber and 8347223122",
+    "timestamp": "2026-09-11T08:56:40.187Z"
+  }
+},
+{
+  "model": "core.chatbotmessage",
+  "pk": 9,
+  "fields": {
+    "conversation": 5,
+    "sender": "bot",
+    "message": "Hello! How can I assist you today?",
+    "timestamp": "2026-09-11T08:56:41.272Z"
+  }
+},
+{
+  "model": "core.chatbotmessage",
+  "pk": 10,
+  "fields": {
+    "conversation": 6,
+    "sender": "bot",
+    "message": "Hi there! 👋 I'm ProjectsHub AI. How can I help you today?",
+    "timestamp": "2026-09-11T10:51:51.355Z"
+  }
+},
+{
+  "model": "core.chatbotmessage",
+  "pk": 11,
+  "fields": {
+    "conversation": 7,
+    "sender": "bot",
+    "message": "Hi there! 👋 I'm ProjectsHub AI. How can I help you today?",
+    "timestamp": "2026-09-11T10:52:15.444Z"
+  }
+},
+{
+  "model": "core.chatbotmessage",
+  "pk": 12,
+  "fields": {
+    "conversation": 8,
+    "sender": "bot",
+    "message": "Hi there! 👋 I'm ProjectsHub AI. How can I help you today?",
+    "timestamp": "2026-09-11T10:52:54.219Z"
+  }
+},
+{
+  "model": "core.chatbotmessage",
+  "pk": 13,
+  "fields": {
+    "conversation": 9,
+    "sender": "bot",
+    "message": "Hi there! 👋 I'm ProjectsHub AI. How can I help you today?",
+    "timestamp": "2026-09-11T10:59:24.557Z"
+  }
+},
+{
+  "model": "core.chatbotmessage",
+  "pk": 14,
+  "fields": {
+    "conversation": 10,
+    "sender": "bot",
+    "message": "Hi there! 👋 I'm ProjectsHub AI. How can I help you today?",
+    "timestamp": "2026-09-11T11:01:22.273Z"
+  }
+},
+{
+  "model": "core.chatbotmessage",
+  "pk": 15,
+  "fields": {
+    "conversation": 11,
+    "sender": "bot",
+    "message": "Hi there! 👋 I'm ProjectsHub AI. How can I help you today?",
+    "timestamp": "2026-09-11T11:01:31.879Z"
+  }
+},
+{
+  "model": "core.chatbotmessage",
+  "pk": 16,
+  "fields": {
+    "conversation": 12,
+    "sender": "bot",
+    "message": "Hi there! 👋 I'm ProjectsHub AI. How can I help you today?",
+    "timestamp": "2026-09-11T11:01:52.016Z"
+  }
+},
+{
+  "model": "core.chatbotmessage",
+  "pk": 17,
+  "fields": {
+    "conversation": 13,
+    "sender": "bot",
+    "message": "Hi there! 👋 I'm ProjectsHub AI. How can I help you today?",
+    "timestamp": "2026-09-11T11:33:31.847Z"
+  }
+},
+{
+  "model": "core.chatbotmessage",
+  "pk": 18,
+  "fields": {
+    "conversation": 14,
+    "sender": "bot",
+    "message": "Hi there! 👋 I'm ProjectsHub AI. How can I help you today?",
+    "timestamp": "2026-09-11T11:35:05.153Z"
+  }
+},
+{
+  "model": "core.chatbotmessage",
+  "pk": 19,
+  "fields": {
+    "conversation": 15,
+    "sender": "bot",
+    "message": "Hi there! 👋 I'm ProjectsHub AI. How can I help you today?",
+    "timestamp": "2026-09-11T11:41:08.989Z"
+  }
+},
+{
+  "model": "core.chatbotmessage",
+  "pk": 20,
+  "fields": {
+    "conversation": 16,
+    "sender": "bot",
+    "message": "Hi there! 👋 I'm ProjectsHub AI. How can I help you today?",
+    "timestamp": "2026-09-11T11:41:30.143Z"
+  }
+},
+{
+  "model": "core.chatbotmessage",
+  "pk": 21,
+  "fields": {
+    "conversation": 17,
+    "sender": "bot",
+    "message": "Hi there! 👋 I'm ProjectsHub AI. How can I help you today?",
+    "timestamp": "2026-09-11T11:41:42.940Z"
+  }
+},
+{
+  "model": "core.chatbotmessage",
+  "pk": 22,
+  "fields": {
+    "conversation": 18,
+    "sender": "bot",
+    "message": "Hi there! 👋 I'm ProjectsHub AI. How can I help you today?",
+    "timestamp": "2026-09-11T11:49:45.661Z"
+  }
+},
+{
+  "model": "core.chatbotmessage",
+  "pk": 23,
+  "fields": {
+    "conversation": 19,
+    "sender": "bot",
+    "message": "Hi there! 👋 I'm ProjectsHub AI. How can I help you today?",
+    "timestamp": "2026-09-11T11:49:49.147Z"
   }
 },
 {
@@ -5497,777 +5169,105 @@
   }
 },
 {
-  "model": "admin.logentry",
-  "pk": 1,
+  "model": "auth.user",
   "fields": {
-    "action_time": "2026-05-07T10:53:20.346Z",
-    "user": [
-      "che"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "1",
-    "object_repr": "AI Sentiment Analyser",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Image\", \"Pricing plans\"]}}]"
+    "password": "pbkdf2_sha256$600000$cjRtLRU4rNXZTupLOWvSXA$zlrUkR/G45QWqSgIaOjaqFnvWKhqfYg0hWa3t+8ptx0=",
+    "last_login": "2026-09-11T11:19:34.699Z",
+    "is_superuser": true,
+    "username": "cheta",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-05-07T10:23:09.522Z",
+    "groups": [],
+    "user_permissions": []
   }
 },
 {
-  "model": "admin.logentry",
-  "pk": 2,
+  "model": "auth.user",
   "fields": {
-    "action_time": "2026-05-09T14:37:32.426Z",
-    "user": [
-      "che"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "7",
-    "object_repr": "LLM Code Review Bot",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Detailed description\", \"Project url\"]}}]"
+    "password": "pbkdf2_sha256$600000$TphWVv92TPXMvbTO4MZNh4$6+FMVrfusfjZJRwzpgi9fRWBrUlMGml+EziFk/e0NuQ=",
+    "last_login": "2026-05-09T16:45:27.633Z",
+    "is_superuser": true,
+    "username": "che",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-05-07T10:42:31.094Z",
+    "groups": [],
+    "user_permissions": []
   }
 },
 {
-  "model": "admin.logentry",
-  "pk": 3,
+  "model": "auth.user",
   "fields": {
-    "action_time": "2026-05-09T14:46:24.686Z",
-    "user": [
-      "che"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "7",
-    "object_repr": "LLM Code Review Bot",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Youtube url\"]}}]"
+    "password": "pbkdf2_sha256$600000$u8czVlCSKoBdHFJ374s571$48dqxWAUHBOEV+asLLx0hRohvFDZ17WM6Pj/h/Ouegs=",
+    "last_login": "2026-06-23T18:11:31.037Z",
+    "is_superuser": true,
+    "username": "a",
+    "first_name": "",
+    "last_name": "",
+    "email": "a@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-05-08T16:35:19.335Z",
+    "groups": [],
+    "user_permissions": []
   }
 },
 {
-  "model": "admin.logentry",
-  "pk": 4,
+  "model": "auth.user",
   "fields": {
-    "action_time": "2026-05-09T15:08:30.634Z",
-    "user": [
-      "che"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "7",
-    "object_repr": "LLM Code Review Bot",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Youtube url\"]}}]"
+    "password": "pbkdf2_sha256$600000$pjOniN66ljU3M3OrxJNRXV$sTy4diDKupoeRMasgXsxa6HGyg8Shfj0vFcpquAlgo0=",
+    "last_login": "2026-09-09T03:05:52.313Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-08-15T11:53:33.230Z",
+    "groups": [],
+    "user_permissions": []
   }
 },
 {
-  "model": "admin.logentry",
-  "pk": 5,
+  "model": "auth.user",
   "fields": {
-    "action_time": "2026-06-06T15:47:59.222Z",
-    "user": [
-      "a"
-    ],
-    "content_type": [
-      "core",
-      "workshopcard"
-    ],
-    "object_id": "1",
-    "object_repr": "End-to-End ML Engineering Bootcamp",
-    "action_flag": 2,
-    "change_message": "[{\"added\": {\"name\": \"Workshop Day\", \"object\": \"Day 5: Doubts & Future Guidance\"}}, {\"changed\": {\"name\": \"Workshop Day\", \"object\": \"Day 1: Data & EDA\", \"fields\": [\"Description\"]}}, {\"changed\": {\"name\": \"Workshop Day\", \"object\": \"Day 2: Feature Engineering & Modelling\", \"fields\": [\"Description\"]}}, {\"changed\": {\"name\": \"Workshop Day\", \"object\": \"Day 3: Deep Learning & Computer Vision\", \"fields\": [\"Description\"]}}, {\"changed\": {\"name\": \"Workshop Day\", \"object\": \"Day 4: MLOps & Deployment\", \"fields\": [\"Description\"]}}]"
+    "password": "pbkdf2_sha256$600000$rUhKeshJeQ7JpB3EbLN4DC$0r3NvwNQEdxij1CZM+qb5S6+tTtM7P0sHyLJ4hcGdNc=",
+    "last_login": "2026-09-08T18:29:37.053Z",
+    "is_superuser": true,
+    "username": "harsh",
+    "first_name": "",
+    "last_name": "",
+    "email": "Harsh@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-09-05T06:48:39Z",
+    "groups": [],
+    "user_permissions": []
   }
 },
 {
-  "model": "admin.logentry",
-  "pk": 6,
+  "model": "auth.user",
   "fields": {
-    "action_time": "2026-06-06T16:33:37.589Z",
-    "user": [
-      "a"
-    ],
-    "content_type": [
-      "core",
-      "workshopcard"
-    ],
-    "object_id": "1",
-    "object_repr": "End-to-End ML Engineering Bootcamp",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"name\": \"Workshop Day\", \"object\": \"Day 5: Doubts & Future Guidance\", \"fields\": [\"Outcome\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 7,
-  "fields": {
-    "action_time": "2026-06-06T17:43:35.945Z",
-    "user": [
-      "a"
-    ],
-    "content_type": [
-      "core",
-      "workshopcard"
-    ],
-    "object_id": "1",
-    "object_repr": "End-to-End ML Engineering Bootcamp",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"name\": \"Workshop Day\", \"object\": \"Day 1: Python Foundations & Data Science\", \"fields\": [\"Title\"]}}, {\"changed\": {\"name\": \"Workshop Day\", \"object\": \"Day 2: Machine Learning Core\", \"fields\": [\"Title\"]}}, {\"changed\": {\"name\": \"Workshop Day\", \"object\": \"Day 3: Deep Learning & Neural Networks\", \"fields\": [\"Title\"]}}, {\"changed\": {\"name\": \"Workshop Day\", \"object\": \"Day 4: AI Deployment & MLOps\", \"fields\": [\"Title\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 8,
-  "fields": {
-    "action_time": "2026-06-06T18:22:30.223Z",
-    "user": [
-      "a"
-    ],
-    "content_type": [
-      "core",
-      "workshopcard"
-    ],
-    "object_id": "1",
-    "object_repr": "End-to-End ML Engineering Bootcamp",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"name\": \"Workshop Day\", \"object\": \"Day 1: Python Foundations & Data Science\", \"fields\": [\"Description\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 9,
-  "fields": {
-    "action_time": "2026-06-09T13:54:30.800Z",
-    "user": [
-      "a"
-    ],
-    "content_type": [
-      "core",
-      "projectgatelead"
-    ],
-    "object_id": "2",
-    "object_repr": "ProjectsHub (dev.projectshub.co.in@gmail.com)",
-    "action_flag": 3,
-    "change_message": ""
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 10,
-  "fields": {
-    "action_time": "2026-06-09T13:54:30.810Z",
-    "user": [
-      "a"
-    ],
-    "content_type": [
-      "core",
-      "projectgatelead"
-    ],
-    "object_id": "1",
-    "object_repr": "raj makhijani (rajmakhijani428@gmail.com)",
-    "action_flag": 3,
-    "change_message": ""
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 11,
-  "fields": {
-    "action_time": "2026-06-09T20:17:36.225Z",
-    "user": [
-      "a"
-    ],
-    "content_type": [
-      "core",
-      "ideasubmission"
-    ],
-    "object_id": "2",
-    "object_repr": "raj makhijani — hgjgj (09 May 2026)",
-    "action_flag": 3,
-    "change_message": ""
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 12,
-  "fields": {
-    "action_time": "2026-06-09T20:17:36.244Z",
-    "user": [
-      "a"
-    ],
-    "content_type": [
-      "core",
-      "ideasubmission"
-    ],
-    "object_id": "1",
-    "object_repr": "cht — abc (07 May 2026)",
-    "action_flag": 3,
-    "change_message": ""
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 13,
-  "fields": {
-    "action_time": "2026-06-09T20:17:42.199Z",
-    "user": [
-      "a"
-    ],
-    "content_type": [
-      "core",
-      "contactmessage"
-    ],
-    "object_id": "2",
-    "object_repr": "r — No subject (09 May 2026)",
-    "action_flag": 3,
-    "change_message": ""
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 14,
-  "fields": {
-    "action_time": "2026-06-09T20:17:42.207Z",
-    "user": [
-      "a"
-    ],
-    "content_type": [
-      "core",
-      "contactmessage"
-    ],
-    "object_id": "1",
-    "object_repr": "chetan — No subject (07 May 2026)",
-    "action_flag": 3,
-    "change_message": ""
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 15,
-  "fields": {
-    "action_time": "2026-07-28T10:28:05.783Z",
-    "user": [
-      "cheta"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "7",
-    "object_repr": "LLM Code Review Bot",
-    "action_flag": 3,
-    "change_message": ""
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 16,
-  "fields": {
-    "action_time": "2026-07-28T10:30:52.760Z",
-    "user": [
-      "cheta"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "8",
-    "object_repr": "llm base code reviewer",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 17,
-  "fields": {
-    "action_time": "2026-07-28T16:58:51.331Z",
-    "user": [
-      "cheta"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "8",
-    "object_repr": "llm base code reviewer",
-    "action_flag": 2,
-    "change_message": "[{\"added\": {\"name\": \"What's Included Feature\", \"object\": \"llm base code reviewer \\u2014 Full FastAPI + Celery + Redis source code\"}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 18,
-  "fields": {
-    "action_time": "2026-07-28T16:58:52.128Z",
-    "user": [
-      "cheta"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "8",
-    "object_repr": "llm base code reviewer",
-    "action_flag": 2,
-    "change_message": "[{\"added\": {\"name\": \"What's Included Feature\", \"object\": \"llm base code reviewer \\u2014 Full FastAPI + Celery + Redis source code\"}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 19,
-  "fields": {
-    "action_time": "2026-07-28T16:58:53.239Z",
-    "user": [
-      "cheta"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "8",
-    "object_repr": "llm base code reviewer",
-    "action_flag": 2,
-    "change_message": "[{\"added\": {\"name\": \"What's Included Feature\", \"object\": \"llm base code reviewer \\u2014 Full FastAPI + Celery + Redis source code\"}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 20,
-  "fields": {
-    "action_time": "2026-08-29T13:51:01.636Z",
-    "user": [
-      "admin"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "1",
-    "object_repr": "AI Sentiment Analyser",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Detailed description\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 21,
-  "fields": {
-    "action_time": "2026-08-31T10:19:24.751Z",
-    "user": [
-      "admin"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "9",
-    "object_repr": "test",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 22,
-  "fields": {
-    "action_time": "2026-08-31T10:20:31.565Z",
-    "user": [
-      "admin"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "9",
-    "object_repr": "test",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Image\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 23,
-  "fields": {
-    "action_time": "2026-08-31T12:44:13.279Z",
-    "user": [
-      "admin"
-    ],
-    "content_type": [
-      "core",
-      "blogpost"
-    ],
-    "object_id": "4",
-    "object_repr": "test",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 24,
-  "fields": {
-    "action_time": "2026-09-02T11:44:02.270Z",
-    "user": [
-      "admin"
-    ],
-    "content_type": [
-      "core",
-      "blogpost"
-    ],
-    "object_id": "4",
-    "object_repr": "test",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Is active\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 25,
-  "fields": {
-    "action_time": "2026-09-02T11:44:02.277Z",
-    "user": [
-      "admin"
-    ],
-    "content_type": [
-      "core",
-      "blogpost"
-    ],
-    "object_id": "1",
-    "object_repr": "Building Your First LLM App with Python",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Is active\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 26,
-  "fields": {
-    "action_time": "2026-09-02T11:44:02.278Z",
-    "user": [
-      "admin"
-    ],
-    "content_type": [
-      "core",
-      "blogpost"
-    ],
-    "object_id": "2",
-    "object_repr": "How to Stand Out in Tech Interviews",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Is active\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 27,
-  "fields": {
-    "action_time": "2026-09-02T11:44:02.279Z",
-    "user": [
-      "admin"
-    ],
-    "content_type": [
-      "core",
-      "blogpost"
-    ],
-    "object_id": "3",
-    "object_repr": "From Zero to MVP in 3 Weeks",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Is active\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 28,
-  "fields": {
-    "action_time": "2026-09-02T11:46:27.187Z",
-    "user": [
-      "admin"
-    ],
-    "content_type": [
-      "core",
-      "blogpost"
-    ],
-    "object_id": "5",
-    "object_repr": "AI market",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"Section\", \"object\": \"AI market \\u2014 Helllo guys\"}}, {\"added\": {\"name\": \"Section\", \"object\": \"AI market \\u2014 Heading 2\"}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 29,
-  "fields": {
-    "action_time": "2026-09-02T11:47:18.212Z",
-    "user": [
-      "admin"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "8",
-    "object_repr": "llm base code reviewer",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Is active\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 30,
-  "fields": {
-    "action_time": "2026-09-02T11:47:18.214Z",
-    "user": [
-      "admin"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "9",
-    "object_repr": "test",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Show on index\", \"Is active\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 31,
-  "fields": {
-    "action_time": "2026-09-02T11:47:18.215Z",
-    "user": [
-      "admin"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "1",
-    "object_repr": "AI Sentiment Analyser",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Show on index\", \"Is active\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 32,
-  "fields": {
-    "action_time": "2026-09-02T11:47:18.217Z",
-    "user": [
-      "admin"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "2",
-    "object_repr": "Stock Price Predictor",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Show on index\", \"Is active\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 33,
-  "fields": {
-    "action_time": "2026-09-02T11:47:18.218Z",
-    "user": [
-      "admin"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "3",
-    "object_repr": "Customer Churn Pipeline",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Show on index\", \"Is active\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 34,
-  "fields": {
-    "action_time": "2026-09-02T11:47:18.219Z",
-    "user": [
-      "admin"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "4",
-    "object_repr": "RAG Document Q&A",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Is active\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 35,
-  "fields": {
-    "action_time": "2026-09-02T11:47:18.221Z",
-    "user": [
-      "admin"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "5",
-    "object_repr": "Real-time Data Dashboard",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Is active\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 36,
-  "fields": {
-    "action_time": "2026-09-02T11:47:18.222Z",
-    "user": [
-      "admin"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "6",
-    "object_repr": "Multi-Cloud Cost Optimiser",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Is active\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 37,
-  "fields": {
-    "action_time": "2026-09-02T11:51:00.193Z",
-    "user": [
-      "admin"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "10",
-    "object_repr": "SO it is the titile",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"Key Highlight\", \"object\": \"SO it is the titile \\u2014 jj: 540\"}}, {\"added\": {\"name\": \"Architecture Diagram\", \"object\": \"SO it is the titile \\u2014 bkeko\"}}, {\"added\": {\"name\": \"Timeline Phase\", \"object\": \"SO it is the titile \\u2014 1: hello\"}}, {\"added\": {\"name\": \"What's Included Feature\", \"object\": \"SO it is the titile \\u2014 nothing to see\"}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 38,
-  "fields": {
-    "action_time": "2026-09-08T18:34:22.151Z",
-    "user": [
-      "harsh"
-    ],
-    "content_type": [
-      "core",
-      "blogcategory"
-    ],
-    "object_id": "1",
-    "object_repr": "AI Tutorials",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 39,
-  "fields": {
-    "action_time": "2026-09-08T18:34:42.043Z",
-    "user": [
-      "harsh"
-    ],
-    "content_type": [
-      "core",
-      "blogpost"
-    ],
-    "object_id": "5",
-    "object_repr": "AI market",
-    "action_flag": 2,
-    "change_message": "[]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 40,
-  "fields": {
-    "action_time": "2026-09-09T04:45:09.604Z",
-    "user": [
-      "harsh"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "8",
-    "object_repr": "llm base code reviewer",
-    "action_flag": 2,
-    "change_message": "[]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 41,
-  "fields": {
-    "action_time": "2026-09-09T05:10:31.220Z",
-    "user": [
-      "harsh"
-    ],
-    "content_type": [
-      "core",
-      "redirect"
-    ],
-    "object_id": "4",
-    "object_repr": "/workshop-day1/ -> /workshop/ (301)",
-    "action_flag": 2,
-    "change_message": "[]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 42,
-  "fields": {
-    "action_time": "2026-09-09T08:27:51.285Z",
-    "user": [
-      "harsh"
-    ],
-    "content_type": [
-      "core",
-      "project"
-    ],
-    "object_id": "12",
-    "object_repr": "test",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"Project Highlight\", \"object\": \"test \\u2014 test: 20\"}}, {\"added\": {\"name\": \"Project Image\", \"object\": \"test image 2\"}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 43,
-  "fields": {
-    "action_time": "2026-09-09T08:31:32.019Z",
-    "user": [
-      "harsh"
-    ],
-    "content_type": [
-      "core",
-      "testimonial"
-    ],
-    "object_id": "7",
-    "object_repr": "test (bew)",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
+    "password": "pbkdf2_sha256$600000$B1zepgGbhI1nAEj0u56ev8$b1jLm9PiaWf5Y6geuyJRqaryJSPbGGhrR9bpCdNhdwE=",
+    "last_login": "2026-09-11T14:53:26.389Z",
+    "is_superuser": true,
+    "username": "harsh@123",
+    "first_name": "",
+    "last_name": "",
+    "email": "harshsharmaqa@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-09-10T11:09:30.580Z",
+    "groups": [],
+    "user_permissions": []
   }
 }
 ]

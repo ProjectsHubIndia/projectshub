@@ -26,6 +26,21 @@ class SiteSettings(models.Model):
     )
     logo_dark = models.ImageField(upload_to='branding/', blank=True, null=True)
     logo_light = models.ImageField(upload_to='branding/', blank=True, null=True)
+
+    # Mega Menu "Our Work" Footer Bar
+    mega_popular_label = models.CharField(
+        max_length=60, default='Popular:', blank=True,
+        help_text="Label preceding bottom tags in 'Our Work' mega menu (e.g. 'Popular:' or 'Trending:')"
+    )
+    mega_browse_all_text = models.CharField(
+        max_length=80, default='Browse All Projects →', blank=True,
+        help_text="CTA text in 'Our Work' mega menu footer"
+    )
+    mega_browse_all_url = models.CharField(
+        max_length=255, default='/projects/', blank=True,
+        help_text="CTA link destination in 'Our Work' mega menu footer"
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -87,6 +102,17 @@ class NavigationItem(models.Model):
     def __str__(self):
         badge = f" [{self.badge_text}]" if self.badge_text else ""
         return f"[{self.get_group_display()}] {self.title}{badge} -> {self.url}"
+
+
+class MegaMenuTag(NavigationItem):
+    """
+    Proxy model to manage 'Popular Tags' pills shown in the Our Work Mega Menu footer.
+    Allows administrators to easily add, reorder, and activate/deactivate bottom pills.
+    """
+    class Meta:
+        proxy = True
+        verbose_name = 'Popular Tag (Mega Menu)'
+        verbose_name_plural = 'Popular Tags (Mega Menu)'
 
 
 class SocialLink(models.Model):
