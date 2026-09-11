@@ -1,0 +1,1240 @@
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block title %}Media & Storage Assets Manager | ProjectsHub{% endblock %}
+{% block content_title %}📁 Media &amp; Storage Assets Manager{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+  :root {
+    --am-primary: #2271b1;
+    --am-primary-hover: #135e96;
+    --am-danger: #d63638;
+    --am-danger-hover: #b32d2e;
+    --am-success: #00a32a;
+    --am-warning: #dba617;
+    --am-purple: #6366f1;
+    --am-card-bg: #ffffff;
+    --am-border: #dcdcde;
+    --am-radius: 8px;
+    --am-text: #1d2327;
+    --am-muted: #646970;
+  }
+
+  .am-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 10px 0 40px 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  }
+
+  /* ── Header Banner ── */
+  .am-hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #ffffff;
+    border-radius: var(--am-radius);
+    padding: 24px 30px;
+    margin-bottom: 22px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .am-hero::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.22) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .am-hero-text h2 {
+    color: #ffffff;
+    font-size: 22px;
+    margin: 0 0 6px 0;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .am-hero-text p {
+    color: #94a3b8;
+    margin: 0;
+    font-size: 13px;
+    max-width: 650px;
+    line-height: 1.5;
+  }
+  .am-hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 2;
+  }
+  .am-hero-btn {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #ffffff !important;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none !important;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.18s ease;
+  }
+  .am-hero-btn:hover {
+    background: rgba(255, 255, 255, 0.22);
+    transform: translateY(-1px);
+  }
+
+  /* ── Metric Cards Grid ── */
+  .am-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .am-stat-card {
+    background: var(--am-card-bg);
+    border: 1px solid var(--am-border);
+    border-radius: var(--am-radius);
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .am-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  }
+  .am-stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .am-stat-icon.blue { background: #e7f3ff; color: #2271b1; }
+  .am-stat-icon.green { background: #edfaef; color: #00a32a; }
+  .am-stat-icon.orange { background: #fcf4e4; color: #dba617; }
+  .am-stat-icon.red { background: #fcf0f1; color: #d63638; }
+  .am-stat-icon.purple { background: #eef2ff; color: #6366f1; }
+  .am-stat-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--am-text);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  .am-stat-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--am-muted);
+    margin-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .am-stat-sub {
+    font-size: 11px;
+    color: var(--am-muted);
+    margin-top: 2px;
+  }
+
+  /* ── Tabs Navigation ── */
+  .am-tabs {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 2px solid #e2e8f0;
+    margin-bottom: 20px;
+    padding-bottom: 0;
+    flex-wrap: wrap;
+  }
+  .am-tab-link {
+    padding: 9px 18px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #64748b;
+    text-decoration: none !important;
+    border-radius: 6px 6px 0 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.18s ease;
+  }
+  .am-tab-link:hover {
+    color: var(--am-primary);
+    background: #f8fafc;
+  }
+  .am-tab-link.active {
+    color: var(--am-primary);
+    border-bottom-color: var(--am-primary);
+    background: #ffffff;
+    font-weight: 700;
+  }
+  .am-badge {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .am-badge.blue { background: #e0f2fe; color: #0369a1; }
+  .am-badge.green { background: #dcfce7; color: #15803d; }
+  .am-badge.red { background: #fee2e2; color: #b91c1c; }
+  .am-badge.purple { background: #ede9fe; color: #6d28d9; }
+  .am-badge.gray { background: #f1f5f9; color: #475569; }
+
+  /* ── Filter Bar ── */
+  .am-filter-bar {
+    background: var(--am-card-bg);
+    border: 1px solid var(--am-border);
+    border-radius: var(--am-radius);
+    padding: 14px 18px;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  }
+  .am-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .am-search-input {
+    padding: 7px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 13px;
+    width: 240px;
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+  .am-search-input:focus {
+    border-color: var(--am-primary);
+    box-shadow: 0 0 0 1px var(--am-primary);
+  }
+  .am-select {
+    padding: 7px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 13px;
+    background: #ffffff;
+    outline: none;
+    cursor: pointer;
+  }
+  .am-btn {
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none !important;
+    transition: all 0.15s ease;
+  }
+  .am-btn-primary {
+    background: var(--am-primary);
+    color: #ffffff !important;
+    border-color: var(--am-primary);
+  }
+  .am-btn-primary:hover {
+    background: var(--am-primary-hover);
+  }
+  .am-btn-danger {
+    background: var(--am-danger);
+    color: #ffffff !important;
+    border-color: var(--am-danger);
+  }
+  .am-btn-danger:hover {
+    background: var(--am-danger-hover);
+  }
+  .am-btn-secondary {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #334155 !important;
+  }
+  .am-btn-secondary:hover {
+    background: #e2e8f0;
+  }
+
+  /* ── Bulk Action Banner (Floating) ── */
+  .am-bulk-bar {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    background: #1e293b;
+    color: #ffffff;
+    padding: 12px 20px;
+    border-radius: var(--am-radius);
+    margin-bottom: 16px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    animation: amSlideDown 0.25s ease;
+  }
+  .am-bulk-bar.active { display: flex; }
+  @keyframes amSlideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Assets Table ── */
+  .am-table-wrap {
+    background: var(--am-card-bg);
+    border: 1px solid var(--am-border);
+    border-radius: var(--am-radius);
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+  .am-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    text-align: left;
+  }
+  .am-table thead {
+    background: #f8fafc;
+    border-bottom: 1px solid var(--am-border);
+  }
+  .am-table th {
+    padding: 12px 14px;
+    font-weight: 700;
+    color: #475569;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .am-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+    color: var(--am-text);
+  }
+  .am-table tr:hover td {
+    background: #f8fafc;
+  }
+
+  /* Thumbnails */
+  .am-thumb-box {
+    width: 52px;
+    height: 52px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    background: #f1f5f9;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .am-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.2s ease;
+  }
+  .am-thumb-box:hover .am-thumb-img {
+    transform: scale(1.1);
+  }
+  .am-thumb-icon {
+    font-size: 24px;
+  }
+
+  /* File Info */
+  .am-file-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .am-file-name {
+    font-weight: 700;
+    color: #0f172a;
+    text-decoration: none;
+    word-break: break-all;
+    max-width: 320px;
+    transition: color 0.15s ease;
+  }
+  .am-file-name:hover {
+    color: var(--am-primary);
+  }
+  .am-file-path {
+    font-size: 11px;
+    color: #64748b;
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    background: #f1f5f9;
+    padding: 2px 6px;
+    border-radius: 4px;
+    width: fit-content;
+    max-width: 360px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Size Pill (MB) */
+  .am-size-pill {
+    display: inline-flex;
+    align-items: center;
+    font-weight: 700;
+    font-size: 12.5px;
+    padding: 3px 9px;
+    border-radius: 6px;
+    letter-spacing: -0.01em;
+  }
+  .am-size-pill.large { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+  .am-size-pill.medium { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+  .am-size-pill.normal { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+
+  /* Usage Tooltip */
+  .am-usage-box {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 280px;
+  }
+  .am-usage-item {
+    font-size: 11.5px;
+    color: #334155;
+    background: #f8fafc;
+    border-left: 3px solid #6366f1;
+    padding: 2px 8px;
+    border-radius: 0 4px 4px 0;
+    line-height: 1.35;
+  }
+
+  /* Action Buttons */
+  .am-actions-col {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .am-icon-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #475569;
+    cursor: pointer;
+    text-decoration: none !important;
+    transition: all 0.15s ease;
+  }
+  .am-icon-btn:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #0f172a;
+    transform: translateY(-1px);
+  }
+  .am-icon-btn.danger:hover {
+    background: #fee2e2;
+    border-color: #fca5a5;
+    color: #dc2626;
+  }
+
+  /* ── Modal Dialog ── */
+  .am-modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(4px);
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .am-modal-backdrop.active { display: flex; }
+  .am-modal {
+    background: #ffffff;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    animation: amModalPop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes amModalPop {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .am-modal-head {
+    padding: 18px 24px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .am-modal-head h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .am-modal-body {
+    padding: 20px 24px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: #334155;
+  }
+  .am-modal-file-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 14px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .am-modal-foot {
+    padding: 14px 24px;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  /* Toast Notification */
+  .am-toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #1e293b;
+    color: #ffffff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    font-size: 13px;
+    font-weight: 600;
+    z-index: 100000;
+    display: none;
+    align-items: center;
+    gap: 10px;
+  }
+  .am-toast.active { display: flex; }
+  .am-toast.success { background: #065f46; border-left: 4px solid #10b981; }
+  .am-toast.error { background: #991b1b; border-left: 4px solid #ef4444; }
+
+  /* Responsive adjustments */
+  @media (max-width: 900px) {
+    .am-table th:nth-child(4), .am-table td:nth-child(4) { display: none; }
+  }
+  @media (max-width: 768px) {
+    .am-table th:nth-child(7), .am-table td:nth-child(7) { display: none; }
+    .am-search-input { width: 100%; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="am-container">
+
+  <!-- ── Top Hero Banner ── -->
+  <div class="am-hero">
+    <div class="am-hero-text">
+      <h2><span>📁</span> Media &amp; Storage Assets Manager</h2>
+      <p>
+        Monitor all platform media files with exact disk size in <strong>MB</strong>, detect unused orphan assets across database models and templates, and safely delete unused files and folders to optimize site performance.
+      </p>
+    </div>
+    <div class="am-hero-actions">
+      <a href="?filter=unused" class="am-hero-btn">
+        <span>🧹</span> Quick Cleanup ({{ stats.unused_count }})
+      </a>
+      <a href="/admin/assets/" class="am-hero-btn">
+        <span>🔄</span> Refresh Scan
+      </a>
+    </div>
+  </div>
+
+  <!-- ── Platform Metrics Cards (Exact MB Storage) ── -->
+  <div class="am-stats-grid">
+    <!-- Total Storage -->
+    <div class="am-stat-card">
+      <div class="am-stat-icon blue">💾</div>
+      <div>
+        <div class="am-stat-value">{{ stats.total_mb }} MB</div>
+        <div class="am-stat-label">Total Storage</div>
+        <div class="am-stat-sub">{{ stats.total_assets }} total files</div>
+      </div>
+    </div>
+
+    <!-- Active Used Storage -->
+    <div class="am-stat-card">
+      <div class="am-stat-icon green">🟢</div>
+      <div>
+        <div class="am-stat-value">{{ stats.used_mb }} MB</div>
+        <div class="am-stat-label">Active / Used</div>
+        <div class="am-stat-sub">{{ stats.used_count }} files connected to website</div>
+      </div>
+    </div>
+
+    <!-- Unused Storage (Reclaimable) -->
+    <div class="am-stat-card">
+      <div class="am-stat-icon red">⚠️</div>
+      <div>
+        <div class="am-stat-value">{{ stats.unused_mb }} MB</div>
+        <div class="am-stat-label">Reclaimable Space</div>
+        <div class="am-stat-sub"><strong>{{ stats.unused_count }} unused files</strong> safe to remove</div>
+      </div>
+    </div>
+
+    <!-- Total Folders -->
+    <div class="am-stat-card">
+      <div class="am-stat-icon purple">📁</div>
+      <div>
+        <div class="am-stat-value">{{ stats.total_folders }}</div>
+        <div class="am-stat-label">Asset Folders</div>
+        <div class="am-stat-sub">Across media &amp; static storage</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Tabs Navigation ── -->
+  <div class="am-tabs">
+    <a href="?tab=assets&filter=all" class="am-tab-link {% if current_tab != 'folders' and current_filter == 'all' %}active{% endif %}">
+      <span>📦 All Assets</span>
+      <span class="am-badge blue">{{ stats.total_assets }}</span>
+    </a>
+    <a href="?tab=assets&filter=unused" class="am-tab-link {% if current_tab != 'folders' and current_filter == 'unused' %}active{% endif %}">
+      <span>⚠️ Unused Only (Safe to Remove)</span>
+      <span class="am-badge {% if stats.unused_count > 0 %}red{% else %}green{% endif %}">{{ stats.unused_count }} · {{ stats.unused_mb }} MB</span>
+    </a>
+    <a href="?tab=assets&filter=used" class="am-tab-link {% if current_tab != 'folders' and current_filter == 'used' %}active{% endif %}">
+      <span>🟢 Used in Website</span>
+      <span class="am-badge green">{{ stats.used_count }} · {{ stats.used_mb }} MB</span>
+    </a>
+    <a href="?tab=folders" class="am-tab-link {% if current_tab == 'folders' %}active{% endif %}">
+      <span>📂 Folders Summary</span>
+      <span class="am-badge purple">{{ stats.total_folders }}</span>
+    </a>
+  </div>
+
+  {% if current_tab == 'folders' %}
+  <!-- ── Prominent Folders Summary Table ── -->
+  <div style="margin-top: 20px;">
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+      <h3 style="margin:0; font-size:18px; font-weight:700; color:#0f172a; display:flex; align-items:center; gap:8px;">
+        <span>📂</span> Asset Directories &amp; Folder Storage ({{ stats.total_folders }} Folders)
+      </h3>
+      <span style="font-size:12.5px; color:#64748b;">Browse directories, inspect used vs unused assets per folder, and delete empty/unused folder trees</span>
+    </div>
+
+    <div class="am-table-wrap">
+      <table class="am-table">
+        <thead>
+          <tr>
+            <th>Directory Path</th>
+            <th>Total Files</th>
+            <th>Active Files</th>
+            <th>Unused Files</th>
+            <th>Folder Size (MB)</th>
+            <th>Status</th>
+            <th style="text-align: right;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for folder in folders %}
+            <tr id="folder-row-top-{{ forloop.counter }}">
+              <td>
+                <strong style="color:#0f172a; font-family:monospace; font-size:13px;">{{ folder.path }}</strong>
+              </td>
+              <td><strong>{{ folder.file_count }}</strong> files</td>
+              <td>
+                <span class="am-badge green">{{ folder.used_count }} Used</span>
+              </td>
+              <td>
+                {% if folder.unused_count > 0 %}
+                  <span class="am-badge red">{{ folder.unused_count }} Unused</span>
+                {% else %}
+                  <span class="am-badge gray">0 Unused</span>
+                {% endif %}
+              </td>
+              <td>
+                <span class="am-size-pill medium">{{ folder.total_mb }} MB</span>
+              </td>
+              <td>
+                {% if folder.file_count == 0 %}
+                  <span class="am-badge gray">Empty Folder</span>
+                {% elif folder.unused_count == folder.file_count %}
+                  <span class="am-badge red">100% Unused</span>
+                {% else %}
+                  <span class="am-badge green">Active Content</span>
+                {% endif %}
+              </td>
+              <td style="text-align: right;">
+                <div style="display:flex; gap:6px; justify-content:flex-end;">
+                  <a href="?tab=assets&folder={{ folder.path }}" class="am-btn am-btn-secondary" style="padding:4px 10px; font-size:12px;">
+                    View Files
+                  </a>
+                  {% if folder.can_delete %}
+                    <button type="button" class="am-btn am-btn-danger" style="padding:4px 10px; font-size:12px;" data-path="{{ folder.path }}" data-mb="{{ folder.total_mb }}" onclick="openDeleteFolderModalFromBtn(this)">
+                      🗑️ Delete Folder
+                    </button>
+                  {% endif %}
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% else %}
+
+  <!-- ── Filter & Search Bar ── -->
+  <form method="get" class="am-filter-bar">
+    <input type="hidden" name="tab" value="assets">
+    <input type="hidden" name="filter" value="{{ current_filter }}">
+
+    <div class="am-filter-group">
+      <!-- Search -->
+      <input type="text" name="q" value="{{ search_query }}" placeholder="Search by file name or path..." class="am-search-input">
+
+      <!-- Folder filter -->
+      <select name="folder" class="am-select" onchange="this.form.submit()">
+        <option value="">📁 All Folders ({{ stats.total_folders }})</option>
+        {% for f in folders %}
+          <option value="{{ f.path }}" {% if current_folder == f.path %}selected{% endif %}>
+            {{ f.path }} ({{ f.file_count }} files · {{ f.total_mb }} MB)
+          </option>
+        {% endfor %}
+      </select>
+
+      <!-- Type filter -->
+      <select name="type" class="am-select" onchange="this.form.submit()">
+        <option value="">All File Types</option>
+        <option value="image" {% if current_type == 'image' %}selected{% endif %}>🖼️ Images (WebP, PNG, JPG, SVG)</option>
+        <option value="video" {% if current_type == 'video' %}selected{% endif %}>🎬 Videos (MP4, WebM)</option>
+        <option value="document" {% if current_type == 'document' %}selected{% endif %}>📄 Documents &amp; Archives</option>
+      </select>
+
+      <!-- Sort -->
+      <select name="sort" class="am-select" onchange="this.form.submit()">
+        <option value="size_desc" {% if current_sort == 'size_desc' %}selected{% endif %}>Size: Largest First (MB)</option>
+        <option value="size_asc" {% if current_sort == 'size_asc' %}selected{% endif %}>Size: Smallest First</option>
+        <option value="name" {% if current_sort == 'name' %}selected{% endif %}>Name (A - Z)</option>
+        <option value="date" {% if current_sort == 'date' %}selected{% endif %}>Recently Modified</option>
+        <option value="status" {% if current_sort == 'status' %}selected{% endif %}>Status: Unused First</option>
+      </select>
+    </div>
+
+    <div class="am-filter-group">
+      <button type="submit" class="am-btn am-btn-primary">Apply Filters</button>
+      {% if search_query or current_folder or current_type or current_filter != 'all' %}
+        <a href="/admin/assets/" class="am-btn am-btn-secondary">Reset</a>
+      {% endif %}
+    </div>
+  </form>
+
+  <!-- ── Floating Batch Action Bar ── -->
+  <div id="bulk-bar" class="am-bulk-bar">
+    <div>
+      <span id="bulk-count" style="font-weight:700; font-size:15px;">0</span> items selected
+      (<span id="bulk-mb" style="font-weight:700; color:#38bdf8;">0.00 MB</span>)
+    </div>
+    <div style="display:flex; gap:10px;">
+      <button type="button" class="am-btn am-btn-secondary" onclick="clearAllSelections()" style="color:#0f172a !important;">
+        Cancel Selection
+      </button>
+      <button type="button" class="am-btn am-btn-danger" onclick="confirmDeleteMultiple()">
+        <span>🗑️</span> Delete Selected Unused Files
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Assets Data Table ── -->
+  <div class="am-table-wrap">
+    <table class="am-table">
+      <thead>
+        <tr>
+          <th style="width: 38px; text-align: center;">
+            <input type="checkbox" id="select-all-checkbox" onchange="toggleSelectAll(this)" title="Select all selectable files">
+          </th>
+          <th style="width: 65px;">Preview</th>
+          <th>File Details</th>
+          <th>Folder Location</th>
+          <th style="width: 120px;">Size (MB)</th>
+          <th style="width: 140px;">Website Status</th>
+          <th>Usage In Website</th>
+          <th style="width: 100px; text-align: right;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if assets %}
+          {% for asset in assets %}
+            <tr id="row-{{ asset.id }}" data-relpath="{{ asset.rel_path }}" data-bytes="{{ asset.size_bytes }}" data-mb="{{ asset.size_mb }}" data-used="{{ asset.is_used|yesno:'1,0' }}">
+              <!-- Checkbox -->
+              <td style="text-align: center;">
+                {% if asset.can_delete and not asset.is_used %}
+                  <input type="checkbox" class="asset-checkbox" value="{{ asset.rel_path }}" data-mb="{{ asset.size_mb }}" data-bytes="{{ asset.size_bytes }}" onchange="updateBulkBar()">
+                {% else %}
+                  <span title="{% if asset.is_protected %}Protected System Asset{% else %}In active use by website{% endif %}" style="color:#cbd5e1; cursor:not-allowed;">🔒</span>
+                {% endif %}
+              </td>
+
+              <!-- Preview -->
+              <td>
+                <div class="am-thumb-box" data-url="{{ asset.url }}" data-name="{{ asset.name }}" data-image="{% if asset.is_image %}true{% else %}false{% endif %}" onclick="viewAssetPreviewFromEl(this)">
+                  {% if asset.is_image %}
+                    <img src="{{ asset.url }}" alt="{{ asset.name }}" class="am-thumb-img" loading="lazy" onerror="this.src='/static/image/icons/file.svg';">
+                  {% elif asset.is_video %}
+                    <span class="am-thumb-icon">🎬</span>
+                  {% else %}
+                    <span class="am-thumb-icon">📄</span>
+                  {% endif %}
+                </div>
+              </td>
+
+              <!-- File Name & Rel Path -->
+              <td>
+                <div class="am-file-meta">
+                  <a href="{{ asset.url }}" target="_blank" class="am-file-name" title="{{ asset.name }}">
+                    {{ asset.name }}
+                  </a>
+                  <span class="am-file-path" title="{{ asset.rel_path }}">{{ asset.rel_path }}</span>
+                  <span style="font-size:11px; color:#94a3b8;">Modified: {{ asset.modified_at }}</span>
+                </div>
+              </td>
+
+              <!-- Folder Location -->
+              <td>
+                <span class="am-badge gray" style="font-family:monospace; font-size:11.5px;">{{ asset.folder }}</span>
+              </td>
+
+              <!-- Size in MB -->
+              <td>
+                {% if asset.size_mb >= 1.0 %}
+                  <span class="am-size-pill large">{{ asset.size_str }}</span>
+                {% elif asset.size_mb >= 0.2 %}
+                  <span class="am-size-pill medium">{{ asset.size_str }}</span>
+                {% else %}
+                  <span class="am-size-pill normal">{{ asset.size_str }}</span>
+                {% endif %}
+              </td>
+
+              <!-- Status Badge -->
+              <td>
+                {% if asset.is_used %}
+                  <span class="am-badge green" style="font-size:11.5px; padding:3px 8px;">
+                    🟢 In Use (Active)
+                  </span>
+                {% else %}
+                  <span class="am-badge red" style="font-size:11.5px; padding:3px 8px;">
+                    ⚠️ Not In Use
+                  </span>
+                {% endif %}
+              </td>
+
+              <!-- Usage Details -->
+              <td>
+                <div class="am-usage-box">
+                  {% if asset.is_used %}
+                    {% for use in asset.used_in %}
+                      <div class="am-usage-item" title="{{ use }}">
+                        {{ use }}
+                      </div>
+                    {% endfor %}
+                  {% else %}
+                    <span style="color:#94a3b8; font-size:12px; font-style:italic;">
+                      Not referenced in database, templates, or styles. Safe to delete.
+                    </span>
+                  {% endif %}
+                </div>
+              </td>
+
+              <!-- Actions -->
+              <td style="text-align: right;">
+                <div class="am-actions-col" style="justify-content: flex-end;">
+                  <!-- Copy Link -->
+                  <button type="button" class="am-icon-btn" data-url="{{ asset.url }}" onclick="copyAssetLinkFromBtn(this)" title="Copy URL">
+                    🔗
+                  </button>
+                  <!-- View Link -->
+                  <a href="{{ asset.url }}" target="_blank" class="am-icon-btn" title="Open file in new tab">
+                    ↗
+                  </a>
+                  <!-- Delete Button -->
+                  {% if asset.can_delete %}
+                    <button type="button" class="am-icon-btn danger" data-path="{{ asset.rel_path }}" data-name="{{ asset.name }}" data-size="{{ asset.size_str }}" data-used="{% if asset.is_used %}true{% else %}false{% endif %}" onclick="openDeleteModalFromBtn(this)" title="Delete asset">
+                      🗑️
+                    </button>
+                  {% else %}
+                    <span class="am-icon-btn" style="opacity:0.4; cursor:not-allowed;" title="Protected System Asset">
+                      🛡️
+                    </span>
+                  {% endif %}
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="8" style="text-align: center; padding: 40px; color: #94a3b8;">
+              <div style="font-size: 32px; margin-bottom: 8px;">🔍</div>
+              <strong style="font-size: 15px; color: #475569;">No assets match your search or filter criteria.</strong>
+              <p style="margin: 6px 0 0 0; font-size: 13px;">Try clearing filters or changing your search terms.</p>
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── Folders Summary Section ── -->
+  <div id="folders-section" style="margin-top: 36px;">
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+      <h3 style="margin:0; font-size:18px; font-weight:700; color:#0f172a; display:flex; align-items:center; gap:8px;">
+        <span>📂</span> Asset Directories &amp; Folder Storage
+      </h3>
+      <span style="font-size:12.5px; color:#64748b;">Browse directories and clean unused folder trees</span>
+    </div>
+
+    <div class="am-table-wrap">
+      <table class="am-table">
+        <thead>
+          <tr>
+            <th>Directory Path</th>
+            <th>Total Files</th>
+            <th>Active Files</th>
+            <th>Unused Files</th>
+            <th>Folder Size (MB)</th>
+            <th>Status</th>
+            <th style="text-align: right;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for folder in folders %}
+            <tr id="folder-row-{{ forloop.counter }}">
+              <td>
+                <strong style="color:#0f172a; font-family:monospace; font-size:13px;">{{ folder.path }}</strong>
+              </td>
+              <td><strong>{{ folder.file_count }}</strong> files</td>
+              <td>
+                <span class="am-badge green">{{ folder.used_count }} Used</span>
+              </td>
+              <td>
+                {% if folder.unused_count > 0 %}
+                  <span class="am-badge red">{{ folder.unused_count }} Unused</span>
+                {% else %}
+                  <span class="am-badge gray">0 Unused</span>
+                {% endif %}
+              </td>
+              <td>
+                <span class="am-size-pill medium">{{ folder.total_mb }} MB</span>
+              </td>
+              <td>
+                {% if folder.file_count == 0 %}
+                  <span class="am-badge gray">Empty Folder</span>
+                {% elif folder.unused_count == folder.file_count %}
+                  <span class="am-badge red">100% Unused</span>
+                {% else %}
+                  <span class="am-badge green">Active Content</span>
+                {% endif %}
+              </td>
+              <td style="text-align: right;">
+                <div style="display:flex; gap:6px; justify-content:flex-end;">
+                  <a href="?folder={{ folder.path }}" class="am-btn am-btn-secondary" style="padding:4px 10px; font-size:12px;">
+                    Filter Files
+                  </a>
+                  {% if folder.can_delete %}
+                    <button type="button" class="am-btn am-btn-danger" style="padding:4px 10px; font-size:12px;" data-path="{{ folder.path }}" data-mb="{{ folder.total_mb }}" onclick="openDeleteFolderModalFromBtn(this)">
+                      🗑️ Delete Folder
+                    </button>
+                  {% endif %}
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+
+<!-- ── Delete Confirmation Modal ── -->
+<div id="delete-modal" class="am-modal-backdrop">
+  <div class="am-modal">
+    <div class="am-modal-head">
+      <h3 id="modal-title">Confirm Asset Deletion</h3>
+      <button type="button" onclick="closeDeleteModal()" style="background:none; border:none; font-size:18px; cursor:pointer; color:#64748b;">✕</button>
+    </div>
+    <div class="am-modal-body">
+      <p id="modal-desc" style="margin:0 0 10px 0;">
+        Are you sure you want to permanently delete this asset from disk storage? This action cannot be undone.
+      </p>
+      <div class="am-modal-file-box">
+        <span style="font-size:24px;">🗑️</span>
+        <div>
+          <strong id="modal-file-name" style="display:block; color:#0f172a; word-break:break-all;"></strong>
+          <span id="modal-file-path" style="display:block; font-size:11px; color:#64748b; font-family:monospace;"></span>
+          <span id="modal-file-size" style="display:block; font-size:12px; font-weight:700; color:#d63638; margin-top:2px;"></span>
+        </div>
+      </div>
+      <div id="modal-warning" style="display:none; background:#fef2f2; border:1px solid #fca5a5; color:#991b1b; padding:10px 12px; border-radius:6px; font-size:12px; margin-top:10px;">
+        ⚠️ <strong>Warning:</strong> This file is referenced in website content. Deleting it may break an image display!
+      </div>
+    </div>
+    <div class="am-modal-foot">
+      <button type="button" class="am-btn am-btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+      <button type="button" id="modal-confirm-btn" class="am-btn am-btn-danger" onclick="executeDelete()">
+        Permanently Delete
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Image Lightbox / Preview Modal ── -->
+<div id="preview-modal" class="am-modal-backdrop" onclick="closePreviewModal()">
+  <div style="background:#ffffff; border-radius:12px; padding:16px; max-width:85vw; max-height:85vh; display:flex; flex-direction:column; align-items:center; box-shadow:0 25px 50px rgba(0,0,0,0.3);" onclick="event.stopPropagation()">
+    <img id="preview-modal-img" src="" style="max-width:100%; max-height:75vh; object-fit:contain; border-radius:6px;">
+    <div style="margin-top:10px; width:100%; display:flex; justify-content:space-between; align-items:center;">
+      <strong id="preview-modal-title" style="font-size:13px; color:#0f172a;"></strong>
+      <button type="button" class="am-btn am-btn-secondary" onclick="closePreviewModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Toast Notification ── -->
+<div id="am-toast" class="am-toast">
+  <span id="am-toast-icon">✓</span>
+  <span id="am-toast-text">Operation completed.</span>
+</div>
+
+<script>
+  let pendingDeleteAction = null;
+  let pendingDeleteTarget = null;
+
+  function getCsrfToken() {
+    return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
+           document.querySelector('[name=csrfmiddlewaretoken]')?.value || 
+           getCookie('csrftoken');
+  }
+
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  function showToast(message, isSuccess = true) {
+    const toast = document.getElementById('am-toast');
+    const text = document.getElementById('am-toast-text');
+    const icon = document.getElementById('am-toast-icon');
+    text.textContent = message;
+    icon.textContent = isSuccess ? '✓' : '✕';
+    toast.className = 'am-toast ' + (isSuccess ? 'success' : 'error') + ' active';
+    setTimeout(() => { toast.classList.remove('active'); }, 4000);
+  }
+
+  function copyAssetLink(url) {
+    const fullUrl = window.location.origin + url;
+    navigator.clipboard.writeText(fullUrl).then(() => {
+      showToast('Asset link copied to clipboard: ' + url, true);
+    }).catch(() => {
+      prompt('Copy link manually:', fullUrl);
+    });
+  }
+
+  function viewAssetPreview(url, name, isImage) {
+    if (isImage) {
+      document.getElementById('preview-modal-img').src = url;
+      document.getElementById('preview-modal-title').textContent = name;
+      document.getElementById('preview-modal').classList.add('active');
+    } else {
+      window.open(url, '_blank');
+    }
+  }
+
+  function viewAssetPreviewFromEl(el) {
+    if (!el) return;
+    viewAssetPreview(el.dataset.url, el.dataset.name, el.dataset.image === 'true');
+  }
+
+  function copyAssetLinkFromBtn(btn) {
+    if (!btn) return;
+    copyAssetLink(btn.dataset.url);
+  }
+
+  function openDeleteModalFromBtn(btn) {
+    if (!btn) return;
+    openDeleteModal(btn.dataset.path, btn.dataset.name, btn.dataset.size, btn.dataset.used === 'true');
+  }
+
+  function openDeleteFolderModalFromBtn(btn) {
+    if (!btn) return;
+    openDeleteFolderModal(btn.dataset.path, btn.dataset.mb);
+  }
+
+  function closePreviewModal() {
+    document.getElementById('preview-modal').classList.remove('active');
+  }
+
+  /* ── Bulk Selection ── */
+  function toggleSelectAll(masterCheckbox) {
+    const checkboxes = document.querySelectorAll('.asset-checkbox');
+    checkboxes.forEach(cb => { cb.checked = masterCheckbox.checked; });
+    updateBulkBar();
+  }
+
+  function updateBulkBar() {
+    const checked = Array.from(document.querySelectorAll('.asset-checkbox:checked'));
+    const bar = document.getElementById('bulk-bar');
+    if (checked.length > 0) {
+      bar.classList.add('active');
+      document.getElementById('bulk-count').textContent = checked.length;
+      let totalBytes = checked.reduce((acc, el) => acc + (parseInt(el.dataset.bytes) || 0), 0);
+      let totalMb = (totalBytes / (1024 * 1024)).toFixed(2);
+      document.getElementById('bulk-mb').textContent = totalMb + ' MB';
+    } else {
+      bar.classList.remove('active');
+      document.getElementById('select-all-checkbox').checked = false;
+    }
+  }
+
+  function clearAllSelections() {
+    document.querySelectorAll('.asset-checkbox').forEach(cb => cb.checked = false);
+    document.getElementById('select-all-checkbox').checked = false;
+    updateBulkBar();
+  }
+
+  /* ── Delete Modal & Handlers ── */
+  function openDeleteModal(relPath, name, sizeStr, isUsed) {
+    pendingDeleteAction = 'delete_file';
+    pendingDeleteTarget = relPath;
+
+    document.getElementById('modal-title').textContent = 'Delete Unused Asset';
+    document.getElementById('modal-file-name').textContent = name;
+    document.getElementById('modal-file-path').textContent = relPath;
+    document.getElementById('modal-file-size').textContent = 'Reclaim: ' + sizeStr;
+    document.getElementById('modal-warning').style.display = isUsed ? 'block' : 'none';
+    document.getElementById('delete-modal').classList.add('active');
+  }
+
+  function openDeleteFolderModal(folderPath, mb) {
+    pendingDeleteAction = 'delete_folder';
+    pendingDeleteTarget = folderPath;
+
+    document.getElementById('modal-title').textContent = 'Delete Unused Folder';
+    document.getElementById('modal-file-name').textContent = 'Directory: ' + folderPath;
+    document.getElementById('modal-file-path').textContent = folderPath;
+    document.getElementById('modal-file-size').textContent = 'Reclaim: ' + mb + ' MB';
+    document.getElementById('modal-warning').style.display = 'none';
+    document.getElementById('delete-modal').classList.add('active');
+  }
+
+  function confirmDeleteMultiple() {
+    const checked = Array.from(document.querySelectorAll('.asset-checkbox:checked'));
+    if (checked.length === 0) return;
+
+    const paths = checked.map(cb => cb.value);
+    pendingDeleteAction = 'delete_multiple';
+    pendingDeleteTarget = paths;
+
+    let totalBytes = checked.reduce((acc, el) => acc + (parseInt(el.dataset.bytes) || 0), 0);
+    let totalMb = (totalBytes / (1024 * 1024)).toFixed(2);
+
+    document.getElementById('modal-title').textContent = 'Delete ' + checked.length + ' Selected Unused Files';
+    document.getElementById('modal-file-name').textContent = checked.length + ' files selected for removal';
+    document.getElementById('modal-file-path').textContent = 'Bulk selection';
+    document.getElementById('modal-file-size').textContent = 'Reclaim: ' + totalMb + ' MB storage';
+    document.getElementById('modal-warning').style.display = 'none';
+    document.getElementById('delete-modal').classList.add('active');
+  }
+
+  function closeDeleteModal() {
+    document.getElementById('delete-modal').classList.remove('active');
+    pendingDeleteAction = null;
+    pendingDeleteTarget = null;
+  }
+
+  function executeDelete() {
+    if (!pendingDeleteAction || !pendingDeleteTarget) return;
+
+    const btn = document.getElementById('modal-confirm-btn');
+    btn.disabled = true;
+    btn.textContent = 'Deleting...';
+
+    const payload = { action: pendingDeleteAction };
+    if (pendingDeleteAction === 'delete_file') {
+      payload.path = pendingDeleteTarget;
+    } else if (pendingDeleteAction === 'delete_multiple') {
+      payload.paths = pendingDeleteTarget;
+    } else if (pendingDeleteAction === 'delete_folder') {
+      payload.folder_path = pendingDeleteTarget;
+    }
+
+    fetch('/admin/assets/delete/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCsrfToken()
+      },
+      body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+      btn.disabled = false;
+      btn.textContent = 'Permanently Delete';
+      closeDeleteModal();
+
+      if (data.success) {
+        showToast(data.message || 'Items deleted successfully.', true);
+        // Reload after short delay to show updated metrics
+        setTimeout(() => { window.location.reload(); }, 900);
+      } else {
+        showToast(data.error || 'Failed to delete asset.', false);
+      }
+    })
+    .catch(err => {
+      btn.disabled = false;
+      btn.textContent = 'Permanently Delete';
+      closeDeleteModal();
+      showToast('Network error while deleting asset.', false);
+    });
+  }
+</script>
+{% endblock %}

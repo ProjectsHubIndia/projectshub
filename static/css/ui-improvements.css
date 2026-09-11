@@ -503,15 +503,15 @@ body.light .skeleton {
 /* ── 10. BACK TO TOP BUTTON ───────────────────────────── */
 .back-to-top {
   position: fixed;
-  bottom: 5.5rem;
-  right: 1.5rem;
-  z-index: 500;
+  bottom: calc(1.75rem + 58px + 18px);
+  right: calc(1.75rem + 7px);
+  z-index: 9998;
   width: 44px;
   height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
+  border-radius: 14px;
   background: rgba(18, 18, 28, 0.75);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -544,24 +544,26 @@ body.light .skeleton {
 }
 
 body.light .back-to-top {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.92);
   border-color: rgba(0, 0, 0, 0.1);
   color: #64748b;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
 body.light .back-to-top:hover {
-  background: rgba(59, 130, 246, 0.08);
-  border-color: rgba(59, 130, 246, 0.25);
-  color: #2563eb;
+  background: #ffffff;
+  border-color: rgba(99, 102, 241, 0.35);
+  color: #4f46e5;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.2);
 }
 
 @media (max-width: 768px) {
   .back-to-top {
-    bottom: 4.5rem;
-    right: 1rem;
+    bottom: calc(1rem + 52px + 16px);
+    right: calc(1rem + 6px);
     width: 40px;
     height: 40px;
+    border-radius: 12px;
   }
 }
 
@@ -748,6 +750,8 @@ body .logo-combined {
   width: auto;
   max-width: 165px;
   object-fit: contain;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
   margin: 0;
   display: block;
   transition: transform 0.22s ease, opacity 0.2s ease;
@@ -759,6 +763,11 @@ body.light .logo-combined--light {
   max-width: 165px;
   margin: 0;
   display: block !important;
+}
+
+.logo-picture {
+  display: inline-flex;
+  align-items: center;
 }
 
 .logo-link {
@@ -1070,3 +1079,34 @@ body.light .about-stat-card__label {
     font-size: 28px !important;
   }
 }
+
+/* ── 30. MOBILE HERO SECTION SPACING & CURSOR REMOVAL ── */
+#cursorGlow,
+#cursorParticles,
+.cursor-glow,
+#heroCursor,
+.hero-title__cursor,
+.hvc-cursor {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  animation: none !important;
+}
+
+@media (max-width: 991.98px) {
+  .aurora-section {
+    min-height: auto !important;
+    justify-content: flex-start !important;
+    padding-top: 0 !important;
+  }
+  .main-body {
+    min-height: auto !important;
+  }
+  .hero-section {
+    padding-top: 80px !important;
+    padding-bottom: 36px !important;
+    min-height: auto !important;
+  }
+}
+

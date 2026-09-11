@@ -26,7 +26,7 @@
   --wp-accent-blue: #72aee6;
   --wp-border: #8c8f94;
   --wp-border-subtle: #dcdcde;
-  --wp-sidebar-width: 170px;
+  --wp-sidebar-width: 240px;
   --wp-sidebar-folded: 44px;
 }
 
@@ -267,13 +267,17 @@ a:hover, a:focus {
 .wp-menu-link {
   display: flex;
   align-items: center;
-  padding: 8px 10px 8px 12px;
+  justify-content: space-between;
+  padding: 8px 12px;
   color: var(--wp-menu-text) !important;
   text-decoration: none !important;
   font-size: 13px;
   line-height: 1.4;
   cursor: pointer;
   position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
   transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
 }
 
@@ -290,10 +294,12 @@ a:hover, a:focus {
 }
 
 .wp-menu-name {
-  flex: 1;
+  flex: 1 1 auto;
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-right: 6px;
 }
 
 .wp-menu-count {
@@ -303,7 +309,8 @@ a:hover, a:focus {
   font-size: 10px;
   font-weight: 700;
   line-height: 16px;
-  margin-left: 6px;
+  margin-left: auto;
+  flex-shrink: 0;
   background: var(--wp-menu-submenu-bg);
   color: #ffffff;
 }
@@ -352,17 +359,20 @@ a:hover, a:focus {
   position: absolute;
   top: 0;
   left: var(--wp-sidebar-width);
-  min-width: 175px;
+  min-width: 220px;
+  max-width: 320px;
+  width: max-content;
   background: var(--wp-menu-submenu-bg);
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.35);
   padding: 4px 0;
   list-style: none;
   margin: 0;
   z-index: 10000;
+  box-sizing: border-box;
 }
 
 .wp-submenu-head {
-  padding: 6px 14px 4px;
+  padding: 8px 16px 5px;
   font-size: 11px;
   font-weight: 700;
   color: #a7aaad;
@@ -370,6 +380,9 @@ a:hover, a:focus {
   margin-bottom: 4px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .wp-submenu li a {
@@ -382,6 +395,12 @@ a:hover, a:focus {
   text-decoration: none !important;
   line-height: 1.4;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  gap: 8px;
 }
 .wp-submenu li a:hover {
   background: var(--wp-menu-hover);
@@ -399,12 +418,22 @@ a:hover, a:focus {
   background: var(--wp-menu-submenu-bg);
   box-shadow: none;
   padding: 4px 0 6px;
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 #wpwrap:not(.folded) .wp-menu-item.current .wp-submenu .wp-submenu-head {
   display: none;
 }
 #wpwrap:not(.folded) .wp-menu-item.current .wp-submenu li a {
   padding-left: 36px;
+  padding-right: 14px;
+  box-sizing: border-box;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Hover flyout for other items or when folded */
@@ -1800,6 +1829,12 @@ body.login #wpbody-content {
 }
 
 /* ── Responsive Overrides ── */
+@media (min-width: 783px) and (max-width: 1080px) {
+  :root {
+    --wp-sidebar-width: 220px;
+  }
+}
+
 @media (max-width: 1024px) {
   #changelist {
     flex-direction: column !important;

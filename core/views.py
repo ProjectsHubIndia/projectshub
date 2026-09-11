@@ -1,3 +1,6 @@
+import os
+import shutil
+from datetime import datetime
 import json
 import logging
 import random
@@ -7,9 +10,11 @@ from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
+from django.db import models
 from django.db.models import Q, Count
 from django.core.mail import send_mail
 from django.core import signing
+from django.core.cache import cache
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.admin.views.decorators import staff_member_required
@@ -937,5 +942,444 @@ def toggle_guide_note(request, note_id):
         'note_id': note.id,
         'is_completed': note.is_completed,
     })
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# MEDIA & ASSETS STORAGE MANAGER (ADMIN VIEW & DELETION CONTROLLER)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def scan_all_assets():
+    """
+    Scans media/ and content directories in static/ (static/image/, static/video/).
+    Maps each asset against:
+      1. Django database model FileFields & ImageFields
+      2. Template files (templates/**/*.html)
+      3. CSS stylesheets (static/css/**/*.css)
+      4. Scripts (static/js/**/*.js)
+      5. Static config / manifests (webmanifest, json, xml)
+    Returns:
+      assets: list of asset dicts with size_mb, status (USED/UNUSED), used_in list, etc.
+      stats: summary counts and MB totals
+      folders: list of folder summary dicts
+    """
+    from django.apps import apps
+    base_dir = str(settings.BASE_DIR)
+    media_root = str(settings.MEDIA_ROOT)
+    static_dir = str(settings.STATICFILES_DIRS[0])
+
+    # 1. Collect all DB file references
+    db_files = {}
+    for model in apps.get_models():
+        file_fields = [f.name for f in model._meta.get_fields() if isinstance(f, models.FileField)]
+        if file_fields:
+            try:
+                for obj in model.objects.all():
+                    for f in file_fields:
+                        val = getattr(obj, f)
+                        if val and hasattr(val, 'name') and val.name:
+                            p = str(val.name).replace('\\', '/').strip()
+                            obj_label = str(obj)
+                            if len(obj_label) > 35:
+                                obj_label = obj_label[:32] + '...'
+                            db_files.setdefault(p, []).append(f"{model._meta.verbose_name.title()}: \"{obj_label}\" ({f})")
+            except Exception as e:
+                logger.warning(f"Error scanning model {model.__name__} file fields: {e}")
+
+    # 2. Collect code content for string matching
+    code_content = ''
+    for d in ['templates', 'static/css', 'static/js', 'core']:
+        full_d = os.path.join(base_dir, d)
+        if os.path.exists(full_d):
+            for root, dirs, files in os.walk(full_d):
+                for f in files:
+                    if f.endswith(('.html', '.css', '.js', '.py', '.webmanifest', '.json', '.xml', '.txt')):
+                        try:
+                            with open(os.path.join(root, f), 'r', encoding='utf-8', errors='ignore') as fp:
+                                code_content += fp.read() + '\n'
+                        except Exception:
+                            pass
+
+    # 3. Directories to scan
+    scan_roots = [
+        ('media', media_root, '/media/'),
+        ('static/image', os.path.join(static_dir, 'image'), '/static/image/'),
+        ('static/video', os.path.join(static_dir, 'video'), '/static/video/'),
+    ]
+
+    assets = []
+    folder_stats = {}
+    total_bytes = 0
+    used_bytes = 0
+    unused_bytes = 0
+    asset_id = 1
+
+    # Protected path keywords that cannot be deleted
+    protected_prefixes = [
+        'static/image/logo',
+        'static/image/Favicon-new',
+        'static/image/favicon_io',
+    ]
+
+    for label, root_dir, url_prefix in scan_roots:
+        if not os.path.exists(root_dir):
+            continue
+
+        for root, dirs, files in os.walk(root_dir):
+            rel_folder = os.path.relpath(root, base_dir).replace('\\', '/')
+            folder_stats.setdefault(rel_folder, {
+                'path': rel_folder,
+                'name': os.path.basename(rel_folder),
+                'file_count': 0,
+                'used_count': 0,
+                'unused_count': 0,
+                'total_bytes': 0,
+                'total_mb': 0.0,
+            })
+
+            for f in files:
+                full_path = os.path.join(root, f)
+                try:
+                    sz = os.path.getsize(full_path)
+                    mtime = os.path.getmtime(full_path)
+                except OSError:
+                    continue
+
+                rel_from_base = os.path.relpath(full_path, base_dir).replace('\\', '/')
+                rel_from_root = os.path.relpath(full_path, root_dir).replace('\\', '/')
+                ext = f.split('.')[-1].lower() if '.' in f else ''
+
+                # URL computation
+                url = url_prefix + rel_from_root.replace('\\', '/')
+
+                # Size in MB
+                sz_mb = round(sz / (1024 * 1024), 2)
+                if sz_mb >= 0.01:
+                    size_str = f"{sz_mb:.2f} MB"
+                else:
+                    kb = round(sz / 1024, 1)
+                    size_str = f"{kb} KB"
+
+                # Type classification
+                is_image = ext in ['webp', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'avif', 'ico']
+                is_video = ext in ['mp4', 'webm', 'mov', 'avi']
+                is_doc = ext in ['pdf', 'zip', 'doc', 'docx', 'csv', 'txt']
+                file_type = 'image' if is_image else ('video' if is_video else ('document' if is_doc else 'other'))
+
+                # Protected status
+                is_protected = any(rel_from_base.startswith(p) for p in protected_prefixes)
+
+                # Usage Detection
+                is_used = False
+                used_in = []
+
+                # A. Check DB references
+                # For media files, DB usually stores relative to MEDIA_ROOT: e.g. "projects/wallpaper.webp"
+                rel_media = os.path.relpath(full_path, media_root).replace('\\', '/') if full_path.startswith(media_root) else ''
+                if rel_media and rel_media in db_files:
+                    is_used = True
+                    used_in.extend(db_files[rel_media])
+                elif rel_from_root in db_files:
+                    is_used = True
+                    used_in.extend(db_files[rel_from_root])
+
+                # B. Check Code references
+                # Filename search or path search in templates & static files
+                if f in code_content or rel_from_base in code_content or (rel_media and rel_media in code_content):
+                    is_used = True
+                    if not used_in:
+                        used_in.append("Referenced in templates / stylesheets / manifests")
+
+                # Count totals
+                total_bytes += sz
+                if is_used:
+                    used_bytes += sz
+                    folder_stats[rel_folder]['used_count'] += 1
+                else:
+                    unused_bytes += sz
+                    folder_stats[rel_folder]['unused_count'] += 1
+
+                folder_stats[rel_folder]['file_count'] += 1
+                folder_stats[rel_folder]['total_bytes'] += sz
+
+                assets.append({
+                    'id': asset_id,
+                    'name': f,
+                    'rel_path': rel_from_base,
+                    'folder': rel_folder,
+                    'size_bytes': sz,
+                    'size_mb': sz_mb,
+                    'size_str': size_str,
+                    'ext': ext,
+                    'type': file_type,
+                    'is_image': is_image,
+                    'is_video': is_video,
+                    'url': url,
+                    'modified_at': datetime.fromtimestamp(mtime).strftime('%b %d, %Y, %H:%M'),
+                    'is_protected': is_protected,
+                    'is_used': is_used,
+                    'used_in': used_in,
+                    'can_delete': not is_protected,
+                })
+                asset_id += 1
+
+    # Finalize folder stats
+    folders = []
+    for path, data in sorted(folder_stats.items()):
+        data['total_mb'] = round(data['total_bytes'] / (1024 * 1024), 2)
+        # Can delete folder if it has no used files and is not a top-level root
+        is_top_root = path in ['media', 'static/image', 'static/video']
+        data['can_delete'] = (data['used_count'] == 0) and not is_top_root
+        folders.append(data)
+
+    stats = {
+        'total_assets': len(assets),
+        'total_bytes': total_bytes,
+        'total_mb': round(total_bytes / (1024 * 1024), 2),
+        'used_count': sum(1 for a in assets if a['is_used']),
+        'used_bytes': used_bytes,
+        'used_mb': round(used_bytes / (1024 * 1024), 2),
+        'unused_count': sum(1 for a in assets if not a['is_used']),
+        'unused_bytes': unused_bytes,
+        'unused_mb': round(unused_bytes / (1024 * 1024), 2),
+        'total_folders': len(folders),
+    }
+
+    return assets, stats, folders
+
+
+@staff_member_required(login_url='admin:login')
+def admin_assets_view(request):
+    """
+    Renders the Media & Storage Assets Manager dashboard.
+    Displays all files with size in MB, identifies used vs unused assets,
+    and provides controls to safely delete unused files and folders.
+    """
+    assets, stats, folders = scan_all_assets()
+
+    active_tab = request.GET.get('tab', 'assets').lower()
+    filter_tab = request.GET.get('filter', 'all').lower()
+    folder_filter = request.GET.get('folder', '').strip()
+    type_filter = request.GET.get('type', '').strip().lower()
+    search_query = request.GET.get('q', '').strip().lower()
+    sort_by = request.GET.get('sort', 'size_desc').lower()
+
+    filtered = assets
+
+    # Filter tab: all, unused, used
+    if filter_tab == 'unused':
+        filtered = [a for a in filtered if not a['is_used']]
+    elif filter_tab == 'used':
+        filtered = [a for a in filtered if a['is_used']]
+
+    # Folder filter
+    if folder_filter:
+        filtered = [a for a in filtered if a['folder'] == folder_filter]
+
+    # Type filter
+    if type_filter:
+        filtered = [a for a in filtered if a['type'] == type_filter]
+
+    # Search query
+    if search_query:
+        filtered = [a for a in filtered if search_query in a['name'].lower() or search_query in a['rel_path'].lower()]
+
+    # Sorting
+    if sort_by == 'size_desc':
+        filtered.sort(key=lambda a: a['size_bytes'], reverse=True)
+    elif sort_by == 'size_asc':
+        filtered.sort(key=lambda a: a['size_bytes'])
+    elif sort_by == 'name':
+        filtered.sort(key=lambda a: a['name'].lower())
+    elif sort_by == 'date':
+        filtered.sort(key=lambda a: a['modified_at'], reverse=True)
+    elif sort_by == 'status':
+        filtered.sort(key=lambda a: (a['is_used'], -a['size_bytes']))
+
+    context = {
+        **admin.site.each_context(request),
+        'title': 'Media & Storage Assets Manager',
+        'assets': filtered,
+        'stats': stats,
+        'folders': folders,
+        'current_tab': active_tab,
+        'current_filter': filter_tab,
+        'current_folder': folder_filter,
+        'current_type': type_filter,
+        'current_sort': sort_by,
+        'search_query': search_query,
+        'displayed_count': len(filtered),
+        'has_permission': True,
+    }
+    return render(request, 'admin/core/assets_manager.html', context)
+
+
+@staff_member_required(login_url='admin:login')
+@require_POST
+def admin_asset_delete_view(request):
+    """
+    Safely deletes unused asset files or folders requested by staff.
+    Guarantees strict path traversal protection and locks core system files.
+    """
+    try:
+        data = json.loads(request.body) if request.body else request.POST
+    except Exception:
+        data = request.POST
+
+    action = data.get('action', 'delete_file')
+    base_dir = str(settings.BASE_DIR)
+    media_root = str(settings.MEDIA_ROOT)
+    static_dir = str(settings.STATICFILES_DIRS[0])
+    staticfiles_dir = getattr(settings, 'STATIC_ROOT', os.path.join(base_dir, 'staticfiles'))
+
+    # Allowed base directories for deletion
+    allowed_roots = [
+        os.path.realpath(media_root),
+        os.path.realpath(os.path.join(static_dir, 'image')),
+        os.path.realpath(os.path.join(static_dir, 'video')),
+    ]
+
+    # Strictly forbidden subpaths
+    forbidden_subpaths = [
+        'static/image/logo',
+        'static/image/Favicon-new',
+        'static/image/favicon_io',
+        'static/css',
+        'static/js',
+        'static/admin',
+    ]
+
+    def is_safe_path(target_path):
+        target_real = os.path.realpath(target_path)
+        # 1. Must be inside at least one allowed root
+        is_inside_allowed = any(os.path.commonpath([target_real, allowed]) == allowed for allowed in allowed_roots)
+        if not is_inside_allowed:
+            return False, "Target is outside allowed media/static directories."
+
+        # 2. Must not be inside forbidden subpaths
+        rel_to_base = os.path.relpath(target_real, base_dir).replace('\\', '/')
+        if any(rel_to_base.startswith(f) for f in forbidden_subpaths):
+            return False, "Target is a protected system asset."
+
+        # 3. Must not be code or DB
+        ext = os.path.splitext(target_real)[1].lower()
+        if ext in ['.py', '.sqlite3', '.json', '.html', '.css', '.js', '.sh', '.env']:
+            return False, "Code or configuration files cannot be deleted."
+
+        return True, ""
+
+    deleted_count = 0
+    reclaimed_bytes = 0
+
+    if action == 'delete_file':
+        rel_path = data.get('path', '').strip()
+        if not rel_path:
+            return JsonResponse({'success': False, 'error': 'No file path provided.'}, status=400)
+
+        target_file = os.path.join(base_dir, rel_path)
+        if not os.path.exists(target_file) or not os.path.isfile(target_file):
+            return JsonResponse({'success': False, 'error': f'File not found: {rel_path}'}, status=404)
+
+        safe, err_msg = is_safe_path(target_file)
+        if not safe:
+            return JsonResponse({'success': False, 'error': err_msg}, status=403)
+
+        sz = os.path.getsize(target_file)
+        try:
+            os.remove(target_file)
+            deleted_count += 1
+            reclaimed_bytes += sz
+
+            # Also remove from staticfiles mirror if present
+            if target_file.startswith(static_dir) and staticfiles_dir and os.path.exists(staticfiles_dir):
+                mirror_rel = os.path.relpath(target_file, static_dir)
+                mirror_path = os.path.join(staticfiles_dir, mirror_rel)
+                if os.path.exists(mirror_path):
+                    try:
+                        os.remove(mirror_path)
+                        # Also check .gz
+                        if os.path.exists(mirror_path + '.gz'):
+                            os.remove(mirror_path + '.gz')
+                    except Exception:
+                        pass
+
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': f'Failed to delete file: {str(e)}'}, status=500)
+
+    elif action == 'delete_multiple':
+        paths = data.get('paths', [])
+        if not paths:
+            return JsonResponse({'success': False, 'error': 'No file paths provided.'}, status=400)
+
+        errors = []
+        for rel_path in paths:
+            target_file = os.path.join(base_dir, rel_path.strip())
+            if not os.path.exists(target_file) or not os.path.isfile(target_file):
+                continue
+
+            safe, err_msg = is_safe_path(target_file)
+            if not safe:
+                errors.append(f"{rel_path}: {err_msg}")
+                continue
+
+            sz = os.path.getsize(target_file)
+            try:
+                os.remove(target_file)
+                deleted_count += 1
+                reclaimed_bytes += sz
+
+                # Clean staticfiles mirror
+                if target_file.startswith(static_dir) and staticfiles_dir and os.path.exists(staticfiles_dir):
+                    mirror_rel = os.path.relpath(target_file, static_dir)
+                    mirror_path = os.path.join(staticfiles_dir, mirror_rel)
+                    if os.path.exists(mirror_path):
+                        try:
+                            os.remove(mirror_path)
+                            if os.path.exists(mirror_path + '.gz'):
+                                os.remove(mirror_path + '.gz')
+                        except Exception:
+                            pass
+            except Exception as e:
+                errors.append(f"{rel_path}: {str(e)}")
+
+        if deleted_count == 0 and errors:
+            return JsonResponse({'success': False, 'error': '; '.join(errors)}, status=403)
+
+    elif action == 'delete_folder':
+        folder_path = data.get('folder_path', '').strip()
+        if not folder_path:
+            return JsonResponse({'success': False, 'error': 'No folder path provided.'}, status=400)
+
+        target_dir = os.path.join(base_dir, folder_path)
+        if not os.path.exists(target_dir) or not os.path.isdir(target_dir):
+            return JsonResponse({'success': False, 'error': f'Folder not found: {folder_path}'}, status=404)
+
+        safe, err_msg = is_safe_path(target_dir)
+        if not safe:
+            return JsonResponse({'success': False, 'error': err_msg}, status=403)
+
+        # Do not delete top-level folders
+        rel_to_base = os.path.relpath(target_dir, base_dir).replace('\\', '/')
+        if rel_to_base in ['media', 'static', 'static/image', 'static/video']:
+            return JsonResponse({'success': False, 'error': 'Cannot delete root asset directory.'}, status=403)
+
+        try:
+            # Calculate reclaimed bytes inside folder
+            folder_bytes = sum(os.path.getsize(os.path.join(r, f)) for r, d, files in os.walk(target_dir) for f in files)
+            shutil.rmtree(target_dir)
+            deleted_count += 1
+            reclaimed_bytes += folder_bytes
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': f'Failed to delete folder: {str(e)}'}, status=500)
+
+    cache.delete('admin_unused_assets_count')
+    reclaimed_mb = round(reclaimed_bytes / (1024 * 1024), 2)
+    return JsonResponse({
+        'success': True,
+        'deleted_count': deleted_count,
+        'reclaimed_bytes': reclaimed_bytes,
+        'reclaimed_mb': reclaimed_mb,
+        'message': f"Successfully removed {deleted_count} item(s), reclaiming {reclaimed_mb:.2f} MB storage."
+    })
+
 
 

@@ -4,97 +4,121 @@
     <!-- Logo -->
     <div class="logo">
       <a href="/" aria-label="ProjectsHub Home" class="logo-link">
-        <img src="{% static 'image/logo/projectshub-logo-dark.png' %}"
-             srcset="{% static 'image/logo/projectshub-logo-dark.webp' %}"
-             alt="ProjectsHub"
-             class="logo-combined logo-combined--dark" width="144" height="48" />
-        <img src="{% static 'image/logo/projectshub-logo-light.png' %}"
-             srcset="{% static 'image/logo/projectshub-logo-light.webp' %}"
-             alt="ProjectsHub"
-             class="logo-combined logo-combined--light" width="144" height="48" />
+        <picture class="logo-picture logo-picture--light">
+          <source srcset="{% static 'image/logo/projectshub-logo-light.svg' %}" type="image/svg+xml">
+          <source srcset="{% static 'image/logo/projectshub-logo-light.webp' %}" type="image/webp">
+          <img src="{% static 'image/logo/projectshub-logo-light.png' %}"
+            alt="ProjectsHub"
+            class="logo-combined logo-combined--light"
+            width="144" height="48"
+            loading="eager" decoding="async" />
+        </picture>
+        <picture class="logo-picture logo-picture--dark">
+          <source srcset="{% static 'image/logo/projectshub-logo-dark.svg' %}" type="image/svg+xml">
+          <source srcset="{% static 'image/logo/projectshub-logo-dark.webp' %}" type="image/webp">
+          <img src="{% static 'image/logo/projectshub-logo-dark.png' %}"
+            alt="ProjectsHub"
+            class="logo-combined logo-combined--dark"
+            width="144" height="48"
+            loading="eager" decoding="async" />
+        </picture>
       </a>
     </div>
 
     <!-- Navigation Links -->
     <nav class="navbar__links" aria-label="Primary Navigation">
       <div class="nav-item-dropdown">
-        <a href="/projects/" class="nav-link {% block nav_projects %}{% endblock %}" aria-haspopup="true" aria-expanded="false" id="navOurWork">
+        <a href="/projects/" class="nav-link {% block nav_projects %}{% endblock %}" aria-haspopup="true"
+          aria-expanded="false" id="navOurWork">
           Our Work
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
         </a>
         <div class="mega-menu mega-menu--work" aria-labelledby="navOurWork" role="region">
           <div class="mega-work-grid">
             {% if mega_work_items %}
-              {% for card in mega_work_items %}
-              <a href="{{ card.url }}" class="mega-card" {% if card.open_in_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
-                <div class="mega-card__media">
-                  {% if card.image %}
-                    <img src="{{ card.image.url }}" alt="{{ card.title }}" loading="lazy">
-                  {% elif 'projects' in card.url %}
-                    <img src="{% static 'image/projects-new.webp' %}" alt="{{ card.title }}" loading="lazy">
-                  {% elif 'case-studies' in card.url %}
-                    <img src="{% static 'image/case-study-new.webp' %}" alt="{{ card.title }}" loading="lazy">
-                  {% else %}
-                    <img src="{% static 'image/tools-new.webp' %}" alt="{{ card.title }}" loading="lazy">
-                  {% endif %}
-                  {% if card.badge_text %}
-                    <span class="mega-card__badge mega-card__badge--{{ card.badge_color|default:'cyan' }}">{{ card.badge_text }}</span>
-                  {% endif %}
+            {% for card in mega_work_items %}
+            <a href="{{ card.url }}" class="mega-card" {% if card.open_in_new_tab %}target="_blank"
+              rel="noopener noreferrer" {% endif %}>
+              <div class="mega-card__media">
+                {% if card.image %}
+                <img src="{{ card.image.url }}" alt="{{ card.title }}" loading="lazy">
+                {% elif 'projects' in card.url %}
+                <img src="{% static 'image/projects-new.webp' %}" alt="{{ card.title }}" loading="lazy">
+                {% elif 'case-studies' in card.url %}
+                <img src="{% static 'image/case-study-new.webp' %}" alt="{{ card.title }}" loading="lazy">
+                {% else %}
+                <img src="{% static 'image/tools-new.webp' %}" alt="{{ card.title }}" loading="lazy">
+                {% endif %}
+                {% if card.badge_text %}
+                <span class="mega-card__badge mega-card__badge--{{ card.badge_color|default:'cyan' }}">{{
+                  card.badge_text }}</span>
+                {% endif %}
+              </div>
+              <div class="mega-card__body">
+                <div class="mega-card__title">
+                  {{ card.title }}
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
                 </div>
-                <div class="mega-card__body">
-                  <div class="mega-card__title">
-                    {{ card.title }}
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                  </div>
-                  {% if card.description %}
-                    <p class="mega-card__desc">{{ card.description }}</p>
-                  {% endif %}
-                </div>
-              </a>
-              {% endfor %}
+                {% if card.description %}
+                <p class="mega-card__desc">{{ card.description }}</p>
+                {% endif %}
+              </div>
+            </a>
+            {% endfor %}
             {% else %}
-              <!-- Fallback Cards -->
-              <a href="/projects/" class="mega-card">
-                <div class="mega-card__media">
-                  <img src="{% static 'image/projects-new.webp' %}" alt="Curated AI Projects" loading="lazy">
-                  <span class="mega-card__badge">50+ Projects</span>
+            <!-- Fallback Cards -->
+            <a href="/projects/" class="mega-card">
+              <div class="mega-card__media">
+                <img src="{% static 'image/projects-new.webp' %}" alt="Curated AI Projects" loading="lazy">
+                <span class="mega-card__badge">50+ Projects</span>
+              </div>
+              <div class="mega-card__body">
+                <div class="mega-card__title">
+                  Curated AI Projects
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
                 </div>
-                <div class="mega-card__body">
-                  <div class="mega-card__title">
-                    Curated AI Projects
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                  </div>
-                  <p class="mega-card__desc">Production-grade ML models, Django backends &amp; complete computer vision apps.</p>
+                <p class="mega-card__desc">Production-grade ML models, Django backends &amp; complete computer vision
+                  apps.</p>
+              </div>
+            </a>
+            <a href="{% url 'case_studies' %}" class="mega-card">
+              <div class="mega-card__media">
+                <img src="{% static 'image/case-study-new.webp' %}" alt="Client Case Studies" loading="lazy">
+                <span class="mega-card__badge mega-card__badge--cyan">Real-World</span>
+              </div>
+              <div class="mega-card__body">
+                <div class="mega-card__title">
+                  Client Case Studies
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
                 </div>
-              </a>
-              <a href="{% url 'case_studies' %}" class="mega-card">
-                <div class="mega-card__media">
-                  <img src="{% static 'image/case-study-new.webp' %}" alt="Client Case Studies" loading="lazy">
-                  <span class="mega-card__badge mega-card__badge--cyan">Real-World</span>
+                <p class="mega-card__desc">Deep dives into enterprise AI pipelines, automation workflows and ROI.</p>
+              </div>
+            </a>
+            <a href="{% url 'tools' %}" class="mega-card">
+              <div class="mega-card__media">
+                <img src="{% static 'image/tools-new.webp' %}" alt="Free Developer AI Tools" loading="lazy">
+                <span class="mega-card__badge mega-card__badge--emerald">10+ Tools</span>
+              </div>
+              <div class="mega-card__body">
+                <div class="mega-card__title">
+                  Free Developer Tools
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
                 </div>
-                <div class="mega-card__body">
-                  <div class="mega-card__title">
-                    Client Case Studies
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                  </div>
-                  <p class="mega-card__desc">Deep dives into enterprise AI pipelines, automation workflows and ROI.</p>
-                </div>
-              </a>
-              <a href="{% url 'tools' %}" class="mega-card">
-                <div class="mega-card__media">
-                  <img src="{% static 'image/tools-new.webp' %}" alt="Free Developer AI Tools" loading="lazy">
-                  <span class="mega-card__badge mega-card__badge--emerald">10+ Tools</span>
-                </div>
-                <div class="mega-card__body">
-                  <div class="mega-card__title">
-                    Free Developer Tools
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                  </div>
-                  <p class="mega-card__desc">Online prompt engineering suites, model testers &amp; developer utilities.</p>
-                </div>
-              </a>
+                <p class="mega-card__desc">Online prompt engineering suites, model testers &amp; developer utilities.
+                </p>
+              </div>
+            </a>
             {% endif %}
           </div>
 
@@ -103,13 +127,14 @@
             <div class="mega-menu-bottom__tags">
               <span class="mega-menu-bottom__label">Popular:</span>
               {% if mega_work_tags %}
-                {% for tag in mega_work_tags %}
-                  <a href="{{ tag.url }}" class="mega-pill-tag" {% if tag.open_in_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ tag.title }}</a>
-                {% endfor %}
+              {% for tag in mega_work_tags %}
+              <a href="{{ tag.url }}" class="mega-pill-tag" {% if tag.open_in_new_tab %}target="_blank"
+                rel="noopener noreferrer" {% endif %}>{{ tag.title }}</a>
+              {% endfor %}
               {% else %}
-                <a href="/projects/?category=ml" class="mega-pill-tag">Machine Learning</a>
-                <a href="/projects/?category=backend" class="mega-pill-tag">Django &amp; FastAPI</a>
-                <a href="/projects/?category=data" class="mega-pill-tag">Data Science</a>
+              <a href="/projects/?category=ml" class="mega-pill-tag">Machine Learning</a>
+              <a href="/projects/?category=backend" class="mega-pill-tag">Django &amp; FastAPI</a>
+              <a href="/projects/?category=data" class="mega-pill-tag">Data Science</a>
               {% endif %}
             </div>
             <a href="/projects/" class="mega-menu-bottom__cta">Browse All Projects &rarr;</a>
@@ -122,7 +147,8 @@
       <div class="nav-item-dropdown">
         <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false" id="navHowWeHelp">
           How We Help
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
         </a>
@@ -139,38 +165,39 @@
               </div>
               <ul class="mega-audience-list">
                 {% if mega_student_items %}
-                  {% for item in mega_student_items %}
-                  <li>
-                    <a href="{{ item.url }}" class="mega-audience-link" {% if item.open_in_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
-                      <span class="mega-audience-icon">{{ item.icon_svg|default:'🎯' }}</span>
-                      <div class="mega-audience-info">
-                        <span class="mega-audience-link-title">{{ item.title }}</span>
-                        {% if item.description %}
-                          <span class="mega-audience-link-sub">{{ item.description }}</span>
-                        {% endif %}
-                      </div>
-                    </a>
-                  </li>
-                  {% endfor %}
+                {% for item in mega_student_items %}
+                <li>
+                  <a href="{{ item.url }}" class="mega-audience-link" {% if item.open_in_new_tab %}target="_blank"
+                    rel="noopener noreferrer" {% endif %}>
+                    <span class="mega-audience-icon">{{ item.icon_svg|default:'🎯' }}</span>
+                    <div class="mega-audience-info">
+                      <span class="mega-audience-link-title">{{ item.title }}</span>
+                      {% if item.description %}
+                      <span class="mega-audience-link-sub">{{ item.description }}</span>
+                      {% endif %}
+                    </div>
+                  </a>
+                </li>
+                {% endfor %}
                 {% else %}
-                  <li>
-                    <a href="/workshop/" class="mega-audience-link">
-                      <span class="mega-audience-icon">🎯</span>
-                      <div class="mega-audience-info">
-                        <span class="mega-audience-link-title">1-on-1 Mentorship Sessions</span>
-                        <span class="mega-audience-link-sub">Personalized guidance from senior engineers</span>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/projects/" class="mega-audience-link">
-                      <span class="mega-audience-icon">💻</span>
-                      <div class="mega-audience-info">
-                        <span class="mega-audience-link-title">Hands-on Capstone Projects</span>
-                        <span class="mega-audience-link-sub">Build portfolio-ready full stack AI systems</span>
-                      </div>
-                    </a>
-                  </li>
+                <li>
+                  <a href="/workshop/" class="mega-audience-link">
+                    <span class="mega-audience-icon">🎯</span>
+                    <div class="mega-audience-info">
+                      <span class="mega-audience-link-title">1-on-1 Mentorship Sessions</span>
+                      <span class="mega-audience-link-sub">Personalized guidance from senior engineers</span>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a href="/projects/" class="mega-audience-link">
+                    <span class="mega-audience-icon">💻</span>
+                    <div class="mega-audience-info">
+                      <span class="mega-audience-link-title">Hands-on Capstone Projects</span>
+                      <span class="mega-audience-link-sub">Build portfolio-ready full stack AI systems</span>
+                    </div>
+                  </a>
+                </li>
                 {% endif %}
               </ul>
             </div>
@@ -186,38 +213,39 @@
               </div>
               <ul class="mega-audience-list">
                 {% if mega_business_items %}
-                  {% for item in mega_business_items %}
-                  <li>
-                    <a href="{{ item.url }}" class="mega-audience-link" {% if item.open_in_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
-                      <span class="mega-audience-icon">{{ item.icon_svg|default:'🤖' }}</span>
-                      <div class="mega-audience-info">
-                        <span class="mega-audience-link-title">{{ item.title }}</span>
-                        {% if item.description %}
-                          <span class="mega-audience-link-sub">{{ item.description }}</span>
-                        {% endif %}
-                      </div>
-                    </a>
-                  </li>
-                  {% endfor %}
+                {% for item in mega_business_items %}
+                <li>
+                  <a href="{{ item.url }}" class="mega-audience-link" {% if item.open_in_new_tab %}target="_blank"
+                    rel="noopener noreferrer" {% endif %}>
+                    <span class="mega-audience-icon">{{ item.icon_svg|default:'🤖' }}</span>
+                    <div class="mega-audience-info">
+                      <span class="mega-audience-link-title">{{ item.title }}</span>
+                      {% if item.description %}
+                      <span class="mega-audience-link-sub">{{ item.description }}</span>
+                      {% endif %}
+                    </div>
+                  </a>
+                </li>
+                {% endfor %}
                 {% else %}
-                  <li>
-                    <a href="{% url 'ai_development' %}" class="mega-audience-link">
-                      <span class="mega-audience-icon">🤖</span>
-                      <div class="mega-audience-info">
-                        <span class="mega-audience-link-title">Custom AI Development</span>
-                        <span class="mega-audience-link-sub">Bespoke LLM and computer vision solutions</span>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="{% url 'ai_automation' %}" class="mega-audience-link">
-                      <span class="mega-audience-icon">⚙️</span>
-                      <div class="mega-audience-info">
-                        <span class="mega-audience-link-title">Workflow AI Automation</span>
-                        <span class="mega-audience-link-sub">Save hours by automating repetitive operations</span>
-                      </div>
-                    </a>
-                  </li>
+                <li>
+                  <a href="{% url 'ai_development' %}" class="mega-audience-link">
+                    <span class="mega-audience-icon">🤖</span>
+                    <div class="mega-audience-info">
+                      <span class="mega-audience-link-title">Custom AI Development</span>
+                      <span class="mega-audience-link-sub">Bespoke LLM and computer vision solutions</span>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'ai_automation' %}" class="mega-audience-link">
+                    <span class="mega-audience-icon">⚙️</span>
+                    <div class="mega-audience-info">
+                      <span class="mega-audience-link-title">Workflow AI Automation</span>
+                      <span class="mega-audience-link-sub">Save hours by automating repetitive operations</span>
+                    </div>
+                  </a>
+                </li>
                 {% endif %}
               </ul>
             </div>
@@ -234,9 +262,11 @@
     <div class="navbar__actions">
       <!-- Book a Free Call Dropdown -->
       <div class="call-cta-wrap" id="callCtaWrap">
-        <button class="btn-glass-wave" id="bookCallBtn" aria-expanded="false" aria-haspopup="true" aria-label="Book a free consultation call">
+        <button class="btn-glass-wave" id="bookCallBtn" aria-expanded="false" aria-haspopup="true"
+          aria-label="Book a free consultation call">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/>
+            <path
+              d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z" />
           </svg>
           Book a Free Call
         </button>
@@ -246,7 +276,8 @@
           <a href="tel:+919213472954" class="call-dropdown__item" role="menuitem">
             <div class="call-dropdown__icon">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="#3b82f6" stroke="none">
-                <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/>
+                <path
+                  d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z" />
               </svg>
             </div>
             <div class="call-dropdown__text">
@@ -255,10 +286,12 @@
             </div>
           </a>
 
-          <a href="https://wa.me/919213472954?text=Hi%20ProjectsHub%2C%20I%20want%20to%20book%20a%20free%20consultation." target="_blank" rel="noopener noreferrer" class="call-dropdown__item" role="menuitem">
+          <a href="https://wa.me/919213472954?text=Hi%20ProjectsHub%2C%20I%20want%20to%20book%20a%20free%20consultation."
+            target="_blank" rel="noopener noreferrer" class="call-dropdown__item" role="menuitem">
             <div class="call-dropdown__icon">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="#25d366">
-                <path d="M20.52 3.48A11.82 11.82 0 0 0 12.07 0C5.5 0 .15 5.35.15 11.92c0 2.1.55 4.15 1.6 5.97L0 24l6.29-1.65a11.9 11.9 0 0 0 5.78 1.47h.01c6.57 0 11.92-5.35 11.92-11.92 0-3.18-1.24-6.17-3.48-8.42zM12.08 21.8a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.73.98 1-3.63-.24-.37a9.88 9.88 0 0 1-1.52-5.28c0-5.46 4.44-9.9 9.9-9.9a9.83 9.83 0 0 1 7.01 2.9 9.83 9.83 0 0 1 2.89 7c0 5.46-4.44 9.9-9.9 9.9z"/>
+                <path
+                  d="M20.52 3.48A11.82 11.82 0 0 0 12.07 0C5.5 0 .15 5.35.15 11.92c0 2.1.55 4.15 1.6 5.97L0 24l6.29-1.65a11.9 11.9 0 0 0 5.78 1.47h.01c6.57 0 11.92-5.35 11.92-11.92 0-3.18-1.24-6.17-3.48-8.42zM12.08 21.8a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.73.98 1-3.63-.24-.37a9.88 9.88 0 0 1-1.52-5.28c0-5.46 4.44-9.9 9.9-9.9a9.83 9.83 0 0 1 7.01 2.9 9.83 9.83 0 0 1 2.89 7c0 5.46-4.44 9.9-9.9 9.9z" />
               </svg>
             </div>
             <div class="call-dropdown__text">
@@ -267,11 +300,13 @@
             </div>
           </a>
 
-          <a href="mailto:support@projectshub.co.in?subject=Free%20Consultation%20Inquiry" class="call-dropdown__item" role="menuitem">
+          <a href="mailto:support@projectshub.co.in?subject=Free%20Consultation%20Inquiry" class="call-dropdown__item"
+            role="menuitem">
             <div class="call-dropdown__icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                <polyline points="22,6 12,13 2,6"/>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22,6 12,13 2,6" />
               </svg>
             </div>
             <div class="call-dropdown__text">
@@ -284,11 +319,14 @@
 
 
       <!-- Hamburger Mobile Toggle -->
-      <button class="hamburger" id="hamburger" type="button" aria-label="Toggle mobile menu" aria-expanded="false" aria-controls="mobileMenu">
-        <svg class="icon-menu" width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <button class="hamburger" id="hamburger" type="button" aria-label="Toggle mobile menu" aria-expanded="false"
+        aria-controls="mobileMenu">
+        <svg class="icon-menu" width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+          aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
-        <svg class="icon-close hidden" width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <svg class="icon-close hidden" width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+          aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
@@ -297,9 +335,11 @@
 
 </header>
 
-{# Mobile Drawer Menu — must be OUTSIDE <header> so position:fixed resolves to the viewport,
-   not the navbar (which has backdrop-filter creating a new containing block). #}
-<div class="navbar__mobile" id="mobileMenu" aria-hidden="true">
+{% comment %}
+Mobile Drawer Menu — must be OUTSIDE <header> so position:fixed resolves to the viewport,
+not the navbar (which has backdrop-filter creating a new containing block).
+{% endcomment %}
+  <div class="navbar__mobile" id="mobileMenu" aria-hidden="true">
     <nav class="mob-nav" aria-label="Mobile Navigation">
       <div class="mob-item">
         <button class="mob-btn mob-btn--expand" type="button" aria-expanded="false" aria-controls="mobSubWork">
@@ -308,20 +348,21 @@
         <ul class="mob-sub" id="mobSubWork">
           <li class="mob-sub-title">Featured Work</li>
           {% if mega_work_items %}
-            {% for item in mega_work_items %}
-            <li>
-              <a href="{{ item.url }}" class="mob-sub-link">
-                {{ item.icon_svg|default:'📁' }} {{ item.title }}
-                {% if item.badge_text %}
-                  <span class="mega-card__badge mega-card__badge--{{ item.badge_color|default:'cyan' }}" style="font-size:10px;padding:2px 6px;margin-left:6px;">{{ item.badge_text }}</span>
-                {% endif %}
-              </a>
-            </li>
-            {% endfor %}
+          {% for item in mega_work_items %}
+          <li>
+            <a href="{{ item.url }}" class="mob-sub-link">
+              {{ item.icon_svg|default:'📁' }} {{ item.title }}
+              {% if item.badge_text %}
+              <span class="mega-card__badge mega-card__badge--{{ item.badge_color|default:'cyan' }}"
+                style="font-size:10px;padding:2px 6px;margin-left:6px;">{{ item.badge_text }}</span>
+              {% endif %}
+            </a>
+          </li>
+          {% endfor %}
           {% else %}
-            <li><a href="/projects/" class="mob-sub-link">📁 Browse All 50+ Projects</a></li>
-            <li><a href="{% url 'case_studies' %}" class="mob-sub-link">📊 AI Case Studies</a></li>
-            <li><a href="{% url 'tools' %}" class="mob-sub-link">🛠️ Free Developer AI Tools</a></li>
+          <li><a href="/projects/" class="mob-sub-link">📁 Browse All 50+ Projects</a></li>
+          <li><a href="{% url 'case_studies' %}" class="mob-sub-link">📊 AI Case Studies</a></li>
+          <li><a href="{% url 'tools' %}" class="mob-sub-link">🛠️ Free Developer AI Tools</a></li>
           {% endif %}
         </ul>
       </div>
@@ -333,39 +374,42 @@
       <div class="mob-item">
         <button class="mob-btn mob-btn--expand" type="button" aria-expanded="false" aria-controls="mobSubHelp">
           How We Help
-          <svg class="mob-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          <svg class="mob-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
         </button>
         <ul class="mob-sub" id="mobSubHelp">
           <li class="mob-sub-title">For Students &amp; Developers</li>
           {% if mega_student_items %}
-            {% for item in mega_student_items %}
-            <li>
-              <a href="{{ item.url }}" class="mob-sub-link">
-                {{ item.icon_svg|default:'🎯' }} {{ item.title }}
-              </a>
-            </li>
-            {% endfor %}
+          {% for item in mega_student_items %}
+          <li>
+            <a href="{{ item.url }}" class="mob-sub-link">
+              {{ item.icon_svg|default:'🎯' }} {{ item.title }}
+            </a>
+          </li>
+          {% endfor %}
           {% else %}
-            <li><a href="/workshop/" class="mob-sub-link">🎯 1-on-1 Mentorship Sessions</a></li>
-            <li><a href="/projects/" class="mob-sub-link">💻 Hands-on Capstone Projects</a></li>
-            <li><a href="/workshop/" class="mob-sub-link">⚡ Live Coding Workshops</a></li>
-            <li><a href="{% url 'ai_roadmap' %}" class="mob-sub-link">🗺️ AI Career Road Map</a></li>
+          <li><a href="/workshop/" class="mob-sub-link">🎯 1-on-1 Mentorship Sessions</a></li>
+          <li><a href="/projects/" class="mob-sub-link">💻 Hands-on Capstone Projects</a></li>
+          <li><a href="/workshop/" class="mob-sub-link">⚡ Live Coding Workshops</a></li>
+          <li><a href="{% url 'ai_roadmap' %}" class="mob-sub-link">🗺️ AI Career Road Map</a></li>
           {% endif %}
 
           <li class="mob-sub-title">For Businesses &amp; Teams</li>
           {% if mega_business_items %}
-            {% for item in mega_business_items %}
-            <li>
-              <a href="{{ item.url }}" class="mob-sub-link">
-                {{ item.icon_svg|default:'🤖' }} {{ item.title }}
-              </a>
-            </li>
-            {% endfor %}
+          {% for item in mega_business_items %}
+          <li>
+            <a href="{{ item.url }}" class="mob-sub-link">
+              {{ item.icon_svg|default:'🤖' }} {{ item.title }}
+            </a>
+          </li>
+          {% endfor %}
           {% else %}
-            <li><a href="{% url 'ai_development' %}" class="mob-sub-link">🤖 Custom AI Development</a></li>
-            <li><a href="{% url 'ai_automation' %}" class="mob-sub-link">⚙️ Workflow AI Automation</a></li>
-            <li><a href="{% url 'ai_integration' %}" class="mob-sub-link">🔌 AI Integration &amp; APIs</a></li>
-            <li><a href="{% url 'industries' %}" class="mob-sub-link">🏢 Industry AI Solutions</a></li>
+          <li><a href="{% url 'ai_development' %}" class="mob-sub-link">🤖 Custom AI Development</a></li>
+          <li><a href="{% url 'ai_automation' %}" class="mob-sub-link">⚙️ Workflow AI Automation</a></li>
+          <li><a href="{% url 'ai_integration' %}" class="mob-sub-link">🔌 AI Integration &amp; APIs</a></li>
+          <li><a href="{% url 'industries' %}" class="mob-sub-link">🏢 Industry AI Solutions</a></li>
           {% endif %}
         </ul>
       </div>
@@ -387,8 +431,9 @@
       <a href="tel:+919213472954" class="mobile-contact-btn mobile-contact-btn--call">
         📞 Call Us — +91 9213472954
       </a>
-      <a href="https://wa.me/919213472954?text=Hi%20ProjectsHub%2C%20I%20want%20to%20book%20a%20free%20consultation." target="_blank" rel="noopener noreferrer" class="mobile-contact-btn mobile-contact-btn--whatsapp">
+      <a href="https://wa.me/919213472954?text=Hi%20ProjectsHub%2C%20I%20want%20to%20book%20a%20free%20consultation."
+        target="_blank" rel="noopener noreferrer" class="mobile-contact-btn mobile-contact-btn--whatsapp">
         💬 WhatsApp Us Directly
       </a>
     </div>
-</div>
+  </div>

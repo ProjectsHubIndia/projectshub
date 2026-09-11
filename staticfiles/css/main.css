@@ -5207,6 +5207,7 @@ body.light .contact-form__input:focus {
   font-weight: 800;
   background: linear-gradient(90deg, #38bdf8, #a855f7);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -0.5px;
 }
@@ -6229,6 +6230,7 @@ body.light .footer-link--muted {
   font-weight: 600;
   background: linear-gradient(90deg, #6366f1, #a855f7);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -6255,6 +6257,7 @@ body.light .projects-breadcrumb ol li + li::before {
 body.light .projects-breadcrumb li[aria-current="page"] {
   background: linear-gradient(90deg, #0242cd, #096dfc);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -7269,6 +7272,7 @@ body.light .btn-glass-wave:hover {
   margin-bottom: 1rem;
   background: linear-gradient(to right, #fff 0%, #cbd5e1 50%, #818cf8 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -1px;
 }
@@ -7442,6 +7446,7 @@ body.light .faq-item.active .faq-icon {
 body.light .faq-title {
   background: linear-gradient(to right, #011560 0%, #0242cd 50%, #096dfc 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -7469,6 +7474,7 @@ body.light .faq-desc {
   margin-bottom: 1rem;
   background: linear-gradient(to right, #fff 0%, #cbd5e1 50%, #818cf8 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -1px;
 }
@@ -7646,6 +7652,7 @@ body.light .t-info span {
 body.light .testimonials-title {
   background: linear-gradient(to right, #011560 0%, #0242cd 50%, #096dfc 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 

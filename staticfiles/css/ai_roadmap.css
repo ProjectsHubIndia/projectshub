@@ -542,7 +542,8 @@ h4 {
 }
 
 /* ==========================================================================
-   CENTERED POP-UP MODAL (Clean Modern White Theme)
+/* ==========================================================================
+   RIGHT-SIDE SLIDE-OVER DRAWER (Clean Modern White Theme)
    ========================================================================== */
 .roadmap-modal-overlay {
   position: fixed;
@@ -554,14 +555,15 @@ h4 {
   height: 100vh;
   z-index: 9999999 !important;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px 16px;
+  align-items: stretch;
+  justify-content: flex-end; /* Dock directly to right side */
+  padding: 0;
+  margin: 0;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   overflow: hidden;
-  transition: opacity 0.25s ease, visibility 0.25s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .roadmap-modal-overlay.open {
@@ -578,34 +580,47 @@ h4 {
   bottom: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(15, 23, 42, 0.62);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(15, 23, 42, 0.52);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   cursor: pointer;
   z-index: 1;
+  transition: opacity 0.3s ease;
 }
 
 .roadmap-modal-dialog {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 680px;
-  max-height: calc(100vh - 48px);
-  height: auto;
+  max-width: 600px;
+  height: 100vh;
+  max-height: 100vh;
+  margin: 0;
   background: #ffffff;
-  border: 1px solid rgba(226, 232, 240, 0.95);
-  border-radius: 24px;
-  box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.3),
+  border-left: 1px solid rgba(226, 232, 240, 0.95);
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  border-radius: 24px 0 0 24px;
+  box-shadow: -20px 0 60px rgba(15, 23, 42, 0.22),
               0 0 0 1px rgba(15, 23, 42, 0.05);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transform: scale(0.94) translateY(16px);
-  transition: transform 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform: translateX(100%); /* Start completely offscreen to the right */
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .roadmap-modal-overlay.open .roadmap-modal-dialog {
-  transform: scale(1) translateY(0);
+  transform: translateX(0); /* Slide in from right */
+}
+
+@media (max-width: 768px) {
+  .roadmap-modal-dialog {
+    max-width: 100%;
+    border-radius: 0;
+    border-left: none;
+  }
 }
 
 .roadmap-modal-header {

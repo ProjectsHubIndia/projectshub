@@ -52,7 +52,7 @@
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/project.css' %}?v=3" />
+<link rel="stylesheet" href="{% static 'css/project.css' %}?v=4" />
 {% endblock %}
 
 {% block nav_projects %}active{% endblock %}
@@ -229,13 +229,28 @@
     {# /.projects-full-grid #}
 
     {# No-filter-results state — JS controlled #}
-    <div id="projectsNoResults" class="ph-glass-card" style="display:none; text-align:center; padding:3.5rem 1.5rem; max-width: 520px; margin: 2.5rem auto;">
-      <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🔍</div>
-      <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--ph-text-primary);">No matching projects found</h3>
-      <p style="font-size: 0.95rem; color: var(--ph-text-secondary); margin-bottom: 1.5rem;">
-        Try refining your keyword search or select another category tab above.
+    <div id="projectsNoResults" class="projects-no-results-card" style="display:none;">
+      <div class="projects-no-results-icon-wrap">
+        <div class="projects-no-results-icon-pulse"></div>
+        <div class="projects-no-results-icon">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            <line x1="8" y1="11" x2="14" y2="11" stroke-dasharray="2 2"></line>
+          </svg>
+        </div>
+      </div>
+      <h3 class="projects-no-results-title">No matching projects found</h3>
+      <p class="projects-no-results-desc">
+        Try refining your keyword search or select another category tab above to explore our AI &amp; ML projects.
       </p>
-      <button type="button" class="btn-primary-glow" id="resetProjectFilterBtn" onclick="resetProjectFilter()">Reset Search &amp; Filters</button>
+      <button type="button" class="projects-reset-btn btn-primary-glow" id="resetProjectFilterBtn" onclick="resetProjectFilter()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" class="projects-reset-icon" aria-hidden="true">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+          <path d="M3 3v5h5"></path>
+        </svg>
+        <span>Reset Search &amp; Filters</span>
+      </button>
     </div>
 
     <div style="padding-bottom: 5rem;"></div>

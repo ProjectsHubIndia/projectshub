@@ -27,7 +27,7 @@
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/blog.css' %}?v=3" />
+<link rel="stylesheet" href="{% static 'css/blog.css' %}?v=4" />
 {% endblock %}
 
 {% block content %}
@@ -132,9 +132,9 @@
             </svg>
           </span>
           {% if post.author_name %}
-          <span style="font-size:0.78rem; color:#6b7280; display:inline-flex; align-items:center; gap:5px;">
-            <span style="width:22px;height:22px;border-radius:50%;background:{{ post.accent|default:'#3b82f6' }};display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:0.65rem;font-weight:700;flex-shrink:0;">{{ post.author_initials }}</span>
-            {{ post.author_name }}
+          <span class="blog-card__author">
+            <span class="blog-card__avatar" data-accent="{{ post.accent|default:'#3b82f6' }}">{{ post.author_initials }}</span>
+            <span class="blog-card__author-name">{{ post.author_name }}</span>
           </span>
           {% endif %}
         </div>
@@ -259,6 +259,12 @@
     });
     applyFilters();
   };
+
+  // Set avatar background colors from data-accent
+  document.querySelectorAll('.blog-card__avatar[data-accent]').forEach(function (el) {
+    var col = el.getAttribute('data-accent');
+    if (col) el.style.backgroundColor = col;
+  });
 })();
 </script>
 {% endblock %}

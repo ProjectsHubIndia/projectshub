@@ -1,6 +1,7 @@
 import sys
 import django
 from django.conf import settings
+from django.core.cache import cache
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, Permission
 from core.models import (
@@ -94,6 +95,17 @@ def site_context(request):
             total_enrollments = WorkshopEnrollment.objects.count()
             pending_enrollments = WorkshopEnrollment.objects.filter(status='pending').count()
 
+            # Unused media & storage assets count (cached for 60s)
+            cached_unused = cache.get('admin_unused_assets_count')
+            if cached_unused is None:
+                try:
+                    from core.views import scan_all_assets
+                    _, asset_stats, _ = scan_all_assets()
+                    cached_unused = asset_stats.get('unused_count', 0)
+                    cache.set('admin_unused_assets_count', cached_unused, 60)
+                except Exception:
+                    cached_unused = 0
+
             context['admin_stats'] = {
                 'total_projects': total_projects,
                 'active_projects': active_projects,
@@ -110,6 +122,7 @@ def site_context(request):
                 'total_case_studies': CaseStudy.objects.count(),
                 'total_enrollments': total_enrollments,
                 'pending_enrollments': pending_enrollments,
+                'unused_assets_count': cached_unused,
             }
 
             # Live Model Count dictionary for grouped navigation badges

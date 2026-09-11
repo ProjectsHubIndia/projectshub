@@ -158,6 +158,23 @@
           </ul>
         </li>
 
+        <!-- Media & Storage Assets Manager -->
+        <li class="wp-menu-item" data-path="/admin/assets/">
+          <a href="/admin/assets/" class="wp-menu-link">
+            <span class="wp-menu-icon">📁</span>
+            <span class="wp-menu-name">Media &amp; Assets</span>
+            {% if admin_stats.unused_assets_count %}
+              <span class="wp-menu-count red">{{ admin_stats.unused_assets_count }}</span>
+            {% endif %}
+          </a>
+          <ul class="wp-submenu">
+            <li class="wp-submenu-head">Media &amp; Storage</li>
+            <li><a href="/admin/assets/">All Assets</a></li>
+            <li><a href="/admin/assets/?filter=unused">Unused Cleanup</a></li>
+            <li><a href="/admin/assets/?sort=size_desc">Largest Assets (MB)</a></li>
+          </ul>
+        </li>
+
         <li class="wp-menu-separator"></li>
 
         <!-- 2. AI Projects -->
