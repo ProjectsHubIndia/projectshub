@@ -145,6 +145,7 @@ h1, h2, h3, h4, h5, h6 {
 .ph-gradient-text {
   background: linear-gradient(135deg, #60a5fa 0%, #a855f7 50%, #ec4899 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
 }
@@ -152,6 +153,7 @@ h1, h2, h3, h4, h5, h6 {
 .ph-gradient-cyan {
   background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
 }
@@ -159,6 +161,7 @@ h1, h2, h3, h4, h5, h6 {
 .ph-gradient-purple {
   background: linear-gradient(135deg, #a78bfa 0%, #ec4899 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
 }
@@ -1195,6 +1198,7 @@ body.light .hero-tag {
 .hero-title__gradient {
   background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
 }
