@@ -1443,10 +1443,9 @@ CONTENT
                         <div class="testimonial-card trs-card--{{ card_color }}">
                             <span class="trs-card-quote trs-card-quote--{{ card_color }}">"</span>
                             <div class="trs-stars-row">
-                                <div class="t-stars">{% for i in "12345" %}{% if forloop.counter <= t.rating %}★{% else
-                                        %}☆{% endif %}{% endfor %}</div>
-                                        <span class="trs-sparkle-sm">✦</span>
-                                </div>
+                                <div class="t-stars">{% for i in "12345" %}{% if forloop.counter <= t.rating|default:5 %}★{% else %}☆{% endif %}{% endfor %}</div>
+                                <span class="trs-sparkle-sm">✦</span>
+                            </div>
                                 <p class="t-text">"{{ t.content }}"</p>
                                 <div class="trs-author-divider"></div>
                                 <div class="t-author">
