@@ -1655,7 +1655,12 @@ body:not(.light) .scroll-arrow:hover {
   transition: transform 0.25s ease;
 }
 .faq-item.active .faq-icon-wrapper {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+  color: #ffffff !important;
   transform: rotate(180deg);
+}
+.faq-item.active .faq-icon {
+  color: #ffffff !important;
 }
 .faq-answer {
   max-height: 0;

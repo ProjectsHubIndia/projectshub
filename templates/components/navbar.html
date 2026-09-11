@@ -53,8 +53,7 @@
                 <img src="{% static 'image/tools-new.webp' %}" alt="{{ card.title }}" loading="lazy">
                 {% endif %}
                 {% if card.badge_text %}
-                <span class="mega-card__badge mega-card__badge--{{ card.badge_color|default:'cyan' }}">{{
-                  card.badge_text }}</span>
+                <span class="mega-card__badge mega-card__badge--{{ card.badge_color|default:'cyan' }}">{{ card.badge_text }}</span>
                 {% endif %}
               </div>
               <div class="mega-card__body">
