@@ -251,7 +251,7 @@
           data-desc="{{ tool.description|lower }}"
         >
           <div class="tool-card__header">
-            <div class="tool-card__icon"{% if tool.icon_bg_gradient %} style="background: {{ tool.icon_bg_gradient }};"{% endif %}>
+            <div class="tool-card__icon"{% if tool.icon_bg_gradient %} data-bg="{{ tool.icon_bg_gradient }}"{% endif %}>
               {{ tool.icon|default:'⚡' }}
             </div>
             <div class="tool-card__info">
@@ -593,6 +593,12 @@
         }
       });
     }
+  });
+
+  // Apply custom background gradients from data-bg
+  document.querySelectorAll('.tool-card__icon[data-bg]').forEach(function(el) {
+    var bg = el.getAttribute('data-bg');
+    if (bg) el.style.background = bg;
   });
 
   // Run initial filter check

@@ -515,6 +515,8 @@ body.light .bd-back-link:hover { color: #1d4ed8; }
   font-size: 0.82rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  background: rgba(59, 130, 246, 0.12);
+  color: #3b82f6;
 }
 
 .bd-muted {
@@ -680,6 +682,7 @@ body.light .bd-author { border-top-color: rgba(0,0,0,0.08); }
   font-size: 1.15rem;
   flex-shrink: 0;
   box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+  background: #3b82f6;
 }
 
 .bd-author-name {
@@ -711,6 +714,15 @@ body.light .bd-divider { border-top-color: rgba(0,0,0,0.08); }
   color: #f1f5f9;
   margin-bottom: 1.25rem;
   margin-top: 0;
+}
+
+.bd-related-img {
+  height: 130px;
+  font-size: 2.5rem;
+}
+
+.bd-related-img--has-img {
+  padding: 0;
 }
 
 body.light .bd-related-title { color: #0f172a; }
