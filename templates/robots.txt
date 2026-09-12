@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 Disallow: /admin/
-Disallow: /contact/
+Disallow: /contact/submit/
 Disallow: /gate/
 Disallow: /idea/
 Disallow: /enroll/

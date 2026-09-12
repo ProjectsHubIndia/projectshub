@@ -391,6 +391,18 @@ def api_captcha(request):
     })
 
 
+def contact_page(request):
+    """Separate dedicated Contact Us page with full SEO and inquiry handling."""
+    if request.method == 'POST':
+        return contact_submit(request)
+
+    contact_faqs = FAQ.objects.filter(is_published=True).order_by('sort_order')[:6]
+    context = {
+        'contact_faqs': contact_faqs,
+    }
+    return render(request, 'core/contact.html', context)
+
+
 @require_POST
 def contact_submit(request):
     """Handle contact form submission with lead recording & email notification."""
@@ -693,6 +705,7 @@ def robots_txt(request):
         'Allow: /',
         '',
         'Disallow: /admin/',
+        'Disallow: /contact/submit/',
         'Disallow: /gate/',
         'Disallow: /idea/',
         'Disallow: /enroll/',
@@ -720,6 +733,7 @@ def sitemap_xml(request):
         ('/services/ai-integration/', '0.8', 'monthly'),
         ('/industries/', '0.8', 'monthly'),
         ('/blog/', '0.8', 'weekly'),
+        ('/contact/', '0.8', 'monthly'),
         ('/privacy/', '0.3', 'yearly'),
         ('/terms/', '0.3', 'yearly'),
         ('/refund/', '0.3', 'yearly'),

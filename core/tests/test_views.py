@@ -115,3 +115,30 @@ class ViewTests(TestCase):
         self.assertEqual(res.status_code, 200)
         data = res.json()
         self.assertTrue(data.get('success'))
+
+    def test_contact_page_get(self):
+        res = self.client.get(reverse('contact'))
+        self.assertEqual(res.status_code, 200)
+        self.assertTemplateUsed(res, 'core/contact.html')
+        self.assertContains(res, 'Send Us a Message')
+        self.assertContains(res, 'contactForm')
+
+    def test_contact_page_post_delegates(self):
+        import json
+        from django.core import signing
+        c_res = self.client.get(reverse('api_captcha'))
+        token = c_res.json()['token']
+        code = signing.loads(token, salt='captcha-salt')
+
+        res = self.client.post(reverse('contact'), json.dumps({
+            'full_name': 'Direct Page User',
+            'email': 'direct@example.com',
+            'subject': 'Direct Inquiry',
+            'message': 'Testing delegation on /contact/',
+            'catch_code': code,
+            'captcha_token': token
+        }), content_type='application/json')
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertTrue(data.get('success'))
+

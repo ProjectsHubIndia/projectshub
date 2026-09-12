@@ -1,0 +1,607 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Contact Us | Get in Touch With ProjectsHub AI Engineers{% endblock %}
+{% block meta_description %}Have an AI project idea, capstone project question, or need 1-on-1 mentorship? Contact the ProjectsHub engineering team. Fast response within 24 hours.{% endblock %}
+{% block meta_keywords %}contact ProjectsHub, AI engineering support, capstone project help, hire AI developers, machine learning mentorship{% endblock %}
+{% block canonical %}{{ site_url }}/contact/{% endblock %}
+
+{% block nav_contact %}active{% endblock %}
+{% block mob_nav_contact %}active{% endblock %}
+
+{% block schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ site_url }}/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Contact Us",
+      "item": "{{ site_url }}/contact/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact ProjectsHub",
+  "description": "Get in touch with ProjectsHub engineers for AI projects, ML architecture, capstone guidance, and enterprise solutions.",
+  "url": "{{ site_url }}/contact/",
+  "mainEntity": {
+    "@type": "Organization",
+    "name": "ProjectsHub",
+    "telephone": "+91-9213472954",
+    "email": "{{ site_settings.primary_email|default:'support@projectshub.co.in' }}",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "New Delhi & Gujarat",
+      "addressCountry": "IN"
+    }
+  }
+}
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/contact.css' %}?v=2" />
+{% endblock %}
+
+{% block content %}
+<div class="contact-page">
+
+  <!-- Ambient Radial Glows -->
+  <div class="contact-ambient-glow contact-ambient-glow--top" aria-hidden="true"></div>
+  <div class="contact-ambient-glow contact-ambient-glow--mid" aria-hidden="true"></div>
+
+  <!-- ── Hero Section ── -->
+  <section class="contact-hero" aria-labelledby="contactHeroHeading">
+    <nav class="contact-breadcrumb" aria-label="Breadcrumb">
+      <a href="{% url 'index' %}">Home</a>
+      <span class="contact-breadcrumb-sep">/</span>
+      <span class="contact-breadcrumb-current">Contact Us</span>
+    </nav>
+
+    <div class="contact-status-pill">
+      <span class="contact-status-dot"></span>
+      Online &amp; Available &bull; Rapid Response &lt; 2h SLA
+    </div>
+
+    <h1 class="contact-hero-title" id="contactHeroHeading">
+      Let's Build Something<br>
+      <span class="contact-hero-title__gradient">Exceptional Together</span>
+    </h1>
+
+    <p class="contact-hero-desc">
+      Have a custom AI requirement, need hands-on capstone project guidance, or want to accelerate your engineering career with 1-on-1 mentorship? Talk directly with our AI practitioners.
+    </p>
+  </section>
+
+  <!-- ── 4 Direct Contact Channels Grid ── -->
+  <section class="contact-channels-wrap" aria-label="Direct contact channels">
+    <div class="contact-channels-grid">
+      
+      <!-- Card 1: Direct Call -->
+      <a href="tel:{{ site_settings.phone|default:'+919213472954' }}" class="channel-card channel-card--phone" aria-label="Call ProjectsHub directly">
+        <div class="channel-card__icon-wrap">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+        </div>
+        <span class="channel-card__badge channel-card__badge--blue">Direct Line</span>
+        <h3 class="channel-card__title">Call Directly</h3>
+        <p class="channel-card__value">{{ site_settings.phone|default:'+91 92134 72954' }}</p>
+        <p class="channel-card__sub">Mon &ndash; Sat &bull; 9:00 AM &ndash; 9:00 PM IST</p>
+      </a>
+
+      <!-- Card 2: WhatsApp Chat -->
+      <a href="https://wa.me/919213472954?text=Hi%20ProjectsHub%2C%20I%20have%20an%20inquiry%20regarding%20AI%20projects%20and%20mentorship." target="_blank" rel="noopener noreferrer" class="channel-card channel-card--whatsapp" aria-label="Chat on WhatsApp">
+        <div class="channel-card__icon-wrap">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.53c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.25-.02-.39.11-.51.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.16 0-.43.06-.66.31-.22.25-.86.84-.86 2.05s.88 2.38 1 2.54c.13.17 1.73 2.64 4.19 3.7.59.25 1.04.41 1.4.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.3z"/>
+          </svg>
+        </div>
+        <span class="channel-card__badge channel-card__badge--green">Fastest Reply</span>
+        <h3 class="channel-card__title">WhatsApp Chat</h3>
+        <p class="channel-card__value">+91 92134 72954</p>
+        <p class="channel-card__sub">Instant reply from technical mentors</p>
+      </a>
+
+      <!-- Card 3: Support Email -->
+      <a href="mailto:{{ site_settings.primary_email|default:'support@projectshub.co.in' }}?subject=Project%20Inquiry%20from%20ProjectsHub" class="channel-card channel-card--email" aria-label="Email ProjectsHub Support">
+        <div class="channel-card__icon-wrap">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <span class="channel-card__badge channel-card__badge--purple">Official Email</span>
+        <h3 class="channel-card__title">Email Us</h3>
+        <p class="channel-card__value">{{ site_settings.primary_email|default:'support@projectshub.co.in' }}</p>
+        <p class="channel-card__sub">Guaranteed reply within 24 hours</p>
+      </a>
+
+      <!-- Card 4: Location & Presence -->
+      <div class="channel-card channel-card--location">
+        <div class="channel-card__icon-wrap">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <span class="channel-card__badge channel-card__badge--blue">Remote &bull; Worldwide</span>
+        <h3 class="channel-card__title">Locations</h3>
+        <p class="channel-card__value">New Delhi &amp; Gujarat, India</p>
+        <p class="channel-card__sub">Serving learners &amp; clients worldwide</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Main Two-Column Contact Section ── -->
+  <section class="contact-main-section">
+    <div class="contact-main-grid">
+
+      <!-- Left Column: Trust Signals & Value Pillars -->
+      <div class="contact-left-col">
+        
+        <div class="contact-value-header">
+          <h2>Why Connect With Our Engineering Team?</h2>
+          <p>We combine deep production machine learning expertise with academic precision to bring real-world AI software to life.</p>
+        </div>
+
+        <div class="contact-pillars-list">
+          
+          <div class="contact-pillar-item">
+            <div class="contact-pillar-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+            </div>
+            <div class="contact-pillar-text">
+              <strong>Rapid 2-Hour SLA Response</strong>
+              <p>Direct communication with technical mentors and system architects, not automated loops or script readers.</p>
+            </div>
+          </div>
+
+          <div class="contact-pillar-item">
+            <div class="contact-pillar-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </div>
+            <div class="contact-pillar-text">
+              <strong>100% Confidential &amp; NDA Protected</strong>
+              <p>We respect your intellectual property. Mutual NDAs are available upon request prior to discussing sensitive code or architectures.</p>
+            </div>
+          </div>
+
+          <div class="contact-pillar-item">
+            <div class="contact-pillar-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+              </svg>
+            </div>
+            <div class="contact-pillar-text">
+              <strong>Senior AI Architects &amp; Mentors</strong>
+              <p>Guidance from engineers who actively build production LLM systems, computer vision models, and distributed Django/FastAPI backends.</p>
+            </div>
+          </div>
+
+          <div class="contact-pillar-item">
+            <div class="contact-pillar-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="16 18 22 12 16 6"/>
+                <polyline points="8 6 2 12 8 18"/>
+              </svg>
+            </div>
+            <div class="contact-pillar-text">
+              <strong>Complete End-to-End Delivery</strong>
+              <p>From datasets, model training, and microservice APIs to complete interactive user interfaces, Docker containers, and cloud deployment.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Schedule & Hours Card -->
+        <div class="contact-schedule-card">
+          <div class="schedule-info">
+            <strong>Operating Support Hours</strong>
+            <span>Monday &ndash; Saturday &bull; 9:00 AM &ndash; 9:00 PM IST</span>
+          </div>
+          <span class="schedule-time-badge">IST (UTC +5:30)</span>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Interactive Glassmorphic Contact Form -->
+      <div class="contact-form-card" id="contactFormContainer">
+        
+        <div class="contact-form-card__header">
+          <h2 class="contact-form-card__title">Send Us a Message</h2>
+          <p class="contact-form-card__desc">Fill out the form below and our team will get back to you within 24 hours.</p>
+        </div>
+
+        <!-- Category Selector Pills -->
+        <div class="contact-category-group">
+          <label class="contact-category-label">What can we help you with?</label>
+          <div class="contact-category-pills" id="contactCategoryPills" role="radiogroup" aria-label="Topic of inquiry">
+            <button type="button" class="contact-category-pill active" data-category="Custom AI / ML Project" role="radio" aria-checked="true">🤖 Custom AI Project</button>
+            <button type="button" class="contact-category-pill" data-category="Capstone Project Guidance" role="radio" aria-checked="false">🎓 Capstone Project</button>
+            <button type="button" class="contact-category-pill" data-category="1-on-1 Mentorship &amp; Workshop" role="radio" aria-checked="false">⚡ 1-on-1 Mentorship</button>
+            <button type="button" class="contact-category-pill" data-category="Enterprise Automation" role="radio" aria-checked="false">⚙️ Enterprise Solutions</button>
+            <button type="button" class="contact-category-pill" data-category="General Inquiry" role="radio" aria-checked="false">💬 General Question</button>
+          </div>
+        </div>
+
+        <!-- Status Alert Box -->
+        <div id="contactFormStatus" class="contact-status-alert" role="alert" aria-live="polite"></div>
+
+        <!-- The Contact Form (Uses id="contactForm" for full compatibility with script.js) -->
+        <form id="contactForm" novalidate>
+          {% csrf_token %}
+          
+          <input type="hidden" name="source_page" id="contactSourcePage" value="/contact/" />
+
+          <div class="contact-form-grid">
+            
+            <!-- Full Name -->
+            <div class="contact-field-group">
+              <label for="contactName" class="contact-input-label">
+                Full Name <span class="contact-req-star">*</span>
+              </label>
+              <input
+                type="text"
+                id="contactName"
+                name="full_name"
+                class="contact-text-input"
+                placeholder="e.g. Alex Sharma"
+                required
+                autocomplete="name"
+              />
+            </div>
+
+            <!-- Email Address -->
+            <div class="contact-field-group">
+              <label for="contactEmail" class="contact-input-label">
+                Email Address <span class="contact-req-star">*</span>
+              </label>
+              <input
+                type="email"
+                id="contactEmail"
+                name="email"
+                class="contact-text-input"
+                placeholder="alex@example.com"
+                required
+                autocomplete="email"
+              />
+            </div>
+
+            <!-- Phone Number -->
+            <div class="contact-field-group">
+              <label for="contactPhone" class="contact-input-label">
+                Phone / WhatsApp Number
+              </label>
+              <input
+                type="tel"
+                id="contactPhone"
+                name="phone"
+                class="contact-text-input"
+                placeholder="+91 98765 43210"
+                autocomplete="tel"
+              />
+            </div>
+
+            <!-- Subject -->
+            <div class="contact-field-group">
+              <label for="contactSubject" class="contact-input-label">
+                Subject <span class="contact-req-star">*</span>
+              </label>
+              <input
+                type="text"
+                id="contactSubject"
+                name="subject"
+                class="contact-text-input"
+                value="Custom AI / ML Project Inquiry"
+                required
+              />
+            </div>
+
+            <!-- Message Area -->
+            <div class="contact-field-group contact-field-group--full">
+              <label for="contactMessage" class="contact-input-label">
+                Message <span class="contact-req-star">*</span>
+              </label>
+              <textarea
+                id="contactMessage"
+                name="message"
+                class="contact-textarea-input"
+                placeholder="Please describe your project, timeline, tech stack or questions..."
+                rows="4"
+                required
+              ></textarea>
+            </div>
+
+          </div>
+
+          <!-- Catch Code (Security Verification) -->
+          <div class="contact-captcha-wrap">
+            <label for="contactCaptcha" class="contact-input-label">
+              Security Verification Code <span class="contact-req-star">*</span>
+            </label>
+            <div class="contact-captcha-row">
+              <div class="contact-captcha-box-display" id="captchaDisplay" role="img" title="Verification Catch Code" aria-label="Catch Code Image">
+                <span style="font-size:0.75rem; color:#94a3b8; font-weight:600;">Loading code...</span>
+              </div>
+              
+              <button
+                type="button"
+                class="contact-captcha-refresh-btn"
+                id="captchaRefreshBtn"
+                title="Get new verification code"
+                aria-label="Refresh verification code"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="23 4 23 10 17 10"></polyline>
+                  <polyline points="1 20 1 14 7 14"></polyline>
+                  <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>
+              </button>
+
+              <input
+                type="text"
+                id="contactCaptcha"
+                name="catch_code"
+                class="contact-text-input contact-captcha-text-input"
+                placeholder="ENTER CODE"
+                maxlength="6"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="characters"
+                spellcheck="false"
+                required
+              />
+            </div>
+            <span class="contact-captcha-help">Enter the 5 characters displayed in the image above</span>
+          </div>
+
+          <!-- Honeypot field (hidden from real users, traps automated bots) -->
+          <div style="display:none !important;" aria-hidden="true">
+            <label for="contactHpFax">Leave this blank</label>
+            <input type="text" id="contactHpFax" name="hp_company_url" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="contact-btn-submit" id="contactSubmitBtn">
+            <span>Send Your Message</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Audience Solutions Strip ── -->
+  <section class="contact-audience-section" aria-labelledby="audienceHeading">
+    <div class="contact-audience-header">
+      <h2 id="audienceHeading">Tailored Solutions for Every Need</h2>
+      <p>Whether you need academic rigor or enterprise production scalability, we provide specialized engineering support.</p>
+    </div>
+
+    <div class="contact-audience-grid">
+      
+      <!-- Box 1: Students -->
+      <div class="contact-audience-box">
+        <div class="contact-audience-icon">🎓</div>
+        <h3>Students &amp; Researchers</h3>
+        <p>Complete capstone AI/ML projects with documentation, IEEE reference papers, viva preparation support, and 100% clean, explainable source code.</p>
+        <div class="contact-audience-tags">
+          <span class="contact-audience-tag">Capstone Projects</span>
+          <span class="contact-audience-tag">Viva Guidance</span>
+          <span class="contact-audience-tag">Research Datasets</span>
+        </div>
+      </div>
+
+      <!-- Box 2: Working Developers -->
+      <div class="contact-audience-box">
+        <div class="contact-audience-icon">💻</div>
+        <h3>Engineers &amp; Career Switchers</h3>
+        <p>1-on-1 personalized mentorship, portfolio-grade full-stack AI architectures, production FastAPI microservices, and AI career roadmap planning.</p>
+        <div class="contact-audience-tags">
+          <span class="contact-audience-tag">1-on-1 Mentorship</span>
+          <span class="contact-audience-tag">Code Reviews</span>
+          <span class="contact-audience-tag">AI Career Path</span>
+        </div>
+      </div>
+
+      <!-- Box 3: Businesses -->
+      <div class="contact-audience-box">
+        <div class="contact-audience-icon">🚀</div>
+        <h3>Startups &amp; Enterprises</h3>
+        <p>Custom LLM workflows, RAG search engines, computer vision pipelines, and scalable cloud deployments that deliver tangible automation ROI.</p>
+        <div class="contact-audience-tags">
+          <span class="contact-audience-tag">Custom LLM / RAG</span>
+          <span class="contact-audience-tag">Computer Vision</span>
+          <span class="contact-audience-tag">Workflow Automation</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Frequently Asked Questions Accordion ── -->
+  <section class="contact-faq-section" aria-labelledby="faqHeading">
+    <div class="contact-faq-header">
+      <h2 id="faqHeading">Frequently Asked Questions</h2>
+      <p>Quick answers to common questions about connecting with ProjectsHub.</p>
+    </div>
+
+    <div class="contact-faq-accordion" id="contactFaqAccordion">
+      
+      <div class="contact-faq-item">
+        <button class="contact-faq-question" type="button" aria-expanded="false">
+          <span>How fast will your team respond to my message?</span>
+          <span class="contact-faq-chevron">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="contact-faq-answer">
+          <div class="contact-faq-answer-inner">
+            During our standard business hours (Monday to Saturday, 9:00 AM – 9:00 PM IST), we typically respond within 1 to 2 hours. Messages submitted outside these hours are answered within 24 hours guaranteed. For urgent questions, reach us directly via WhatsApp.
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-faq-item">
+        <button class="contact-faq-question" type="button" aria-expanded="false">
+          <span>Can I book a free 15-minute consultation call?</span>
+          <span class="contact-faq-chevron">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="contact-faq-answer">
+          <div class="contact-faq-answer-inner">
+            Yes! We offer a complimentary 15-minute technical discovery call for startups, enterprise clients, and students exploring capstone projects. Use the "Book a Free Call" button in the top navigation or message us on WhatsApp to schedule a time.
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-faq-item">
+        <button class="contact-faq-question" type="button" aria-expanded="false">
+          <span>Do you sign Non-Disclosure Agreements (NDAs)?</span>
+          <span class="contact-faq-chevron">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="contact-faq-answer">
+          <div class="contact-faq-answer-inner">
+            Yes, absolutely. We treat all proprietary ideas, technical architectures, and datasets with the highest confidentiality. We are happy to review and execute a mutual NDA before initiating in-depth architecture discussions.
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-faq-item">
+        <button class="contact-faq-question" type="button" aria-expanded="false">
+          <span>Can projects from your catalog be customized for my university or company?</span>
+          <span class="contact-faq-chevron">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="contact-faq-answer">
+          <div class="contact-faq-answer-inner">
+            Yes, all 50+ projects in our catalog can be customized with specific datasets, distinct neural network architectures, custom UI themes, or integrated with your existing databases and third-party APIs.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Bottom Instant CTA Banner ── -->
+  <section class="contact-cta-banner-wrap">
+    <div class="contact-cta-banner">
+      <div class="contact-cta-content">
+        <h2>Prefer an Instant Conversation?</h2>
+        <p>Skip the form and talk directly with our lead AI engineer right now on WhatsApp or via phone.</p>
+      </div>
+      <div class="contact-cta-actions">
+        <a href="https://wa.me/919213472954?text=Hi%20ProjectsHub%2C%20I%20want%20to%20discuss%20an%20AI%20project." target="_blank" rel="noopener noreferrer" class="contact-cta-btn-wa">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.53c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.25-.02-.39.11-.51.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.16 0-.43.06-.66.31-.22.25-.86.84-.86 2.05s.88 2.38 1 2.54c.13.17 1.73 2.64 4.19 3.7.59.25 1.04.41 1.4.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.3z"/>
+          </svg>
+          <span>Chat on WhatsApp</span>
+        </a>
+        <a href="tel:{{ site_settings.phone|default:'+919213472954' }}" class="contact-cta-btn-phone">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          <span>Call Directly</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Page Specific JS: Category Pills & FAQ Accordion -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  // Category Pills -> Subject Sync
+  var pills = document.querySelectorAll(".contact-category-pill");
+  var subjectInput = document.getElementById("contactSubject");
+  
+  if (pills && subjectInput) {
+    pills.forEach(function (pill) {
+      pill.addEventListener("click", function () {
+        pills.forEach(function (p) {
+          p.classList.remove("active");
+          p.setAttribute("aria-checked", "false");
+        });
+        pill.classList.add("active");
+        pill.setAttribute("aria-checked", "true");
+        
+        var catName = pill.getAttribute("data-category");
+        subjectInput.value = catName + " Inquiry";
+      });
+    });
+  }
+
+  // FAQ Accordion
+  var faqItems = document.querySelectorAll(".contact-faq-item");
+  faqItems.forEach(function (item) {
+    var btn = item.querySelector(".contact-faq-question");
+    var ans = item.querySelector(".contact-faq-answer");
+    if (btn && ans) {
+      btn.addEventListener("click", function () {
+        var isOpen = item.classList.contains("active");
+        // Close others
+        faqItems.forEach(function (other) {
+          if (other !== item) {
+            other.classList.remove("active");
+            var oBtn = other.querySelector(".contact-faq-question");
+            var oAns = other.querySelector(".contact-faq-answer");
+            if (oBtn) oBtn.setAttribute("aria-expanded", "false");
+            if (oAns) oAns.style.maxHeight = null;
+          }
+        });
+        // Toggle this
+        if (isOpen) {
+          item.classList.remove("active");
+          btn.setAttribute("aria-expanded", "false");
+          ans.style.maxHeight = null;
+        } else {
+          item.classList.add("active");
+          btn.setAttribute("aria-expanded", "true");
+          ans.style.maxHeight = ans.scrollHeight + "px";
+        }
+      });
+    }
+  });
+});
+</script>
+{% endblock %}

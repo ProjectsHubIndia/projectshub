@@ -254,7 +254,7 @@
 
       <a href="/#why-projectshub" class="nav-link">Why ProjectsHub</a>
       <a href="{% url 'blog' %}" class="nav-link">Blog</a>
-      <a href="/#contact" class="nav-link">Contact</a>
+      <a href="{% url 'contact' %}" class="nav-link {% block nav_contact %}{% endblock %}">Contact</a>
     </nav>
 
     <!-- Actions: CTA + Theme + Mobile Button -->
@@ -422,7 +422,7 @@ not the navbar (which has backdrop-filter creating a new containing block).
       </div>
 
       <div class="mob-item">
-        <a href="/#contact" class="mob-btn">Contact Us</a>
+        <a href="{% url 'contact' %}" class="mob-btn {% block mob_nav_contact %}{% endblock %}">Contact Us</a>
       </div>
     </nav>
 

@@ -1168,24 +1168,45 @@
 
       var fullNameInput = form.querySelector('#contactName, [name="full_name"]');
       var emailInput = form.querySelector('#contactEmail, [name="email"]');
+      var phoneInput = form.querySelector('#contactPhone, [name="phone"]');
       var subjectInput = form.querySelector('#contactSubject, [name="subject"]');
       var messageInput = form.querySelector('#contactMessage, [name="message"]');
       var catchCodeInput = form.querySelector('#contactCaptcha, [name="catch_code"]');
       var hpInput = form.querySelector('#contactHpFax, [name="hp_company_url"]');
+      var sourcePageInput = form.querySelector('#contactSourcePage, [name="source_page"]');
+      var statusEl = form.querySelector('#contactFormStatus') || document.getElementById('contactFormStatus');
 
       var fullName = fullNameInput ? fullNameInput.value.trim() : "";
       var email = emailInput ? emailInput.value.trim() : "";
+      var phone = phoneInput ? phoneInput.value.trim() : "";
       var subject = subjectInput ? subjectInput.value.trim() : "";
       var message = messageInput ? messageInput.value.trim() : "";
       var catchCode = catchCodeInput ? catchCodeInput.value.trim() : "";
       var hpVal = hpInput ? hpInput.value.trim() : "";
+      var sourcePage = sourcePageInput ? sourcePageInput.value.trim() : (window.location.pathname || "/#contact");
+
+      if (statusEl) {
+        statusEl.style.display = "none";
+        statusEl.className = "contact-status-alert";
+        statusEl.innerHTML = "";
+      }
 
       if (!fullName || !email || !message) {
+        if (statusEl) {
+          statusEl.className = "contact-status-alert error";
+          statusEl.textContent = "Please fill in your name, email, and message.";
+          statusEl.style.display = "flex";
+        }
         if (window.showToast) window.showToast("Please fill in your name, email, and message.", "error");
         return;
       }
 
       if (!catchCode) {
+        if (statusEl) {
+          statusEl.className = "contact-status-alert error";
+          statusEl.textContent = "Please enter the security catch code.";
+          statusEl.style.display = "flex";
+        }
         if (window.showToast) window.showToast("Please enter the catch code (security verification).", "error");
         if (catchCodeInput) catchCodeInput.focus();
         return;
@@ -1207,8 +1228,10 @@
         body: JSON.stringify({
           full_name: fullName,
           email: email,
+          phone: phone,
           subject: subject,
           message: message,
+          source_page: sourcePage,
           catch_code: catchCode,
           captcha_token: currentCaptchaToken,
           hp_company_url: hpVal,
@@ -1224,8 +1247,14 @@
           if (resObj.ok && data && data.success) {
             form.reset();
             loadCaptcha();
+            var successMsg = data.message || "Thank you! We've received your message and will reach out shortly.";
+            if (statusEl) {
+              statusEl.className = "contact-status-alert success";
+              statusEl.textContent = successMsg;
+              statusEl.style.display = "flex";
+            }
             if (window.showToast) {
-              window.showToast("Thank you! We've received your message and will reach out shortly.", "success");
+              window.showToast(successMsg, "success");
             }
           } else {
             var errMsg = "Failed to submit message. Please try again.";
@@ -1237,6 +1266,11 @@
             } else if (data && data.message) {
               errMsg = data.message;
             }
+            if (statusEl) {
+              statusEl.className = "contact-status-alert error";
+              statusEl.textContent = errMsg;
+              statusEl.style.display = "flex";
+            }
             if (window.showToast) window.showToast(errMsg, "error");
             loadCaptcha();
             if (catchCodeInput) {
@@ -1247,8 +1281,14 @@
         })
         .catch(function (err) {
           console.error("Contact form error:", err);
+          var netErrMsg = "Network error. Please try again or email us directly.";
+          if (statusEl) {
+            statusEl.className = "contact-status-alert error";
+            statusEl.textContent = netErrMsg;
+            statusEl.style.display = "flex";
+          }
           if (window.showToast) {
-            window.showToast("Network error. Please try again or email us directly.", "error");
+            window.showToast(netErrMsg, "error");
           }
           loadCaptcha();
         })

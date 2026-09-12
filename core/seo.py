@@ -285,6 +285,22 @@ def get_seo_for_request(request, view_context=None):
         meta_title = "Refund & Cancellation Policy | ProjectsHub"
         meta_description = "Read about ProjectsHub refund terms, workshop cancellation policies, and satisfaction guarantees."
 
+    # K. CONTACT US
+    elif path == '/contact/' or path.startswith('/contact/'):
+        meta_title = "Contact Us | Get in Touch With ProjectsHub AI Engineers"
+        meta_description = (
+            "Have an AI project idea, questions about our capstone projects, or need 1-on-1 mentorship? "
+            "Get in touch with the ProjectsHub engineering team. We reply within 24 hours."
+        )
+        schemas.append(build_breadcrumbs_schema([("Home", "/"), ("Contact Us", "/contact/")], base_url))
+        schemas.append({
+            "@context": "https://schema.org",
+            "@type": "ContactPage",
+            "name": "Contact ProjectsHub",
+            "description": meta_description,
+            "url": full_url,
+        })
+
     # 3. Apply custom database override if found
     if custom_seo:
         if custom_seo.meta_title:

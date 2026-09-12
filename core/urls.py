@@ -32,8 +32,9 @@ urlpatterns = [
     path('blog/', views.blog_page, name='blog'),
     path('blog/<slug:slug>/', views.blog_detail, name='blog_detail'),
 
-    # Form endpoints
-    path('contact/', views.contact_submit, name='contact_submit'),
+    # Contact
+    path('contact/', views.contact_page, name='contact'),
+    path('contact/submit/', views.contact_submit, name='contact_submit'),
     path('gate/', views.gate_submit, name='gate_submit'),
     path('idea/', views.idea_submit, name='idea_submit'),
     path('enroll/', views.enroll_submit, name='enroll_submit'),
