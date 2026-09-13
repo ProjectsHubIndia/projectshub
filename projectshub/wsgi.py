@@ -22,10 +22,9 @@ def application(environ, start_response):
         return django_app(environ, start_response)
     except Exception:
         import traceback
-        tb = traceback.format_exc()
-        sys.stderr.write(f"DJANGO SERVERLESS CRASH:\n{tb}\n")
+        sys.stderr.write(f"DJANGO SERVERLESS CRASH:\n{traceback.format_exc()}\n")
         start_response("500 Internal Server Error", [("Content-Type", "text/plain; charset=utf-8")])
-        return [f"DJANGO CRASH TRACEBACK:\n\n{tb}".encode("utf-8")]
+        return [b"500 Internal Server Error: An unexpected error occurred. Please try again later."]
 
 # Vercel serverless function entrypoint
 app = application

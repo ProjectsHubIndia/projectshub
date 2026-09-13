@@ -92,96 +92,71 @@ def site_context(request):
         try:
             User = get_user_model()
 
-            # KPI & Aggregations
-            total_projects = Project.objects.count()
-            active_projects = Project.objects.filter(is_active=True).count()
-            featured_projects = Project.objects.filter(featured=True).count()
+            # KPI & Aggregations (Cached for 300s to avoid 40+ COUNT queries per admin request)
+            def compute_admin_stats():
+                return {
+                    'total_projects': Project.objects.count(),
+                    'active_projects': Project.objects.filter(is_active=True).count(),
+                    'featured_projects': Project.objects.filter(featured=True).count(),
+                    'total_inquiries': ContactInquiry.objects.count(),
+                    'new_inquiries': ContactInquiry.objects.filter(status='new').count(),
+                    'converted_inquiries': ContactInquiry.objects.filter(status='converted').count(),
+                    'total_ideas': IdeaSubmission.objects.count(),
+                    'new_ideas': IdeaSubmission.objects.filter(status='new').count(),
+                    'total_tools': AITool.objects.count(),
+                    'free_tools': AITool.objects.filter(is_free=True).count(),
+                    'total_blogs': BlogPost.objects.count(),
+                    'published_blogs': BlogPost.objects.filter(is_published=True).count(),
+                    'total_case_studies': CaseStudy.objects.count(),
+                    'total_enrollments': WorkshopEnrollment.objects.count(),
+                    'pending_enrollments': WorkshopEnrollment.objects.filter(status='pending').count(),
+                    'unused_assets_count': cache.get('admin_unused_assets_count', 0),
+                }
 
-            total_inquiries = ContactInquiry.objects.count()
-            new_inquiries = ContactInquiry.objects.filter(status='new').count()
-            converted_inquiries = ContactInquiry.objects.filter(status='converted').count()
+            context['admin_stats'] = cache.get_or_set('admin_kpi_stats', compute_admin_stats, 300)
 
-            total_ideas = IdeaSubmission.objects.count()
-            new_ideas = IdeaSubmission.objects.filter(status='new').count()
+            # Live Model Count dictionary for grouped navigation badges (Cached for 300s)
+            def compute_model_counts():
+                return {
+                    'project': Project.objects.count(),
+                    'projectcategory': ProjectCategory.objects.count(),
+                    'technology': Technology.objects.count(),
+                    'aitool': AITool.objects.count(),
+                    'toolcategory': ToolCategory.objects.count(),
+                    'service': Service.objects.count(),
+                    'servicefeature': ServiceFeature.objects.count(),
+                    'casestudy': CaseStudy.objects.count(),
+                    'casestudymetric': CaseStudyMetric.objects.count(),
+                    'pricingplan': PricingPlan.objects.count(),
+                    'pricingfeature': PricingFeature.objects.count(),
+                    'testimonial': Testimonial.objects.count(),
+                    'contactinquiry': ContactInquiry.objects.count(),
+                    'ideasubmission': IdeaSubmission.objects.count(),
+                    'workshopcard': WorkshopCard.objects.count(),
+                    'workshopday': WorkshopDay.objects.count(),
+                    'workshopenrollment': WorkshopEnrollment.objects.count(),
+                    'projectgatelead': ProjectGateLead.objects.count(),
+                    'contactmessage': ContactMessage.objects.count(),
+                    'blogpost': BlogPost.objects.count(),
+                    'blogcategory': BlogCategory.objects.count(),
+                    'tag': Tag.objects.count(),
+                    'faq': FAQ.objects.count(),
+                    'faqcategory': FAQCategory.objects.count(),
+                    'sitesettings': 1,
+                    'navigationitem': NavigationItem.objects.count(),
+                    'megamenutag': MegaMenuTag.objects.count(),
+                    'sociallink': SocialLink.objects.count(),
+                    'statitem': StatItem.objects.count(),
+                    'seodata': SEOData.objects.count(),
+                    'redirect': Redirect.objects.count(),
+                    'user': User.objects.count(),
+                    'group': Group.objects.count(),
+                    'permission': Permission.objects.count(),
+                    'chatbotconversation': ChatbotConversation.objects.count(),
+                    'adminguidenote': AdminGuideNote.objects.count(),
+                }
 
-            total_tools = AITool.objects.count()
-            free_tools = AITool.objects.filter(is_free=True).count()
-
-            total_blogs = BlogPost.objects.count()
-            published_blogs = BlogPost.objects.filter(is_published=True).count()
-
-            total_enrollments = WorkshopEnrollment.objects.count()
-            pending_enrollments = WorkshopEnrollment.objects.filter(status='pending').count()
-
-            # Unused media & storage assets count (cached for 60s)
-            cached_unused = cache.get('admin_unused_assets_count')
-            if cached_unused is None:
-                try:
-                    from core.views import scan_all_assets
-                    _, asset_stats, _ = scan_all_assets()
-                    cached_unused = asset_stats.get('unused_count', 0)
-                    cache.set('admin_unused_assets_count', cached_unused, 60)
-                except Exception:
-                    cached_unused = 0
-
-            context['admin_stats'] = {
-                'total_projects': total_projects,
-                'active_projects': active_projects,
-                'featured_projects': featured_projects,
-                'total_inquiries': total_inquiries,
-                'new_inquiries': new_inquiries,
-                'converted_inquiries': converted_inquiries,
-                'total_ideas': total_ideas,
-                'new_ideas': new_ideas,
-                'total_tools': total_tools,
-                'free_tools': free_tools,
-                'total_blogs': total_blogs,
-                'published_blogs': published_blogs,
-                'total_case_studies': CaseStudy.objects.count(),
-                'total_enrollments': total_enrollments,
-                'pending_enrollments': pending_enrollments,
-                'unused_assets_count': cached_unused,
-            }
-
-            # Live Model Count dictionary for grouped navigation badges
-            context['model_counts'] = {
-                'project': total_projects,
-                'projectcategory': ProjectCategory.objects.count(),
-                'technology': Technology.objects.count(),
-                'aitool': total_tools,
-                'toolcategory': ToolCategory.objects.count(),
-                'service': Service.objects.count(),
-                'servicefeature': ServiceFeature.objects.count(),
-                'casestudy': CaseStudy.objects.count(),
-                'casestudymetric': CaseStudyMetric.objects.count(),
-                'pricingplan': PricingPlan.objects.count(),
-                'pricingfeature': PricingFeature.objects.count(),
-                'testimonial': Testimonial.objects.count(),
-                'contactinquiry': total_inquiries,
-                'ideasubmission': total_ideas,
-                'workshopcard': WorkshopCard.objects.count(),
-                'workshopday': WorkshopDay.objects.count(),
-                'workshopenrollment': total_enrollments,
-                'projectgatelead': ProjectGateLead.objects.count(),
-                'contactmessage': ContactMessage.objects.count(),
-                'blogpost': total_blogs,
-                'blogcategory': BlogCategory.objects.count(),
-                'tag': Tag.objects.count(),
-                'faq': FAQ.objects.count(),
-                'faqcategory': FAQCategory.objects.count(),
-                'sitesettings': 1,
-                'navigationitem': NavigationItem.objects.count(),
-                'megamenutag': MegaMenuTag.objects.count(),
-                'sociallink': SocialLink.objects.count(),
-                'statitem': StatItem.objects.count(),
-                'seodata': SEOData.objects.count(),
-                'redirect': Redirect.objects.count(),
-                'user': User.objects.count(),
-                'group': Group.objects.count(),
-                'permission': Permission.objects.count(),
-                'chatbotconversation': ChatbotConversation.objects.count(),
-                'adminguidenote': AdminGuideNote.objects.count(),
-            }
+            context['model_counts'] = cache.get_or_set('admin_model_counts', compute_model_counts, 300)
 
             # Recent CRM Activities & Content for WordPress Dashboard widgets
             context['recent_inquiries'] = ContactInquiry.objects.order_by('-created_at')[:5]

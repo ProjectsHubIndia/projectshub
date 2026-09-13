@@ -14,9 +14,6 @@ fi
 # Run migrations if database is accessible
 python3 manage.py migrate --noinput || true
 
-# Load seeded data into database
-python3 manage.py loaddata initial_data.json || true
-
 # Collect static files into staticfiles directory
 python3 manage.py collectstatic --noinput --clear
 

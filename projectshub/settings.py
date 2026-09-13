@@ -10,50 +10,57 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
-# Detect Vercel serverless environment
-IS_VERCEL = os.environ.get('VERCEL') == '1' or 'VERCEL' in os.environ
+from django.core.exceptions import ImproperlyConfigured
 
-# Security: Secret key from environment variable with safe dev fallback
-SECRET_KEY = (
-    os.environ.get('DJANGO_SECRET_KEY', '').strip()
-    or os.environ.get('SECRET_KEY', '').strip()
-    or 'django-insecure-projectshub-production-secret-key-super-secure-2026-xyz89234'
+# Detect production environment
+IS_VERCEL = os.environ.get('VERCEL') == '1' or 'VERCEL' in os.environ
+IS_PRODUCTION = (
+    IS_VERCEL or
+    any(k in os.environ for k in ('RAILWAY_ENVIRONMENT', 'RAILWAY_STATIC_URL', 'RENDER', 'DYNO', 'HEROKU')) or
+    os.environ.get('ENVIRONMENT', '').lower() == 'production'
 )
 
-# Debug: True in local development unless explicitly set or on Vercel
-DEBUG = os.environ.get('DEBUG', 'False' if IS_VERCEL else 'True').lower() in ('true', '1', 'yes')
+# Debug: Defaults to False in production, True for local development
+DEBUG_DEFAULT = 'False' if IS_PRODUCTION else 'True'
+DEBUG = os.environ.get('DEBUG', DEBUG_DEFAULT).lower() in ('true', '1', 'yes')
 
-# Allowed Hosts: Allow Railway, Vercel preview URLs, custom domains, and local dev
-raw_allowed_hosts = os.environ.get('ALLOWED_HOSTS', '*').strip()
-if not raw_allowed_hosts or raw_allowed_hosts == '*':
-    ALLOWED_HOSTS = ['*']
+# Security: Secret key from environment variable (fails fast in production if unset)
+raw_secret = os.environ.get('DJANGO_SECRET_KEY', '').strip() or os.environ.get('SECRET_KEY', '').strip()
+if not raw_secret:
+    import sys
+    if 'test' in sys.argv:
+        SECRET_KEY = 'django-insecure-test-suite-key-for-local-testing-only'
+    elif IS_PRODUCTION:
+        raise ImproperlyConfigured("SECRET_KEY environment variable is required in production environments.")
+    elif not DEBUG:
+        raise ImproperlyConfigured("SECRET_KEY environment variable is required when DEBUG is False.")
+    else:
+        import secrets
+        SECRET_KEY = 'django-insecure-dev-' + secrets.token_urlsafe(40)
 else:
+    SECRET_KEY = raw_secret
+
+# Allowed Hosts: Explicit domains in production and development (disallows wildcard '*')
+raw_allowed_hosts = os.environ.get('ALLOWED_HOSTS', '').strip()
+if raw_allowed_hosts and raw_allowed_hosts != '*':
     ALLOWED_HOSTS = [h.strip() for h in raw_allowed_hosts.split(',') if h.strip()]
-    for host in [
-        '.railway.app',
-        '.up.railway.app',
-        '.vercel.app',
+else:
+    ALLOWED_HOSTS = [
+        'projectshub.co.in',
+        'www.projectshub.co.in',
         'localhost',
         '127.0.0.1',
         '0.0.0.0',
-        'projectshub.co.in',
-        'www.projectshub.co.in'
-    ]:
-        if host not in ALLOWED_HOSTS:
-            ALLOWED_HOSTS.append(host)
+    ]
 
-# CSRF Trusted Origins (essential for Railway & Vercel forms, modals & API requests)
+# CSRF Trusted Origins: Specific domains only (no shared multi-tenant wildcards)
 CSRF_TRUSTED_ORIGINS = [
-    'https://*.railway.app',
-    'https://*.up.railway.app',
-    'https://*.vercel.app',
     'https://projectshub.co.in',
     'https://www.projectshub.co.in',
     'http://127.0.0.1:8000',
     'http://localhost:8000',
     'http://127.0.0.1:8080',
     'http://localhost:8080',
-    'http://0.0.0.0:8080',
 ]
 extra_origins = os.environ.get('CSRF_TRUSTED_ORIGINS', '')
 if extra_origins:
@@ -69,6 +76,10 @@ SITE_DOMAIN = os.environ.get('SITE_DOMAIN', 'projectshub.co.in')
 if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'True').lower() in ('true', '1', 'yes')
+    SECURE_HSTS_SECONDS = int(os.environ.get('SECURE_HSTS_SECONDS', 31536000))
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -203,3 +214,18 @@ CACHES = {
         'LOCATION': 'projectshub-cache',
     }
 }
+
+# Email Notification Configuration (Graceful dev fallback to console backend)
+EMAIL_BACKEND = os.environ.get(
+    'EMAIL_BACKEND',
+    'django.core.mail.backends.console.EmailBackend' if DEBUG else 'django.core.mail.backends.smtp.EmailBackend'
+)
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True').lower() in ('true', '1', 'yes')
+EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL', 'False').lower() in ('true', '1', 'yes')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'support@projectshub.co.in')
+SERVER_EMAIL = os.environ.get('SERVER_EMAIL', DEFAULT_FROM_EMAIL)
+

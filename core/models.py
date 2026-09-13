@@ -231,7 +231,7 @@ class Project(models.Model):
         help_text="Detailed description for the project detail page"
     )
     category = models.CharField(
-        max_length=50, choices=CATEGORY_CHOICES, default='ml'
+        max_length=50, choices=CATEGORY_CHOICES, default='ml', db_index=True
     )
     category_ref = models.ForeignKey(
         ProjectCategory, on_delete=models.SET_NULL, null=True, blank=True, related_name='projects'
@@ -325,8 +325,9 @@ class Project(models.Model):
         return '/static/image/ai-project-ideas-students.webp'
 
     def get_tags_list(self):
-        if self.technologies.exists():
-            return [t.name for t in self.technologies.all()]
+        techs = list(self.technologies.all())
+        if techs:
+            return [t.name for t in techs]
         return [t.strip() for t in self.tags.split(',') if t.strip()]
 
     def get_youtube_embed_url(self):
@@ -473,7 +474,7 @@ class AITool(models.Model):
     external_url = models.URLField(default='https://tools.projectshub.co.in/')
     is_free = models.BooleanField(default=True)
     featured = models.BooleanField(default=False)
-    is_published = models.BooleanField(default=True)
+    is_published = models.BooleanField(default=True, db_index=True)
     sort_order = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -828,7 +829,7 @@ class ContactInquiry(models.Model):
     subject = models.CharField(max_length=300, default='Project Inquiry')
     message = models.TextField()
     source_page = models.CharField(max_length=255, default='/#contact')
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='new')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='new', db_index=True)
     admin_notes = models.TextField(blank=True)
     ip_address = models.GenericIPAddressField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

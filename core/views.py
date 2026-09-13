@@ -18,6 +18,9 @@ from django.core.cache import cache
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import user_passes_test
+
+superuser_required = user_passes_test(lambda u: u.is_active and u.is_superuser, login_url='admin:login')
 
 from .models import (
     SiteSettings, NavigationItem, StatItem,
@@ -47,6 +50,24 @@ def error_404(request, exception=None):
 
 def error_500(request):
     return render(request, 'core/error500.html', status=500)
+
+
+def health_check(request):
+    """Production health check probe for orchestrators and monitoring."""
+    from django.db import connection
+    db_ok = True
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+    except Exception:
+        db_ok = False
+
+    status_code = 200 if db_ok else 503
+    return JsonResponse({
+        'status': 'healthy' if db_ok else 'unhealthy',
+        'database': 'connected' if db_ok else 'disconnected',
+        'timestamp': datetime.utcnow().isoformat() + 'Z'
+    }, status=status_code)
 
 
 def get_client_ip(request):
@@ -434,23 +455,30 @@ def contact_submit(request):
 
         token_captcha = None
         if captcha_token:
-            try:
-                token_captcha = signing.loads(captcha_token, salt='captcha-salt', max_age=600)
-            except Exception:
-                token_captcha = None
+            cache_key = f"used_captcha:{captcha_token}"
+            if cache.get(cache_key):
+                errors['catch_code'] = 'This verification code has already been used. Please refresh the code.'
+            else:
+                try:
+                    token_captcha = signing.loads(captcha_token, salt='captcha-salt', max_age=600)
+                except Exception:
+                    token_captcha = None
 
-        if not catch_code:
-            errors['catch_code'] = 'Catch code (security verification) is required.'
-        elif catch_code != session_captcha and catch_code != token_captcha:
-            errors['catch_code'] = 'Invalid catch code. Please enter the characters shown in the image.'
+        if 'catch_code' not in errors:
+            if not catch_code:
+                errors['catch_code'] = 'Catch code (security verification) is required.'
+            elif catch_code != session_captcha and catch_code != token_captcha:
+                errors['catch_code'] = 'Invalid catch code. Please enter the characters shown in the image.'
 
         if errors:
             return JsonResponse({'success': False, 'errors': errors}, status=400)
 
-        # Clear used session captcha
+        # Clear used session captcha and mark token as spent
         if 'contact_captcha' in request.session:
             del request.session['contact_captcha']
             request.session.modified = True
+        if captcha_token:
+            cache.set(f"used_captcha:{captcha_token}", True, 600)
 
         ip_addr = get_client_ip(request)
 
@@ -627,7 +655,7 @@ def enroll_submit(request):
 # ── JSON APIs ──────────────────────────────────────────────────────────────────
 
 def api_projects(request):
-    qs = Project.objects.filter(is_active=True)
+    qs = Project.objects.filter(is_active=True).prefetch_related('technologies', 'category_ref')
     if request.GET.get('index_only'):
         qs = qs.filter(show_on_index=True)
     data = [
@@ -793,8 +821,19 @@ def api_chatbot_message(request):
         if not message_text:
             return JsonResponse({'success': False, 'error': 'message cannot be empty'}, status=400)
 
-        page_url = data.get('page_url', '').strip() or request.META.get('HTTP_REFERER', '/')
+        # Rate limit: Max 30 messages per minute per IP
         ip_addr = get_client_ip(request)
+        rate_key = f"chat_rate:{ip_addr}"
+        msg_count = cache.get(rate_key, 0)
+        if msg_count >= 30:
+            return JsonResponse({'success': False, 'error': 'Rate limit exceeded. Please wait a minute.'}, status=429)
+        cache.set(rate_key, msg_count + 1, 60)
+
+        # Message length validation
+        if len(message_text) > 1000:
+            return JsonResponse({'success': False, 'error': 'Message exceeds maximum allowed length of 1000 characters.'}, status=400)
+
+        page_url = data.get('page_url', '').strip() or request.META.get('HTTP_REFERER', '/')
         user_agent = request.META.get('HTTP_USER_AGENT', '')
 
         # Get or create conversation
@@ -1231,11 +1270,11 @@ def admin_assets_view(request):
     return render(request, 'admin/core/assets_manager.html', context)
 
 
-@staff_member_required(login_url='admin:login')
+@superuser_required
 @require_POST
 def admin_asset_delete_view(request):
     """
-    Safely deletes unused asset files or folders requested by staff.
+    Safely deletes unused asset files or folders requested by superusers.
     Guarantees strict path traversal protection and locks core system files.
     """
     try:
@@ -1249,11 +1288,9 @@ def admin_asset_delete_view(request):
     static_dir = str(settings.STATICFILES_DIRS[0])
     staticfiles_dir = getattr(settings, 'STATIC_ROOT', os.path.join(base_dir, 'staticfiles'))
 
-    # Allowed base directories for deletion
+    # Allowed base directories for deletion (strictly isolated to user media)
     allowed_roots = [
         os.path.realpath(media_root),
-        os.path.realpath(os.path.join(static_dir, 'image')),
-        os.path.realpath(os.path.join(static_dir, 'video')),
     ]
 
     # Strictly forbidden subpaths
@@ -1564,7 +1601,7 @@ def admin_backup_view(request):
     return render(request, 'admin/backup.html', context)
 
 
-@staff_member_required(login_url='admin:login')
+@superuser_required
 def admin_backup_download_json(request):
     """Generates and streams a JSON dump of all current models and settings."""
     import io
@@ -1598,7 +1635,7 @@ def admin_backup_download_json(request):
     return response
 
 
-@staff_member_required(login_url='admin:login')
+@superuser_required
 def admin_backup_download_db(request):
     """Directly streams the raw sqlite3 database file for download."""
     import os
@@ -1619,7 +1656,7 @@ def admin_backup_download_db(request):
     return response
 
 
-@staff_member_required(login_url='admin:login')
+@superuser_required
 @require_POST
 def admin_backup_sync_initial(request):
     """
@@ -1652,7 +1689,7 @@ def admin_backup_sync_initial(request):
     return redirect('admin_backup')
 
 
-@staff_member_required(login_url='admin:login')
+@superuser_required
 @require_POST
 def admin_backup_restore(request):
     """Restores database from an uploaded JSON backup file using loaddata."""

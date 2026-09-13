@@ -1024,25 +1024,34 @@ class ChatbotConversationAdmin(admin.ModelAdmin):
         msgs = obj.messages.all().order_by('timestamp')
         if not msgs:
             return 'No messages in this conversation yet.'
-        html_out = ['<div style="max-height:450px;overflow-y:auto;padding:16px;background:#f6f7f7;border:1px solid #dcdcde;border-radius:6px;display:flex;flex-direction:column;gap:12px;">']
+        html_out = [format_html('<div style="max-height:450px;overflow-y:auto;padding:16px;background:#f6f7f7;border:1px solid #dcdcde;border-radius:6px;display:flex;flex-direction:column;gap:12px;">')]
         for m in msgs:
             time_str = m.timestamp.strftime('%H:%M:%S')
             if m.sender == 'user':
                 html_out.append(
-                    f'<div style="align-self:flex-end;max-width:75%;background:#2271b1;color:#ffffff;padding:10px 14px;border-radius:12px 12px 2px 12px;box-shadow:0 1px 2px rgba(0,0,0,0.1);">'
-                    f'<div style="font-size:11px;opacity:0.8;margin-bottom:3px;">👤 Visitor &middot; {time_str}</div>'
-                    f'<div style="font-size:13px;white-space:pre-wrap;">{m.message}</div>'
-                    f'</div>'
+                    format_html(
+                        '<div style="align-self:flex-end;max-width:75%;background:#2271b1;color:#ffffff;padding:10px 14px;border-radius:12px 12px 2px 12px;box-shadow:0 1px 2px rgba(0,0,0,0.1);">'
+                        '<div style="font-size:11px;opacity:0.8;margin-bottom:3px;">👤 Visitor &middot; {}</div>'
+                        '<div style="font-size:13px;white-space:pre-wrap;">{}</div>'
+                        '</div>',
+                        time_str,
+                        m.message
+                    )
                 )
             else:
                 html_out.append(
-                    f'<div style="align-self:flex-start;max-width:75%;background:#ffffff;color:#1d2327;border:1px solid #c3c4c7;padding:10px 14px;border-radius:12px 12px 12px 2px;box-shadow:0 1px 2px rgba(0,0,0,0.05);">'
-                    f'<div style="font-size:11px;color:#646970;margin-bottom:3px;font-weight:600;">🤖 ProjectsHub AI &middot; {time_str}</div>'
-                    f'<div style="font-size:13px;white-space:pre-wrap;">{m.message}</div>'
-                    f'</div>'
+                    format_html(
+                        '<div style="align-self:flex-start;max-width:75%;background:#ffffff;color:#1d2327;border:1px solid #c3c4c7;padding:10px 14px;border-radius:12px 12px 12px 2px;box-shadow:0 1px 2px rgba(0,0,0,0.05);">'
+                        '<div style="font-size:11px;color:#646970;margin-bottom:3px;font-weight:600;">🤖 ProjectsHub AI &middot; {}</div>'
+                        '<div style="font-size:13px;white-space:pre-wrap;">{}</div>'
+                        '</div>',
+                        time_str,
+                        m.message
+                    )
                 )
-        html_out.append('</div>')
-        return format_html(''.join(html_out))
+        html_out.append(format_html('</div>'))
+        from django.utils.safestring import mark_safe
+        return mark_safe(''.join(html_out))
     chat_transcript_view.short_description = 'Live Interactive Chat Viewer'
 
     def mark_as_lead(self, request, queryset):
@@ -1099,6 +1108,9 @@ class CustomUserAdmin(BaseUserAdmin):
     list_filter = ('is_superuser', 'is_staff', 'is_active', 'groups')
     search_fields = ('username', 'first_name', 'last_name', 'email')
     ordering = ('-is_superuser', '-is_staff', 'username')
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).prefetch_related('groups', 'user_permissions')
 
     def user_badge(self, obj):
         full = obj.get_full_name()
