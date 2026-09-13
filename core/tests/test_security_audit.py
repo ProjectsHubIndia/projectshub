@@ -239,3 +239,30 @@ class WSGIProtectionTests(TestCase):
         self.assertNotIn("Database secret blown!", content)
         self.assertNotIn("Traceback", content)
         self.assertIn("500 Internal Server Error", content)
+
+
+class AllowedHostsAndErrorViewsTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_railway_production_host_allowed(self):
+        res = self.client.get('/', HTTP_HOST='projectshub-production.up.railway.app')
+        self.assertEqual(res.status_code, 200)
+
+    def test_railway_subdomain_host_allowed(self):
+        res = self.client.get('/', HTTP_HOST='custom-subdomain.up.railway.app')
+        self.assertEqual(res.status_code, 200)
+
+    def test_vercel_subdomain_host_allowed(self):
+        res = self.client.get('/', HTTP_HOST='preview-app.vercel.app')
+        self.assertEqual(res.status_code, 200)
+
+    def test_custom_domain_host_allowed(self):
+        res = self.client.get('/', HTTP_HOST='projectshub.co.in')
+        self.assertEqual(res.status_code, 200)
+
+    def test_error_400_view_renders_properly(self):
+        res = self.client.get('/400/')
+        self.assertEqual(res.status_code, 400)
+        self.assertIn(b'400 - Bad Request', res.content)
+

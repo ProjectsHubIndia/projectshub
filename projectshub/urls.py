@@ -6,7 +6,7 @@ from core.views import (
     admin_guide_view, toggle_guide_note, admin_assets_view, admin_asset_delete_view,
     admin_backup_view, admin_backup_download_json, admin_backup_download_db,
     admin_backup_sync_initial, admin_backup_restore,
-    error_404, error_500
+    error_400, error_404, error_500
 )
 
 from django.shortcuts import render
@@ -46,6 +46,7 @@ urlpatterns = [
     ),
 
     # Direct preview routes for custom error pages (accessible even during local development with DEBUG=True)
+    path('400/', error_400, name='preview_400'),
     path('404/', error_404, name='preview_404'),
     path('admin-404/', lambda request: error_404(request), name='preview_admin_404'),
     path('500/', error_500, name='preview_500'),
@@ -55,5 +56,6 @@ urlpatterns = [
     # Catch-all fallback: seamlessly renders custom 404 page even in local dev (DEBUG=True)
     re_path(r'^.*$', error_404, name='catch_all_404'),
 ]
+handler400 = 'core.views.error_400'
 handler404 = 'core.views.error_404'
 handler500 = 'core.views.error_500'

@@ -42,6 +42,12 @@ from .seo import get_base_url
 logger = logging.getLogger(__name__)
 
 
+def error_400(request, exception=None):
+    if request.path.startswith('/admin/') or request.path.startswith('/admin-400'):
+        return render(request, 'admin/404.html', status=400)
+    return render(request, 'core/error400.html', status=400)
+
+
 def error_404(request, exception=None):
     if request.path.startswith('/admin/') or request.path.startswith('/admin-404'):
         return render(request, 'admin/404.html', status=404)

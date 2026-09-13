@@ -41,26 +41,34 @@ else:
     SECRET_KEY = raw_secret
 
 # Allowed Hosts: Explicit domains in production, platform wildcards, and local dev
+BASE_ALLOWED_HOSTS = [
+    'projectshub.co.in',
+    'www.projectshub.co.in',
+    '.projectshub.co.in',
+    'projectshub-production.up.railway.app',
+    '.railway.app',
+    '.up.railway.app',
+    '.vercel.app',
+    'localhost',
+    '127.0.0.1',
+    '0.0.0.0',
+    'testserver',
+]
+
 raw_allowed_hosts = os.environ.get('ALLOWED_HOSTS', '').strip()
-if raw_allowed_hosts:
-    if raw_allowed_hosts == '*':
-        ALLOWED_HOSTS = ['*']
-    else:
-        ALLOWED_HOSTS = [h.strip() for h in raw_allowed_hosts.split(',') if h.strip()]
-else:
-    ALLOWED_HOSTS = [
-        'projectshub.co.in',
-        'www.projectshub.co.in',
-        '.projectshub.co.in',
-        '.railway.app',
-        '.up.railway.app',
-        '.vercel.app',
-        'localhost',
-        '127.0.0.1',
-        '0.0.0.0',
-        "projectshub-production.up.railway.app",
-        'testserver',
+if raw_allowed_hosts == '*':
+    ALLOWED_HOSTS = ['*']
+elif raw_allowed_hosts:
+    cleaned_hosts = [
+        h.replace('https://', '').replace('http://', '').split('/')[0].strip()
+        for h in raw_allowed_hosts.split(',') if h.strip()
     ]
+    for bh in BASE_ALLOWED_HOSTS:
+        if bh not in cleaned_hosts:
+            cleaned_hosts.append(bh)
+    ALLOWED_HOSTS = cleaned_hosts
+else:
+    ALLOWED_HOSTS = list(BASE_ALLOWED_HOSTS)
 
 # Automatically include platform-provided domains if present in environment
 for env_key in ('VERCEL_URL', 'VERCEL_BRANCH_URL', 'VERCEL_PROJECT_PRODUCTION_URL', 'RAILWAY_PUBLIC_DOMAIN', 'RAILWAY_STATIC_URL', 'RAILWAY_TCP_PROXY_DOMAIN', 'SITE_DOMAIN'):
@@ -74,6 +82,7 @@ for env_key in ('VERCEL_URL', 'VERCEL_BRANCH_URL', 'VERCEL_PROJECT_PRODUCTION_UR
 CSRF_TRUSTED_ORIGINS = [
     'https://projectshub.co.in',
     'https://www.projectshub.co.in',
+    'https://projectshub-production.up.railway.app',
     'https://*.railway.app',
     'https://*.up.railway.app',
     'https://*.vercel.app',
