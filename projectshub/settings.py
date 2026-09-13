@@ -58,7 +58,7 @@ else:
         'localhost',
         '127.0.0.1',
         '0.0.0.0',
-        "https://projectshub-production.up.railway.app",
+        "projectshub-production.up.railway.app",
         'testserver',
     ]
 
