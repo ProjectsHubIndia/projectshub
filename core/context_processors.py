@@ -6,12 +6,14 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, Permission
 from core.models import (
     SiteSettings, NavigationItem, MegaMenuTag, SocialLink, StatItem,
-    Project, ProjectCategory, Technology,
+    Project, ProjectCategory, Technology, ProjectImage, ProjectHighlight,
+    ProjectDiagram, ProjectTimelinePhase, ProjectFeature,
     AITool, ToolCategory,
-    Service, ServiceFeature, CaseStudy, CaseStudyMetric, PricingPlan, PricingFeature, Testimonial,
+    Service, ServiceFeature, CaseStudy, CaseStudyMetric, CaseStudyTechnology,
+    PricingPlan, PricingFeature, Testimonial,
     ContactInquiry, IdeaSubmission, WorkshopCard, WorkshopDay, WorkshopEnrollment, ProjectGateLead, ContactMessage,
-    BlogPost, BlogCategory, Tag, FAQ, FAQCategory,
-    SEOData, Redirect, ChatbotConversation, AdminGuideNote
+    BlogPost, BlogSection, BlogCategory, Tag, FAQ, FAQCategory,
+    SEOData, Redirect, ChatbotConversation, ChatbotMessage, AdminGuideNote
 )
 
 
@@ -98,35 +100,57 @@ def site_context(request):
                     'total_projects': Project.objects.count(),
                     'active_projects': Project.objects.filter(is_active=True).count(),
                     'featured_projects': Project.objects.filter(featured=True).count(),
+                    'total_highlights': ProjectHighlight.objects.count(),
+                    'total_features': ProjectFeature.objects.count(),
+                    'total_timeline_phases': ProjectTimelinePhase.objects.count(),
                     'total_inquiries': ContactInquiry.objects.count(),
                     'new_inquiries': ContactInquiry.objects.filter(status='new').count(),
                     'converted_inquiries': ContactInquiry.objects.filter(status='converted').count(),
+                    'total_messages': ContactMessage.objects.count(),
+                    'total_leads': ProjectGateLead.objects.count(),
                     'total_ideas': IdeaSubmission.objects.count(),
                     'new_ideas': IdeaSubmission.objects.filter(status='new').count(),
                     'total_tools': AITool.objects.count(),
                     'free_tools': AITool.objects.filter(is_free=True).count(),
                     'total_blogs': BlogPost.objects.count(),
+                    'total_sections': BlogSection.objects.count(),
                     'published_blogs': BlogPost.objects.filter(is_published=True).count(),
                     'total_case_studies': CaseStudy.objects.count(),
+                    'total_services': Service.objects.count(),
+                    'total_plans': PricingPlan.objects.count(),
+                    'total_pricing_features': PricingFeature.objects.count(),
+                    'total_workshops': WorkshopCard.objects.count(),
                     'total_enrollments': WorkshopEnrollment.objects.count(),
                     'pending_enrollments': WorkshopEnrollment.objects.filter(status='pending').count(),
+                    'total_chats': ChatbotConversation.objects.count(),
+                    'total_chat_messages': ChatbotMessage.objects.count(),
+                    'total_testimonials': Testimonial.objects.count(),
+                    'total_faqs': FAQ.objects.count(),
+                    'total_seo': SEOData.objects.count(),
+                    'total_redirects': Redirect.objects.count(),
                     'unused_assets_count': cache.get('admin_unused_assets_count', 0),
                 }
 
-            context['admin_stats'] = cache.get_or_set('admin_kpi_stats', compute_admin_stats, 300)
+            context['admin_stats'] = cache.get_or_set('admin_kpi_stats', compute_admin_stats, 60)
 
-            # Live Model Count dictionary for grouped navigation badges (Cached for 300s)
+            # Live Model Count dictionary for grouped navigation badges (Cached for 60s)
             def compute_model_counts():
                 return {
                     'project': Project.objects.count(),
                     'projectcategory': ProjectCategory.objects.count(),
                     'technology': Technology.objects.count(),
+                    'projectimage': ProjectImage.objects.count(),
+                    'projecthighlight': ProjectHighlight.objects.count(),
+                    'projectdiagram': ProjectDiagram.objects.count(),
+                    'projecttimelinephase': ProjectTimelinePhase.objects.count(),
+                    'projectfeature': ProjectFeature.objects.count(),
                     'aitool': AITool.objects.count(),
                     'toolcategory': ToolCategory.objects.count(),
                     'service': Service.objects.count(),
                     'servicefeature': ServiceFeature.objects.count(),
                     'casestudy': CaseStudy.objects.count(),
                     'casestudymetric': CaseStudyMetric.objects.count(),
+                    'casestudytechnology': CaseStudyTechnology.objects.count(),
                     'pricingplan': PricingPlan.objects.count(),
                     'pricingfeature': PricingFeature.objects.count(),
                     'testimonial': Testimonial.objects.count(),
@@ -138,6 +162,7 @@ def site_context(request):
                     'projectgatelead': ProjectGateLead.objects.count(),
                     'contactmessage': ContactMessage.objects.count(),
                     'blogpost': BlogPost.objects.count(),
+                    'blogsection': BlogSection.objects.count(),
                     'blogcategory': BlogCategory.objects.count(),
                     'tag': Tag.objects.count(),
                     'faq': FAQ.objects.count(),
@@ -153,10 +178,11 @@ def site_context(request):
                     'group': Group.objects.count(),
                     'permission': Permission.objects.count(),
                     'chatbotconversation': ChatbotConversation.objects.count(),
+                    'chatbotmessage': ChatbotMessage.objects.count(),
                     'adminguidenote': AdminGuideNote.objects.count(),
                 }
 
-            context['model_counts'] = cache.get_or_set('admin_model_counts', compute_model_counts, 300)
+            context['model_counts'] = cache.get_or_set('admin_model_counts', compute_model_counts, 60)
 
             # Recent CRM Activities & Content for WordPress Dashboard widgets
             context['recent_inquiries'] = ContactInquiry.objects.order_by('-created_at')[:5]

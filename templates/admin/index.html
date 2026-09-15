@@ -156,23 +156,71 @@
               <a href="/admin/core/project/">🚀 {{ admin_stats.total_projects|default:'0' }} Projects</a>
             </li>
             <li class="glance-item">
+              <a href="/admin/core/projectfeature/">⚡ {{ admin_stats.total_features|default:'0' }} Features</a>
+            </li>
+            <li class="glance-item">
+              <a href="/admin/core/projecthighlight/">📊 {{ admin_stats.total_highlights|default:'0' }} Highlights</a>
+            </li>
+            <li class="glance-item">
               <a href="/admin/core/blogpost/">📝 {{ admin_stats.total_blogs|default:'0' }} Posts</a>
+            </li>
+            <li class="glance-item">
+              <a href="/admin/core/blogsection/">📑 {{ admin_stats.total_sections|default:'0' }} Sections</a>
             </li>
             <li class="glance-item">
               <a href="/admin/core/aitool/">🛠️ {{ admin_stats.total_tools|default:'0' }} AI Tools</a>
             </li>
             <li class="glance-item">
-              <a href="/admin/core/casestudy/">💼 {{ admin_stats.total_case_studies|default:'0' }} Case Studies</a>
+              <a href="/admin/core/service/">💼 {{ admin_stats.total_services|default:'0' }} Services</a>
+            </li>
+            <li class="glance-item">
+              <a href="/admin/core/casestudy/">📁 {{ admin_stats.total_case_studies|default:'0' }} Case Studies</a>
+            </li>
+            <li class="glance-item">
+              <a href="/admin/core/pricingplan/">💳 {{ admin_stats.total_plans|default:'0' }} Pricing Plans</a>
+            </li>
+            <li class="glance-item">
+              <a href="/admin/core/pricingfeature/">✨ {{ admin_stats.total_pricing_features|default:'0' }} Pricing Features</a>
+            </li>
+            <li class="glance-item">
+              <a href="/admin/core/workshopcard/">🎓 {{ admin_stats.total_workshops|default:'0' }} Workshops</a>
+            </li>
+            <li class="glance-item">
+              <a href="/admin/core/workshopenrollment/">🎓 {{ admin_stats.total_enrollments|default:'0' }} Enrollments</a>
             </li>
             <li class="glance-item">
               <a href="/admin/core/contactinquiry/">📬 {{ admin_stats.total_inquiries|default:'0' }} Inquiries</a>
             </li>
             <li class="glance-item">
-              <a href="/admin/core/workshopenrollment/">🎓 {{ admin_stats.total_enrollments|default:'0' }} Enrollments</a>
+              <a href="/admin/core/ideasubmission/">💡 {{ admin_stats.total_ideas|default:'0' }} Idea Proposals</a>
+            </li>
+            <li class="glance-item">
+              <a href="/admin/core/projectgatelead/">🎯 {{ admin_stats.total_leads|default:'0' }} Gate Leads</a>
+            </li>
+            <li class="glance-item">
+              <a href="/admin/core/contactmessage/">✉️ {{ admin_stats.total_messages|default:'0' }} Messages</a>
+            </li>
+            <li class="glance-item">
+              <a href="/admin/core/chatbotconversation/">💬 {{ admin_stats.total_chats|default:'0' }} Chat Sessions</a>
+            </li>
+            <li class="glance-item">
+              <a href="/admin/core/chatbotmessage/">🤖 {{ admin_stats.total_chat_messages|default:'0' }} Chat Messages</a>
+            </li>
+            <li class="glance-item">
+              <a href="/admin/core/testimonial/">🌟 {{ admin_stats.total_testimonials|default:'0' }} Testimonials</a>
+            </li>
+            <li class="glance-item">
+              <a href="/admin/core/faq/">❓ {{ admin_stats.total_faqs|default:'0' }} FAQs</a>
+            </li>
+            <li class="glance-item">
+              <a href="/admin/core/seodata/">🔍 {{ admin_stats.total_seo|default:'0' }} SEO Overrides</a>
+            </li>
+            <li class="glance-item">
+              <a href="/admin/core/redirect/">🔀 {{ admin_stats.total_redirects|default:'0' }} Redirects</a>
             </li>
           </ul>
           <div class="glance-footer">
-            <span>ProjectsHub 2.0 running on Django {{ system_info.django_version|default:'4.2' }}</span>
+            <span>ProjectsHub 2.0 · Django {{ system_info.django_version|default:'4.2' }}</span>
             <span>Theme: <strong>Modern Dark/Light</strong></span>
           </div>
         </div>
@@ -343,8 +391,24 @@
               <span>🚀 Add New AI Project</span>
               <span>➕</span>
             </a>
+            <a href="/admin/core/projectfeature/add/" class="button button-secondary" style="display:flex;align-items:center;justify-content:space-between;">
+              <span>⚡ Add Project Feature</span>
+              <span>➕</span>
+            </a>
             <a href="/admin/core/blogpost/add/" class="button button-secondary" style="display:flex;align-items:center;justify-content:space-between;">
               <span>📝 Add New Blog Post</span>
+              <span>➕</span>
+            </a>
+            <a href="/admin/core/service/add/" class="button button-secondary" style="display:flex;align-items:center;justify-content:space-between;">
+              <span>💼 Add New Service</span>
+              <span>➕</span>
+            </a>
+            <a href="/admin/core/pricingplan/add/" class="button button-secondary" style="display:flex;align-items:center;justify-content:space-between;">
+              <span>💳 Add Pricing Plan</span>
+              <span>➕</span>
+            </a>
+            <a href="/admin/core/pricingfeature/add/" class="button button-secondary" style="display:flex;align-items:center;justify-content:space-between;">
+              <span>✨ Add Pricing Feature</span>
               <span>➕</span>
             </a>
             <a href="/admin/core/aitool/add/" class="button button-secondary" style="display:flex;align-items:center;justify-content:space-between;">
@@ -353,6 +417,10 @@
             </a>
             <a href="/admin/core/workshopcard/add/" class="button button-secondary" style="display:flex;align-items:center;justify-content:space-between;">
               <span>🎓 Add New Workshop</span>
+              <span>➕</span>
+            </a>
+            <a href="/admin/core/contactinquiry/add/" class="button button-secondary" style="display:flex;align-items:center;justify-content:space-between;">
+              <span>📬 Add Contact Inquiry</span>
               <span>➕</span>
             </a>
             <a href="/sitemap.xml" target="_blank" class="button button-secondary" style="display:flex;align-items:center;justify-content:space-between;">

@@ -83,14 +83,23 @@
           <span>New</span>
         </button>
         <ul class="wpab-submenu">
-          <li><a href="/admin/core/project/add/">AI Project</a></li>
+          <li><a href="/admin/core/project/add/">🚀 AI Project</a></li>
+          <li><a href="/admin/core/projectfeature/add/">⚡ Project Feature</a></li>
+          <li><a href="/admin/core/projecthighlight/add/">📊 Project Highlight</a></li>
           <li><a href="/admin/core/megamenutag/add/">🏷️ Popular Tag (Mega Menu)</a></li>
-          <li><a href="/admin/core/blogpost/add/">Blog Post</a></li>
-          <li><a href="/admin/core/aitool/add/">AI Tool</a></li>
-          <li><a href="/admin/core/workshopcard/add/">Workshop</a></li>
-          <li><a href="/admin/core/casestudy/add/">Case Study</a></li>
-          <li><a href="/admin/core/adminguidenote/add/">Guide Note / SOP</a></li>
-          <li><a href="/admin/auth/user/add/">User</a></li>
+          <li><a href="/admin/core/blogpost/add/">📝 Blog Post</a></li>
+          <li><a href="/admin/core/blogsection/add/">📑 Blog Section</a></li>
+          <li><a href="/admin/core/aitool/add/">🛠️ AI Tool</a></li>
+          <li><a href="/admin/core/service/add/">💼 Service</a></li>
+          <li><a href="/admin/core/casestudy/add/">📁 Case Study</a></li>
+          <li><a href="/admin/core/pricingplan/add/">💳 Pricing Plan</a></li>
+          <li><a href="/admin/core/pricingfeature/add/">✨ Pricing Feature</a></li>
+          <li><a href="/admin/core/workshopcard/add/">🎓 Workshop</a></li>
+          <li><a href="/admin/core/contactinquiry/add/">📬 Contact Inquiry</a></li>
+          <li><a href="/admin/core/testimonial/add/">💬 Testimonial</a></li>
+          <li><a href="/admin/core/faq/add/">❓ FAQ Item</a></li>
+          <li><a href="/admin/core/adminguidenote/add/">📖 Guide Note / SOP</a></li>
+          <li><a href="/admin/auth/user/add/">👤 User</a></li>
         </ul>
       </div>
     </div>
@@ -180,7 +189,7 @@
         <li class="wp-menu-separator"></li>
 
         <!-- 2. AI Projects -->
-        <li class="wp-menu-item {% if '/admin/core/project/' in request.path or '/admin/core/projectcategory/' in request.path or '/admin/core/technology/' in request.path %}current{% endif %}" data-path="/admin/core/project/">
+        <li class="wp-menu-item {% if '/admin/core/project' in request.path or '/admin/core/technology/' in request.path or '/admin/core/megamenutag/' in request.path %}current{% endif %}" data-path="/admin/core/project/">
           <a href="/admin/core/project/" class="wp-menu-link">
             <span class="wp-menu-icon">🚀</span>
             <span class="wp-menu-name">Projects</span>
@@ -188,16 +197,21 @@
           </a>
           <ul class="wp-submenu">
             <li class="wp-submenu-head">Projects</li>
-            <li><a href="/admin/core/project/">All Projects</a></li>
-            <li><a href="/admin/core/project/add/">Add New</a></li>
-            <li><a href="/admin/core/projectcategory/">Categories</a></li>
-            <li><a href="/admin/core/technology/">Technologies</a></li>
+            <li><a href="/admin/core/project/">All Projects ({{ model_counts.project|default:'0' }})</a></li>
+            <li><a href="/admin/core/project/add/">➕ Add New Project</a></li>
+            <li><a href="/admin/core/projectfeature/">Project Features ({{ model_counts.projectfeature|default:'0' }})</a></li>
+            <li><a href="/admin/core/projecthighlight/">Highlights &amp; KPIs ({{ model_counts.projecthighlight|default:'0' }})</a></li>
+            <li><a href="/admin/core/projecttimelinephase/">Timeline Phases ({{ model_counts.projecttimelinephase|default:'0' }})</a></li>
+            <li><a href="/admin/core/projectdiagram/">Diagrams ({{ model_counts.projectdiagram|default:'0' }})</a></li>
+            <li><a href="/admin/core/projectimage/">Gallery Images ({{ model_counts.projectimage|default:'0' }})</a></li>
+            <li><a href="/admin/core/projectcategory/">Categories ({{ model_counts.projectcategory|default:'0' }})</a></li>
+            <li><a href="/admin/core/technology/">Technologies ({{ model_counts.technology|default:'0' }})</a></li>
             <li><a href="/admin/core/megamenutag/">🏷️ Popular Tags (Mega Menu)</a></li>
           </ul>
         </li>
 
         <!-- 3. Posts (Blog) -->
-        <li class="wp-menu-item {% if '/admin/core/blogpost/' in request.path or '/admin/core/blogcategory/' in request.path or '/admin/core/tag/' in request.path %}current{% endif %}" data-path="/admin/core/blogpost/">
+        <li class="wp-menu-item {% if '/admin/core/blog' in request.path or '/admin/core/tag/' in request.path %}current{% endif %}" data-path="/admin/core/blogpost/">
           <a href="/admin/core/blogpost/" class="wp-menu-link">
             <span class="wp-menu-icon">📝</span>
             <span class="wp-menu-name">Posts</span>
@@ -205,10 +219,11 @@
           </a>
           <ul class="wp-submenu">
             <li class="wp-submenu-head">Posts</li>
-            <li><a href="/admin/core/blogpost/">All Posts</a></li>
-            <li><a href="/admin/core/blogpost/add/">Add New</a></li>
-            <li><a href="/admin/core/blogcategory/">Categories</a></li>
-            <li><a href="/admin/core/tag/">Tags</a></li>
+            <li><a href="/admin/core/blogpost/">All Posts ({{ model_counts.blogpost|default:'0' }})</a></li>
+            <li><a href="/admin/core/blogpost/add/">➕ Write New Post</a></li>
+            <li><a href="/admin/core/blogsection/">Article Sections ({{ model_counts.blogsection|default:'0' }})</a></li>
+            <li><a href="/admin/core/blogcategory/">Categories ({{ model_counts.blogcategory|default:'0' }})</a></li>
+            <li><a href="/admin/core/tag/">Tags ({{ model_counts.tag|default:'0' }})</a></li>
           </ul>
         </li>
 
@@ -221,9 +236,9 @@
           </a>
           <ul class="wp-submenu">
             <li class="wp-submenu-head">AI Tools</li>
-            <li><a href="/admin/core/aitool/">All Tools</a></li>
-            <li><a href="/admin/core/aitool/add/">Add New</a></li>
-            <li><a href="/admin/core/toolcategory/">Categories</a></li>
+            <li><a href="/admin/core/aitool/">All Tools ({{ model_counts.aitool|default:'0' }})</a></li>
+            <li><a href="/admin/core/aitool/add/">➕ Add New Tool</a></li>
+            <li><a href="/admin/core/toolcategory/">Categories ({{ model_counts.toolcategory|default:'0' }})</a></li>
           </ul>
         </li>
 
@@ -238,24 +253,27 @@
           </a>
           <ul class="wp-submenu">
             <li class="wp-submenu-head">Workshops</li>
-            <li><a href="/admin/core/workshopcard/">All Workshops</a></li>
-            <li><a href="/admin/core/workshopday/">Curriculum Days</a></li>
+            <li><a href="/admin/core/workshopcard/">All Workshops ({{ model_counts.workshopcard|default:'0' }})</a></li>
+            <li><a href="/admin/core/workshopday/">Curriculum Days ({{ model_counts.workshopday|default:'0' }})</a></li>
             <li><a href="/admin/core/workshopenrollment/">Enrollments ({{ model_counts.workshopenrollment|default:'0' }})</a></li>
           </ul>
         </li>
 
         <!-- 6. Services & Work -->
-        <li class="wp-menu-item {% if '/admin/core/service' in request.path or '/admin/core/casestudy' in request.path or '/admin/core/pricingplan' in request.path %}current{% endif %}" data-path="/admin/core/service/">
+        <li class="wp-menu-item {% if '/admin/core/service' in request.path or '/admin/core/casestudy' in request.path or '/admin/core/pricing' in request.path %}current{% endif %}" data-path="/admin/core/service/">
           <a href="/admin/core/service/" class="wp-menu-link">
             <span class="wp-menu-icon">💼</span>
             <span class="wp-menu-name">Services</span>
           </a>
           <ul class="wp-submenu">
             <li class="wp-submenu-head">Services &amp; Work</li>
-            <li><a href="/admin/core/service/">All Services</a></li>
-            <li><a href="/admin/core/servicefeature/">Service Features</a></li>
+            <li><a href="/admin/core/service/">All Services ({{ model_counts.service|default:'0' }})</a></li>
+            <li><a href="/admin/core/servicefeature/">Service Features ({{ model_counts.servicefeature|default:'0' }})</a></li>
             <li><a href="/admin/core/casestudy/">Case Studies ({{ model_counts.casestudy|default:'0' }})</a></li>
-            <li><a href="/admin/core/pricingplan/">Pricing Plans</a></li>
+            <li><a href="/admin/core/casestudymetric/">Case Study Metrics ({{ model_counts.casestudymetric|default:'0' }})</a></li>
+            <li><a href="/admin/core/casestudytechnology/">Case Study Tech ({{ model_counts.casestudytechnology|default:'0' }})</a></li>
+            <li><a href="/admin/core/pricingplan/">Pricing Plans ({{ model_counts.pricingplan|default:'0' }})</a></li>
+            <li><a href="/admin/core/pricingfeature/">Pricing Features ({{ model_counts.pricingfeature|default:'0' }})</a></li>
           </ul>
         </li>
 
@@ -267,14 +285,14 @@
           </a>
           <ul class="wp-submenu">
             <li class="wp-submenu-head">Feedback &amp; FAQ</li>
-            <li><a href="/admin/core/testimonial/">Testimonials</a></li>
-            <li><a href="/admin/core/faq/">FAQs</a></li>
-            <li><a href="/admin/core/faqcategory/">FAQ Categories</a></li>
+            <li><a href="/admin/core/testimonial/">Testimonials ({{ model_counts.testimonial|default:'0' }})</a></li>
+            <li><a href="/admin/core/faq/">FAQs ({{ model_counts.faq|default:'0' }})</a></li>
+            <li><a href="/admin/core/faqcategory/">FAQ Categories ({{ model_counts.faqcategory|default:'0' }})</a></li>
           </ul>
         </li>
 
         <!-- 8. CRM & Inquiries -->
-        <li class="wp-menu-item {% if '/admin/core/contactinquiry/' in request.path or '/admin/core/ideasubmission/' in request.path or '/admin/core/projectgatelead/' in request.path or '/admin/core/contactmessage/' in request.path or '/admin/core/chatbotconversation/' in request.path %}current{% endif %}" data-path="/admin/core/contactinquiry/">
+        <li class="wp-menu-item {% if '/admin/core/contact' in request.path or '/admin/core/idea' in request.path or '/admin/core/projectgatelead' in request.path or '/admin/core/chatbot' in request.path %}current{% endif %}" data-path="/admin/core/contactinquiry/">
           <a href="/admin/core/contactinquiry/" class="wp-menu-link">
             <span class="wp-menu-icon">📬</span>
             <span class="wp-menu-name">Inquiries</span>
@@ -286,11 +304,12 @@
           </a>
           <ul class="wp-submenu">
             <li class="wp-submenu-head">CRM &amp; Leads</li>
-            <li><a href="/admin/core/contactinquiry/">Contact Inquiries</a></li>
+            <li><a href="/admin/core/contactinquiry/">Contact Inquiries ({{ model_counts.contactinquiry|default:'0' }})</a></li>
             <li><a href="/admin/core/ideasubmission/">Idea Proposals ({{ model_counts.ideasubmission|default:'0' }})</a></li>
             <li><a href="/admin/core/projectgatelead/">Gate Leads ({{ model_counts.projectgatelead|default:'0' }})</a></li>
-            <li><a href="/admin/core/contactmessage/">Direct Messages</a></li>
-            <li><a href="/admin/core/chatbotconversation/">Chatbot Chats &amp; Leads ({{ model_counts.chatbotconversation|default:'0' }})</a></li>
+            <li><a href="/admin/core/contactmessage/">Direct Messages ({{ model_counts.contactmessage|default:'0' }})</a></li>
+            <li><a href="/admin/core/chatbotconversation/">Chatbot Conversations ({{ model_counts.chatbotconversation|default:'0' }})</a></li>
+            <li><a href="/admin/core/chatbotmessage/">All Chat Messages ({{ model_counts.chatbotmessage|default:'0' }})</a></li>
           </ul>
         </li>
 

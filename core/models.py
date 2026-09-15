@@ -1055,6 +1055,8 @@ class PricingFeature(models.Model):
 
     class Meta:
         ordering = ['order']
+        verbose_name = 'Pricing Feature'
+        verbose_name_plural = 'Pricing Features'
 
     def __str__(self):
         return f"{self.plan.name}: {self.feature}"

@@ -349,6 +349,85 @@ class ProjectAdmin(admin.ModelAdmin):
     duplicate_project.short_description = "Duplicate selected project(s) as draft"
 
 
+@admin.register(ProjectImage)
+class ProjectImageAdmin(admin.ModelAdmin):
+    list_display = ('thumbnail_preview', 'project', 'caption', 'alt', 'order')
+    list_editable = ('order',)
+    list_filter = ('project',)
+    search_fields = ('caption', 'alt', 'project__title')
+    ordering = ('project', 'order')
+    actions = [export_as_csv_action('Export project images to CSV')]
+
+    def thumbnail_preview(self, obj):
+        if obj.image:
+            return format_html(
+                '<img src="{}" style="width:50px;height:32px;object-fit:cover;border-radius:4px;" />',
+                obj.image.url
+            )
+        return '—'
+    thumbnail_preview.short_description = 'Image'
+
+
+@admin.register(ProjectHighlight)
+class ProjectHighlightAdmin(admin.ModelAdmin):
+    list_display = ('label', 'project', 'value', 'icon_preview', 'order')
+    list_editable = ('order',)
+    list_filter = ('project', 'icon')
+    search_fields = ('label', 'value', 'project__title')
+    ordering = ('project', 'order')
+    actions = [export_as_csv_action('Export highlights to CSV')]
+
+    def icon_preview(self, obj):
+        icons = {
+            'chart': '📊 Bar Chart',
+            'users': '👥 Users / Team',
+            'clock': '⏱️ Clock / Time',
+            'star': '⭐ Star / Rating',
+            'bolt': '⚡ Bolt / Speed',
+        }
+        return icons.get(obj.icon, obj.icon)
+    icon_preview.short_description = 'Icon'
+
+
+@admin.register(ProjectDiagram)
+class ProjectDiagramAdmin(admin.ModelAdmin):
+    list_display = ('title', 'project', 'label', 'diagram_preview', 'order')
+    list_editable = ('order',)
+    list_filter = ('project', 'label')
+    search_fields = ('title', 'label', 'desc', 'project__title')
+    ordering = ('project', 'order')
+    actions = [export_as_csv_action('Export diagrams to CSV')]
+
+    def diagram_preview(self, obj):
+        if obj.image:
+            return format_html(
+                '<img src="{}" style="width:50px;height:32px;object-fit:cover;border-radius:4px;" />',
+                obj.image.url
+            )
+        return '—'
+    diagram_preview.short_description = 'Preview'
+
+
+@admin.register(ProjectTimelinePhase)
+class ProjectTimelinePhaseAdmin(admin.ModelAdmin):
+    list_display = ('title', 'project', 'phase', 'date', 'order')
+    list_editable = ('order',)
+    list_filter = ('project',)
+    search_fields = ('title', 'phase', 'date', 'desc', 'project__title')
+    ordering = ('project', 'order')
+    actions = [export_as_csv_action('Export timeline phases to CSV')]
+
+
+@admin.register(ProjectFeature)
+class ProjectFeatureAdmin(admin.ModelAdmin):
+    list_display = ('text', 'project', 'order')
+    list_editable = ('order',)
+    list_filter = ('project',)
+    search_fields = ('text', 'project__title')
+    ordering = ('project', 'order')
+    actions = [export_as_csv_action('Export project features to CSV')]
+
+
 # ── Free AI Tools ─────────────────────────────────────────────────────────────
 
 @admin.register(ToolCategory)
@@ -461,6 +540,23 @@ class CaseStudyAdmin(admin.ModelAdmin):
         return '—'
     live_link.short_description = 'Preview'
 
+
+@admin.register(CaseStudyMetric)
+class CaseStudyMetricAdmin(admin.ModelAdmin):
+    list_display = ('label', 'case_study', 'value', 'description', 'order')
+    list_editable = ('order',)
+    list_filter = ('case_study',)
+    search_fields = ('label', 'value', 'description', 'case_study__title')
+    ordering = ('case_study', 'order')
+    actions = [export_as_csv_action('Export case study metrics to CSV')]
+
+
+@admin.register(CaseStudyTechnology)
+class CaseStudyTechnologyAdmin(admin.ModelAdmin):
+    list_display = ('case_study', 'technology')
+    list_filter = ('case_study', 'technology')
+    search_fields = ('case_study__title', 'technology__name')
+    actions = [export_as_csv_action('Export case study technologies to CSV')]
 
 
 # ── Testimonials ──────────────────────────────────────────────────────────────
@@ -605,6 +701,26 @@ class BlogPostAdmin(admin.ModelAdmin):
     mark_draft.short_description = "Unpublish (set to draft)"
 
 
+@admin.register(BlogSection)
+class BlogSectionAdmin(admin.ModelAdmin):
+    list_display = ('heading', 'post', 'order', 'body_snippet', 'has_code')
+    list_editable = ('order',)
+    list_filter = ('post',)
+    search_fields = ('heading', 'body', 'code', 'post__title')
+    ordering = ('post', 'order')
+    actions = [export_as_csv_action('Export blog sections to CSV')]
+
+    def body_snippet(self, obj):
+        body = obj.body or ''
+        return (body[:60] + '...') if len(body) > 60 else body or '—'
+    body_snippet.short_description = 'Body Preview'
+
+    def has_code(self, obj):
+        return bool(obj.code)
+    has_code.boolean = True
+    has_code.short_description = 'Code Snippet'
+
+
 # ── Contact Inquiries & Leads ─────────────────────────────────────────────────
 
 @admin.register(ContactInquiry)
@@ -677,7 +793,10 @@ class ContactMessageAdmin(admin.ModelAdmin):
 @admin.register(ProjectGateLead)
 class ProjectGateLeadAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'email_link', 'college_or_org', 'created_at')
+    list_filter = ('created_at',)
     search_fields = ('full_name', 'email', 'college_or_org')
+    ordering = ('-created_at',)
+    readonly_fields = ('created_at',)
     actions = [export_as_csv_action('Export gate leads to CSV')]
 
     def email_link(self, obj):
@@ -825,6 +944,16 @@ class PricingPlanAdmin(admin.ModelAdmin):
     inlines = [PricingFeatureInline]
 
 
+@admin.register(PricingFeature)
+class PricingFeatureAdmin(admin.ModelAdmin):
+    list_display = ('feature', 'plan', 'order')
+    list_editable = ('order',)
+    list_filter = ('plan',)
+    search_fields = ('feature', 'plan__name')
+    ordering = ('plan', 'order')
+    actions = [export_as_csv_action('Export pricing features to CSV')]
+
+
 # ── SEO & Redirects ───────────────────────────────────────────────────────────
 
 @admin.register(SEOData)
@@ -920,21 +1049,10 @@ class RedirectAdmin(admin.ModelAdmin):
 
 class ChatbotMessageInline(admin.TabularInline):
     model = ChatbotMessage
-    extra = 0
-    readonly_fields = ('sender_badge', 'message', 'timestamp')
+    extra = 1
+    fields = ('sender', 'message', 'timestamp')
+    readonly_fields = ('timestamp',)
     can_delete = True
-    fields = ('sender_badge', 'message', 'timestamp')
-
-    def sender_badge(self, obj):
-        if obj.sender == 'user':
-            return format_html('<span style="display:inline-block;padding:2px 8px;border-radius:10px;background:#2271b1;color:#fff;font-weight:600;font-size:11px;">👤 Visitor</span>')
-        elif obj.sender == 'bot':
-            return format_html('<span style="display:inline-block;padding:2px 8px;border-radius:10px;background:#646970;color:#fff;font-weight:600;font-size:11px;">🤖 AI Bot</span>')
-        return format_html('<span style="display:inline-block;padding:2px 8px;border-radius:10px;background:#00a32a;color:#fff;font-weight:600;font-size:11px;">🎧 Staff</span>')
-    sender_badge.short_description = 'Sender'
-
-    def has_add_permission(self, request, obj=None):
-        return False
 
 
 @admin.register(ChatbotConversation)
@@ -942,9 +1060,21 @@ class ChatbotConversationAdmin(admin.ModelAdmin):
     list_display = ('session_badge', 'visitor_ident', 'status_badge', 'interest_badge', 'message_count', 'latest_user_message', 'page_url', 'updated_at')
     list_filter = ('status', 'service_interest', 'created_at')
     search_fields = ('session_id', 'user_name', 'user_email', 'user_phone', 'messages__message', 'page_url')
-    readonly_fields = ('session_id', 'ip_address', 'user_agent', 'page_url', 'created_at', 'updated_at', 'chat_transcript_view')
     actions = [export_as_csv_action('Export selected conversations to CSV'), 'mark_as_lead', 'mark_as_resolved']
     inlines = [ChatbotMessageInline]
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj is None:
+            return ('created_at', 'updated_at', 'chat_transcript_view')
+        return ('session_id', 'ip_address', 'user_agent', 'page_url', 'created_at', 'updated_at', 'chat_transcript_view')
+
+    def save_model(self, request, obj, form, change):
+        if not obj.session_id:
+            import secrets
+            obj.session_id = secrets.token_hex(16)
+        if not change and not obj.ip_address:
+            obj.ip_address = request.META.get('REMOTE_ADDR')
+        super().save_model(request, obj, form, change)
     fieldsets = (
         ('Conversation Overview', {
             'fields': ('session_id', 'status', 'service_interest', 'admin_notes')
@@ -1071,6 +1201,8 @@ class ChatbotMessageAdmin(admin.ModelAdmin):
     list_filter = ('sender', 'timestamp')
     search_fields = ('message', 'conversation__session_id', 'conversation__user_name', 'conversation__user_email')
     ordering = ('-timestamp',)
+    autocomplete_fields = ('conversation',)
+    actions = [export_as_csv_action('Export chatbot messages to CSV')]
 
     def sender_badge(self, obj):
         if obj.sender == 'user':
