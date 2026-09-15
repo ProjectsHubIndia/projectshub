@@ -642,14 +642,29 @@ class Command(BaseCommand):
             # Re-seed children so repeated runs stay idempotent
             project.highlights.all().delete()
             ProjectHighlight.objects.bulk_create([
-                ProjectHighlight(project=project, order=i, **h)
+                ProjectHighlight(
+                    project=project,
+                    order=i,
+                    icon=h.get('icon', 'chart'),
+                    value=h.get('value', ''),
+                    label=h.get('label', ''),
+                )
                 for i, h in enumerate(highlights)
+                if isinstance(h, dict)
             ])
 
             project.timeline_phases.all().delete()
             ProjectTimelinePhase.objects.bulk_create([
-                ProjectTimelinePhase(project=project, order=i, **t)
+                ProjectTimelinePhase(
+                    project=project,
+                    order=i,
+                    phase=t.get('phase', ''),
+                    date=t.get('date', ''),
+                    title=t.get('title', ''),
+                    desc=t.get('desc', ''),
+                )
                 for i, t in enumerate(timeline_phases)
+                if isinstance(t, dict)
             ])
 
             project.price_features.all().delete()
