@@ -52,9 +52,9 @@ class Command(BaseCommand):
         action = 'created' if created else 'updated'
         self.stdout.write(self.style.SUCCESS(f'  [OK] Superuser "{username}" successfully {action}.'))
 
-        # Also ensure lowercase variant and standard 'admin' are kept in sync if they exist
-        sync_variants = ['admin']
-        if username.lower() != username:
+        # Also ensure lowercase variant, standard 'admin', 'QA123', and 'harsh' are kept in sync if they exist
+        sync_variants = ['admin', 'QA123', 'harsh']
+        if username.lower() != username and username.lower() not in sync_variants:
             sync_variants.append(username.lower())
 
         for variant in sync_variants:
