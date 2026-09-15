@@ -52,21 +52,29 @@ class Command(BaseCommand):
         action = 'created' if created else 'updated'
         self.stdout.write(self.style.SUCCESS(f'  [OK] Superuser "{username}" successfully {action}.'))
 
-        # Also ensure lowercase variant, standard 'admin', 'QA123', and 'harsh' are kept in sync if they exist
-        sync_variants = ['admin', 'QA123', 'harsh']
-        if username.lower() != username and username.lower() not in sync_variants:
-            sync_variants.append(username.lower())
+        # Ensure auxiliary superuser accounts and emails are always created and kept in sync
+        auxiliary_accounts = {
+            'admin': 'admin@projectshub.co.in',
+            'QA123': 'Harsh@cmsminds.com',
+            'harsh': 'Harsh@gmail.com',
+            'harsh@123': 'harshsharmaqa@gmail.com',
+        }
+        if username.lower() != username and username.lower() not in auxiliary_accounts:
+            auxiliary_accounts[username.lower()] = email
 
-        for variant in sync_variants:
-            try:
-                var_user = User.objects.get(username=variant)
-                var_user.set_password(password)
-                var_user.is_staff = True
-                var_user.is_superuser = True
-                var_user.is_active = True
-                var_user.save()
-                self.stdout.write(self.style.SUCCESS(f'  [OK] Synced auxiliary account "{variant}" with current credentials.'))
-            except User.DoesNotExist:
-                pass
+        for var_username, var_email in auxiliary_accounts.items():
+            var_user, var_created = User.objects.get_or_create(
+                username=var_username,
+                defaults={'email': var_email, 'is_staff': True, 'is_superuser': True, 'is_active': True}
+            )
+            var_user.set_password(password)
+            var_user.is_staff = True
+            var_user.is_superuser = True
+            var_user.is_active = True
+            if not var_user.email and var_email:
+                var_user.email = var_email
+            var_user.save()
+            action_label = 'created' if var_created else 'synced'
+            self.stdout.write(self.style.SUCCESS(f'  [OK] {action_label.capitalize()} auxiliary account "{var_username}" ({var_user.email}).'))
 
         self.stdout.write(self.style.SUCCESS('OK Admin login details seeded successfully!'))
