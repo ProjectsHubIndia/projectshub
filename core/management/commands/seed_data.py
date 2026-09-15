@@ -2,6 +2,7 @@
 Management command to seed the database with sample data.
 Run with: python manage.py seed_data
 """
+from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from core.models import (
     Project, ProjectHighlight, ProjectTimelinePhase, ProjectFeature,
@@ -13,11 +14,20 @@ from core.models import (
 class Command(BaseCommand):
     help = 'Seed the database with sample projects, workshops and pricing plans'
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--with-admin',
+            action='store_true',
+            help='Also seed default admin superuser credentials'
+        )
+
     def handle(self, *args, **options):
         self.stdout.write('Seeding database...')
         self._seed_projects()
         self._seed_workshops()
         self._seed_pricing()
+        if options.get('with_admin'):
+            call_command('seed_admin')
         self.stdout.write(self.style.SUCCESS('OK Database seeded successfully!'))
 
     # ── Projects ──────────────────────────────────────────────────────────────
