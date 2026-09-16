@@ -1,3 +1,4 @@
+import os
 import re
 from urllib.parse import parse_qs, urlparse
 from django.db import models
@@ -376,10 +377,31 @@ class Project(models.Model):
         return res
 
     def get_image_src(self):
+        if self.thumbnail:
+            try:
+                if bool(self.thumbnail) and hasattr(self.thumbnail, 'url'):
+                    try:
+                        if os.path.exists(self.thumbnail.path):
+                            return self.thumbnail.url
+                    except Exception:
+                        return self.thumbnail.url
+            except Exception:
+                pass
         if self.image:
-            return self.image.url
+            try:
+                if bool(self.image) and hasattr(self.image, 'url'):
+                    try:
+                        if os.path.exists(self.image.path):
+                            return self.image.url
+                    except Exception:
+                        return self.image.url
+            except Exception:
+                pass
         if self.image_url:
             return self.image_url
+        vid = self.get_youtube_video_id()
+        if vid:
+            return f'https://img.youtube.com/vi/{vid}/hqdefault.jpg'
         return '/static/image/ai-project-ideas-students.webp'
 
     def get_tags_list(self):
@@ -388,31 +410,38 @@ class Project(models.Model):
             return [t.name for t in techs]
         return [t.strip() for t in self.tags.split(',') if t.strip()]
 
-    def get_youtube_embed_url(self):
+    def get_youtube_video_id(self):
         if not self.youtube_url:
             return ''
         url = self.youtube_url.strip()
         parsed = urlparse(url)
-        hostname = parsed.hostname or ''
+        hostname = (parsed.hostname or '').lower()
         path = parsed.path or ''
         if 'youtube.com' in hostname and path == '/watch':
             params = parse_qs(parsed.query)
             video_ids = params.get('v')
             if video_ids:
-                return f'https://www.youtube-nocookie.com/embed/{video_ids[0]}?rel=0&modestbranding=1&playsinline=1'
+                return video_ids[0]
         match = re.match(r'^/([A-Za-z0-9_-]{11})$', path)
         if 'youtu.be' in hostname and match:
-            return f'https://www.youtube-nocookie.com/embed/{match.group(1)}?rel=0&modestbranding=1&playsinline=1'
-        match = re.match(r'^/(?:embed|v|shorts)/([A-Za-z0-9_-]{11})$', path)
+            return match.group(1)
+        match = re.match(r'^/(?:embed|v|shorts)/([A-Za-z0-9_-]{11})', path)
         if 'youtube.com' in hostname and match:
-            return f'https://www.youtube-nocookie.com/embed/{match.group(1)}?rel=0&modestbranding=1&playsinline=1'
+            return match.group(1)
+        return ''
+
+    def get_youtube_embed_url(self):
+        vid = self.get_youtube_video_id()
+        if vid:
+            return f'https://www.youtube-nocookie.com/embed/{vid}?rel=0&modestbranding=1&playsinline=1&autoplay=1'
         return ''
 
 
 class ProjectImage(models.Model):
     """Gallery & screenshot images for project detail pages."""
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='detail_images')
-    image = models.ImageField(upload_to='projects/detail/')
+    image = models.ImageField(upload_to='projects/detail/', blank=True, null=True)
+    image_url = models.URLField(blank=True, help_text="External screenshot URL if not uploading file")
     caption = models.CharField(max_length=300, blank=True)
     alt = models.CharField(max_length=200, blank=True)
     order = models.PositiveIntegerField(default=0)
@@ -424,6 +453,15 @@ class ProjectImage(models.Model):
 
     def __str__(self):
         return f"{self.project.title} image {self.order}"
+
+    @property
+    def url(self):
+        if self.image:
+            try:
+                return self.image.url
+            except Exception:
+                pass
+        return self.image_url or ''
 
 
 class ProjectHighlight(models.Model):
@@ -451,7 +489,8 @@ class ProjectHighlight(models.Model):
 
 class ProjectDiagram(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='diagrams')
-    image = models.ImageField(upload_to='projects/diagrams/')
+    image = models.ImageField(upload_to='projects/diagrams/', blank=True, null=True)
+    image_url = models.URLField(blank=True, help_text="External diagram URL if not uploading file")
     label = models.CharField(max_length=100, blank=True, default='Architecture')
     title = models.CharField(max_length=200)
     desc = models.TextField(blank=True)
@@ -464,6 +503,15 @@ class ProjectDiagram(models.Model):
 
     def __str__(self):
         return f"{self.project.title} — {self.title}"
+
+    @property
+    def url(self):
+        if self.image:
+            try:
+                return self.image.url
+            except Exception:
+                pass
+        return self.image_url or ''
 
 
 class ProjectTimelinePhase(models.Model):

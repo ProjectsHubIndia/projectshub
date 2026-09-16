@@ -53,7 +53,15 @@ def export_as_csv_action(description="Export selected to CSV", fields=None, excl
 class ProjectImageInline(admin.TabularInline):
     model = ProjectImage
     extra = 1
-    fields = ('image', 'caption', 'alt', 'order')
+    fields = ('inline_preview', 'image', 'image_url', 'caption', 'alt', 'order')
+    readonly_fields = ('inline_preview',)
+
+    def inline_preview(self, obj):
+        url = obj.url if obj else None
+        if url:
+            return format_html('<img src="{}" style="width:48px;height:32px;object-fit:cover;border-radius:4px;border:1px solid #e2e8f0;" />', url)
+        return '—'
+    inline_preview.short_description = 'Preview'
 
 
 class ProjectHighlightInline(admin.TabularInline):
@@ -65,7 +73,15 @@ class ProjectHighlightInline(admin.TabularInline):
 class ProjectDiagramInline(admin.TabularInline):
     model = ProjectDiagram
     extra = 1
-    fields = ('image', 'label', 'title', 'desc', 'order')
+    fields = ('inline_preview', 'image', 'image_url', 'label', 'title', 'desc', 'order')
+    readonly_fields = ('inline_preview',)
+
+    def inline_preview(self, obj):
+        url = obj.url if obj else None
+        if url:
+            return format_html('<img src="{}" style="width:48px;height:32px;object-fit:cover;border-radius:4px;border:1px solid #e2e8f0;" />', url)
+        return '—'
+    inline_preview.short_description = 'Preview'
 
 
 class ProjectTimelinePhaseInline(admin.TabularInline):
@@ -243,7 +259,10 @@ class ProjectAdmin(admin.ModelAdmin):
     ]
     fieldsets = (
         ('Overview', {
-            'fields': ('title', 'slug', 'subtitle', 'category_ref', 'technologies', 'tags', 'difficulty')
+            'fields': ('title', 'slug', 'subtitle', 'category_ref', 'technologies', 'tags')
+        }),
+        ('Project Specifications & Metadata', {
+            'fields': ('year', 'role', 'duration', 'team_size', 'difficulty', 'case_study_url')
         }),
         ('Descriptions', {
             'fields': ('description', 'detailed_description')
@@ -264,11 +283,11 @@ class ProjectAdmin(admin.ModelAdmin):
     )
 
     def image_preview(self, obj):
-        img = obj.thumbnail or obj.image
-        if img:
+        src = obj.get_image_src()
+        if src:
             return format_html(
                 '<img src="{}" style="width: 52px; height: 32px; object-fit: cover; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.12);" />',
-                img.url
+                src
             )
         return format_html('<span style="color:#94a3b8;font-size:11px;">—</span>')
     image_preview.short_description = 'Media'
@@ -360,10 +379,11 @@ class ProjectImageAdmin(admin.ModelAdmin):
     actions = [export_as_csv_action('Export project images to CSV')]
 
     def thumbnail_preview(self, obj):
-        if obj.image:
+        img_url = obj.url
+        if img_url:
             return format_html(
                 '<img src="{}" style="width:50px;height:32px;object-fit:cover;border-radius:4px;" />',
-                obj.image.url
+                img_url
             )
         return '—'
     thumbnail_preview.short_description = 'Image'
@@ -400,10 +420,11 @@ class ProjectDiagramAdmin(admin.ModelAdmin):
     actions = [export_as_csv_action('Export diagrams to CSV')]
 
     def diagram_preview(self, obj):
-        if obj.image:
+        diag_url = obj.url
+        if diag_url:
             return format_html(
                 '<img src="{}" style="width:50px;height:32px;object-fit:cover;border-radius:4px;" />',
-                obj.image.url
+                diag_url
             )
         return '—'
     diagram_preview.short_description = 'Preview'

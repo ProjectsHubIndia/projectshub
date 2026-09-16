@@ -6,6 +6,7 @@ from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from core.models import (
     Project, ProjectCategory, Technology, ProjectHighlight, ProjectTimelinePhase, ProjectFeature,
+    ProjectImage, ProjectDiagram,
     WorkshopCard, WorkshopDay,
     PricingPlan, PricingFeature
 )
@@ -648,16 +649,12 @@ class Command(BaseCommand):
             data = dict(data)
 
             # These are related rows, not Project columns — pull them out
-            # before update_or_create, which would otherwise try to assign
-            # to the reverse side of the relation and raise TypeError.
+            # before update_or_create.
             highlights = data.pop('highlights', [])
             timeline_phases = data.pop('timeline_phases', [])
             price_features = data.pop('price_features', [])
-            # detail_images / diagrams are ImageFields backed by real uploaded
-            # files, so the sample external URLs here cannot be seeded. Add
-            # them from the admin instead.
-            data.pop('detail_images', None)
-            data.pop('diagrams', None)
+            detail_images = data.pop('detail_images', [])
+            diagrams = data.pop('diagrams', [])
 
             project, is_new = Project.objects.update_or_create(
                 title=data['title'], defaults=data
@@ -695,6 +692,33 @@ class Command(BaseCommand):
             ProjectFeature.objects.bulk_create([
                 ProjectFeature(project=project, text=text, order=i)
                 for i, text in enumerate(price_features)
+            ])
+
+            project.detail_images.all().delete()
+            ProjectImage.objects.bulk_create([
+                ProjectImage(
+                    project=project,
+                    order=i,
+                    image_url=img.get('url', ''),
+                    alt=img.get('alt', ''),
+                    caption=img.get('caption', ''),
+                )
+                for i, img in enumerate(detail_images)
+                if isinstance(img, dict) and img.get('url')
+            ])
+
+            project.diagrams.all().delete()
+            ProjectDiagram.objects.bulk_create([
+                ProjectDiagram(
+                    project=project,
+                    order=i,
+                    image_url=diag.get('url', ''),
+                    label=diag.get('label', 'Architecture'),
+                    title=diag.get('title', ''),
+                    desc=diag.get('desc', ''),
+                )
+                for i, diag in enumerate(diagrams)
+                if isinstance(diag, dict) and diag.get('url')
             ])
 
             if is_new:
