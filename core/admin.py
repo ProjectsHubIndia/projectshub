@@ -211,6 +211,7 @@ class ProjectCategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug', 'icon', 'order')
     prepopulated_fields = {'slug': ('name',)}
     list_editable = ('order',)
+    search_fields = ('name', 'slug')
 
 
 @admin.register(Technology)
@@ -242,7 +243,7 @@ class ProjectAdmin(admin.ModelAdmin):
     ]
     fieldsets = (
         ('Overview', {
-            'fields': ('title', 'slug', 'subtitle', 'category', 'category_ref', 'technologies', 'tags', 'difficulty')
+            'fields': ('title', 'slug', 'subtitle', 'category_ref', 'technologies', 'tags', 'difficulty')
         }),
         ('Descriptions', {
             'fields': ('description', 'detailed_description')

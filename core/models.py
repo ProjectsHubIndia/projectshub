@@ -191,6 +191,20 @@ class ProjectCategory(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+        try:
+            from django.core.cache import cache
+            cache.delete('admin_model_counts')
+        except Exception:
+            pass
+
+    def delete(self, *args, **kwargs):
+        res = super().delete(*args, **kwargs)
+        try:
+            from django.core.cache import cache
+            cache.delete('admin_model_counts')
+        except Exception:
+            pass
+        return res
 
 
 class Technology(models.Model):
@@ -213,6 +227,20 @@ class Technology(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+        try:
+            from django.core.cache import cache
+            cache.delete('admin_model_counts')
+        except Exception:
+            pass
+
+    def delete(self, *args, **kwargs):
+        res = super().delete(*args, **kwargs)
+        try:
+            from django.core.cache import cache
+            cache.delete('admin_model_counts')
+        except Exception:
+            pass
+        return res
 
 
 class Project(models.Model):
@@ -231,10 +259,16 @@ class Project(models.Model):
         help_text="Detailed description for the project detail page"
     )
     category = models.CharField(
-        max_length=50, choices=CATEGORY_CHOICES, default='ml', db_index=True
+        max_length=50, choices=CATEGORY_CHOICES, default='ml', blank=True, db_index=True
     )
     category_ref = models.ForeignKey(
-        ProjectCategory, on_delete=models.SET_NULL, null=True, blank=True, related_name='projects'
+        ProjectCategory,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='projects',
+        verbose_name='Category',
+        help_text='Select or create categories managed under Projects > Categories'
     )
     technologies = models.ManyToManyField(
         Technology, blank=True, related_name='projects'
@@ -315,7 +349,31 @@ class Project(models.Model):
             self.meta_title = f"{self.title} | AI ProjectsHub"
         if not self.meta_description:
             self.meta_description = self.description[:155] if self.description else ''
+
+        # Auto-synchronize category_ref ForeignKey and category CharField slug
+        if self.category_ref:
+            if not self.category or self.category != self.category_ref.slug:
+                self.category = self.category_ref.slug
+        elif self.category:
+            matched_cat = ProjectCategory.objects.filter(slug=self.category).first()
+            if matched_cat:
+                self.category_ref = matched_cat
+
         super().save(*args, **kwargs)
+        try:
+            from django.core.cache import cache
+            cache.delete('admin_model_counts')
+        except Exception:
+            pass
+
+    def delete(self, *args, **kwargs):
+        res = super().delete(*args, **kwargs)
+        try:
+            from django.core.cache import cache
+            cache.delete('admin_model_counts')
+        except Exception:
+            pass
+        return res
 
     def get_image_src(self):
         if self.image:

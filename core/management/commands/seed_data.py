@@ -5,7 +5,7 @@ Run with: python manage.py seed_data
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from core.models import (
-    Project, ProjectHighlight, ProjectTimelinePhase, ProjectFeature,
+    Project, ProjectCategory, Technology, ProjectHighlight, ProjectTimelinePhase, ProjectFeature,
     WorkshopCard, WorkshopDay,
     PricingPlan, PricingFeature
 )
@@ -23,12 +23,36 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.stdout.write('Seeding database...')
+        self._seed_categories()
         self._seed_projects()
         self._seed_workshops()
         self._seed_pricing()
         if options.get('with_admin'):
             call_command('seed_admin')
+        try:
+            from django.core.cache import cache
+            cache.delete('admin_model_counts')
+        except Exception:
+            pass
         self.stdout.write(self.style.SUCCESS('OK Database seeded successfully!'))
+
+    # ── Categories ────────────────────────────────────────────────────────────
+
+    def _seed_categories(self):
+        categories = [
+            {'name': 'Machine Learning', 'slug': 'ml', 'icon': '🤖', 'order': 1},
+            {'name': 'Django & Backend', 'slug': 'backend', 'icon': '⚙️', 'order': 2},
+            {'name': 'Data Science', 'slug': 'data', 'icon': '📊', 'order': 3},
+            {'name': 'Cloud & DevOps', 'cloud': 'cloud', 'slug': 'cloud', 'icon': '☁️', 'order': 4},
+            {'name': 'NLP & LLMs', 'slug': 'nlp', 'icon': '💬', 'order': 5},
+            {'name': 'Full Stack AI', 'slug': 'full-stack', 'icon': '🚀', 'order': 6},
+        ]
+        for cat in categories:
+            cat_data = {k: v for k, v in cat.items() if k in ('name', 'slug', 'icon', 'order')}
+            ProjectCategory.objects.update_or_create(
+                slug=cat_data['slug'],
+                defaults=cat_data
+            )
 
     # ── Projects ──────────────────────────────────────────────────────────────
 
