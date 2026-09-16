@@ -115,8 +115,10 @@ body.light .blog-filter-btn {
   color: #64748b;
 }
 body.light .blog-filter-btn:hover {
-  color: #0f172a;
-  background: rgba(0,0,0,0.05);
+  color: #2563eb;
+  background: #eff6ff;
+  border-color: rgba(59, 130, 246, 0.4);
+  transform: translateY(-1px);
 }
 body.light .blog-filter-btn.active { color: #fff; }
 

@@ -281,20 +281,21 @@ body.light .projects-count-badge__num {
     border-radius: var(--radius-pill, 9999px);
     border: 1px solid rgba(226, 232, 240, 0.95);
     background: #ffffff;
-    color: #64748b;
+    color: #475569;
     font-family: inherit;
     font-size: 0.84rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .filter-tab:hover {
-    color: #0f172a;
-    background: #f8fafc;
-    border-color: rgba(91, 91, 255, 0.35);
-    transform: translateY(-1px);
+    color: #2563eb !important;
+    background: #eff6ff !important;
+    border-color: rgba(59, 130, 246, 0.45) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.15);
 }
 
 .filter-tab:active {
@@ -302,10 +303,18 @@ body.light .projects-count-badge__num {
 }
 
 .filter-tab.active {
-    background: linear-gradient(135deg, #3b82f6, #6366f1);
-    border-color: transparent;
-    color: #fff;
-    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
+    border-color: transparent !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.35);
+    transform: translateY(-1px);
+}
+
+.filter-tab.active:hover {
+    background: linear-gradient(135deg, #2563eb, #4f46e5) !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.45);
+    transform: translateY(-2px);
 }
 
 .filter-tab .tab-count {
@@ -321,27 +330,48 @@ body.light .projects-count-badge__num {
     transition: all 0.2s ease;
 }
 
-.filter-tab.active .tab-count {
-    background: rgba(255, 255, 255, 0.25);
-    color: #ffffff;
+.filter-tab:hover .tab-count {
+    background: #dbeafe !important;
+    color: #1d4ed8 !important;
+}
+
+.filter-tab.active .tab-count,
+.filter-tab.active:hover .tab-count {
+    background: rgba(255, 255, 255, 0.25) !important;
+    color: #ffffff !important;
 }
 
 body.light .filter-tab {
-    color: #64748b;
+    color: #475569;
     border-color: rgba(226, 232, 240, 0.95);
     background: #ffffff;
 }
 
 body.light .filter-tab:hover {
-    color: #0f172a;
-    background: #f8fafc;
-    border-color: rgba(91, 91, 255, 0.35);
+    color: #2563eb !important;
+    background: #eff6ff !important;
+    border-color: rgba(59, 130, 246, 0.45) !important;
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.15);
+    transform: translateY(-2px);
+}
+
+body.light .filter-tab:hover .tab-count {
+    background: #dbeafe !important;
+    color: #1d4ed8 !important;
 }
 
 body.light .filter-tab.active {
-    color: #fff;
-    border-color: transparent;
-    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    color: #ffffff !important;
+    border-color: transparent !important;
+    background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.35);
+}
+
+body.light .filter-tab.active:hover {
+    color: #ffffff !important;
+    background: linear-gradient(135deg, #2563eb, #4f46e5) !important;
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.45);
+    transform: translateY(-2px);
 }
 
 /* ── Projects breadcrumb ── */

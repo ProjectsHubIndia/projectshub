@@ -1428,11 +1428,25 @@ body.light .project-tag {
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.filter-tab:hover, .filter-tab.active {
-  background: var(--ph-primary);
-  border-color: var(--ph-primary);
+.filter-tab:hover {
+  background: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.4);
+  color: var(--ph-primary, #2563eb) !important;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.15);
+  transform: translateY(-2px);
+}
+.filter-tab.active {
+  background: var(--ph-primary, #2563eb);
+  border-color: var(--ph-primary, #2563eb);
   color: #ffffff !important;
-  box-shadow: 0 4px 16px var(--ph-primary-glow);
+  box-shadow: 0 4px 16px var(--ph-primary-glow, rgba(59, 130, 246, 0.35));
+  transform: translateY(-1px);
+}
+.filter-tab.active:hover {
+  background: var(--ph-primary-hover, #1d4ed8);
+  border-color: var(--ph-primary-hover, #1d4ed8);
+  color: #ffffff !important;
+  box-shadow: 0 6px 20px var(--ph-primary-glow, rgba(59, 130, 246, 0.45));
   transform: translateY(-2px);
 }
 
