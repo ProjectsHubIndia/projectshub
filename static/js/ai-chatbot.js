@@ -244,6 +244,7 @@
             this.teaserTimer = setTimeout(function () {
                 if (!self.isOpen && self.teaser) {
                     self.teaser.classList.add('is-visible');
+                    document.body.classList.add('has-teaser');
                 }
             }, 6000);
         }
@@ -252,6 +253,7 @@
             if (this.teaser) {
                 this.teaser.classList.remove('is-visible');
             }
+            document.body.classList.remove('has-teaser');
             try {
                 sessionStorage.setItem('ph_teaser_dismissed', '1');
             } catch (e) {}

@@ -224,9 +224,9 @@
   {% include "components/footer.html" %}
 
   <!-- ── Back to Top ── -->
-  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+  <button class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top" onclick="window.phScrollToTop ? window.phScrollToTop(event) : window.scrollTo({top: 0, left: 0, behavior: 'smooth'})">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
     </svg>
   </button>
@@ -602,47 +602,20 @@
           if (typeof e.stopPropagation === "function") e.stopPropagation();
         }
 
-        // 1. Native smooth scroll attempts across all standard containers
         try {
           window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-        } catch (err) {}
+        } catch (err) {
+          window.scrollTo(0, 0);
+        }
+
         var scroller = document.scrollingElement || document.documentElement || document.body;
-        if (scroller) {
+        if (scroller && scroller !== document.documentElement) {
           try {
             scroller.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-          } catch (err) {}
-        }
-
-        // 2. High-performance requestAnimationFrame fallback ensuring guaranteed smooth scroll
-        var startY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || (scroller ? scroller.scrollTop : 0) || 0;
-        if (startY <= 0) return;
-
-        var duration = 380;
-        var startTimestamp = null;
-
-        function stepScroll(ts) {
-          if (!startTimestamp) startTimestamp = ts;
-          var elapsed = ts - startTimestamp;
-          var progress = Math.min(elapsed / duration, 1);
-          // easeOutCubic
-          var ease = 1 - Math.pow(1 - progress, 3);
-          var nextY = Math.round(startY * (1 - ease));
-
-          window.scrollTo(0, nextY);
-          if (document.documentElement) document.documentElement.scrollTop = nextY;
-          if (document.body) document.body.scrollTop = nextY;
-          if (document.scrollingElement) document.scrollingElement.scrollTop = nextY;
-
-          if (progress < 1) {
-            window.requestAnimationFrame(stepScroll);
-          } else {
-            window.scrollTo(0, 0);
-            if (document.documentElement) document.documentElement.scrollTop = 0;
-            if (document.body) document.body.scrollTop = 0;
-            if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
+          } catch (err) {
+            scroller.scrollTop = 0;
           }
         }
-        window.requestAnimationFrame(stepScroll);
       };
 
       // Floating Back-to-Top Button Controller
@@ -654,7 +627,7 @@
       function updateBackToTop() {
         if (!btn) return;
         var y = getScrollPosition();
-        btn.classList.toggle("visible", y > 280);
+        btn.classList.toggle("visible", y > 240);
       }
 
       window.addEventListener("scroll", updateBackToTop, { passive: true });
