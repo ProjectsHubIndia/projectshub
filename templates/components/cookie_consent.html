@@ -1,0 +1,105 @@
+<!-- ProjectsHub GDPR & CCPA Compliant Cookie Consent -->
+<div id="cookieConsentBanner" class="ph-cookie-banner" role="dialog" aria-modal="false" aria-labelledby="cookieConsentTitle" aria-describedby="cookieConsentDesc" aria-hidden="true" style="display: none;">
+  <div class="ph-cookie-card">
+    <!-- Header -->
+    <div class="ph-cookie-header">
+      <div class="ph-cookie-title-wrap">
+        <span class="ph-cookie-icon-badge" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/>
+            <path d="M8.5 8.5v.01"/>
+            <path d="M16 15.5v.01"/>
+            <path d="M12 12v.01"/>
+            <path d="M11 17v.01"/>
+            <path d="M7 13v.01"/>
+          </svg>
+        </span>
+        <h3 id="cookieConsentTitle" class="ph-cookie-title">We Value Your Privacy</h3>
+      </div>
+      <button type="button" class="ph-cookie-close-btn" id="cookieCloseBtn" aria-label="Dismiss cookie notice">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Summary Content -->
+    <p id="cookieConsentDesc" class="ph-cookie-desc">
+      We use cookies to enhance your browsing experience, deliver personalized project recommendations, and analyze platform traffic. You can choose your preferences below or accept all. Learn more in our 
+      <a href="{% url 'privacy' %}" class="ph-cookie-link" target="_blank" rel="noopener">Privacy Policy</a>.
+    </p>
+
+    <!-- Collapsible Granular Preferences Panel -->
+    <div id="cookiePrefsPanel" class="ph-cookie-preferences-panel" style="display: none;" aria-hidden="true">
+      <div class="ph-cookie-category-list">
+        <!-- Necessary -->
+        <div class="ph-cookie-category-item">
+          <div class="ph-cookie-cat-info">
+            <div class="ph-cookie-cat-header">
+              <span class="ph-cookie-cat-title">Strictly Necessary</span>
+              <span class="ph-cookie-badge-locked">Always Active</span>
+            </div>
+            <p class="ph-cookie-cat-desc">Essential for platform security, user sessions, CSRF protection, and navigation.</p>
+          </div>
+          <div class="ph-cookie-cat-toggle">
+            <input type="checkbox" id="cookieCatNecessary" checked disabled aria-label="Strictly Necessary Cookies (Always Active)">
+            <label for="cookieCatNecessary" class="ph-toggle-label disabled" aria-hidden="true"></label>
+          </div>
+        </div>
+
+        <!-- Analytics -->
+        <div class="ph-cookie-category-item">
+          <div class="ph-cookie-cat-info">
+            <div class="ph-cookie-cat-header">
+              <span class="ph-cookie-cat-title">Analytics &amp; Performance</span>
+              <span class="ph-cookie-badge-optional">Optional</span>
+            </div>
+            <p class="ph-cookie-cat-desc">Allows us to analyze traffic metrics, page performance, and visitor engagement (e.g. Google Analytics 4).</p>
+          </div>
+          <div class="ph-cookie-cat-toggle">
+            <input type="checkbox" id="cookieCatAnalytics" checked aria-label="Enable Analytics & Performance Cookies">
+            <label for="cookieCatAnalytics" class="ph-toggle-label" aria-hidden="true"></label>
+          </div>
+        </div>
+
+        <!-- Marketing / Personalization -->
+        <div class="ph-cookie-category-item">
+          <div class="ph-cookie-cat-info">
+            <div class="ph-cookie-cat-header">
+              <span class="ph-cookie-cat-title">Marketing &amp; Personalization</span>
+              <span class="ph-cookie-badge-optional">Optional</span>
+            </div>
+            <p class="ph-cookie-cat-desc">Enables tailored workshop suggestions, relevant AI updates, and custom interactive features.</p>
+          </div>
+          <div class="ph-cookie-cat-toggle">
+            <input type="checkbox" id="cookieCatMarketing" checked aria-label="Enable Marketing & Personalization Cookies">
+            <label for="cookieCatMarketing" class="ph-toggle-label" aria-hidden="true"></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions Bar -->
+    <div class="ph-cookie-actions">
+      <div class="ph-cookie-btn-group-primary">
+        <button type="button" class="ph-cookie-btn ph-cookie-btn-primary" id="cookieAcceptAllBtn">
+          <span>Accept All</span>
+        </button>
+        <button type="button" class="ph-cookie-btn ph-cookie-btn-secondary" id="cookieRejectBtn">
+          <span>Reject Non-Essential</span>
+        </button>
+      </div>
+      
+      <div class="ph-cookie-btn-group-secondary">
+        <button type="button" class="ph-cookie-btn-link" id="cookiePrefsToggleBtn" aria-expanded="false" aria-controls="cookiePrefsPanel">
+          <span class="prefs-text-default">Manage Preferences</span>
+          <span class="prefs-text-active" style="display: none;">Hide Preferences</span>
+        </button>
+        <button type="button" class="ph-cookie-btn ph-cookie-btn-save" id="cookieSaveCustomBtn" style="display: none;">
+          <span>Save Preferences</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
