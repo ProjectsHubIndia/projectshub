@@ -154,7 +154,7 @@
             <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:24px;text-align:center;">
               {% for item in blk.data.items %}
                 <div class="stat-card" style="padding:22px 18px;background:rgba(30,41,59,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:12px;">
-                  <div class="stat-number" style="font-size:36px;font-weight:800;color:{{ item.accent|default:'#38bdf8' }};margin-bottom:6px;">
+                  <div class="stat-number" data-accent="{{ item.accent|default:'#38bdf8' }}" style="font-size:36px;font-weight:800;color:#38bdf8;margin-bottom:6px;">
                     {{ item.number }}
                   </div>
                   <div style="font-size:13px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">
@@ -557,4 +557,12 @@
   {% endfor %}
 
 </div>
+
+<script>
+  (function() {
+    document.querySelectorAll('.stat-number[data-accent]').forEach(function(el) {
+      if (el.dataset.accent) el.style.color = el.dataset.accent;
+    });
+  })();
+</script>
 {% endblock %}
