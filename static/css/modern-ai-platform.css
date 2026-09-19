@@ -1446,4 +1446,45 @@ h1 {
   .c-checkout-card { padding: 18px 16px; }
 }
 
+/* ── 24. WCAG 2.2 AA ACCESSIBILITY & FOCUS HARNESS ── */
+:focus-visible {
+  outline: 2px solid #38bdf8 !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.45) !important;
+}
+
+.skip-to-content {
+  position: absolute;
+  top: -100px;
+  left: 24px;
+  z-index: 99999;
+  padding: 12px 22px;
+  background: #0284c7;
+  color: #ffffff !important;
+  border-radius: var(--p-radius-md);
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.7);
+  transition: top var(--p-transition-fast);
+}
+
+.skip-to-content:focus {
+  top: 24px;
+}
+
+/* Mobile Touch Target Minimum Area (WCAG 2.2 SC 2.5.8) */
+@media (max-width: 768px) {
+  .p-btn,
+  .p-filter-pill,
+  .p-nav-link,
+  .c-announcement-link,
+  .c-meter-pill {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+
 

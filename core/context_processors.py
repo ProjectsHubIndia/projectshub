@@ -62,13 +62,17 @@ def site_context(request):
         try:
             site_url = request.build_absolute_uri('/').rstrip('/')
             current_domain = request.get_host()
+            if 'projectshub.co.in' in site_url or getattr(settings, 'IS_PRODUCTION', False):
+                site_url = site_url.replace('http://', 'https://')
         except Exception:
             pass
     if not site_url:
         site_url = getattr(settings, 'SITE_URL', 'https://projectshub.co.in').rstrip('/')
+        if 'projectshub.co.in' in site_url:
+            site_url = site_url.replace('http://', 'https://')
         current_domain = getattr(settings, 'SITE_DOMAIN', 'projectshub.co.in')
 
-    scheme = 'https' if (request and request.is_secure()) else 'http'
+    scheme = 'https' if (request and request.is_secure()) or ('projectshub.co.in' in current_domain) else 'http'
 
     context = {
         'site_settings': settings_obj,

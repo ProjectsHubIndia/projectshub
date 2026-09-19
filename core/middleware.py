@@ -22,7 +22,7 @@ class RedirectMiddleware(MiddlewareMixin):
             return HttpResponsePermanentRedirect(target)
 
         # Enforce HTTPS in production when accessed over plain HTTP
-        if not request.is_secure() and host == 'projectshub.co.in' and not settings.DEBUG:
+        if not request.is_secure() and host == 'projectshub.co.in' and getattr(settings, 'IS_PRODUCTION', False) and not settings.DEBUG:
             target = f"https://projectshub.co.in{request.get_full_path()}"
             return HttpResponsePermanentRedirect(target)
 
@@ -57,9 +57,14 @@ class SecurityHeadersMiddleware(MiddlewareMixin):
     """
     def process_response(self, request, response):
         response['X-Content-Type-Options'] = 'nosniff'
+        response['X-Frame-Options'] = 'SAMEORIGIN'
         response['Referrer-Policy'] = 'strict-origin-when-cross-origin'
         response['Permissions-Policy'] = 'camera=(), microphone=(), geolocation=()'
         response['Cross-Origin-Opener-Policy'] = 'same-origin-allow-popups'
+        
+        # Enforce HSTS for secure or production requests
+        if request.is_secure() or getattr(settings, 'IS_PRODUCTION', False) or 'projectshub.co.in' in request.get_host():
+            response['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains; preload'
         
         # Defense-in-depth Content Security Policy
         if 'Content-Security-Policy' not in response:
@@ -67,7 +72,7 @@ class SecurityHeadersMiddleware(MiddlewareMixin):
                 "default-src 'self' https:; "
                 "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://www.googletagmanager.com https://www.google-analytics.com; "
                 "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; "
-                "font-src 'self' https://fonts.gstatic.com data:; "
+                "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net data:; "
                 "img-src 'self' data: https: blob:; "
                 "connect-src 'self' https: https://www.google-analytics.com https://region1.google-analytics.com; "
                 "frame-src 'self' https:; "

@@ -18,11 +18,16 @@ DEFAULT_ROBOTS = "index, follow, max-image-preview:large, max-snippet:-1, max-vi
 def get_base_url(request=None):
     if request:
         try:
-            return request.build_absolute_uri('/').rstrip('/')
+            uri = request.build_absolute_uri('/').rstrip('/')
+            if 'projectshub.co.in' in uri or getattr(settings, 'IS_PRODUCTION', False):
+                return uri.replace('http://', 'https://')
+            return uri
         except Exception:
             pass
     site_url = getattr(settings, 'SITE_URL', '').rstrip('/')
     if site_url:
+        if 'projectshub.co.in' in site_url:
+            return site_url.replace('http://', 'https://')
         return site_url
     return DEFAULT_DOMAIN.rstrip('/')
 
@@ -58,7 +63,7 @@ def build_website_schema(base_url):
         "url": base_url,
         "potentialAction": {
             "@type": "SearchAction",
-            "target": f"{base_url}/projects/?search={{search_term_string}}",
+            "target": f"{base_url}/projects/?q={{search_term_string}}",
             "query-input": "required name=search_term_string"
         }
     }

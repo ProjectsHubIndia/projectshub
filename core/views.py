@@ -745,6 +745,8 @@ def api_blog(request):
 
 def robots_txt(request):
     base_url = get_base_url(request)
+    if 'projectshub.co.in' in base_url:
+        base_url = base_url.replace('http://', 'https://')
     lines = [
         'User-agent: *',
         'Allow: /',
@@ -763,6 +765,10 @@ def robots_txt(request):
 
 def sitemap_xml(request):
     base_url = get_base_url(request)
+    if 'projectshub.co.in' in base_url:
+        base_url = base_url.replace('http://', 'https://')
+    today_str = datetime.utcnow().strftime("%Y-%m-%d")
+
     xml = ['<?xml version="1.0" encoding="UTF-8"?>']
     xml.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
 
@@ -788,23 +794,47 @@ def sitemap_xml(request):
     for path, priority, freq in static_pages:
         xml.append('  <url>')
         xml.append(f'    <loc>{base_url}{path}</loc>')
+        xml.append(f'    <lastmod>{today_str}</lastmod>')
         xml.append(f'    <changefreq>{freq}</changefreq>')
         xml.append(f'    <priority>{priority}</priority>')
         xml.append('  </url>')
 
-    for p in Project.objects.filter(is_active=True).order_by('-created_at'):
-        loc = f"{base_url}/projects/{p.slug}/" if p.slug else f"{base_url}/projects/{p.id}/"
+    # Published Dynamic Pages (e.g. /about/, /contact-us/)
+    for page in Page.objects.filter(status='published').order_by('-updated_at'):
+        page_mod = (page.updated_at or page.created_at).strftime("%Y-%m-%d") if (page.updated_at or page.created_at) else today_str
         xml.append('  <url>')
-        xml.append(f'    <loc>{loc}</loc>')
+        xml.append(f'    <loc>{base_url}/{page.slug}/</loc>')
+        xml.append(f'    <lastmod>{page_mod}</lastmod>')
         xml.append('    <changefreq>monthly</changefreq>')
         xml.append('    <priority>0.7</priority>')
         xml.append('  </url>')
 
+    # Active Projects
+    for p in Project.objects.filter(is_active=True).order_by('-created_at'):
+        loc = f"{base_url}/projects/{p.slug}/" if p.slug else f"{base_url}/projects/{p.id}/"
+        p_mod = (p.updated_at or p.created_at).strftime("%Y-%m-%d") if (p.updated_at or p.created_at) else today_str
+        xml.append('  <url>')
+        xml.append(f'    <loc>{loc}</loc>')
+        xml.append(f'    <lastmod>{p_mod}</lastmod>')
+        xml.append('    <changefreq>weekly</changefreq>')
+        xml.append('    <priority>0.8</priority>')
+        xml.append('  </url>')
+
+    # Active Blog Posts
     for b in BlogPost.objects.filter(is_active=True).order_by('-published_at'):
+        b_mod = b.published_at.strftime("%Y-%m-%d") if b.published_at else today_str
         xml.append('  <url>')
         xml.append(f'    <loc>{base_url}/blog/{b.slug}/</loc>')
-        if b.published_at:
-            xml.append(f'    <lastmod>{b.published_at.strftime("%Y-%m-%d")}</lastmod>')
+        xml.append(f'    <lastmod>{b_mod}</lastmod>')
+        xml.append('    <changefreq>monthly</changefreq>')
+        xml.append('    <priority>0.7</priority>')
+        xml.append('  </url>')
+
+    # Active Workshops
+    for w in WorkshopCard.objects.filter(is_active=True):
+        xml.append('  <url>')
+        xml.append(f'    <loc>{base_url}/workshop/{w.id}/</loc>')
+        xml.append(f'    <lastmod>{today_str}</lastmod>')
         xml.append('    <changefreq>monthly</changefreq>')
         xml.append('    <priority>0.7</priority>')
         xml.append('  </url>')
