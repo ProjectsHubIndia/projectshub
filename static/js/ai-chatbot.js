@@ -183,6 +183,7 @@
 
             if (this.toggle) {
                 this.toggle.addEventListener('click', function (e) {
+                    if (e && e.preventDefault) e.preventDefault();
                     e.stopPropagation();
                     self.toggleChat();
                 });
