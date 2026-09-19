@@ -592,21 +592,84 @@
     })();
   </script>
 
-  <!-- ── Back to top ── -->
+  <!-- ── Universal Bulletproof Smooth Scroll-to-Top Engine ── -->
   <script>
     (function () {
-      var btn = document.getElementById("backToTop");
-      if (!btn) return;
+      // Expose globally for footer, back-to-top, and any inline triggers
+      window.phScrollToTop = function (e) {
+        if (e) {
+          if (typeof e.preventDefault === "function") e.preventDefault();
+          if (typeof e.stopPropagation === "function") e.stopPropagation();
+        }
 
-      function onScroll() {
-        btn.classList.toggle("visible", (window.scrollY || window.pageYOffset) > 400);
+        // 1. Native smooth scroll attempts across all standard containers
+        try {
+          window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+        } catch (err) {}
+        var scroller = document.scrollingElement || document.documentElement || document.body;
+        if (scroller) {
+          try {
+            scroller.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+          } catch (err) {}
+        }
+
+        // 2. High-performance requestAnimationFrame fallback ensuring guaranteed smooth scroll
+        var startY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || (scroller ? scroller.scrollTop : 0) || 0;
+        if (startY <= 0) return;
+
+        var duration = 380;
+        var startTimestamp = null;
+
+        function stepScroll(ts) {
+          if (!startTimestamp) startTimestamp = ts;
+          var elapsed = ts - startTimestamp;
+          var progress = Math.min(elapsed / duration, 1);
+          // easeOutCubic
+          var ease = 1 - Math.pow(1 - progress, 3);
+          var nextY = Math.round(startY * (1 - ease));
+
+          window.scrollTo(0, nextY);
+          if (document.documentElement) document.documentElement.scrollTop = nextY;
+          if (document.body) document.body.scrollTop = nextY;
+          if (document.scrollingElement) document.scrollingElement.scrollTop = nextY;
+
+          if (progress < 1) {
+            window.requestAnimationFrame(stepScroll);
+          } else {
+            window.scrollTo(0, 0);
+            if (document.documentElement) document.documentElement.scrollTop = 0;
+            if (document.body) document.body.scrollTop = 0;
+            if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
+          }
+        }
+        window.requestAnimationFrame(stepScroll);
+      };
+
+      // Floating Back-to-Top Button Controller
+      var btn = document.getElementById("backToTop");
+      function getScrollPosition() {
+        return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || (document.scrollingElement ? document.scrollingElement.scrollTop : 0) || 0;
       }
 
-      window.addEventListener("scroll", onScroll, { passive: true });
-      onScroll();
+      function updateBackToTop() {
+        if (!btn) return;
+        var y = getScrollPosition();
+        btn.classList.toggle("visible", y > 280);
+      }
 
-      btn.addEventListener("click", function () {
-        window.scrollTo({ top: 0, behavior: "smooth" });
+      window.addEventListener("scroll", updateBackToTop, { passive: true });
+      updateBackToTop();
+
+      if (btn) {
+        btn.addEventListener("click", window.phScrollToTop);
+      }
+
+      // Delegate any click on top buttons and back-to-top links
+      document.addEventListener("click", function (e) {
+        var topTrigger = e.target.closest(".footer-top-btn, [data-scroll-top], .legal-back-top a, a[href='#top'], .back-to-top");
+        if (topTrigger) {
+          window.phScrollToTop(e);
+        }
       });
     })();
   </script>
