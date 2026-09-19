@@ -2,18 +2,18 @@
 {% load static %}
 
 {# ═══════════════════════════════════════
-SEO METADATA
+SEO METADATA — CREEM.IO BLUEPRINT
 ═══════════════════════════════════════ #}
-{% block title %}ProjectsHub — Premium AI Platform, Real-World Projects & Free Developer Tools{% endblock %}
+{% block title %}ProjectsHub — Build with AI. Ship with ProjectsHub.{% endblock %}
 
-{% block meta_description %}Production-grade AI & machine learning architectures, automated developer utilities, and bespoke enterprise AI development engineered for students, builders, and modern enterprises.{% endblock %}
+{% block meta_description %}ProjectsHub is the production platform for the AI era. Master real-world machine learning architectures, access 10+ free developer tools, and deploy custom autonomous agents and RAG pipelines.{% endblock %}
 
-{% block meta_keywords %}AI platform, machine learning projects, custom AI development, free AI tools, FastAPI, Django, LLM agents, RAG, PyTorch, developer studio{% endblock %}
+{% block meta_keywords %}AI platform, machine learning projects, custom AI development, free AI tools, FastAPI, Django, LLM agents, RAG, PyTorch, developer studio, MCP agent{% endblock %}
 
 {% block canonical %}{{ site_url }}/{% endblock %}
 
-{% block og_title %}ProjectsHub — Premium AI Platform, Real-World Projects & Free Developer Tools{% endblock %}
-{% block og_description %}Production-grade AI architectures, free developer tools with zero signup, and custom enterprise AI development.{% endblock %}
+{% block og_title %}ProjectsHub — Build with AI. Ship with ProjectsHub.{% endblock %}
+{% block og_description %}Production-grade AI architectures, free developer utilities with zero signup, and custom enterprise AI engineering.{% endblock %}
 {% block og_url %}{{ site_url }}/{% endblock %}
 
 {% block schema %}
@@ -25,7 +25,7 @@ SEO METADATA
       "@type": "WebSite",
       "name": "ProjectsHub",
       "url": "{{ site_url }}/",
-      "description": "Production-grade AI architectures, free developer tools, and bespoke enterprise AI engineering.",
+      "description": "Production platform for the AI era. Real-world machine learning architectures, free developer tools, and custom enterprise AI engineering.",
       "potentialAction": {
         "@type": "SearchAction",
         "target": "{{ site_url }}/projects/?q={search_term_string}",
@@ -48,7 +48,7 @@ SEO METADATA
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "Are the AI tools completely free to use?",
+          "name": "Are the AI developer tools completely free to use?",
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "Yes. All developer tools on ProjectsHub — including resume builders, text analyzers, and code utilities — are 100% free with no registration or credit card required."
@@ -64,10 +64,10 @@ SEO METADATA
         },
         {
           "@type": "Question",
-          "name": "Can businesses hire ProjectsHub for custom AI engineering?",
+          "name": "Can my AI agent interact with ProjectsHub?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes. We engineer end-to-end custom AI agents, fine-tuned domain LLMs, RAG pipelines, and enterprise automation software for startups and scaling companies."
+            "text": "Yes. ProjectsHub supports MCP (Model Context Protocol), CLI scripts, and clean REST APIs so Claude Code, Cursor, or your autonomous agent can inspect architectures and trigger actions programmatically."
           }
         },
         {
@@ -89,231 +89,181 @@ SEO METADATA
 <div class="main-body">
 
   {# ─────────────────────────────────────────────
-     1. HERO SECTION (AI Platform Positioning)
+     1. HERO SECTION (Creem.io Dual Mockup Layout)
   ───────────────────────────────────────────── #}
-  <section class="p-hero">
+  <section class="p-hero" id="terminal">
     <div class="p-hero-glow"></div>
     <div class="p-container">
-      <div class="row align-items-center g-5">
-        
-        <!-- Left: Value Proposition -->
-        <div class="col-lg-6">
-          <div class="p-badge p-badge--cyan mb-3">
-            <span class="p-pulse-dot"></span>
-            <span>⚡ AI-POWERED PLATFORM &amp; DEV STUDIO</span>
-          </div>
-
-          <h1 class="p-hero-title">
-            Build With AI.<br>
-            <span class="p-hero-title-accent">Learn From Real Projects.</span><br>
-            Automate What Matters.
-          </h1>
-
-          <p class="p-hero-desc">
-            Production-ready machine learning architectures, automated developer utilities, and custom AI development engineered for students, builders, and modern enterprises.
-          </p>
-
-          <div class="d-flex flex-wrap gap-3 align-items-center mb-4">
-            <a href="#projects" class="p-btn p-btn--primary p-btn--lg">
-              <i class="fa-solid fa-layer-group"></i>
-              <span>Explore AI Projects</span>
-            </a>
-            <a href="#tools" class="p-btn p-btn--secondary p-btn--lg">
-              <i class="fa-solid fa-wrench"></i>
-              <span>Try Free Tools</span>
-            </a>
-            <a href="{% url 'contact' %}?type=custom_ai" class="p-btn p-btn--ghost p-btn--lg">
-              <span>Build With ProjectsHub &rarr;</span>
-            </a>
-          </div>
-
-          <!-- Quick Keyboard Shortcut Hint -->
-          <div class="d-flex align-items-center gap-2" style="font-size: 12.5px; color: var(--p-text-tertiary);">
-            <span>Press</span>
-            <kbd style="padding: 2px 6px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; font-family: var(--p-font-mono); color: #fff; font-size: 11px;">⌘K</kbd>
-            <span>or</span>
-            <kbd style="padding: 2px 6px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; font-family: var(--p-font-mono); color: #fff; font-size: 11px;">Ctrl+K</kbd>
-            <span>for quick command navigation</span>
-          </div>
+      
+      <!-- Top Eyebrow & Headline -->
+      <div style="max-width: 820px; margin-bottom: 40px;">
+        <div class="p-badge p-badge--cyan mb-3">
+          <span class="p-pulse-dot"></span>
+          <span>CREEM-INSPIRED PLATFORM ARCHITECTURE</span>
         </div>
 
-        <!-- Right: Interactive AI Terminal -->
-        <div class="col-lg-6">
-          <div class="p-hero-terminal">
-            <div class="p-terminal-header">
-              <div class="p-terminal-dots">
-                <span class="p-terminal-dot p-terminal-dot--red"></span>
-                <span class="p-terminal-dot p-terminal-dot--yellow"></span>
-                <span class="p-terminal-dot p-terminal-dot--green"></span>
-              </div>
-              <div class="p-terminal-title">projectshub-agent-runtime v2.4</div>
-              <div class="p-badge p-badge--emerald" style="padding: 2px 8px; font-size: 10.5px;">
-                <span class="p-pulse-dot" style="width: 5px; height: 5px;"></span> LIVE
-              </div>
-            </div>
+        <h1 class="p-hero-title">
+          Build with AI.<br>
+          <span class="p-hero-title-accent">Ship with ProjectsHub.</span>
+        </h1>
 
-            <!-- Terminal Tabs -->
-            <div class="p-terminal-tabs">
-              <button type="button" class="p-terminal-tab active" data-tab="workflow">Workflow</button>
-              <button type="button" class="p-terminal-tab" data-tab="code">Inference Code</button>
-              <button type="button" class="p-terminal-tab" data-tab="metrics">Telemetry</button>
-            </div>
-
-            <!-- Terminal Code Output Body -->
-            <pre class="p-terminal-body" id="heroTerminalBody" style="margin: 0;"><span style="color:#64748b;"># ── ProjectsHub Multi-Agent Pipeline ──</span>
-<span style="color:#38bdf8;">from</span> projectshub.agents <span style="color:#38bdf8;">import</span> SupervisorAgent, CodeEvaluator
-
-agent = SupervisorAgent(
-    model=<span style="color:#a855f7;">"claude-3-7-sonnet"</span>,
-    tools=[<span style="color:#10b981;">"rag_retriever"</span>, <span style="color:#10b981;">"docker_sandbox"</span>, <span style="color:#10b981;">"api_validator"</span>],
-    memory=<span style="color:#f59e0b;">"stateful_vector_store"</span>
-)
-
-<span style="color:#10b981;">[OK]</span> Agent Pipeline Initialized. Uptime: 99.98%
-<span style="color:#38bdf8;">[200 OK]</span> Live Stream connected at wss://api.projectshub.co.in/v1/stream</pre>
-
-            <!-- Micro Metrics Bar -->
-            <div style="background: #0d1017; border-top: 1px solid rgba(255,255,255,0.06); padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 16px; font-size: 11.5px; color: var(--p-text-secondary);">
-              <div><span style="color: var(--p-text-tertiary);">Latency:</span> <strong style="color: #34d399;">14ms</strong></div>
-              <div><span style="color: var(--p-text-tertiary);">Accuracy:</span> <strong style="color: #38bdf8;">99.4%</strong></div>
-              <div><span style="color: var(--p-text-tertiary);">Model:</span> <strong style="color: #e2e8f0;">Llama 3 / RAG Hybrid</strong></div>
-              <div style="margin-left: auto;"><span style="color: var(--p-text-tertiary);">Status:</span> <strong style="color: #34d399;">Operational</strong></div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  {# ─────────────────────────────────────────────
-     2. PROOF & AUTHORITY STRIP (Trust Bar)
-  ───────────────────────────────────────────── #}
-  <section class="p-trust-bar">
-    <div class="p-container">
-      <div class="p-trust-grid">
-        {% if stat_items_numbers %}
-          {% for stat in stat_items_numbers %}
-            <div>
-              <div class="p-trust-number">{{ stat.value }}</div>
-              <div class="p-trust-label">{{ stat.label }}</div>
-            </div>
-          {% endfor %}
-        {% else %}
-          <div>
-            <div class="p-trust-number">50+</div>
-            <div class="p-trust-label">AI &amp; Full-Stack Projects</div>
-          </div>
-          <div>
-            <div class="p-trust-number">10+</div>
-            <div class="p-trust-label">Free AI Developer Tools</div>
-          </div>
-          <div>
-            <div class="p-trust-number">500+</div>
-            <div class="p-trust-label">Active Builders &amp; Engineers</div>
-          </div>
-          <div>
-            <div class="p-trust-number">8+</div>
-            <div class="p-trust-label">Years Production Experience</div>
-          </div>
-        {% endif %}
-      </div>
-    </div>
-  </section>
-
-  {# ─────────────────────────────────────────────
-     3. AUDIENCE SPLIT (Students vs. Business)
-  ───────────────────────────────────────────── #}
-  <section class="p-audience-split">
-    <div class="p-container">
-      <div class="p-section-header">
-        <div class="p-section-eyebrow">
-          <i class="fa-solid fa-compass"></i>
-          <span>Tailored For Your Goals</span>
-        </div>
-        <h2 class="p-section-title">Built For Builders. Engineered For Scale.</h2>
-        <p class="p-section-desc">
-          Whether you are an engineer mastering production AI or an enterprise automating mission-critical workflows, ProjectsHub accelerates your path to execution.
+        <p class="p-hero-desc">
+          ProjectsHub is the production platform for the AI era. Master real-world machine learning architectures, access free developer tools, and deploy custom autonomous agents, RAG pipelines, and enterprise automation.
         </p>
+
+        <div class="d-flex flex-wrap gap-3 align-items-center">
+          <a href="#projects" class="p-btn p-btn--primary p-btn--lg">
+            <span>Start building</span>
+          </a>
+          <a href="#terminal" class="p-btn p-btn--secondary p-btn--lg">
+            <i class="fa-solid fa-terminal"></i>
+            <span>Set up with your agent</span>
+          </a>
+          <a href="#tools" class="p-btn p-btn--ghost p-btn--lg">
+            <span>Try Free Tools &rarr;</span>
+          </a>
+        </div>
       </div>
 
-      <div class="row g-4">
-        <!-- Students & Developers Card -->
-        <div class="col-lg-6">
-          <div class="p-card p-audience-card p-audience-card--student">
-            <div>
-              <div class="p-badge p-badge--cyan mb-3">ACADEMIC &amp; DEVELOPER EXCELLENCE</div>
-              <h3 style="font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 12px;">
-                Master AI by building production systems.
-              </h3>
-              <p style="font-size: 15px; color: var(--p-text-secondary); line-height: 1.6;">
-                Access verified architectures with clean source code, system documentation, and 1-on-1 mentorship for final year projects and portfolio building.
-              </p>
+      <!-- Creem Hero Interactive Dual Visual (Terminal + Checkout Card) -->
+      <div class="c-hero-interactive-grid">
+        
+        <!-- Left: Terminal Simulation -->
+        <div class="p-hero-terminal">
+          <div class="p-terminal-header">
+            <div class="p-terminal-dots">
+              <span class="p-terminal-dot p-terminal-dot--red"></span>
+              <span class="p-terminal-dot p-terminal-dot--yellow"></span>
+              <span class="p-terminal-dot p-terminal-dot--green"></span>
+            </div>
+            <div class="p-terminal-title">Terminal &bull; projectshub-agent-runtime v2.4</div>
+            <div class="p-badge p-badge--emerald" style="padding: 2px 8px; font-size: 10.5px;">
+              <span class="p-pulse-dot" style="width: 5px; height: 5px;"></span> LIVE
+            </div>
+          </div>
 
-              <ul class="p-audience-feature-list">
-                <li class="p-audience-feature-item">
-                  <i class="fa-solid fa-circle-check"></i>
-                  <span>Complete source code, setup scripts &amp; vetted datasets</span>
-                </li>
-                <li class="p-audience-feature-item">
-                  <i class="fa-solid fa-circle-check"></i>
-                  <span>Architecture flowcharts, DFD diagrams &amp; synopsis reports</span>
-                </li>
-                <li class="p-audience-feature-item">
-                  <i class="fa-solid fa-circle-check"></i>
-                  <span>1-on-1 technical mentor guidance for viva &amp; defense</span>
-                </li>
-                <li class="p-audience-feature-item">
-                  <i class="fa-solid fa-circle-check"></i>
-                  <span>Modern tech stack: Python, PyTorch, FastAPI &amp; Django</span>
-                </li>
-              </ul>
+          <!-- Terminal Tabs -->
+          <div class="p-terminal-tabs">
+            <button type="button" class="p-terminal-tab active" data-tab="cli">CLI Setup</button>
+            <button type="button" class="p-terminal-tab" data-tab="workflow">Multi-Agent</button>
+            <button type="button" class="p-terminal-tab" data-tab="code">Inference Code</button>
+            <button type="button" class="p-terminal-tab" data-tab="metrics">Telemetry</button>
+          </div>
+
+          <!-- Terminal Body -->
+          <pre class="p-terminal-body" id="heroTerminalBody" style="margin: 0; min-height: 250px;"><span style="color:#64748b;"># ── ProjectsHub CLI &amp; MCP Agent Setup ──</span>
+<span style="color:#38bdf8;">➜</span> <span style="color:#f8fafc;">Read https://projectshub.co.in/SKILL.md and set up the ProjectsHub CLI</span>
+<span style="color:#10b981;">✔ Installed &amp; authenticated</span> <span style="color:#64748b;">[projectshub-agent-runtime v2.4]</span>
+
+<span style="color:#38bdf8;">➜</span> <span style="color:#f8fafc;">Deploy autonomous multi-agent RAG pipeline with PyTorch &amp; FastAPI gateway</span>
+<span style="color:#38bdf8;">✔ Architecture initialized.</span> Live inference gateway:
+<span style="color:#a855f7;">https://api.projectshub.co.in/v1/predict</span> <span style="color:#10b981;">(14ms latency)</span></pre>
+
+          <!-- Micro Metrics -->
+          <div style="background: #0d1017; border-top: 1px solid rgba(255,255,255,0.06); padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 14px; font-size: 11.5px; color: var(--p-text-secondary); font-family: var(--p-font-mono);">
+            <div><span style="color: var(--p-text-tertiary);">Latency:</span> <strong style="color: #34d399;">14ms</strong></div>
+            <div><span style="color: var(--p-text-tertiary);">Accuracy:</span> <strong style="color: #38bdf8;">99.4%</strong></div>
+            <div><span style="color: var(--p-text-tertiary);">MCP Client:</span> <strong style="color: #e2e8f0;">Claude Code / Cursor</strong></div>
+          </div>
+        </div>
+
+        <!-- Right: Dynamic Checkout & Live Project Card -->
+        <div class="c-checkout-card">
+          <div>
+            <div class="c-checkout-header">
+              <div class="c-checkout-product">Autonomous Multi-Agent AI System</div>
+              <div class="c-checkout-price">$99</div>
+            </div>
+            <div class="c-checkout-sub">by ProjectsHub Studio &bull; Verified Architecture</div>
+
+            <!-- Breakdown -->
+            <div class="c-checkout-breakdown">
+              <div class="c-breakdown-row">
+                <span>Production Source Code &amp; Datasets</span>
+                <span>$75.24</span>
+              </div>
+              <div class="c-breakdown-row">
+                <span>Architecture Diagrams &amp; Viva Defense Prep</span>
+                <span>$23.76</span>
+              </div>
+              <div class="c-breakdown-row total">
+                <span>Total Instant Access</span>
+                <span style="color: #34d399;">$99.00</span>
+              </div>
             </div>
 
-            <div class="pt-3">
-              <a href="{% url 'projects' %}?audience=student" class="p-btn p-btn--primary p-btn--lg" style="width: 100%;">
-                <span>Explore Student Projects &rarr;</span>
-              </a>
+            <a href="{% url 'projects' %}" class="p-btn p-btn--primary p-btn--sm" style="width: 100%;">
+              <span>Instant Architecture Access &rarr;</span>
+            </a>
+          </div>
+
+          <!-- Agent Notification Toast (Creem style) -->
+          <div class="c-agent-toast">
+            <i class="fa-solid fa-bell c-agent-toast-icon"></i>
+            <div>
+              <div class="c-agent-toast-title">ProjectsHub Agent</div>
+              <div class="c-agent-toast-msg">Pipeline initialized with 99.4% benchmarked accuracy. Ready for Claude Code &amp; Cursor.</div>
             </div>
           </div>
         </div>
 
-        <!-- Businesses & Startups Card -->
-        <div class="col-lg-6">
-          <div class="p-card p-audience-card p-audience-card--business">
-            <div>
-              <div class="p-badge p-badge--purple mb-3">ENTERPRISE AI DEVELOPMENT</div>
-              <h3 style="font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 12px;">
-                Deploy bespoke AI &amp; automation solutions.
-              </h3>
-              <p style="font-size: 15px; color: var(--p-text-secondary); line-height: 1.6;">
-                From custom RAG pipelines to autonomous LLM agents and SaaS web platforms. Built to scale, engineered for reliability.
-              </p>
+      </div>
 
-              <ul class="p-audience-feature-list">
-                <li class="p-audience-feature-item">
-                  <i class="fa-solid fa-circle-check"></i>
-                  <span>Autonomous AI agents &amp; robotic workflow automation</span>
-                </li>
-                <li class="p-audience-feature-item">
-                  <i class="fa-solid fa-circle-check"></i>
-                  <span>Proprietary document intelligence &amp; high-accuracy RAG</span>
-                </li>
-                <li class="p-audience-feature-item">
-                  <i class="fa-solid fa-circle-check"></i>
-                  <span>End-to-end web architectures, high-concurrency APIs &amp; microservices</span>
-                </li>
-                <li class="p-audience-feature-item">
-                  <i class="fa-solid fa-circle-check"></i>
-                  <span>SOC2-ready cloud deployment, strict data privacy &amp; zero vendor lock-in</span>
-                </li>
-              </ul>
+      <!-- 3-Column Core Value Pillars (Directly below Hero) -->
+      <div class="c-pillar-grid">
+        <div class="c-pillar-card">
+          <div style="color: #38bdf8; font-size: 22px; margin-bottom: 12px;"><i class="fa-solid fa-cubes-stacked"></i></div>
+          <h3 class="c-pillar-heading">Build production systems</h3>
+          <p class="c-pillar-body">Take verified PyTorch, FastAPI, and Django architectures with clean source code, setup scripts, and vetted datasets.</p>
+        </div>
+
+        <div class="c-pillar-card">
+          <div style="color: #34d399; font-size: 22px; margin-bottom: 12px;"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+          <h3 class="c-pillar-heading">Use free AI utilities</h3>
+          <p class="c-pillar-body">10+ instant browser tools for resume parsing, text analysis, and code generation with zero signup or API friction.</p>
+        </div>
+
+        <div class="c-pillar-card">
+          <div style="color: #c084fc; font-size: 22px; margin-bottom: 12px;"><i class="fa-solid fa-network-wired"></i></div>
+          <h3 class="c-pillar-heading">Deploy custom intelligence</h3>
+          <p class="c-pillar-body">Custom LLM agents, document intelligence RAG, and microservices engineered for scaling startups and enterprises.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  {# ─────────────────────────────────────────────
+     2. NARRATIVE HOOK: "Build in a weekend. Deploy by Monday."
+  ───────────────────────────────────────────── #}
+  <section class="c-narrative-hook">
+    <div class="p-container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-7">
+          <h2 class="c-narrative-title">
+            Build in a weekend.<br>
+            Deploy by Monday.
+          </h2>
+          <p class="c-narrative-body mb-3">
+            Builders still stitch together messy tutorials, outdated GitHub repos, and broken dependencies before they get a single model running.
+          </p>
+          <p class="c-narrative-body mb-4">
+            ProjectsHub is everything after the idea: tested codebases, vetted model weights, robust APIs, and 1-on-1 mentor guidance so you can ship faster.
+          </p>
+          <a href="#projects" class="p-btn p-btn--primary p-btn--lg">
+            <span>Start building &rarr;</span>
+          </a>
+        </div>
+
+        <div class="col-lg-5">
+          <div class="p-card p-4" style="background: #0d1016;">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <span class="p-pulse-dot"></span>
+              <span style="font-size: 13px; font-weight: 600; color: #f8fafc;">Engineering Velocity Metric</span>
             </div>
-
-            <div class="pt-3">
-              <a href="{% url 'contact' %}?type=business" class="p-btn p-btn--primary p-btn--lg" style="width: 100%; background: #6366f1; border-color: rgba(99, 102, 241, 0.4);">
-                <span>Build an AI Solution &rarr;</span>
-              </a>
+            <div style="font-size: 42px; font-weight: 800; color: #34d399; letter-spacing: -0.04em;">10x Faster</div>
+            <div style="font-size: 14px; color: var(--p-text-secondary); margin-top: 4px;">
+              From conceptual idea to fully working, production-ready AI implementation.
             </div>
           </div>
         </div>
@@ -322,7 +272,7 @@ agent = SupervisorAgent(
   </section>
 
   {# ─────────────────────────────────────────────
-     4. PROJECT SHOWCASE (AI Project Marketplace)
+     3. PROJECT SHOWCASE: "Everything you need"
   ───────────────────────────────────────────── #}
   <section id="projects" class="p-section">
     <div class="p-container">
@@ -331,13 +281,13 @@ agent = SupervisorAgent(
           <i class="fa-solid fa-box-archive"></i>
           <span>PROJECT MARKETPLACE</span>
         </div>
-        <h2 class="p-section-title">Production-Grade AI Projects</h2>
+        <h2 class="p-section-title">Everything you need to build with AI</h2>
         <p class="p-section-desc">
-          Architected for deep learning, full-stack scalability, and real-world deployment. Filter across frameworks and domains instantly.
+          Accepting models is just the start. Access production-ready architectures, inspect latency telemetry, and download complete verified codebases.
         </p>
       </div>
 
-      <!-- Real-Time Filter Pills (Handled by modern-platform.js) -->
+      <!-- Real-Time Filter Pills -->
       <div class="p-filter-bar">
         <button type="button" class="p-filter-pill active" data-category="all">All Projects</button>
         <button type="button" class="p-filter-pill" data-category="machine-learning">Machine Learning</button>
@@ -383,7 +333,7 @@ agent = SupervisorAgent(
 
               <!-- Content Body -->
               <div class="p-project-body">
-                <h3 style="font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 8px;">
+                <h3 style="font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 8px; letter-spacing: -0.025em;">
                   {{ project.title }}
                 </h3>
 
@@ -423,7 +373,6 @@ agent = SupervisorAgent(
         {% endfor %}
       </div>
 
-      <!-- Marketplace Browse All CTA -->
       <div class="text-center mt-5">
         <a href="{% url 'projects' %}" class="p-btn p-btn--secondary p-btn--lg">
           <i class="fa-solid fa-cubes"></i>
@@ -434,9 +383,68 @@ agent = SupervisorAgent(
   </section>
 
   {# ─────────────────────────────────────────────
+     4. DEEP DIVE: "Compute & Billing for the AI era"
+  ───────────────────────────────────────────── #}
+  <section class="p-section" style="background: rgba(13, 15, 20, 0.5); border-top: 1px solid var(--p-border-subtle); border-bottom: 1px solid var(--p-border-subtle);">
+    <div class="p-container">
+      <div class="p-section-header">
+        <div class="p-section-eyebrow">
+          <i class="fa-solid fa-gauge-high"></i>
+          <span>AI ERA COMPUTING</span>
+        </div>
+        <h2 class="p-section-title">Compute &amp; Billing for the AI Era</h2>
+        <p class="p-section-desc">
+          Charge and meter for what your system actually consumes. Credit wallets, usage-based endpoints, and custom telemetry configured from a unified interface.
+        </p>
+
+        <!-- Creem Meter Pills -->
+        <div class="c-meter-pills justify-content-center">
+          <span class="c-meter-pill"><i class="fa-solid fa-microchip"></i> LLM Tokens</span>
+          <span class="c-meter-pill"><i class="fa-solid fa-bolt"></i> API Requests</span>
+          <span class="c-meter-pill"><i class="fa-solid fa-server"></i> GPU Compute</span>
+          <span class="c-meter-pill"><i class="fa-solid fa-database"></i> Vector Embeddings</span>
+          <span class="c-meter-pill"><i class="fa-solid fa-users"></i> Active Agents</span>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="p-card p-4 h-100">
+            <div style="font-size: 13px; font-weight: 600; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Module 01</div>
+            <h3 style="font-size: 20px; font-weight: 600; color: #fff; margin-bottom: 10px;">Credit Wallets</h3>
+            <p style="font-size: 14px; color: var(--p-text-secondary); line-height: 1.6;">
+              Prepaid credit packs. Users pay up front, your application debits the balance per generation, inference call, or minute of execution.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="p-card p-4 h-100">
+            <div style="font-size: 13px; font-weight: 600; color: #34d399; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Module 02</div>
+            <h3 style="font-size: 20px; font-weight: 600; color: #fff; margin-bottom: 10px;">Usage-Based Pricing</h3>
+            <p style="font-size: 14px; color: var(--p-text-secondary); line-height: 1.6;">
+              Attach a per-unit price to any endpoint, with a free allowance tier and an optional usage cap visible per customer and period.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="p-card p-4 h-100">
+            <div style="font-size: 13px; font-weight: 600; color: #c084fc; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Module 03</div>
+            <h3 style="font-size: 20px; font-weight: 600; color: #fff; margin-bottom: 10px;">Custom Meters</h3>
+            <p style="font-size: 14px; color: var(--p-text-secondary); line-height: 1.6;">
+              Define the unit: tokens, images, runtime minutes, or API calls with aggregations. Send telemetry events to ProjectsHub and get deterministic accounting.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {# ─────────────────────────────────────────────
      5. FREE AI TOOLS DIRECTORY
   ───────────────────────────────────────────── #}
-  <section id="tools" class="p-section" style="background: rgba(13, 15, 20, 0.4); border-top: 1px solid var(--p-border-subtle); border-bottom: 1px solid var(--p-border-subtle);">
+  <section id="tools" class="p-section">
     <div class="p-container">
       <div class="p-section-header">
         <div class="p-section-eyebrow">
@@ -460,7 +468,7 @@ agent = SupervisorAgent(
                 <span class="p-badge p-badge--emerald">100% Free</span>
               </div>
 
-              <h3 style="font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 8px;">
+              <h3 style="font-size: 17px; font-weight: 600; color: #fff; margin-bottom: 8px; letter-spacing: -0.02em;">
                 {{ tool.name }}
               </h3>
 
@@ -490,177 +498,57 @@ agent = SupervisorAgent(
   </section>
 
   {# ─────────────────────────────────────────────
-     6. AI DEVELOPMENT STUDIO (Lifecycle)
-  ───────────────────────────────────────────── #}
-  <section class="p-section">
-    <div class="p-container">
-      <div class="p-section-header">
-        <div class="p-section-eyebrow">
-          <i class="fa-solid fa-diagram-project"></i>
-          <span>ENGINEERING LIFECYCLE</span>
-        </div>
-        <h2 class="p-section-title">How ProjectsHub Builds Production AI</h2>
-        <p class="p-section-desc">
-          A deterministic, 7-step engineering methodology engineered for high throughput, sub-50ms latency, and fault tolerance.
-        </p>
-      </div>
-
-      <!-- 7-Step Horizontal Timeline -->
-      <div class="p-timeline-wrap">
-        <div class="p-timeline-step">
-          <div class="p-timeline-num">Step 01</div>
-          <div class="p-timeline-name">Discovery</div>
-          <p style="font-size: 12px; color: var(--p-text-secondary); margin-top: 6px; line-height: 1.4;">
-            Problem definition, feasibility audit &amp; KPI mapping.
-          </p>
-        </div>
-
-        <div class="p-timeline-step">
-          <div class="p-timeline-num">Step 02</div>
-          <div class="p-timeline-name">Architecture</div>
-          <p style="font-size: 12px; color: var(--p-text-secondary); margin-top: 6px; line-height: 1.4;">
-            Model selection, RAG schema &amp; API topology design.
-          </p>
-        </div>
-
-        <div class="p-timeline-step">
-          <div class="p-timeline-num">Step 03</div>
-          <div class="p-timeline-name">Prototyping</div>
-          <p style="font-size: 12px; color: var(--p-text-secondary); margin-top: 6px; line-height: 1.4;">
-            Rapid MVP development &amp; benchmark validation.
-          </p>
-        </div>
-
-        <div class="p-timeline-step">
-          <div class="p-timeline-num">Step 04</div>
-          <div class="p-timeline-name">Engineering</div>
-          <p style="font-size: 12px; color: var(--p-text-secondary); margin-top: 6px; line-height: 1.4;">
-            Production FastAPI/Django backend &amp; modular pipelines.
-          </p>
-        </div>
-
-        <div class="p-timeline-step">
-          <div class="p-timeline-num">Step 05</div>
-          <div class="p-timeline-name">QA &amp; Security</div>
-          <p style="font-size: 12px; color: var(--p-text-secondary); margin-top: 6px; line-height: 1.4;">
-            Red-teaming, prompt injection guards &amp; latency profiling.
-          </p>
-        </div>
-
-        <div class="p-timeline-step">
-          <div class="p-timeline-num">Step 06</div>
-          <div class="p-timeline-name">Deployment</div>
-          <p style="font-size: 12px; color: var(--p-text-secondary); margin-top: 6px; line-height: 1.4;">
-            Docker containers, CI/CD automated rollout &amp; cloud scaling.
-          </p>
-        </div>
-
-        <div class="p-timeline-step">
-          <div class="p-timeline-num">Step 07</div>
-          <div class="p-timeline-name">Telemetry</div>
-          <p style="font-size: 12px; color: var(--p-text-secondary); margin-top: 6px; line-height: 1.4;">
-            Drift detection, token observability &amp; continuous tuning.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  {# ─────────────────────────────────────────────
-     7. ENTERPRISE CAPABILITIES & CUSTOM SOLUTIONS
+     6. AI AGENT INTEGRATION (Creem Section 12 style)
   ───────────────────────────────────────────── #}
   <section class="p-section" style="background: rgba(13, 15, 20, 0.5); border-top: 1px solid var(--p-border-subtle); border-bottom: 1px solid var(--p-border-subtle);">
     <div class="p-container">
       <div class="p-section-header">
         <div class="p-section-eyebrow">
-          <i class="fa-solid fa-microchip"></i>
-          <span>FULL-STACK AI CAPABILITIES</span>
+          <i class="fa-solid fa-terminal"></i>
+          <span>MCP &bull; CLI &bull; AGENT READY</span>
         </div>
-        <h2 class="p-section-title">Bespoke AI Engineering For Companies</h2>
+        <h2 class="p-section-title">Ask your AI agent to set up your project</h2>
         <p class="p-section-desc">
-          We don't wrap APIs — we architect resilient intelligence systems that give your business a compounding competitive advantage.
+          One command adds the ProjectsHub MCP server to Claude Code, Cursor, or any MCP client. From there your agent inspects architectures, runs local inference, and tests endpoints.
         </p>
       </div>
 
-      <div class="p-capabilities-grid">
-        <!-- Capability 1 -->
-        <div class="p-card p-capability-card">
-          <div class="p-capability-icon">
-            <i class="fa-solid fa-robot"></i>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="p-card p-4 h-100">
+            <div style="font-size: 24px; color: #38bdf8; margin-bottom: 12px;"><i class="fa-solid fa-download"></i></div>
+            <h3 style="font-size: 19px; font-weight: 600; color: #fff; margin-bottom: 8px;">One line to install</h3>
+            <p style="font-size: 14px; color: var(--p-text-secondary); line-height: 1.6;">
+              One command for Claude Code. The exact same config block for Cursor and Claude Desktop. Nothing else to configure.
+            </p>
           </div>
-          <h3 class="p-capability-title">Custom LLM &amp; Multi-Agent Workflows</h3>
-          <p class="p-capability-desc">
-            Autonomous agentic pipelines coordinating specialized models with deterministic tool invocation, state machines, and human-in-the-loop controls.
-          </p>
         </div>
 
-        <!-- Capability 2 -->
-        <div class="p-card p-capability-card">
-          <div class="p-capability-icon">
-            <i class="fa-solid fa-database"></i>
+        <div class="col-md-4">
+          <div class="p-card p-4 h-100">
+            <div style="font-size: 24px; color: #34d399; margin-bottom: 12px;"><i class="fa-solid fa-book-open"></i></div>
+            <h3 style="font-size: 19px; font-weight: 600; color: #fff; margin-bottom: 8px;">Skills to read, tools to run</h3>
+            <p style="font-size: 14px; color: var(--p-text-secondary); line-height: 1.6;">
+              The skill file teaches your agent how ProjectsHub works. The MCP server provides the tools to build, inspect, and benchmark.
+            </p>
           </div>
-          <h3 class="p-capability-title">Intelligent Document Processing &amp; RAG</h3>
-          <p class="p-capability-desc">
-            Hybrid vector search + BM25 re-ranking over complex enterprise PDFs, contracts, and internal databases with zero hallucinations and exact citations.
-          </p>
         </div>
 
-        <!-- Capability 3 -->
-        <div class="p-card p-capability-card">
-          <div class="p-capability-icon">
-            <i class="fa-solid fa-eye"></i>
+        <div class="col-md-4">
+          <div class="p-card p-4 h-100">
+            <div style="font-size: 24px; color: #c084fc; margin-bottom: 12px;"><i class="fa-solid fa-shield-halved"></i></div>
+            <h3 style="font-size: 19px; font-weight: 600; color: #fff; margin-bottom: 8px;">Test before you launch</h3>
+            <p style="font-size: 14px; color: var(--p-text-secondary); line-height: 1.6;">
+              Use AI to verify your model weights, schema migrations, and API contracts in local sandbox test mode before live deployment.
+            </p>
           </div>
-          <h3 class="p-capability-title">Computer Vision &amp; Spatial Intelligence</h3>
-          <p class="p-capability-desc">
-            YOLOv8/v11 object detection, OCR segmentation, facial biometrics, and real-time video stream analytics optimized for edge and cloud GPUs.
-          </p>
         </div>
-
-        <!-- Capability 4 -->
-        <div class="p-card p-capability-card">
-          <div class="p-capability-icon">
-            <i class="fa-solid fa-network-wired"></i>
-          </div>
-          <h3 class="p-capability-title">High-Concurrency API &amp; Microservices</h3>
-          <p class="p-capability-desc">
-            Scalable asynchronous FastAPI backends with Redis caching, Celery task distribution, and load-balanced Docker clusters handling 10k+ req/sec.
-          </p>
-        </div>
-
-        <!-- Capability 5 -->
-        <div class="p-card p-capability-card">
-          <div class="p-capability-icon">
-            <i class="fa-solid fa-chart-line"></i>
-          </div>
-          <h3 class="p-capability-title">Predictive Analytics &amp; Forecasting</h3>
-          <p class="p-capability-desc">
-            Custom Scikit-learn and XGBoost regression engines predicting customer churn, inventory demand, and financial risk with explainable feature weights.
-          </p>
-        </div>
-
-        <!-- Capability 6 -->
-        <div class="p-card p-capability-card">
-          <div class="p-capability-icon">
-            <i class="fa-solid fa-shield-halved"></i>
-          </div>
-          <h3 class="p-capability-title">AI Governance &amp; Security Guardrails</h3>
-          <p class="p-capability-desc">
-            PII redaction, prompt injection defense, content moderation filters, and auditable telemetry ensuring compliance with data privacy regulations.
-          </p>
-        </div>
-      </div>
-
-      <div class="text-center mt-5">
-        <a href="{% url 'contact' %}?type=custom_ai" class="p-btn p-btn--primary p-btn--lg">
-          <i class="fa-solid fa-paper-plane"></i>
-          <span>Request Custom AI Architecture &rarr;</span>
-        </a>
       </div>
     </div>
   </section>
 
   {# ─────────────────────────────────────────────
-     8. CASE STUDIES & REAL-WORLD RESULTS
+     7. CASE STUDIES & RESULTS
   ───────────────────────────────────────────── #}
   <section class="p-section">
     <div class="p-container">
@@ -703,7 +591,6 @@ agent = SupervisorAgent(
             </div>
           </div>
         {% empty %}
-          <!-- Static High-Contrast Fallbacks -->
           <div class="p-card p-case-card">
             <div>
               <div class="p-case-client-badge">LegalTech SaaS &bull; Document Intelligence</div>
@@ -713,30 +600,6 @@ agent = SupervisorAgent(
             <div class="p-case-metrics">
               <div class="p-metric-item"><div class="p-metric-val">3 Weeks</div><div class="p-metric-label">MVP Delivery</div></div>
               <div class="p-metric-item"><div class="p-metric-val">99.2%</div><div class="p-metric-label">Citation Accuracy</div></div>
-            </div>
-          </div>
-
-          <div class="p-card p-case-card">
-            <div>
-              <div class="p-case-client-badge">FinTech &bull; Risk Analytics</div>
-              <h3 class="p-case-title">Real-Time Fraud Detection &amp; Scoring API</h3>
-              <p class="p-case-desc">Constructed an ultra-low latency XGBoost inference pipeline processing credit transactions in real time with sub-15ms overhead.</p>
-            </div>
-            <div class="p-case-metrics">
-              <div class="p-metric-item"><div class="p-metric-val">11ms</div><div class="p-metric-label">P99 Latency</div></div>
-              <div class="p-metric-item"><div class="p-metric-val">4.2x</div><div class="p-metric-label">Detection Rate</div></div>
-            </div>
-          </div>
-
-          <div class="p-card p-case-card">
-            <div>
-              <div class="p-case-client-badge">E-Commerce &bull; Conversational AI</div>
-              <h3 class="p-case-title">Autonomous Multi-Channel Support Agent</h3>
-              <p class="p-case-desc">Automated 78% of tier-1 customer inquiries across WhatsApp and web with dynamic order database actions and sentiment routing.</p>
-            </div>
-            <div class="p-case-metrics">
-              <div class="p-metric-item"><div class="p-metric-val">78%</div><div class="p-metric-label">Automated Inquiries</div></div>
-              <div class="p-metric-item"><div class="p-metric-val">&lt; 1s</div><div class="p-metric-label">Response Time</div></div>
             </div>
           </div>
         {% endfor %}
@@ -751,121 +614,131 @@ agent = SupervisorAgent(
   </section>
 
   {# ─────────────────────────────────────────────
-     9. WHY CHOOSE PROJECTSHUB (Value Matrix)
+     8. TESTIMONIALS (Creem Wall of Love)
   ───────────────────────────────────────────── #}
-  <section class="p-section" style="background: rgba(13, 15, 20, 0.5); border-top: 1px solid var(--p-border-subtle); border-bottom: 1px solid var(--p-border-subtle);">
+  <section class="p-section" style="background: rgba(13, 15, 20, 0.4); border-top: 1px solid var(--p-border-subtle); border-bottom: 1px solid var(--p-border-subtle);">
     <div class="p-container">
       <div class="p-section-header">
         <div class="p-section-eyebrow">
-          <i class="fa-solid fa-scale-balanced"></i>
-          <span>WHY PROJECTSHUB</span>
+          <i class="fa-solid fa-heart" style="color: #ef4444;"></i>
+          <span>WALL OF LOVE</span>
         </div>
-        <h2 class="p-section-title">Built for Engineers. Trusted by Founders.</h2>
+        <h2 class="p-section-title">Trusted by builders worldwide</h2>
         <p class="p-section-desc">
-          How ProjectsHub delivers disproportionate value compared to traditional dev agencies and generic online code repositories.
+          Founders, engineers, and students ship on ProjectsHub every day. Here is what they are saying.
         </p>
       </div>
 
-      <div class="p-comparison-table-wrap">
-        <table class="p-comparison-table">
-          <thead>
-            <tr>
-              <th style="width: 32%;">Capability / Standard</th>
-              <th class="highlight" style="width: 28%;">ProjectsHub Platform</th>
-              <th style="width: 20%;">Traditional Agencies</th>
-              <th style="width: 20%;">Generic Repos</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Code Quality &amp; Structure</strong></td>
-              <td class="highlight"><span class="p-comparison-check">✓ Production-grade, typed &amp; modular</span></td>
-              <td>Variable / bloated templates</td>
-              <td><span class="p-comparison-cross">✗ Broken / incomplete</span></td>
-            </tr>
-            <tr>
-              <td><strong>Intellectual Property</strong></td>
-              <td class="highlight"><span class="p-comparison-check">✓ 100% Client Ownership</span></td>
-              <td>Often retain proprietary rights</td>
-              <td>Ambiguous open licenses</td>
-            </tr>
-            <tr>
-              <td><strong>Mentor &amp; Viva Support</strong></td>
-              <td class="highlight"><span class="p-comparison-check">✓ 1-on-1 Guidance &amp; Defense prep</span></td>
-              <td><span class="p-comparison-cross">✗ None (Enterprise only)</span></td>
-              <td><span class="p-comparison-cross">✗ Zero support</span></td>
-            </tr>
-            <tr>
-              <td><strong>Real-World Datasets &amp; Models</strong></td>
-              <td class="highlight"><span class="p-comparison-check">✓ Pretrained weights &amp; verified data</span></td>
-              <td>Costly custom labeling required</td>
-              <td>Dummy mock data</td>
-            </tr>
-            <tr>
-              <td><strong>Delivery Velocity</strong></td>
-              <td class="highlight"><span class="p-comparison-check">✓ Instant download / 1-3 week MVPs</span></td>
-              <td>3 - 6 months timeline</td>
-              <td>Instant (requires heavy debugging)</td>
-            </tr>
-            <tr>
-              <td><strong>Pricing Transparency</strong></td>
-              <td class="highlight"><span class="p-comparison-check">✓ Clear fixed pricing &amp; free tools</span></td>
-              <td>High hourly retainers ($100+/hr)</td>
-              <td>Free (unsupported)</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="p-testimonials-grid">
+        {% for t in testimonials|slice:":3" %}
+          <div class="p-card p-testimonial-card">
+            <p class="p-testimonial-content">
+              &ldquo;{{ t.content }}&rdquo;
+            </p>
+            <div class="p-testimonial-author">
+              <div class="p-testimonial-avatar">
+                {{ t.name|slice:":1" }}
+              </div>
+              <div>
+                <div class="p-testimonial-name">{{ t.name }}</div>
+                <div class="p-testimonial-role">{{ t.role }}{% if t.company %} &bull; {{ t.company }}{% endif %}</div>
+              </div>
+            </div>
+          </div>
+        {% empty %}
+          <div class="p-card p-testimonial-card">
+            <p class="p-testimonial-content">
+              &ldquo;ProjectsHub saved me weeks of headache. The PyTorch and FastAPI code was exceptionally clean and modular. Got an A+ on my capstone defense!&rdquo;
+            </p>
+            <div class="p-testimonial-author">
+              <div class="p-testimonial-avatar">A</div>
+              <div>
+                <div class="p-testimonial-name">Aarav Sharma</div>
+                <div class="p-testimonial-role">AI Engineer &bull; Ex-IIT Delhi</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-card p-testimonial-card">
+            <p class="p-testimonial-content">
+              &ldquo;We hired ProjectsHub for a custom multi-agent document extraction system. Delivered in 3 weeks, sub-20ms latency, and zero hallucinations.&rdquo;
+            </p>
+            <div class="p-testimonial-author">
+              <div class="p-testimonial-avatar">M</div>
+              <div>
+                <div class="p-testimonial-name">Michael Chang</div>
+                <div class="p-testimonial-role">CTO &bull; DataScale AI</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-card p-testimonial-card">
+            <p class="p-testimonial-content">
+              &ldquo;The free developer tools are gold. No login, no spam, pure utility. ProjectsHub is a permanent bookmark on my developer toolbar.&rdquo;
+            </p>
+            <div class="p-testimonial-author">
+              <div class="p-testimonial-avatar">S</div>
+              <div>
+                <div class="p-testimonial-name">Sarah Jenkins</div>
+                <div class="p-testimonial-role">Full-Stack Developer</div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
       </div>
     </div>
   </section>
 
   {# ─────────────────────────────────────────────
-     10. TECHNOLOGY ECOSYSTEM (Marquee)
+     9. TRANSPARENT PRICING / VALUE (Creem Section 15 style)
   ───────────────────────────────────────────── #}
-  <section class="p-section" style="padding: 60px 0;">
+  <section class="p-section">
     <div class="p-container">
-      <div class="text-center mb-4">
-        <span class="p-section-eyebrow">
-          <i class="fa-solid fa-code-branch"></i>
-          <span>TECHNOLOGY STACK</span>
-        </span>
-        <h3 style="font-size: 22px; font-weight: 700; color: #fff;">
-          Engineered on the Modern Open Source &amp; AI Stack
-        </h3>
+      <div class="p-section-header">
+        <div class="p-section-eyebrow">
+          <i class="fa-solid fa-tag"></i>
+          <span>TRANSPARENT VALUE</span>
+        </div>
+        <h2 class="p-section-title">Only pay for what matters.</h2>
+        <p class="p-section-desc">
+          <strong>No monthly retainers. No hidden fees. 100% free developer utilities.</strong><br>
+          Clear fixed pricing on verified architectures, with full code ownership on every deliverable.
+        </p>
       </div>
 
-      <div class="p-marquee-wrap">
-        <div class="p-marquee-track">
-          <div class="p-marquee-item"><i class="fa-brands fa-python" style="color:#38bdf8;"></i> Python 3.12</div>
-          <div class="p-marquee-item"><i class="fa-solid fa-fire" style="color:#ef4444;"></i> PyTorch 2.x</div>
-          <div class="p-marquee-item"><i class="fa-solid fa-brain" style="color:#f59e0b;"></i> Hugging Face</div>
-          <div class="p-marquee-item"><i class="fa-solid fa-bolt" style="color:#10b981;"></i> FastAPI</div>
-          <div class="p-marquee-item"><i class="fa-solid fa-server" style="color:#34d399;"></i> Django 5.x</div>
-          <div class="p-marquee-item"><i class="fa-solid fa-link" style="color:#818cf8;"></i> LangChain / LlamaIndex</div>
-          <div class="p-marquee-item"><i class="fa-brands fa-docker" style="color:#38bdf8;"></i> Docker &amp; K8s</div>
-          <div class="p-marquee-item"><i class="fa-solid fa-database" style="color:#3b82f6;"></i> PostgreSQL &amp; pgvector</div>
-          <div class="p-marquee-item"><i class="fa-brands fa-aws" style="color:#f59e0b;"></i> AWS GPU Cloud</div>
-          <div class="p-marquee-item"><i class="fa-solid fa-robot" style="color:#c084fc;"></i> OpenAI &amp; Claude 3.7</div>
-        </div>
-        <!-- Duplicate for smooth infinite loop -->
-        <div class="p-marquee-track" aria-hidden="true">
-          <div class="p-marquee-item"><i class="fa-brands fa-python" style="color:#38bdf8;"></i> Python 3.12</div>
-          <div class="p-marquee-item"><i class="fa-solid fa-fire" style="color:#ef4444;"></i> PyTorch 2.x</div>
-          <div class="p-marquee-item"><i class="fa-solid fa-brain" style="color:#f59e0b;"></i> Hugging Face</div>
-          <div class="p-marquee-item"><i class="fa-solid fa-bolt" style="color:#10b981;"></i> FastAPI</div>
-          <div class="p-marquee-item"><i class="fa-solid fa-server" style="color:#34d399;"></i> Django 5.x</div>
-          <div class="p-marquee-item"><i class="fa-solid fa-link" style="color:#818cf8;"></i> LangChain / LlamaIndex</div>
-          <div class="p-marquee-item"><i class="fa-brands fa-docker" style="color:#38bdf8;"></i> Docker &amp; K8s</div>
-          <div class="p-marquee-item"><i class="fa-solid fa-database" style="color:#3b82f6;"></i> PostgreSQL &amp; pgvector</div>
-          <div class="p-marquee-item"><i class="fa-brands fa-aws" style="color:#f59e0b;"></i> AWS GPU Cloud</div>
-          <div class="p-marquee-item"><i class="fa-solid fa-robot" style="color:#c084fc;"></i> OpenAI &amp; Claude 3.7</div>
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="p-card p-5 text-center" style="background: #0d1016; border: 1px solid rgba(56, 189, 248, 0.3);">
+            <div class="p-badge p-badge--cyan mb-3">Pay As You Ship</div>
+            <div style="font-size: clamp(40px, 5.5vw, 64px); font-weight: 700; color: #fff; letter-spacing: -0.04em;">
+              100% Free
+            </div>
+            <div style="font-size: 15px; color: var(--p-text-secondary); margin-bottom: 24px;">
+              For all browser developer utilities &bull; Fixed-price architectures from $49
+            </div>
+
+            <div class="row text-start g-3 mb-4" style="font-size: 14px; color: var(--p-text-secondary);">
+              <div class="col-sm-6">
+                <div><span class="p-comparison-check">✓</span> Complete Source Code &amp; Datasets</div>
+                <div class="mt-2"><span class="p-comparison-check">✓</span> 100% Full IP Ownership</div>
+              </div>
+              <div class="col-sm-6">
+                <div><span class="p-comparison-check">✓</span> 1-on-1 Viva Defense &amp; Mentor Prep</div>
+                <div class="mt-2"><span class="p-comparison-check">✓</span> MCP &amp; CLI Agent Ready</div>
+              </div>
+            </div>
+
+            <a href="{% url 'projects' %}" class="p-btn p-btn--primary p-btn--lg">
+              <span>Explore All Architectures &rarr;</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   {# ─────────────────────────────────────────────
-     11. FAQ ACCORDION
+     10. FREQUENTLY ASKED QUESTIONS (Accordion)
   ───────────────────────────────────────────── #}
   <section id="faq" class="p-section" style="background: rgba(13, 15, 20, 0.4); border-top: 1px solid var(--p-border-subtle); border-bottom: 1px solid var(--p-border-subtle);">
     <div class="p-container">
@@ -892,7 +765,6 @@ agent = SupervisorAgent(
             </div>
           </div>
         {% empty %}
-          <!-- Static Fallbacks if DB has 0 FAQs -->
           <div class="p-accordion-item active">
             <button class="p-accordion-trigger" type="button" aria-expanded="true">
               <span>Are the AI developer tools completely free to use?</span>
@@ -902,33 +774,13 @@ agent = SupervisorAgent(
               <p style="margin: 0;">Yes. All interactive tools on ProjectsHub are 100% free with no registration, credit card, or recurring fees required.</p>
             </div>
           </div>
-
-          <div class="p-accordion-item">
-            <button class="p-accordion-trigger" type="button" aria-expanded="false">
-              <span>What kind of project support is included for students?</span>
-              <span class="p-accordion-icon"><i class="fa-solid fa-plus"></i></span>
-            </button>
-            <div class="p-accordion-content" style="display:none;">
-              <p style="margin: 0;">We provide complete source code, datasets, system flow documentation, and 1-on-1 mentorship to prepare you thoroughly for academic viva defense.</p>
-            </div>
-          </div>
-
-          <div class="p-accordion-item">
-            <button class="p-accordion-trigger" type="button" aria-expanded="false">
-              <span>Can I request a custom enterprise AI solution?</span>
-              <span class="p-accordion-icon"><i class="fa-solid fa-plus"></i></span>
-            </button>
-            <div class="p-accordion-content" style="display:none;">
-              <p style="margin: 0;">Yes. Our team builds custom RAG architectures, multi-agent workflows, computer vision models, and web platforms tailored to your business needs.</p>
-            </div>
-          </div>
         {% endfor %}
       </div>
     </div>
   </section>
 
   {# ─────────────────────────────────────────────
-     12. FINAL CONVERSION CTA BANNER
+     11. FINAL CONVERSION CTA (Creem Section 19 style)
   ───────────────────────────────────────────── #}
   <section class="p-section">
     <div class="p-container">
@@ -936,22 +788,22 @@ agent = SupervisorAgent(
         <div class="p-cta-glow"></div>
         <div class="p-badge p-badge--cyan mb-3">
           <i class="fa-solid fa-rocket"></i>
-          <span>GET STARTED TODAY</span>
+          <span>YOUR PROJECT IS READY</span>
         </div>
 
-        <h2 class="p-cta-title">Ready to Build the Future with AI?</h2>
+        <h2 class="p-cta-title">Make it a reality.</h2>
         <p class="p-cta-desc">
-          Whether you need a high-scoring capstone project with 1-on-1 technical mentorship or a custom enterprise AI agent engineered for scale, our team is ready.
+          Build with AI. Ship with ProjectsHub. Start with verified codebases, automate what matters, and scale with confidence.
         </p>
 
         <div class="p-cta-actions">
           <a href="{% url 'contact' %}" class="p-btn p-btn--primary p-btn--lg">
             <i class="fa-solid fa-bolt"></i>
-            <span>Start Your Project Now &rarr;</span>
+            <span>Start building &rarr;</span>
           </a>
-          <a href="tel:+919714392813" class="p-btn p-btn--secondary p-btn--lg">
-            <i class="fa-solid fa-phone"></i>
-            <span>Book a Technical Call</span>
+          <a href="#terminal" class="p-btn p-btn--secondary p-btn--lg">
+            <i class="fa-solid fa-terminal"></i>
+            <span>Set up with your agent</span>
           </a>
           <a href="https://wa.me/919714392813?text=Hi%20ProjectsHub%20Team%2C%20I%20am%20interested%20in%20an%20AI%20Project" target="_blank" rel="noopener noreferrer" class="p-btn p-btn--ghost p-btn--lg">
             <i class="fa-brands fa-whatsapp"></i>

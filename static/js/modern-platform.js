@@ -113,8 +113,17 @@
     return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
-  // 2. HERO TERMINAL TAB SWITCHER
+  // 2. HERO TERMINAL TAB SWITCHER (Creem.io CLI & Agent Workflow)
   var terminalTabsData = {
+    cli: `
+<span style="color:#64748b;"># ── ProjectsHub CLI & MCP Agent Setup ──</span>
+<span style="color:#38bdf8;">➜</span> <span style="color:#f8fafc;">Read https://projectshub.co.in/SKILL.md and set up the ProjectsHub CLI</span>
+<span style="color:#10b981;">✔ Installed &amp; authenticated</span> <span style="color:#64748b;">[projectshub-agent-runtime v2.4]</span>
+
+<span style="color:#38bdf8;">➜</span> <span style="color:#f8fafc;">Deploy autonomous multi-agent RAG pipeline with PyTorch &amp; FastAPI gateway</span>
+<span style="color:#38bdf8;">✔ Architecture initialized.</span> Live inference gateway:
+<span style="color:#a855f7;">https://api.projectshub.co.in/v1/predict</span> <span style="color:#10b981;">(14ms latency)</span>
+    `,
     workflow: `
 <span style="color:#64748b;"># ── ProjectsHub Multi-Agent Pipeline ──</span>
 <span style="color:#38bdf8;">from</span> projectshub.agents <span style="color:#38bdf8;">import</span> SupervisorAgent, CodeEvaluator
@@ -126,7 +135,7 @@ agent = SupervisorAgent(
 )
 
 <span style="color:#10b981;">[OK]</span> Agent Pipeline Initialized. Uptime: 99.98%
-<span style="color:#38bdf8;">[200 OK]</span> Live Demo Stream connected at wss://api.projectshub.co.in/v1/stream
+<span style="color:#38bdf8;">[200 OK]</span> Live Stream connected at wss://api.projectshub.co.in/v1/stream
     `,
     code: `
 <span style="color:#64748b;"># ── Production PyTorch Model Inference ──</span>
