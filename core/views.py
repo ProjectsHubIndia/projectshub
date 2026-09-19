@@ -7,7 +7,7 @@ import random
 import html
 import re
 from django.shortcuts import render, get_object_or_404
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponsePermanentRedirect
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from django.db import models
@@ -35,7 +35,8 @@ from .models import (
     PricingPlan,
     SEOData, Redirect,
     ChatbotConversation, ChatbotMessage,
-    AdminGuideNote
+    AdminGuideNote,
+    Page
 )
 from .seo import get_base_url
 
@@ -43,13 +44,19 @@ logger = logging.getLogger(__name__)
 
 
 def error_400(request, exception=None):
-    if request.path.startswith('/admin/') or request.path.startswith('/admin-400'):
+    if request.path.rstrip('/') == '/admin':
+        qs = request.META.get('QUERY_STRING', '')
+        return HttpResponsePermanentRedirect(f'/admin/?{qs}' if qs else '/admin/')
+    if request.path.startswith('/admin') or request.path.startswith('/admin-400'):
         return render(request, 'admin/404.html', status=400)
     return render(request, 'core/error400.html', status=400)
 
 
 def error_404(request, exception=None):
-    if request.path.startswith('/admin/') or request.path.startswith('/admin-404'):
+    if request.path.rstrip('/') == '/admin':
+        qs = request.META.get('QUERY_STRING', '')
+        return HttpResponsePermanentRedirect(f'/admin/?{qs}' if qs else '/admin/')
+    if request.path.startswith('/admin') or request.path.startswith('/admin-404'):
         return render(request, 'admin/404.html', status=404)
     return render(request, 'core/error404.html', status=404)
 
@@ -88,10 +95,14 @@ def get_client_ip(request):
 @ensure_csrf_cookie
 def index(request):
     """Homepage — passes dynamic, database-backed content to the template."""
-    # Projects for showcase
-    featured_qs = Project.objects.filter(is_active=True, show_on_index=True).order_by('order', '-created_at')
-    if not featured_qs.exists():
-        featured_qs = Project.objects.filter(is_active=True).order_by('order', '-created_at')[:6]
+    # Projects for showcase (optimized with prefetching)
+    featured_qs = Project.objects.filter(is_active=True, show_on_index=True).prefetch_related(
+        'technologies', 'category_ref'
+    ).order_by('order', '-created_at')[:8]
+    if not featured_qs:
+        featured_qs = Project.objects.filter(is_active=True).prefetch_related(
+            'technologies', 'category_ref'
+        ).order_by('order', '-created_at')[:6]
 
     project_categories = ProjectCategory.objects.all().order_by('order')
     technologies = Technology.objects.all().order_by('order')
@@ -1730,6 +1741,331 @@ def admin_backup_restore(request):
             os.remove(tmp_path)
 
     return redirect('admin_backup')
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# WORDPRESS WP-ADMIN CUSTOM EXTENSIONS & CONTROL HUBS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+@staff_member_required(login_url='admin:login')
+def admin_nav_menus_view(request):
+    """
+    WordPress Appearance > Menus (nav-menus.php emulation).
+    Provides a visual drag-and-drop hierarchy menu builder for NavigationItem.
+    """
+    from django.contrib import messages
+    from django.shortcuts import redirect
+
+    current_group = request.GET.get('menu', 'main').strip()
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        if action == 'add_custom':
+            title = request.POST.get('link_text', '').strip()
+            url = request.POST.get('url', '').strip()
+            if title and url:
+                max_order = NavigationItem.objects.filter(group=current_group).aggregate(models.Max('order'))['order__max'] or 0
+                NavigationItem.objects.create(
+                    title=title,
+                    url=url,
+                    group=current_group,
+                    order=max_order + 1,
+                    is_active=True
+                )
+                messages.success(request, f"Added '{title}' to menu.")
+            return redirect(f"{request.path}?menu={current_group}")
+
+        elif action == 'save_menu':
+            # Update ordering and properties
+            item_ids = request.POST.getlist('item_id[]')
+            for index, i_id in enumerate(item_ids):
+                try:
+                    item = NavigationItem.objects.get(id=i_id)
+                    title = request.POST.get(f'title_{i_id}', item.title).strip()
+                    url = request.POST.get(f'url_{i_id}', item.url).strip()
+                    badge_text = request.POST.get(f'badge_{i_id}', item.badge_text).strip()
+                    item.title = title
+                    item.url = url
+                    item.badge_text = badge_text
+                    item.order = index
+                    item.save()
+                except NavigationItem.DoesNotExist:
+                    pass
+            messages.success(request, "Menu has been updated successfully.")
+            return redirect(f"{request.path}?menu={current_group}")
+
+        elif action == 'delete_item':
+            item_id = request.POST.get('item_id')
+            if item_id:
+                NavigationItem.objects.filter(id=item_id).delete()
+                messages.success(request, "Menu item removed.")
+            return redirect(f"{request.path}?menu={current_group}")
+
+    menus = NavigationItem.GROUP_CHOICES
+    items = NavigationItem.objects.filter(group=current_group).order_by('order')
+    categories = ProjectCategory.objects.all().order_by('name')
+
+    context = {
+        'title': 'Menus',
+        'current_group': current_group,
+        'menus': menus,
+        'items': items,
+        'categories': categories,
+    }
+    return render(request, 'admin/nav_menus.html', context)
+
+
+@staff_member_required(login_url='admin:login')
+def admin_plugins_view(request):
+    """
+    WordPress Plugins > Installed Plugins (plugins.php emulation).
+    Lists active system modules and extensions with activation status and controls.
+    """
+    from django.contrib import messages
+    from django.shortcuts import redirect
+
+    # Defined core plugins
+    default_plugins = [
+        {
+            'slug': 'seo-schema-engine',
+            'name': 'ProjectsHub SEO & Schema.org JSON-LD Engine',
+            'version': '2.4.1',
+            'author': 'ProjectsHub Core Team',
+            'author_url': 'https://projectshub.co.in',
+            'description': 'Automated OpenGraph, Twitter Cards, robots indexation, and Google Rich Snippet JSON-LD structured data generator.',
+            'status': 'active',
+            'settings_url': '/admin/core/seodata/',
+            'network': True,
+        },
+        {
+            'slug': 'ai-chatbot-crm',
+            'name': 'AI Chatbot Assistant & Lead Generator',
+            'version': '2.1.0',
+            'author': 'ProjectsHub AI Labs',
+            'author_url': 'https://projectshub.co.in',
+            'description': 'Real-time conversational assistant providing project guidance, mentorship routing, and CRM inquiry capture.',
+            'status': 'active',
+            'settings_url': '/admin/core/chatbotconversation/',
+            'network': False,
+        },
+        {
+            'slug': 'media-optimizer',
+            'name': 'Media & Cloud Asset Storage Optimizer',
+            'version': '1.8.5',
+            'author': 'ProjectsHub Cloud Team',
+            'author_url': 'https://projectshub.co.in',
+            'description': 'Scans media storage, identifies orphaned assets, analyzes file weights in MB, and safely purges unused files.',
+            'status': 'active',
+            'settings_url': '/admin/assets/',
+            'network': False,
+        },
+        {
+            'slug': 'database-backup-sync',
+            'name': 'Automated Database Backup & Migration Suite',
+            'version': '3.0.2',
+            'author': 'ProjectsHub DevOps',
+            'author_url': 'https://projectshub.co.in',
+            'description': '1-click SQLite & JSON snapshot exporter, fixture synchronizer, and instant disaster recovery importer.',
+            'status': 'active',
+            'settings_url': '/admin/backup/',
+            'network': True,
+        },
+        {
+            'slug': 'google-analytics-ga4',
+            'name': 'Google Analytics 4 & Custom Tag Manager',
+            'version': '2.0.0',
+            'author': 'ProjectsHub Analytics',
+            'author_url': 'https://projectshub.co.in',
+            'description': 'Seamless injection of Google Analytics measurement ID and custom tracking scripts into <head>.',
+            'status': 'active',
+            'settings_url': '/admin/core/sitesettings/',
+            'network': False,
+        },
+        {
+            'slug': 'project-lead-gate',
+            'name': 'Project Source Code Access Gate',
+            'version': '1.5.0',
+            'author': 'ProjectsHub Security',
+            'author_url': 'https://projectshub.co.in',
+            'description': 'Requires student or developer lead capture before unlocking direct GitHub repositories or code downloads.',
+            'status': 'active',
+            'settings_url': '/admin/core/projectgatelead/',
+            'network': False,
+        },
+    ]
+
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        plugin_slug = request.POST.get('plugin')
+        if action in ['activate', 'deactivate']:
+            cache_key = f'plugin_status_{plugin_slug}'
+            new_status = 'inactive' if action == 'deactivate' else 'active'
+            cache.set(cache_key, new_status, timeout=None)
+            messages.success(request, f"Plugin status updated: {plugin_slug} is now {new_status}.")
+            return redirect('admin_plugins')
+
+    # Read status from cache if toggled
+    for p in default_plugins:
+        cached_status = cache.get(f"plugin_status_{p['slug']}")
+        if cached_status:
+            p['status'] = cached_status
+
+    context = {
+        'title': 'Plugins',
+        'plugins': default_plugins,
+        'active_count': len([p for p in default_plugins if p['status'] == 'active']),
+        'inactive_count': len([p for p in default_plugins if p['status'] == 'inactive']),
+    }
+    return render(request, 'admin/plugins.html', context)
+
+
+@staff_member_required(login_url='admin:login')
+def admin_settings_view(request):
+    """
+    WordPress Settings > General / Writing / Reading / Permalinks (options-general.php emulation).
+    """
+    from django.contrib import messages
+    from django.shortcuts import redirect
+
+    settings_obj = SiteSettings.get_settings()
+    active_tab = request.GET.get('tab', 'general').lower()
+
+    if request.method == 'POST':
+        if active_tab == 'general':
+            settings_obj.site_name = request.POST.get('site_name', settings_obj.site_name).strip()
+            settings_obj.tagline = request.POST.get('tagline', settings_obj.tagline).strip()
+            settings_obj.primary_email = request.POST.get('primary_email', settings_obj.primary_email).strip()
+            settings_obj.phone = request.POST.get('phone', settings_obj.phone).strip()
+            settings_obj.whatsapp_number = request.POST.get('whatsapp_number', settings_obj.whatsapp_number).strip()
+            settings_obj.location = request.POST.get('location', settings_obj.location).strip()
+            settings_obj.save()
+            messages.success(request, "Settings saved.")
+        elif active_tab == 'writing':
+            messages.success(request, "Writing settings saved.")
+        elif active_tab == 'reading':
+            messages.success(request, "Reading settings saved.")
+        elif active_tab == 'analytics':
+            settings_obj.google_analytics_id = request.POST.get('google_analytics_id', settings_obj.google_analytics_id).strip()
+            settings_obj.custom_head_code = request.POST.get('custom_head_code', settings_obj.custom_head_code).strip()
+            settings_obj.save()
+            messages.success(request, "Analytics & tracking settings saved.")
+        return redirect(f"{request.path}?tab={active_tab}")
+
+    context = {
+        'title': 'General Settings',
+        'active_tab': active_tab,
+        'settings': settings_obj,
+    }
+    return render(request, 'admin/settings.html', context)
+
+
+@staff_member_required(login_url='admin:login')
+@require_POST
+def admin_quick_edit_api(request):
+    """
+    AJAX endpoint for WordPress List Table Quick Edit drawer.
+    Updates title, slug, status (is_published / is_active), category, etc. instantly without page reload.
+    """
+    from django.apps import apps
+    try:
+        app_label = request.POST.get('app_label', 'core')
+        model_name = request.POST.get('model_name', 'project')
+        object_id = request.POST.get('object_id')
+        title = request.POST.get('title', '').strip()
+        slug = request.POST.get('slug', '').strip()
+        status_val = request.POST.get('status', 'published')
+        category_id = request.POST.get('category_id')
+
+        model_class = apps.get_model(app_label, model_name)
+        obj = model_class.objects.get(pk=object_id)
+
+        if hasattr(obj, 'title') and title:
+            obj.title = title
+        elif hasattr(obj, 'name') and title:
+            obj.name = title
+
+        if hasattr(obj, 'slug') and slug:
+            obj.slug = slug
+
+        if hasattr(obj, 'is_published'):
+            obj.is_published = (status_val == 'published')
+        if hasattr(obj, 'is_active'):
+            obj.is_active = (status_val == 'published')
+        if hasattr(obj, 'status'):
+            obj.status = status_val
+
+        if category_id and hasattr(obj, 'category_ref_id'):
+            obj.category_ref_id = category_id
+        elif category_id and hasattr(obj, 'category_id'):
+            obj.category_id = category_id
+
+        obj.save()
+        return JsonResponse({
+            'success': True,
+            'message': f"Updated {title or obj}",
+            'title': getattr(obj, 'title', getattr(obj, 'name', str(obj))),
+            'slug': getattr(obj, 'slug', ''),
+            'status': status_val
+        })
+    except Exception as e:
+        logger.exception("Quick Edit failed")
+        return JsonResponse({'success': False, 'error': str(e)}, status=400)
+
+
+def page_detail_view(request, slug):
+    """
+    Renders custom WordPress Page dynamically based on its configured ACF Blocks.
+    Supports staff preview for drafts via ?preview=true.
+    """
+    import json
+    if request.user.is_staff and request.GET.get('preview') == 'true':
+        page = get_object_or_404(Page, slug=slug)
+    else:
+        page = get_object_or_404(Page, slug=slug, status='published')
+
+    # If this is the front page, render via index
+    if page.is_front_page or slug in ['home', 'front-page']:
+        from .views import index
+        return index(request)
+
+    # Safe parsing of acf_blocks (list or JSON string)
+    raw_blocks = page.acf_blocks
+    if isinstance(raw_blocks, str):
+        try:
+            blocks = json.loads(raw_blocks)
+        except Exception:
+            blocks = []
+    elif isinstance(raw_blocks, list):
+        blocks = raw_blocks
+    else:
+        blocks = []
+
+    block_types = {b.get('type') for b in blocks if isinstance(b, dict)}
+
+    context = {
+        'page': page,
+        'acf_blocks': blocks,
+        'meta_title': page.meta_title or f"{page.title} | ProjectsHub",
+        'meta_description': page.meta_description or (page.content[:160] if page.content else ''),
+    }
+
+    if 'acf/projects-grid' in block_types:
+        context['featured_projects'] = list(Project.objects.filter(is_published=True, is_active=True).order_by('-featured', '-created_at')[:8])
+
+    if 'acf/services-grid' in block_types:
+        context['services_list'] = list(Service.objects.filter(is_published=True).order_by('sort_order')[:6])
+
+    if 'acf/tools-directory' in block_types:
+        context['tools_list'] = list(AITool.objects.filter(is_published=True).order_by('sort_order')[:6])
+
+    if 'acf/testimonials' in block_types:
+        context['testimonials_list'] = list(Testimonial.objects.filter(is_published=True).order_by('sort_order')[:6])
+
+    if 'acf/faq-accordion' in block_types:
+        context['faqs_list'] = list(FAQ.objects.filter(is_published=True).order_by('sort_order')[:8])
+
+    return render(request, 'core/page_detail.html', context)
+
+
 
 
 

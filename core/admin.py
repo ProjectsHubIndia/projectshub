@@ -18,7 +18,8 @@ from .models import (
     PricingPlan, PricingFeature,
     SEOData, Redirect,
     ChatbotConversation, ChatbotMessage,
-    AdminGuideNote
+    AdminGuideNote,
+    Page
 )
 
 admin.site.site_header = "ProjectsHub Administration"
@@ -138,6 +139,10 @@ class SiteSettingsAdmin(admin.ModelAdmin):
         ('Mega Menu "Our Work" Footer Bar', {
             'fields': ('mega_popular_label', 'mega_browse_all_text', 'mega_browse_all_url'),
             'description': 'Configure the bottom bar of the "Our Work" dropdown menu (popular tags label, CTA button text, and link).'
+        }),
+        ('Analytics & Tracking', {
+            'fields': ('google_analytics_id', 'custom_head_code'),
+            'description': 'Configure Google Analytics (GA4 / Universal Analytics) Measurement ID and custom tracking code snippets (rendered in <head>).'
         }),
     )
 
@@ -1401,6 +1406,116 @@ class AdminGuideNoteAdmin(admin.ModelAdmin):
     def mark_unpinned(self, request, queryset):
         queryset.update(is_pinned=False)
     mark_unpinned.short_description = "Unpin selected notes"
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 12. WORDPRESS PAGES ADMIN
+# ═══════════════════════════════════════════════════════════════════════════════
+
+@admin.register(Page)
+class PageAdmin(admin.ModelAdmin):
+    list_display = ('title_display', 'author_name', 'blocks_badge', 'template_badge', 'status_badge', 'date_display')
+    list_filter = ('status', 'template', 'is_front_page')
+    search_fields = ('title', 'slug', 'meta_title', 'content')
+    prepopulated_fields = {'slug': ('title',)}
+    list_per_page = 20
+    actions = ['make_published', 'make_draft', 'duplicate_page', export_as_csv_action()]
+    fieldsets = (
+        (None, {
+            'fields': ('title', 'slug')
+        }),
+        ('ACF Blocks & Flexible Content', {
+            'fields': ('acf_blocks',),
+            'classes': ('acf-blocks-fieldset',),
+            'description': 'Configure, add, and reorder ACF blocks for this page.'
+        }),
+        ('Classic Body Content (Fallback)', {
+            'fields': ('content',),
+            'classes': ('collapse',),
+        }),
+        ('Page Attributes & Settings', {
+            'fields': ('template', 'is_front_page', 'order', 'status', 'author'),
+            'classes': ('collapse',),
+        }),
+        ('Search Engine Optimization (SEO)', {
+            'fields': ('meta_title', 'meta_description', 'featured_image'),
+            'classes': ('collapse',),
+        }),
+    )
+
+    def title_display(self, obj):
+        front_badge = ''
+        if obj.is_front_page:
+            front_badge = ' <span class="post-state" style="background:#0284c7;color:#fff;font-size:10px;padding:2px 6px;border-radius:3px;margin-left:6px;font-weight:600;">— Front Page</span>'
+        status_suffix = ''
+        if obj.status == 'draft':
+            status_suffix = ' <span class="post-state" style="color:#d97706;font-size:11px;font-weight:600;">— Draft</span>'
+        return format_html('<strong>{}</strong>{}{}', obj.title, format_html(front_badge), format_html(status_suffix))
+    title_display.short_description = 'Title'
+    title_display.admin_order_field = 'title'
+
+    def author_name(self, obj):
+        return obj.author.username if obj.author else 'Admin'
+    author_name.short_description = 'Author'
+
+    def blocks_badge(self, obj):
+        count = obj.get_blocks_count()
+        if count > 0:
+            block_names = []
+            if isinstance(obj.acf_blocks, list):
+                for b in obj.acf_blocks[:3]:
+                    name = b.get('name') or b.get('label') or b.get('type', '').replace('acf/', '')
+                    block_names.append(name)
+            summary = ", ".join(block_names)
+            if count > 3:
+                summary += f" +{count - 3} more"
+            return format_html(
+                '<span style="display:inline-flex;align-items:center;gap:4px;background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">'
+                '🧩 {} Block{} <span style="opacity:0.75;font-weight:400;">({})</span>'
+                '</span>',
+                count, 's' if count != 1 else '', summary
+            )
+        return format_html('<span style="color:#94a3b8;font-size:11px;">0 Blocks</span>')
+    blocks_badge.short_description = 'ACF Blocks'
+
+    def template_badge(self, obj):
+        return format_html(
+            '<span style="background:#f1f5f9;color:#475569;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:500;">{}</span>',
+            obj.get_template_display()
+        )
+    template_badge.short_description = 'Template'
+
+    def status_badge(self, obj):
+        if obj.status == 'published':
+            return format_html('<span style="color:#16a34a;font-weight:600;font-size:11px;">● Published</span>')
+        elif obj.status == 'draft':
+            return format_html('<span style="color:#d97706;font-weight:600;font-size:11px;">○ Draft</span>')
+        return format_html('<span style="color:#dc2626;font-weight:600;font-size:11px;">Trash</span>')
+    status_badge.short_description = 'Status'
+
+    def date_display(self, obj):
+        return obj.updated_at.strftime('%Y/%m/%d at %I:%M %p')
+    date_display.short_description = 'Date'
+    date_display.admin_order_field = 'updated_at'
+
+    def make_published(self, request, queryset):
+        queryset.update(status='published')
+    make_published.short_description = "Mark selected pages as Published"
+
+    def make_draft(self, request, queryset):
+        queryset.update(status='draft')
+    make_draft.short_description = "Mark selected pages as Draft"
+
+    def duplicate_page(self, request, queryset):
+        for p in queryset:
+            p.pk = None
+            p.title = f"{p.title} (Copy)"
+            p.slug = f"{p.slug}-copy"
+            p.status = 'draft'
+            p.is_front_page = False
+            p.save()
+    duplicate_page.short_description = "Duplicate selected page(s)"
+
 
 
 

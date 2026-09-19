@@ -18,6 +18,8 @@
       "mega_popular_label": "Trending:",
       "mega_browse_all_text": "Browse All Projects →",
       "mega_browse_all_url": "/projects/",
+      "google_analytics_id": "",
+      "custom_head_code": "",
       "created_at": "2026-09-08T14:52:37.939Z",
       "updated_at": "2026-09-11T15:15:31.970Z"
     }

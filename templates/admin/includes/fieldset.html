@@ -1,0 +1,58 @@
+<fieldset class="module aligned {{ fieldset.classes }}">
+    {% if fieldset.name and fieldset.name != 'Item Details' %}<h2>{{ fieldset.name }}</h2>{% endif %}
+    {% if fieldset.description %}
+        <div class="description">{{ fieldset.description|safe }}</div>
+    {% endif %}
+    {% for line in fieldset %}
+        {% for field in line %}
+            {# Suppress fields that are already rendered in WordPress header/sidebar widgets #}
+            {% if opts.model_name == 'page' and field.field.name in "title,slug,template,order,is_front_page,acf_blocks" %}
+                {# Suppressed for Page because rendered in #titlediv, #pageparentdiv sidebar, or ACF builder #}
+            {% elif opts.model_name != 'page' and field.field.name in "title,name,slug" %}
+                {# Suppressed because rendered in WordPress #titlediv header #}
+            {% elif field.field.name in "category,category_ref,tags" %}
+                {# Suppressed because rendered in WordPress sidebar category/tags boxes #}
+            {% else %}
+                <div class="form-row{% if line.fields|length == 1 and line.errors %} errors{% endif %}{% if not line.has_visible_field %} hidden{% endif %} field-{{ field.field.name }}{% if field.field.field and field.field.field.required %} is-required{% else %} is-optional{% endif %}">
+                    {{ field.errors }}
+                    <div class="flex-container{% if field.is_checkbox %} checkbox-row{% endif %}">
+                        {% if field.is_checkbox %}
+                            <div class="checkbox-field-wrap">
+                                {{ field.field }}
+                                <label for="{{ field.field.id_for_label }}" class="vCheckboxLabel">
+                                    {{ field.field.label }}
+                                    {% if field.field.field and field.field.field.required %}
+                                        <span class="field-req-pill req">* Required</span>
+                                    {% else %}
+                                        <span class="field-req-pill opt">Optional</span>
+                                    {% endif %}
+                                </label>
+                            </div>
+                        {% else %}
+                            <div class="field-label-group">
+                                {{ field.label_tag }}
+                                {% if field.field.field and field.field.field.required %}
+                                    <span class="field-req-pill req" title="This field is required">* Required</span>
+                                {% else %}
+                                    <span class="field-req-pill opt" title="This field is optional">Optional</span>
+                                {% endif %}
+                            </div>
+                            {% if field.is_readonly %}
+                                <div class="readonly">{{ field.contents }}</div>
+                            {% else %}
+                                <div class="field-widget-wrapper">
+                                    {{ field.field }}
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    {% if field.field.help_text %}
+                        <div class="help">
+                            <div>{{ field.field.help_text|safe }}</div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+</fieldset>

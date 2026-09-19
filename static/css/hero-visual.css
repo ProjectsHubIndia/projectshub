@@ -111,8 +111,7 @@
   height: 4px;
   border-radius: 4px;
   background: linear-gradient(90deg, #3b82f6, #6366f1 50%, #a855f7);
-  background-size: 200% 100%;
-  animation: underlineShimmer 3s ease-in-out infinite, underlineGrow 0.8s ease 0.5s both;
+  animation: underlineGrow 0.8s ease 0.5s both;
   transform-origin: left;
 }
 
@@ -120,25 +119,14 @@
   from { transform: scaleX(0); }
   to   { transform: scaleX(1); }
 }
-@keyframes underlineShimmer {
-  0%, 100% { background-position: 0% 50%; }
-  50%       { background-position: 100% 50%; }
-}
 
 .hero-title__gradient {
   background: linear-gradient(135deg, #3b82f6 0%, #6366f1 40%, #a855f7 80%);
-  background-size: 200% 200%;
-  animation: gradientFlow 5s ease infinite;
+  background-size: 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   display: inline-block;
-}
-
-@keyframes gradientFlow {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
 }
 
 /* Description */

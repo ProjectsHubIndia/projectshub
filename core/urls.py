@@ -7,6 +7,8 @@ urlpatterns = [
 
     # Pages
     path('', views.index, name='index'),
+    path('pages/<slug:slug>/', views.page_detail_view, name='page_detail'),
+    path('page/<slug:slug>/', views.page_detail_view, name='page_detail_alias'),
     path('projects/', views.projects_page, name='projects'),
     path('projects/<int:project_id>/', views.project_detail, name='project_detail'),
     path('projects/<slug:slug>/', views.project_detail, name='project_detail_slug'),
@@ -60,4 +62,7 @@ urlpatterns = [
     # SEO
     path('robots.txt', views.robots_txt, name='robots_txt'),
     path('sitemap.xml', views.sitemap_xml, name='sitemap_xml'),
+
+    # Direct Page Slugs (e.g. /about/, /contact-us/)
+    path('<slug:slug>/', views.page_detail_view, name='page_detail_root'),
 ]

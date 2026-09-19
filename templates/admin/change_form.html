@@ -1,0 +1,550 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_modify %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static "admin/css/forms.css" %}">
+  {{ media.css }}
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<script src="{% url 'admin:jsi18n' %}"></script>
+{{ media.js }}
+<script src="{% static 'js/wp-acf-blocks.js' %}?v=3"></script>
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-form wp-editor-page{% endblock %}
+
+{% block content_title %}
+  {% if add %}Add New {{ opts.verbose_name }}{% else %}Edit {{ opts.verbose_name }}{% endif %}
+{% endblock %}
+
+{% block object-tools %}
+  {% if change and not is_popup %}
+    <ul class="object-tools">
+      {% block object-tools-items %}
+        {% change_form_object_tools %}
+      {% endblock %}
+    </ul>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<div id="wp-content-wrap" class="wp-post-edit-wrap">
+
+  <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}{% if form_url %}action="{{ form_url }}" {% endif %}method="post" id="{{ opts.model_name }}_form" novalidate>
+    {% csrf_token %}
+    {% block form_top %}{% endblock %}
+
+    {% if errors %}
+      <div class="notice notice-error">
+        <p>{% if errors|length == 1 %}{% translate "Please correct the error below." %}{% else %}{% translate "Please correct the errors below." %}{% endif %}</p>
+        {{ adminform.form.non_field_errors }}
+      </div>
+    {% endif %}
+
+    <!-- ═══════════════════════════════════════════════════════════
+         WORDPRESS 2-COLUMN POST EDIT SCREEN (#poststuff)
+         ═══════════════════════════════════════════════════════════ -->
+    <!-- Required Fields Legend & Quick Tips -->
+    <div class="wp-form-legend">
+      <div class="wp-legend-left">
+        <span class="wp-legend-icon">ℹ️</span>
+        <span>Fields marked with <span class="req-star">*</span> are <strong>Required</strong>. All other fields are <strong>Optional</strong> and can be updated anytime.</span>
+      </div>
+      <div class="wp-legend-right">
+        <span class="field-req-pill req">* Required</span>
+        <span class="field-req-pill opt">Optional</span>
+      </div>
+    </div>
+
+    <div id="poststuff">
+      <div id="post-body" class="metabox-holder columns-2">
+
+        <!-- ── LEFT COLUMN: MAIN CONTENT (#post-body-content) ── -->
+        <div id="post-body-content">
+
+          <!-- 1. WordPress Big Title Box (#titlediv) -->
+          <div id="titlediv">
+            <div id="titlewrap">
+              {% if 'title' in adminform.form.fields %}
+                <div class="title-meta-row">
+                  <span class="title-meta-label">Title <span class="req-star">*</span></span>
+                  {% if adminform.form.title.field.required %}
+                    <span class="field-req-pill req">* Required</span>
+                  {% else %}
+                    <span class="field-req-pill opt">Optional</span>
+                  {% endif %}
+                </div>
+                <label class="screen-reader-text" id="title-prompt-text" for="id_title">Add title</label>
+                <input type="text" name="title" size="30" value="{{ adminform.form.title.value|default:'' }}" id="id_title" spellcheck="true" autocomplete="off" placeholder="Add title..." class="wp-title-input" oninput="handleTitleInput(this.value)">
+                {{ adminform.form.title.errors }}
+              {% elif 'name' in adminform.form.fields %}
+                <div class="title-meta-row">
+                  <span class="title-meta-label">Name <span class="req-star">*</span></span>
+                  {% if adminform.form.name.field.required %}
+                    <span class="field-req-pill req">* Required</span>
+                  {% else %}
+                    <span class="field-req-pill opt">Optional</span>
+                  {% endif %}
+                </div>
+                <label class="screen-reader-text" id="title-prompt-text" for="id_name">Add title</label>
+                <input type="text" name="name" size="30" value="{{ adminform.form.name.value|default:'' }}" id="id_name" spellcheck="true" autocomplete="off" placeholder="Add title..." class="wp-title-input" oninput="handleTitleInput(this.value)">
+                {{ adminform.form.name.errors }}
+              {% else %}
+                <h2 style="margin:0 0 10px 0;font-size:18px;">{{ original|default:'New Item' }}</h2>
+              {% endif %}
+            </div>
+
+            <!-- Permalink Box (#edit-slug-box) -->
+            {% if 'slug' in adminform.form.fields %}
+              <div id="edit-slug-box" class="hide-if-no-js">
+                <strong>Permalink:</strong>
+                <span id="sample-permalink">
+                  {% if original and original.get_absolute_url %}
+                    https://projectshub.co.in{{ original.get_absolute_url }}
+                  {% elif opts.model_name == 'project' %}
+                    https://projectshub.co.in/projects/<span id="editable-post-name">{{ adminform.form.slug.value|default:'new-project' }}</span>/
+                  {% elif opts.model_name == 'blogpost' %}
+                    https://projectshub.co.in/blog/<span id="editable-post-name">{{ adminform.form.slug.value|default:'new-post' }}</span>/
+                  {% else %}
+                    https://projectshub.co.in/{{ opts.model_name }}s/<span id="editable-post-name">{{ adminform.form.slug.value|default:'new-item' }}</span>/
+                  {% endif %}
+                </span>
+                <button type="button" class="button button-small" onclick="toggleSlugEdit()">Edit</button>
+                {% if original and original.get_absolute_url %}
+                  <a href="{{ original.get_absolute_url }}" target="_blank" class="button button-small">View {{ opts.verbose_name }} ↗</a>
+                {% elif original and original.slug %}
+                  <a href="/{{ opts.model_name }}s/{{ original.slug }}/" target="_blank" class="button button-small">View {{ opts.verbose_name }} ↗</a>
+                {% endif %}
+                <div id="slug-edit-input-wrap" style="display:none;margin-top:6px;">
+                  <input type="text" name="slug" id="id_slug" value="{{ adminform.form.slug.value|default:'' }}" style="font-size:12px;padding:3px 8px;width:240px;border:1px solid #8c8f94;border-radius:3px;" {% if original.slug %}data-manually-edited="true"{% endif %} oninput="this.dataset.manuallyEdited='true'; document.getElementById('editable-post-name').textContent = this.value;">
+                  <button type="button" class="button button-small" onclick="applySlugEdit()">OK</button>
+                  <button type="button" class="button-link" onclick="toggleSlugEdit()">Cancel</button>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- 2. WordPress Classic Visual/Text Editor Toolbar (#wp-content-editor-tools) -->
+          <div class="wp-editor-wrap">
+            <div class="wp-editor-tools">
+              <div class="wp-media-buttons">
+                <a href="/admin/assets/" target="_blank" class="button insert-media add_media" title="Open Media Library">
+                  <span class="wp-media-buttons-icon">📷</span> Add Media
+                </a>
+              </div>
+              <div class="wp-editor-tabs">
+                <button type="button" class="wp-switch-editor switch-html active" onclick="switchEditorMode('visual', this)">Visual</button>
+                <button type="button" class="wp-switch-editor switch-tmce" onclick="switchEditorMode('text', this)">Text (HTML)</button>
+              </div>
+            </div>
+
+            <!-- Editor Quicktag Action Buttons Bar -->
+            <div class="quicktags-toolbar" id="ed_toolbar">
+              <button type="button" class="ed_button" onclick="formatContent('bold')" title="Bold"><strong>B</strong></button>
+              <button type="button" class="ed_button" onclick="formatContent('italic')" title="Italic"><em>I</em></button>
+              <button type="button" class="ed_button" onclick="formatContent('link')" title="Insert Link">Link</button>
+              <button type="button" class="ed_button" onclick="formatContent('quote')" title="Blockquote">b-quote</button>
+              <button type="button" class="ed_button" onclick="formatContent('code')" title="Code">code</button>
+              <button type="button" class="ed_button" onclick="formatContent('ul')" title="Bulleted List">ul</button>
+              <button type="button" class="ed_button" onclick="formatContent('ol')" title="Numbered List">ol</button>
+              <button type="button" class="ed_button" onclick="formatContent('h2')" title="Heading 2">H2</button>
+              <button type="button" class="ed_button" onclick="formatContent('h3')" title="Heading 3">H3</button>
+            </div>
+          </div>
+
+          <!-- 3. Collapsible Postboxes for Fields & Inlines -->
+          <div id="normal-sortables" class="meta-box-sortables">
+            {% for fieldset in adminform %}
+              {% if fieldset.name == 'ACF Blocks & Flexible Content' %}
+                <!-- ══ ACF BLOCKS / FLEXIBLE CONTENT BUILDER ══ -->
+                <div class="postbox acf-blocks-postbox" id="postbox-acf-blocks">
+                  <div class="postbox-header" style="display:flex;justify-content:space-between;align-items:center;background:#f0f6fc;border-bottom:1px solid #c3c4c7;padding:8px 14px;">
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <h2 style="font-size:14px;font-weight:700;color:#1d2327;margin:0;">🧩 ACF Blocks &amp; Flexible Content</h2>
+                      <span id="acf-blocks-badge-count" style="background:#2271b1;color:#fff;padding:1px 8px;border-radius:10px;font-size:11px;font-weight:600;">0 blocks</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px;">
+                      <button type="button" class="button button-small" onclick="window.AcfBuilder && window.AcfBuilder.expandAll()">▾ Expand All</button>
+                      <button type="button" class="button button-small" onclick="window.AcfBuilder && window.AcfBuilder.collapseAll()">▸ Collapse All</button>
+                      <button type="button" class="button button-primary button-small" onclick="window.AcfBuilder && window.AcfBuilder.openModal()" style="font-weight:600;">+ Add ACF Block</button>
+                    </div>
+                  </div>
+                  <div class="inside" style="padding:14px;background:#f6f7f7;">
+                    <!-- Hidden real field bound to Django model -->
+                    <textarea name="acf_blocks" id="id_acf_blocks" style="display:none;">{{ adminform.form.acf_blocks.value|default:'[]' }}</textarea>
+                    {% if original.acf_blocks %}
+                      {{ original.acf_blocks|json_script:"acf-blocks-initial-data" }}
+                    {% endif %}
+
+                    <!-- ACF Blocks Dynamic Container -->
+                    <div id="acf-blocks-container" class="acf-blocks-stack">
+                      <!-- Dynamically rendered by wp-acf-blocks.js -->
+                    </div>
+
+                    <div class="acf-add-block-footer" style="margin-top:14px;padding-top:12px;border-top:1px dashed #c3c4c7;display:flex;justify-content:center;">
+                      <button type="button" class="button button-primary" onclick="window.AcfBuilder && window.AcfBuilder.openModal()" style="padding:4px 18px;font-size:13px;display:flex;align-items:center;gap:6px;">
+                        <span>➕ Add ACF Block</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              {% elif not fieldset.name and 'title' in fieldset.fields and fieldset.fields|length <= 2 %}
+                {# Suppress empty postbox since title & slug are rendered in #titlediv above #}
+              {% elif not fieldset.name and 'name' in fieldset.fields and fieldset.fields|length <= 2 %}
+                {# Suppress empty postbox since name & slug are rendered in #titlediv above #}
+              {% else %}
+                <div class="postbox {% if 'collapse' in fieldset.classes %}closed{% endif %}" id="postbox-fieldset-{{ forloop.counter }}">
+                  <div class="postbox-header">
+                    <h2>{{ fieldset.name|default:'Item Details' }}</h2>
+                    <button type="button" class="handlediv" aria-expanded="true" onclick="togglePostbox(this)">
+                      <span class="toggle-indicator">▾</span>
+                    </button>
+                  </div>
+                  <div class="inside">
+                    {% include "admin/includes/fieldset.html" %}
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+
+            {% block after_field_sets %}{% endblock %}
+
+            <!-- Inlines rendered as WordPress Postboxes -->
+            {% block inline_field_sets %}
+              {% for inline_admin_formset in inline_admin_formsets %}
+                <div class="postbox inline-postbox" id="postbox-inline-{{ forloop.counter }}">
+                  <div class="postbox-header">
+                    <h2>{{ inline_admin_formset.opts.verbose_name_plural|capfirst }}</h2>
+                    <button type="button" class="handlediv" aria-expanded="true" onclick="togglePostbox(this)">
+                      <span class="toggle-indicator">▾</span>
+                    </button>
+                  </div>
+                  <div class="inside inline-inside">
+                    {% include inline_admin_formset.opts.template %}
+                  </div>
+                </div>
+              {% endfor %}
+            {% endblock %}
+          </div>
+
+        </div><!-- /#post-body-content -->
+
+        <!-- ── RIGHT SIDEBAR: WORDPRESS METABOXES (#postbox-container-1) ── -->
+        <div id="postbox-container-1" class="postbox-container">
+          <div id="side-sortables" class="meta-box-sortables">
+
+            <!-- 1. Publish Meta Box (#submitdiv) -->
+            <div id="submitdiv" class="postbox">
+              <div class="postbox-header">
+                <h2>Publish</h2>
+                <button type="button" class="handlediv" aria-expanded="true" onclick="togglePostbox(this)">
+                  <span class="toggle-indicator">▾</span>
+                </button>
+              </div>
+              <div class="inside">
+                <div class="submitbox" id="submitpost">
+                  
+                  <div id="minor-publishing">
+                    <!-- Minor publishing actions: Save Draft & Preview -->
+                    <div id="minor-publishing-actions">
+                      <div id="save-action">
+                        <input type="submit" name="_continue" id="save-post" value="Save Draft" class="button" formnovalidate>
+                      </div>
+                      <div id="preview-action">
+                        {% if original and original.get_absolute_url %}
+                          <a href="{{ original.get_absolute_url }}" target="_blank" class="button preview">Preview ↗</a>
+                        {% elif original and original.slug %}
+                          <a href="/{{ opts.model_name }}s/{{ original.slug }}/" target="_blank" class="button preview">Preview ↗</a>
+                        {% else %}
+                          <a href="/" target="_blank" class="button preview">Preview ↗</a>
+                        {% endif %}
+                      </div>
+                      <div class="clear"></div>
+                    </div>
+
+                    <!-- Miscellaneous status details -->
+                    <div id="misc-publishing-actions">
+                      
+                      <!-- Status -->
+                      <div class="misc-pub-section misc-pub-post-status">
+                        <span class="dashicons dashicons-post-status">📌</span> Status:
+                        <span id="post-status-display" style="font-weight:700;">
+                          {% if original.is_published or original.is_active %}Published{% else %}Draft{% endif %}
+                        </span>
+                      </div>
+
+                      <!-- Visibility -->
+                      <div class="misc-pub-section misc-pub-visibility">
+                        <span class="dashicons dashicons-visibility">👁️</span> Visibility:
+                        <span id="post-visibility-display" style="font-weight:700;">Public</span>
+                      </div>
+
+                      <!-- Published Date -->
+                      <div class="misc-pub-section curtime misc-pub-curtime">
+                        <span class="dashicons dashicons-calendar">📅</span> Published:
+                        <span style="font-weight:600;">{% if original.created_at %}{{ original.created_at|date:"M j, Y" }}{% else %}Immediately{% endif %}</span>
+                      </div>
+
+                    </div>
+                    <div class="clear"></div>
+                  </div>
+
+                  <!-- Major Publishing Actions: Delete & Publish / Update -->
+                  <div id="major-publishing-actions">
+                    {% if change and not is_popup %}
+                      <div id="delete-action">
+                        <a class="submitdelete deletion" href="{% url opts|admin_urlname:'delete' original.pk|admin_urlquote %}">Move to Trash</a>
+                      </div>
+                    {% endif %}
+                    <div id="publishing-action">
+                      <input type="submit" name="_save" id="publish" class="button button-primary button-large" value="{% if add %}Publish{% else %}Update{% endif %}">
+                    </div>
+                    <div class="clear"></div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- Page Attributes Meta Box (#pageparentdiv) -->
+            {% if opts.model_name == 'page' %}
+            <div id="pageparentdiv" class="postbox">
+              <div class="postbox-header">
+                <h2>Page Attributes</h2>
+                <button type="button" class="handlediv" aria-expanded="true" onclick="togglePostbox(this)">
+                  <span class="toggle-indicator">▾</span>
+                </button>
+              </div>
+              <div class="inside" style="padding:12px 14px;">
+                <p style="margin:0 0 4px 0;">
+                  <label for="id_template" style="font-weight:600;font-size:12px;">Template</label>
+                </p>
+                <div style="margin-bottom:12px;">
+                  {% if 'template' in adminform.form.fields %}
+                    {{ adminform.form.template }}
+                  {% endif %}
+                </div>
+
+                <p style="margin:0 0 4px 0;">
+                  <label for="id_order" style="font-weight:600;font-size:12px;">Menu Order</label>
+                </p>
+                <div style="margin-bottom:12px;">
+                  {% if 'order' in adminform.form.fields %}
+                    {{ adminform.form.order }}
+                  {% endif %}
+                </div>
+
+                <div style="margin-top:10px;padding-top:8px;border-top:1px solid #f0f0f1;">
+                  <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;">
+                    {% if 'is_front_page' in adminform.form.fields %}
+                      {{ adminform.form.is_front_page }}
+                    {% endif %}
+                    <span style="font-weight:600;color:#0284c7;">Set as Homepage (Front Page)</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+
+            <!-- 2. Categories Meta Box (#categorydiv) -->
+            {% if 'category_ref' in adminform.form.fields or 'category' in adminform.form.fields %}
+            <div id="categorydiv" class="postbox">
+              <div class="postbox-header" onclick="togglePostbox(this)">
+                <h2>Category</h2>
+                <button type="button" class="handlediv" aria-expanded="true">
+                  <span class="toggle-indicator">▾</span>
+                </button>
+              </div>
+              <div class="inside" style="padding:12px 14px;">
+                <div class="category-tabs" style="margin-bottom:8px;font-size:12px;display:flex;align-items:center;justify-content:space-between;">
+                  <strong style="color:#2271b1;border-bottom:2px solid #2271b1;padding-bottom:2px;">Select Category</strong>
+                  {% if adminform.form.category_ref.field.required or adminform.form.category.field.required %}
+                    <span class="field-req-pill req">* Required</span>
+                  {% else %}
+                    <span class="field-req-pill opt">Optional</span>
+                  {% endif %}
+                </div>
+                <div class="categorydiv-field" style="margin-top:6px;">
+                  {% if 'category_ref' in adminform.form.fields %}
+                    {{ adminform.form.category_ref }}
+                  {% elif 'category' in adminform.form.fields %}
+                    {{ adminform.form.category }}
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            {% endif %}
+
+            <!-- 3. Tags Meta Box (#tagsdiv) -->
+            {% if 'tags' in adminform.form.fields %}
+            <div id="tagsdiv-post_tag" class="postbox">
+              <div class="postbox-header" onclick="togglePostbox(this)">
+                <h2>Tags</h2>
+                <button type="button" class="handlediv" aria-expanded="true">
+                  <span class="toggle-indicator">▾</span>
+                </button>
+              </div>
+              <div class="inside" style="padding:12px 14px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                  <p style="margin:0;font-size:12px;color:#646970;">Separate tags with commas</p>
+                  {% if adminform.form.tags.field.required %}
+                    <span class="field-req-pill req">* Required</span>
+                  {% else %}
+                    <span class="field-req-pill opt">Optional</span>
+                  {% endif %}
+                </div>
+                {{ adminform.form.tags }}
+                <p style="margin:6px 0 0 0;font-size:11px;color:#8c8f94;">e.g. PyTorch, FastAPI, AWS, Docker</p>
+              </div>
+            </div>
+            {% endif %}
+
+            <!-- 4. Featured Image Meta Box (#postimagediv) -->
+            {% if 'image' in adminform.form.fields or 'thumbnail' in adminform.form.fields %}
+            <div id="postimagediv" class="postbox">
+              <div class="postbox-header" onclick="togglePostbox(this)">
+                <h2>Featured Image</h2>
+                <button type="button" class="handlediv" aria-expanded="true">
+                  <span class="toggle-indicator">▾</span>
+                </button>
+              </div>
+              <div class="inside" style="padding:12px 14px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                  <span style="font-size:12px;color:#646970;">Main visual asset</span>
+                  {% if adminform.form.image.field.required or adminform.form.thumbnail.field.required %}
+                    <span class="field-req-pill req">* Required</span>
+                  {% else %}
+                    <span class="field-req-pill opt">Optional</span>
+                  {% endif %}
+                </div>
+                {% if original and original.get_image_src %}
+                  <div style="margin-bottom:10px;text-align:center;">
+                    <img src="{{ original.get_image_src }}" style="max-width:100%;height:auto;border-radius:4px;border:1px solid #dcdcde;box-shadow:0 1px 3px rgba(0,0,0,0.1);" />
+                  </div>
+                {% endif %}
+                <div class="featured-image-fields">
+                  {% if 'image' in adminform.form.fields %}{{ adminform.form.image }}{% endif %}
+                </div>
+                <div style="margin-top:8px;font-size:12px;">
+                  <a href="/admin/assets/" target="_blank" style="color:#2271b1;font-weight:600;">Browse Media Library ↗</a>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+
+          </div>
+        </div><!-- /#postbox-container-1 -->
+
+      </div>
+    </div><!-- /#poststuff -->
+
+  </form>
+
+  <!-- ══ ACF BLOCK PICKER MODAL ══ -->
+  <div id="acf-block-picker-modal" class="acf-modal-backdrop" style="display:none;" onclick="if(event.target === this) window.AcfBuilder && window.AcfBuilder.closeModal();">
+    <div class="acf-modal-window">
+      <div class="acf-modal-header">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:18px;">🧩</span>
+          <h3 style="margin:0;font-size:15px;font-weight:700;color:#1d2327;">Add ACF Block</h3>
+        </div>
+        <button type="button" class="acf-modal-close" onclick="window.AcfBuilder && window.AcfBuilder.closeModal()">✕</button>
+      </div>
+      <div class="acf-modal-search-bar">
+        <input type="text" id="acf-block-search-input" placeholder="Search ACF blocks (e.g. Hero, Projects, Services, Testimonials, FAQ, Stats)..." oninput="window.AcfBuilder && window.AcfBuilder.renderModalGrid(window._activeAcfCat || 'all', this.value)">
+      </div>
+      <div class="acf-modal-categories">
+        <button type="button" class="acf-cat-tab active" onclick="switchAcfModalCat('all', this)">All Blocks (11)</button>
+        <button type="button" class="acf-cat-tab" onclick="switchAcfModalCat('headers', this)">Headers &amp; Heros</button>
+        <button type="button" class="acf-cat-tab" onclick="switchAcfModalCat('content', this)">Content &amp; Grids</button>
+        <button type="button" class="acf-cat-tab" onclick="switchAcfModalCat('proof', this)">Proof &amp; Trust</button>
+        <button type="button" class="acf-cat-tab" onclick="switchAcfModalCat('cta', this)">CTAs &amp; Forms</button>
+      </div>
+      <div class="acf-modal-body" id="acf-blocks-modal-grid">
+        <!-- Populated dynamically by wp-acf-blocks.js -->
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- WordPress Post Editor Interactions -->
+<script>
+  function switchAcfModalCat(cat, btn) {
+    window._activeAcfCat = cat;
+    document.querySelectorAll('.acf-cat-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    var query = document.getElementById('acf-block-search-input') ? document.getElementById('acf-block-search-input').value : '';
+    if (window.AcfBuilder) window.AcfBuilder.renderModalGrid(cat, query);
+  }
+
+  function togglePostbox(el) {
+    var postbox = el.closest('.postbox');
+    if (!postbox) return;
+    var isClosed = postbox.classList.toggle('closed');
+    var indicator = postbox.querySelector('.toggle-indicator');
+    if (indicator) indicator.textContent = isClosed ? '▸' : '▾';
+  }
+
+  function handleTitleInput(val) {
+    var slugInput = document.getElementById('id_slug');
+    var slugDisplay = document.getElementById('editable-post-name');
+    if (slugInput && !slugInput.dataset.manuallyEdited) {
+      var s = val.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+      slugInput.value = s;
+      if (slugDisplay) slugDisplay.textContent = s || 'new-item';
+    }
+  }
+
+  function toggleSlugEdit() {
+    var wrap = document.getElementById('slug-edit-input-wrap');
+    if (wrap) wrap.style.display = wrap.style.display === 'none' ? 'block' : 'none';
+  }
+
+  function applySlugEdit() {
+    var input = document.getElementById('id_slug');
+    var display = document.getElementById('editable-post-name');
+    if (input && display) {
+      display.textContent = input.value || 'new-item';
+      input.dataset.manuallyEdited = 'true';
+    }
+    toggleSlugEdit();
+  }
+
+  function switchEditorMode(mode, btn) {
+    document.querySelectorAll('.wp-switch-editor').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function formatContent(tag) {
+    var textarea = document.querySelector('textarea[name="description"], textarea[name="body"], textarea[name="content"], textarea');
+    if (!textarea) return;
+
+    var start = textarea.selectionStart;
+    var end = textarea.selectionEnd;
+    var selected = textarea.value.substring(start, end);
+    var replacement = '';
+
+    if (tag === 'bold') replacement = `<strong>${selected || 'bold text'}</strong>`;
+    else if (tag === 'italic') replacement = `<em>${selected || 'italic text'}</em>`;
+    else if (tag === 'link') {
+      var url = prompt('Enter URL:', 'https://');
+      if (url) replacement = `<a href="${url}">${selected || 'link text'}</a>`;
+      else return;
+    }
+    else if (tag === 'quote') replacement = `\n<blockquote>${selected || 'quote'}</blockquote>\n`;
+    else if (tag === 'code') replacement = `<code>${selected || 'code'}</code>`;
+    else if (tag === 'ul') replacement = `\n<ul>\n  <li>${selected || 'List item'}</li>\n</ul>\n`;
+    else if (tag === 'ol') replacement = `\n<ol>\n  <li>${selected || 'List item'}</li>\n</ol>\n`;
+    else if (tag === 'h2') replacement = `\n<h2>${selected || 'Heading 2'}</h2>\n`;
+    else if (tag === 'h3') replacement = `\n<h3>${selected || 'Heading 3'}</h3>\n`;
+
+    textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
+    textarea.focus();
+    textarea.setSelectionRange(start + replacement.length, start + replacement.length);
+  }
+</script>
+{% endblock %}

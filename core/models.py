@@ -2,7 +2,9 @@ import os
 import re
 from urllib.parse import parse_qs, urlparse
 from django.db import models
+from django.conf import settings
 from django.utils.text import slugify
+from django.utils import timezone
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -40,6 +42,27 @@ class SiteSettings(models.Model):
     mega_browse_all_url = models.CharField(
         max_length=255, default='/projects/', blank=True,
         help_text="CTA link destination in 'Our Work' mega menu footer"
+    )
+
+    # Analytics & Tracking
+    google_analytics_id = models.CharField(
+        max_length=50, blank=True, default='',
+        help_text="Google Analytics 4 Measurement ID (e.g., G-XXXXXXXXXX) or Tracking ID (UA-XXXXXXXX-X)"
+    )
+    custom_head_code = models.TextField(
+        blank=True, default='',
+        help_text="Custom scripts or tags injected directly before </head> (e.g. Google Tag Manager, Search Console meta tag, etc.)"
+    )
+
+    # Theme & Appearance
+    active_theme = models.CharField(
+        max_length=30,
+        choices=[
+            ('default', 'ProjectsHub Cyber Pro (Dark Edition)'),
+            ('edulight', 'EduModern (Soft Violet Light Edition)'),
+        ],
+        default='default',
+        help_text='Active frontend theme. Can be managed in Appearance > Themes.'
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -103,6 +126,9 @@ class NavigationItem(models.Model):
     def __str__(self):
         badge = f" [{self.badge_text}]" if self.badge_text else ""
         return f"[{self.get_group_display()}] {self.title}{badge} -> {self.url}"
+
+    def get_absolute_url(self):
+        return self.url or "/"
 
 
 class MegaMenuTag(NavigationItem):
@@ -188,6 +214,9 @@ class ProjectCategory(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return f"/projects/?category={self.slug}" if self.slug else "/projects/"
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
@@ -224,6 +253,9 @@ class Technology(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return f"/projects/?tech={self.slug}" if self.slug else "/projects/"
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
@@ -254,7 +286,7 @@ class Project(models.Model):
 
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=220, unique=True, blank=True, null=True, help_text="URL slug e.g. ai-sentiment-analyser")
-    description = models.TextField()
+    description = models.TextField(blank=True, default='')
     detailed_description = models.TextField(
         blank=True,
         help_text="Detailed description for the project detail page"
@@ -276,6 +308,8 @@ class Project(models.Model):
     )
     tags = models.CharField(
         max_length=300,
+        blank=True,
+        default='',
         help_text="Comma-separated tags e.g. PyTorch, FastAPI, AWS"
     )
 
@@ -436,6 +470,11 @@ class Project(models.Model):
             return f'https://www.youtube-nocookie.com/embed/{vid}?rel=0&modestbranding=1&playsinline=1&autoplay=1'
         return ''
 
+    def get_absolute_url(self):
+        if self.slug:
+            return f"/projects/{self.slug}/"
+        return f"/projects/{self.pk}/"
+
 
 class ProjectImage(models.Model):
     """Gallery & screenshot images for project detail pages."""
@@ -571,7 +610,7 @@ class ToolCategory(models.Model):
 class AITool(models.Model):
     name = models.CharField(max_length=150)
     slug = models.SlugField(max_length=180, unique=True, blank=True)
-    description = models.TextField()
+    description = models.TextField(blank=True, default='')
     category = models.ForeignKey(ToolCategory, on_delete=models.SET_NULL, null=True, blank=True, related_name='tools')
     category_slug = models.CharField(max_length=50, default='all', help_text="e.g. text, dev, chat, career, seo")
     icon = models.CharField(max_length=50, default='🤖', help_text="Emoji or icon code")
@@ -601,6 +640,11 @@ class AITool(models.Model):
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        if self.slug:
+            return f"/tools/#tool-{self.slug}"
+        return "/tools/"
+
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # 4. SERVICES
@@ -616,7 +660,7 @@ class Service(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=220, unique=True, blank=True)
     target_audience = models.CharField(max_length=20, choices=AUDIENCE_CHOICES, default='both')
-    short_description = models.TextField()
+    short_description = models.TextField(blank=True, default='')
     full_description = models.TextField(blank=True)
     hero_image = models.ImageField(upload_to='services/', blank=True, null=True)
     icon = models.CharField(max_length=50, blank=True, default='bolt')
@@ -642,6 +686,11 @@ class Service(models.Model):
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        if self.slug in ['ai-development', 'ai-automation', 'ai-integration']:
+            return f"/services/{self.slug}/"
+        return "/#services"
+
 
 class ServiceFeature(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='features')
@@ -666,12 +715,12 @@ class ServiceFeature(models.Model):
 class CaseStudy(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
-    client = models.CharField(max_length=150, help_text="e.g. LexAI — Startup, ShopSmart — D2C Brand")
-    industry = models.CharField(max_length=100, help_text="e.g. LegalTech, E-Commerce, EdTech, Healthcare")
+    client = models.CharField(max_length=150, blank=True, default='', help_text="e.g. LexAI — Startup, ShopSmart — D2C Brand")
+    industry = models.CharField(max_length=100, blank=True, default='', help_text="e.g. LegalTech, E-Commerce, EdTech, Healthcare")
     challenge = models.TextField(blank=True)
     solution = models.TextField(blank=True)
     results = models.TextField(blank=True)
-    summary = models.TextField(help_text="Overview card summary")
+    summary = models.TextField(blank=True, default='', help_text="Overview card summary")
     featured_image = models.ImageField(upload_to='case_studies/', blank=True, null=True)
     icon_emoji = models.CharField(max_length=10, default='📊')
     band_gradient = models.CharField(max_length=100, default='linear-gradient(135deg, #1e3a5f, #3b82f6)')
@@ -697,6 +746,9 @@ class CaseStudy(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return "/case-studies/"
 
 
 class CaseStudyMetric(models.Model):
@@ -730,12 +782,12 @@ class CaseStudyTechnology(models.Model):
 
 class Testimonial(models.Model):
     name = models.CharField(max_length=120)
-    role = models.CharField(max_length=150, help_text="e.g. CS Student, Data Scientist, Startup Founder")
+    role = models.CharField(max_length=150, blank=True, default='Client', help_text="e.g. CS Student, Data Scientist, Startup Founder")
     company = models.CharField(max_length=150, blank=True)
     avatar = models.ImageField(upload_to='testimonials/', blank=True, null=True)
     avatar_color = models.CharField(max_length=30, default='purple', help_text="purple, blue, green, cyan, orange")
     rating = models.PositiveSmallIntegerField(default=5)
-    content = models.TextField()
+    content = models.TextField(blank=True, default='')
     is_featured = models.BooleanField(default=True)
     is_published = models.BooleanField(default=True)
     sort_order = models.PositiveIntegerField(default=0)
@@ -755,6 +807,9 @@ class Testimonial(models.Model):
     @property
     def quote(self):
         return self.content
+
+    def get_absolute_url(self):
+        return "/#testimonials"
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -783,7 +838,7 @@ class FAQCategory(models.Model):
 class FAQ(models.Model):
     category = models.ForeignKey(FAQCategory, on_delete=models.SET_NULL, null=True, blank=True, related_name='faqs')
     question = models.CharField(max_length=300)
-    answer = models.TextField()
+    answer = models.TextField(blank=True, default='')
     sort_order = models.PositiveIntegerField(default=0)
     is_published = models.BooleanField(default=True)
 
@@ -794,6 +849,9 @@ class FAQ(models.Model):
 
     def __str__(self):
         return self.question
+
+    def get_absolute_url(self):
+        return "/#faq"
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -844,11 +902,11 @@ class BlogPost(models.Model):
     ]
 
     title = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=220, unique=True)
+    slug = models.SlugField(max_length=220, unique=True, blank=True)
     category = models.CharField(max_length=30, choices=CATEGORY_CHOICES, default='ai-tutorials')
     category_ref = models.ForeignKey(BlogCategory, on_delete=models.SET_NULL, null=True, blank=True, related_name='posts')
     tags = models.ManyToManyField(Tag, blank=True, related_name='posts')
-    excerpt = models.TextField()
+    excerpt = models.TextField(blank=True, default='')
     lead = models.TextField(blank=True)
     content = models.TextField(blank=True, help_text="Full markdown / HTML content if single-body")
 
@@ -863,7 +921,7 @@ class BlogPost(models.Model):
 
     # Meta
     read_time = models.CharField(max_length=30, blank=True, default='5 min read')
-    published_at = models.DateField()
+    published_at = models.DateField(default=timezone.now, blank=True)
     author_name = models.CharField(max_length=100, default='Raj Makhijani')
     author_role = models.CharField(max_length=150, blank=True, default='Founder, ProjectsHub')
     author_initials = models.CharField(max_length=4, blank=True, default='RM')
@@ -882,6 +940,16 @@ class BlogPost(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        if self.slug:
+            return f"/blog/{self.slug}/"
+        return "/blog/"
 
     def get_image_src(self):
         if self.featured_image:
@@ -1039,9 +1107,9 @@ class IdeaSubmission(models.Model):
 class WorkshopCard(models.Model):
     title = models.CharField(max_length=200)
     subtitle = models.CharField(max_length=300, blank=True)
-    description = models.TextField()
-    date = models.CharField(max_length=100)
-    time = models.CharField(max_length=100)
+    description = models.TextField(blank=True, default='')
+    date = models.CharField(max_length=100, blank=True, default='Upcoming Weekend')
+    time = models.CharField(max_length=100, blank=True, default='10:00 AM - 1:00 PM IST')
     seats = models.PositiveIntegerField(default=30)
     mode = models.CharField(max_length=100, default="Online (Live)")
     price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
@@ -1060,13 +1128,16 @@ class WorkshopCard(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return f"/workshop/{self.pk}/"
+
 
 class WorkshopDay(models.Model):
     workshop = models.ForeignKey(WorkshopCard, on_delete=models.CASCADE, related_name='days')
-    day_number = models.PositiveIntegerField()
+    day_number = models.PositiveIntegerField(default=1, blank=True)
     title = models.CharField(max_length=200)
     date_label = models.CharField(max_length=100, blank=True)
-    description = models.TextField()
+    description = models.TextField(blank=True, default='')
     topics = models.TextField(blank=True, default='')
     outcome = models.CharField(max_length=300, blank=True)
 
@@ -1077,6 +1148,9 @@ class WorkshopDay(models.Model):
 
     def __str__(self):
         return f"Day {self.day_number}: {self.title}"
+
+    def get_absolute_url(self):
+        return f"/workshop/{self.workshop_id}/day/{self.day_number}/"
 
 
 class WorkshopEnrollment(models.Model):
@@ -1133,7 +1207,7 @@ class PricingPlan(models.Model):
 
     name = models.CharField(max_length=100)
     icon_type = models.CharField(max_length=20, choices=PLAN_ICON_CHOICES, default='basic')
-    description = models.CharField(max_length=300)
+    description = models.CharField(max_length=300, blank=True, default='')
     monthly_price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     yearly_price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     monthly_original = models.DecimalField(max_digits=8, decimal_places=2, default=0, blank=True)
@@ -1294,7 +1368,7 @@ class AdminGuideNote(models.Model):
 
     title = models.CharField(max_length=200, help_text="Title of this guide note or task")
     category = models.CharField(max_length=30, choices=CATEGORY_CHOICES, default='general')
-    content = models.TextField(help_text="Detailed instructions, operational steps, or reference notes")
+    content = models.TextField(blank=True, default='', help_text="Detailed instructions, operational steps, or reference notes")
     action_url = models.CharField(max_length=300, blank=True, default='', help_text="Optional admin or site URL to take action directly")
     action_label = models.CharField(max_length=100, blank=True, default='', help_text="Button text (e.g. 'Edit Site Settings', 'Add Project')")
     is_pinned = models.BooleanField(default=False, help_text="Pin to the top of the guide")
@@ -1310,5 +1384,80 @@ class AdminGuideNote(models.Model):
 
     def __str__(self):
         return f"[{self.get_category_display()}] {self.title}"
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 12. WORDPRESS PAGES & ACF BLOCKS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+class Page(models.Model):
+    """
+    WordPress-style page with template selection and structured ACF (Advanced Custom Fields)
+    Flexible Content blocks.
+    """
+    TEMPLATE_CHOICES = [
+        ('default', 'Default Template'),
+        ('front_page', 'Front Page / Modular Landing'),
+        ('full_width', 'Full Width (No Sidebar)'),
+        ('landing', 'Landing Page (Clean Canvas)'),
+        ('canvas', 'Blank Canvas / ACF Builder'),
+    ]
+
+    STATUS_CHOICES = [
+        ('published', 'Published'),
+        ('draft', 'Draft'),
+        ('trash', 'Trash'),
+    ]
+
+    title = models.CharField(max_length=255, help_text="Page title displayed in WordPress admin and browser tab")
+    slug = models.SlugField(max_length=255, unique=True, blank=True, help_text="URL slug (e.g. 'about', 'contact', or 'home')")
+    content = models.TextField(blank=True, default='', help_text="Classic content or fallback HTML body")
+    template = models.CharField(max_length=50, choices=TEMPLATE_CHOICES, default='default')
+    acf_blocks = models.JSONField(
+        default=list,
+        blank=True,
+        help_text="ACF Blocks / Flexible Content payload stored as JSON array"
+    )
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='published')
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        related_name='pages',
+        help_text="User author who published the page"
+    )
+    order = models.PositiveIntegerField(default=0, help_text="Page hierarchy order in menus")
+    is_front_page = models.BooleanField(default=False, help_text="Check to set this page as the main homepage ('/')")
+    featured_image = models.ImageField(upload_to='pages/', blank=True, null=True, help_text="Featured header or social share banner")
+    meta_title = models.CharField(max_length=255, blank=True, default='', help_text="SEO Meta Title (defaults to title)")
+    meta_description = models.TextField(blank=True, default='', help_text="SEO Meta Description")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['order', 'title']
+        verbose_name = 'Page'
+        verbose_name_plural = 'Pages'
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        if self.is_front_page or self.slug in ['home', 'front-page']:
+            return '/'
+        return f"/{self.slug}/"
+
+    def get_blocks_count(self):
+        if isinstance(self.acf_blocks, list):
+            return len(self.acf_blocks)
+        return 0
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        if self.is_front_page:
+            Page.objects.exclude(pk=self.pk).filter(is_front_page=True).update(is_front_page=False)
+        super().save(*args, **kwargs)
+
 
 

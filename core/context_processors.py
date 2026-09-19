@@ -13,7 +13,8 @@ from core.models import (
     PricingPlan, PricingFeature, Testimonial,
     ContactInquiry, IdeaSubmission, WorkshopCard, WorkshopDay, WorkshopEnrollment, ProjectGateLead, ContactMessage,
     BlogPost, BlogSection, BlogCategory, Tag, FAQ, FAQCategory,
-    SEOData, Redirect, ChatbotConversation, ChatbotMessage, AdminGuideNote
+    SEOData, Redirect, ChatbotConversation, ChatbotMessage, AdminGuideNote,
+    Page
 )
 
 
@@ -81,12 +82,15 @@ def site_context(request):
         'site_url': site_url,
         'current_domain': current_domain,
         'site_scheme': scheme,
+        'seo': {},
     }
 
     # Automated SEO Engine for public pages
     if not request.path.startswith('/admin'):
         try:
-            context['seo'] = get_seo_for_request(request)
+            seo_data = get_seo_for_request(request)
+            if seo_data:
+                context['seo'] = seo_data
         except Exception:
             pass
 
@@ -162,6 +166,7 @@ def site_context(request):
                     'projectgatelead': ProjectGateLead.objects.count(),
                     'contactmessage': ContactMessage.objects.count(),
                     'blogpost': BlogPost.objects.count(),
+                    'page': Page.objects.count(),
                     'blogsection': BlogSection.objects.count(),
                     'blogcategory': BlogCategory.objects.count(),
                     'tag': Tag.objects.count(),

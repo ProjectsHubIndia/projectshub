@@ -85,7 +85,8 @@ Hero image preload — only on homepage
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/hero-visual.css' %}?v=2" />
+<link rel="stylesheet" href="{% static 'css/hero-visual.css' %}?v=2" media="print" onload="this.media='all'" />
+<noscript><link rel="stylesheet" href="{% static 'css/hero-visual.css' %}?v=2" /></noscript>
 {% endblock %}
 
 {# ═══════════════════════════════════════
@@ -93,11 +94,10 @@ CONTENT
 ═══════════════════════════════════════ #}
 {% block content %}
 
-<!-- ── Hero Section ── -->
-<section class="aurora-section">
-    <div class="main-body">
+<!-- ── Main Content Body ── -->
+<div class="main-body">
 
-        <section class="hero-section">
+    <section class="hero-section">
             <div class="container">
                 <div class="row d-flex align-items-center justify-content-between g-0">
 
@@ -281,7 +281,7 @@ CONTENT
                                      {% static 'image/students-ai-project-768w.webp' %} 768w,
                                      {% static 'image/students-ai-project-1024w.webp' %} 1024w,
                                      {% static 'image/students-ai-project.webp' %} 1200w"
-                            sizes="(max-width: 480px) 100vw, (max-width: 768px) 90vw, 600px"
+                            sizes="(max-width: 480px) 380px, (max-width: 768px) calc(100vw - 48px), (max-width: 1200px) 45vw, 520px"
                             alt="Student working on AI project" loading="lazy" decoding="async" width="520" height="220"
                             class="pcard__img" />
                         <div class="pcard__img-overlay">
@@ -418,7 +418,7 @@ CONTENT
                                      {% static 'image/business-ai-team-768w.webp' %} 768w,
                                      {% static 'image/business-ai-team-1024w.webp' %} 1024w,
                                      {% static 'image/business-ai-team.webp' %} 1200w"
-                            sizes="(max-width: 480px) 100vw, (max-width: 768px) 90vw, 600px"
+                            sizes="(max-width: 480px) 380px, (max-width: 768px) calc(100vw - 48px), (max-width: 1200px) 45vw, 520px"
                             alt="Business team reviewing AI analytics dashboard" loading="lazy" decoding="async" width="520" height="220"
                             class="pcard__img" />
                         <div class="pcard__img-overlay">
@@ -720,7 +720,7 @@ CONTENT
                                                  /static/image/ai-project-ideas-students-640w.webp 640w,
                                                  /static/image/ai-project-ideas-students-800w.webp 800w,
                                                  /static/image/ai-project-ideas-students.webp 1690w"
-                                    sizes="(max-width: 480px) 100vw, (max-width: 800px) 90vw, 540px"
+                                    sizes="(max-width: 480px) 330px, (max-width: 768px) calc(100vw - 64px), (max-width: 1200px) 33vw, 420px"
                                     alt="AI Projects for Students and Businesses" class="project-card__img"
                                     loading="lazy" decoding="async" width="540" height="298" />
                                 <span class="project-card__img-badge">🚀 Projects</span>
@@ -778,7 +778,7 @@ CONTENT
                                                  /static/image/free-ai-tools-dashboard-640w.webp 640w,
                                                  /static/image/free-ai-tools-dashboard-800w.webp 800w,
                                                  /static/image/free-ai-tools-dashboard.webp 1690w"
-                                    sizes="(max-width: 480px) 100vw, (max-width: 800px) 90vw, 540px"
+                                    sizes="(max-width: 480px) 330px, (max-width: 768px) calc(100vw - 64px), (max-width: 1200px) 33vw, 420px"
                                     alt="Free AI Tools by ProjectsHub" class="project-card__img" loading="lazy"
                                     decoding="async" width="540" height="298" />
                                 <span class="project-card__img-badge project-card__img-badge--green">🛠 Free
@@ -1771,7 +1771,6 @@ CONTENT
         </section>
 
     </div><!-- /.main-body -->
-</section><!-- /.aurora-section -->
 
 <!-- Projects Gate Modal -->
 <div class="modal-overlay" id="projectsModalOverlay">

@@ -1561,9 +1561,28 @@ body:not(.light) .scroll-arrow:hover {
   }
 }
 .trs-dot {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  min-width: 12px;
+  min-height: 12px;
   border: none;
+  border-radius: 50%;
   padding: 0;
   cursor: pointer;
+  touch-action: manipulation;
+  display: inline-block;
+}
+.trs-dot::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
 }
 .t-stars {
   color: #f59e0b;
@@ -2235,20 +2254,20 @@ body.light .footer-nav-link:hover {
 
 .footer-link-badge--cyan {
   background: rgba(6, 182, 212, 0.15);
-  color: var(--ph-cyan, #06b6d4);
-  border: 1px solid rgba(6, 182, 212, 0.3);
+  color: #0e7490;
+  border: 1px solid rgba(6, 182, 212, 0.35);
 }
 
 .footer-link-badge--emerald {
   background: rgba(16, 185, 129, 0.15);
-  color: var(--ph-emerald, #10b981);
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #047857;
+  border: 1px solid rgba(16, 185, 129, 0.35);
 }
 
 .footer-link-badge--purple {
   background: rgba(139, 92, 246, 0.15);
-  color: var(--ph-violet, #8b5cf6);
-  border: 1px solid rgba(139, 92, 246, 0.3);
+  color: #6d28d9;
+  border: 1px solid rgba(139, 92, 246, 0.35);
 }
 
 /* Direct Reach & Contact items */

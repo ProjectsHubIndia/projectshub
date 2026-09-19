@@ -239,6 +239,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # WhiteNoise storage: serves compressed static assets with high-performance caching
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+WHITENOISE_MAX_AGE = 31536000 if not DEBUG else 0
 
 # Media Files (User uploads)
 MEDIA_URL = '/media/'

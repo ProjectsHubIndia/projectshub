@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════
-   Share Your Idea Modal — Interaction & Validation Logic
-   Features: Form validation, character counter, accessibility
+   Share Your Idea / Custom AI Solution Modal
+   Ultra-modern UI/UX, responsive, accessible, interactive
    ════════════════════════════════════════════════════════════ */
 
 (function () {
@@ -13,14 +13,12 @@
         }
 
         init() {
-            // Inject modal HTML if not already present
             this.createModalHTML();
             this.cacheElements();
             this.bindEvents();
         }
 
         createModalHTML() {
-            // Check if modal already exists
             if (document.getElementById('ideaModalOverlay')) {
                 return;
             }
@@ -28,13 +26,27 @@
             const html = `
                 <div class="idea-modal-overlay" id="ideaModalOverlay" role="presentation">
                     <div class="idea-modal" role="dialog" aria-modal="true" aria-labelledby="ideaModalTitle" id="ideaModal">
+                        <!-- Top Ambient Glow -->
+                        <div class="idea-modal-glow" aria-hidden="true"></div>
+
                         <!-- Header -->
                         <div class="idea-modal-header">
-                            <h2 class="idea-modal-title" id="ideaModalTitle">
-                                Share Your <span class="idea-modal-title-accent">Idea</span>
-                            </h2>
+                            <div class="idea-modal-header-content">
+                                <div class="idea-modal-pill">
+                                    <svg class="idea-pill-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                    </svg>
+                                    <span>Free AI & Project Consultation</span>
+                                </div>
+                                <h2 class="idea-modal-title" id="ideaModalTitle">
+                                    Share Your <span class="idea-modal-title-accent">Project Idea</span>
+                                </h2>
+                                <p class="idea-modal-subtitle">
+                                    Got a custom AI concept, startup tool, or academic project in mind? Let's turn your vision into real-world code.
+                                </p>
+                            </div>
                             <button class="idea-modal-close-btn" id="ideaModalClose" aria-label="Close modal">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="18" y1="6" x2="6" y2="18"></line>
                                     <line x1="6" y1="6" x2="18" y2="18"></line>
                                 </svg>
@@ -51,105 +63,196 @@
                                         <label for="ideaName" class="idea-form-label">
                                             Full Name <span class="idea-form-label-required">*</span>
                                         </label>
-                                        <input type="text" id="ideaName" class="idea-form-input" placeholder="John Doe" required />
-                                        <span class="idea-form-error" id="ideaNameError">Name is required</span>
+                                        <div class="idea-input-wrapper">
+                                            <span class="idea-input-icon">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                            </span>
+                                            <input type="text" id="ideaName" class="idea-form-input has-icon" placeholder="e.g. John Doe" required autocomplete="name" />
+                                        </div>
+                                        <span class="idea-form-error" id="ideaNameError">Please enter your name</span>
                                     </div>
                                     <div class="idea-form-field">
                                         <label for="ideaEmail" class="idea-form-label">
                                             Email Address <span class="idea-form-label-required">*</span>
                                         </label>
-                                        <input type="email" id="ideaEmail" class="idea-form-input" placeholder="you@example.com" required />
-                                        <span class="idea-form-error" id="ideaEmailError">Valid email is required</span>
+                                        <div class="idea-input-wrapper">
+                                            <span class="idea-input-icon">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                            </span>
+                                            <input type="email" id="ideaEmail" class="idea-form-input has-icon" placeholder="e.g. you@company.com" required autocomplete="email" />
+                                        </div>
+                                        <span class="idea-form-error" id="ideaEmailError">Please enter a valid email address</span>
                                     </div>
                                 </div>
 
                                 <!-- Phone & Title Row -->
                                 <div class="idea-form-row">
                                     <div class="idea-form-field">
-                                        <label for="ideaPhone" class="idea-form-label">Phone Number</label>
-                                        <input type="tel" id="ideaPhone" class="idea-form-input" placeholder="+1 (555) 000-0000" />
-                                        <span class="idea-form-error" id="ideaPhoneError">Invalid phone format</span>
+                                        <label for="ideaPhone" class="idea-form-label">
+                                            Phone Number <span class="idea-label-subtext">(Optional)</span>
+                                        </label>
+                                        <div class="idea-input-wrapper">
+                                            <span class="idea-input-icon">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                            </span>
+                                            <input type="tel" id="ideaPhone" class="idea-form-input has-icon" placeholder="e.g. +91 98765 43210" autocomplete="tel" />
+                                        </div>
+                                        <span class="idea-form-error" id="ideaPhoneError">Please enter a valid phone number</span>
                                     </div>
                                     <div class="idea-form-field">
                                         <label for="ideaTitle" class="idea-form-label">
-                                            Project/Idea Title <span class="idea-form-label-required">*</span>
+                                            Project / Idea Title <span class="idea-form-label-required">*</span>
                                         </label>
-                                        <input type="text" id="ideaTitle" class="idea-form-input" placeholder="Your project name" required />
-                                        <span class="idea-form-error" id="ideaTitleError">Title is required</span>
+                                        <div class="idea-input-wrapper">
+                                            <span class="idea-input-icon">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"></path></svg>
+                                            </span>
+                                            <input type="text" id="ideaTitle" class="idea-form-input has-icon" placeholder="e.g. AI Customer Service Agent" required />
+                                        </div>
+                                        <span class="idea-form-error" id="ideaTitleError">Please give your idea a title</span>
                                     </div>
                                 </div>
 
                                 <!-- Description -->
                                 <div class="idea-form-field">
-                                    <label for="ideaDescription" class="idea-form-label">
-                                        Idea Description <span class="idea-form-label-required">*</span>
-                                    </label>
-                                    <textarea id="ideaDescription" class="idea-form-textarea" placeholder="Tell us about your idea... (50-500 characters)" required></textarea>
-                                    <div class="idea-form-helper">
-                                        <span class="idea-form-error" id="ideaDescriptionError">Description must be 50-500 characters</span>
-                                        <span class="idea-form-char-count"><span id="ideaCharCount">0</span>/500</span>
+                                    <div class="idea-label-row">
+                                        <label for="ideaDescription" class="idea-form-label">
+                                            Idea Description <span class="idea-form-label-required">*</span>
+                                        </label>
+                                        <span class="idea-char-pill"><span id="ideaCharCount">0</span> / 500 chars</span>
                                     </div>
+                                    <textarea id="ideaDescription" class="idea-form-textarea" placeholder="Tell us about the key problem, target users, desired features, or preferred AI models... (50 to 500 characters)" required rows="4"></textarea>
+                                    <div class="idea-chips-row">
+                                        <span class="idea-chip-hint">Click to insert:</span>
+                                        <button type="button" class="idea-chip" data-insert="[Key Features]: ">✨ Features</button>
+                                        <button type="button" class="idea-chip" data-insert="[Target Audience]: ">👥 Audience</button>
+                                        <button type="button" class="idea-chip" data-insert="[Tech Stack]: ">⚡ Tech</button>
+                                        <button type="button" class="idea-chip" data-insert="[Deliverables]: ">🎯 Deliverables</button>
+                                    </div>
+                                    <span class="idea-form-error" id="ideaDescriptionError">Please provide between 50 and 500 characters so we can understand your scope</span>
                                 </div>
 
                                 <!-- Budget & Timeline Row -->
                                 <div class="idea-form-row">
                                     <div class="idea-form-field">
                                         <label for="ideaBudget" class="idea-form-label">
-                                            Budget Range <span class="idea-form-label-required">*</span>
+                                            Estimated Budget <span class="idea-form-label-required">*</span>
                                         </label>
-                                        <select id="ideaBudget" class="idea-form-select" required>
-                                            <option value="">Select a range</option>
-                                            <option value="under-1k">Under $1K</option>
-                                            <option value="1k-5k">$1K – $5K</option>
-                                            <option value="5k-10k">$5K – $10K</option>
-                                            <option value="10k-plus">$10K+</option>
-                                            <option value="not-sure">Not sure yet</option>
-                                        </select>
-                                        <span class="idea-form-error" id="ideaBudgetError">Budget range is required</span>
+                                        <div class="idea-select-wrapper">
+                                            <select id="ideaBudget" class="idea-form-select" required>
+                                                <option value="">Select budget range...</option>
+                                                <option value="under-1k">Starter (Under $1,000 / ₹40,000)</option>
+                                                <option value="1k-5k">Growth ($1,000 – $5,000 / ₹40k–₹2L)</option>
+                                                <option value="5k-10k">Pro ($5,000 – $10,000 / ₹2L–₹5L)</option>
+                                                <option value="10k-plus">Enterprise ($10,000+ / ₹5L+)</option>
+                                                <option value="flexible">Flexible / Exploring</option>
+                                            </select>
+                                            <span class="idea-select-arrow" aria-hidden="true">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                            </span>
+                                        </div>
+                                        <span class="idea-form-error" id="ideaBudgetError">Please select a budget range</span>
                                     </div>
                                     <div class="idea-form-field">
                                         <label for="ideaTimeline" class="idea-form-label">
                                             Preferred Timeline <span class="idea-form-label-required">*</span>
                                         </label>
-                                        <select id="ideaTimeline" class="idea-form-select" required>
-                                            <option value="">Select timeline</option>
-                                            <option value="asap">ASAP</option>
-                                            <option value="1-2-weeks">1–2 weeks</option>
-                                            <option value="1-month">1 month</option>
-                                            <option value="2-3-months">2–3 months</option>
-                                            <option value="flexible">Flexible</option>
-                                        </select>
-                                        <span class="idea-form-error" id="ideaTimelineError">Timeline is required</span>
+                                        <div class="idea-select-wrapper">
+                                            <select id="ideaTimeline" class="idea-form-select" required>
+                                                <option value="">Select target delivery...</option>
+                                                <option value="asap">ASAP (1–2 weeks sprint)</option>
+                                                <option value="1-month">1 month</option>
+                                                <option value="2-3-months">2–3 months</option>
+                                                <option value="flexible">Flexible / Planning phase</option>
+                                            </select>
+                                            <span class="idea-select-arrow" aria-hidden="true">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                            </span>
+                                        </div>
+                                        <span class="idea-form-error" id="ideaTimelineError">Please select a timeline</span>
                                     </div>
                                 </div>
 
                                 <!-- Agreement Checkbox -->
                                 <div class="idea-form-field">
-                                    <div class="idea-form-checkbox-wrap">
-                                        <input type="checkbox" id="ideaAgree" class="idea-form-checkbox" required />
-                                        <label for="ideaAgree" class="idea-form-checkbox-label">
-                                            I agree to be contacted about this idea
-                                        </label>
-                                    </div>
-                                    <span class="idea-form-error" id="ideaAgreeError">You must agree to be contacted</span>
+                                    <label class="idea-custom-checkbox" for="ideaAgree">
+                                        <input type="checkbox" id="ideaAgree" class="idea-native-checkbox" required />
+                                        <span class="idea-custom-box">
+                                            <svg class="idea-box-check" width="12" height="10" viewBox="0 0 12 10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="1.5 5 4.5 8 10.5 2"></polyline>
+                                            </svg>
+                                        </span>
+                                        <span class="idea-agree-label">
+                                            I agree to receive a free architecture breakdown and estimate for this project.
+                                        </span>
+                                    </label>
+                                    <span class="idea-form-error" id="ideaAgreeError">Please confirm agreement to proceed</span>
                                 </div>
 
-                                <!-- Submit Button -->
-                                <button type="submit" class="idea-form-submit" id="ideaSubmitBtn">
-                                    <span class="idea-spinner"></span>
-                                    <span class="idea-submit-text">Send My Idea</span>
-                                </button>
+                                <!-- Submit Button & Trust Badges -->
+                                <div class="idea-form-footer">
+                                    <button type="submit" class="idea-form-submit" id="ideaSubmitBtn">
+                                        <span class="idea-submit-shimmer" aria-hidden="true"></span>
+                                        <span class="idea-spinner" aria-hidden="true"></span>
+                                        <span class="idea-submit-icon" aria-hidden="true">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                            </svg>
+                                        </span>
+                                        <span class="idea-submit-text">Send Project Idea</span>
+                                    </button>
+                                    <div class="idea-form-trust">
+                                        <span class="idea-trust-item">
+                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                            100% Confidential
+                                        </span>
+                                        <span class="idea-trust-dot">•</span>
+                                        <span class="idea-trust-item">⚡ 24h Response</span>
+                                        <span class="idea-trust-dot">•</span>
+                                        <span class="idea-trust-item">🤝 Zero Obligation</span>
+                                    </div>
+                                </div>
                             </form>
 
                             <!-- Success State -->
                             <div class="idea-modal-success" id="ideaSuccess">
-                                <div class="idea-success-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
+                                <div class="idea-success-badge-wrap">
+                                    <div class="idea-success-glow-ring"></div>
+                                    <div class="idea-success-icon-box">
+                                        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </div>
                                 </div>
-                                <h3 class="idea-success-title">Thanks!</h3>
-                                <p class="idea-success-message">We'll reach out soon to discuss your amazing idea.</p>
+                                <div class="idea-success-pill">Submission Received!</div>
+                                <h3 class="idea-success-title">We're Excited to Build This! 🚀</h3>
+                                <p class="idea-success-desc">Your project details are safely in our hands. Our senior engineering team is reviewing your requirements right now.</p>
+                                
+                                <div class="idea-success-steps">
+                                    <div class="idea-step-card">
+                                        <span class="idea-step-badge">01</span>
+                                        <div class="idea-step-body">
+                                            <strong>Scope & Feasibility</strong>
+                                            <p>We analyze technical feasibility, architecture, and AI models within 24h.</p>
+                                        </div>
+                                    </div>
+                                    <div class="idea-step-card">
+                                        <span class="idea-step-badge">02</span>
+                                        <div class="idea-step-body">
+                                            <strong>Roadmap & Cost</strong>
+                                            <p>We craft a tailored project breakdown and delivery timeline.</p>
+                                        </div>
+                                    </div>
+                                    <div class="idea-step-card">
+                                        <span class="idea-step-badge">03</span>
+                                        <div class="idea-step-body">
+                                            <strong>Strategy Call</strong>
+                                            <p>A complimentary 15-min consultation to align on deliverables & launch.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="idea-success-done-btn" id="ideaSuccessDone">Back to Exploring</button>
                             </div>
                         </div>
                     </div>
@@ -160,7 +263,6 @@
         }
 
         cacheElements() {
-            // Modal elements
             this.overlay = document.getElementById('ideaModalOverlay');
             this.modal = document.getElementById('ideaModal');
             this.closeBtn = document.getElementById('ideaModalClose');
@@ -180,6 +282,7 @@
 
             // Success elements
             this.successDiv = document.getElementById('ideaSuccess');
+            this.successDoneBtn = document.getElementById('ideaSuccessDone');
 
             // Error spans
             this.errors = {
@@ -195,15 +298,24 @@
         }
 
         bindEvents() {
-            // Open modal — support any element with data-open-idea-modal or known IDs
+            // Open modal — support any trigger element
             document.querySelectorAll('#openIdeaModal, #openIdeaModalMobile, [data-open-idea-modal]').forEach(btn => {
-                btn.addEventListener('click', () => this.open());
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.open();
+                });
             });
 
             // Close modal
-            this.closeBtn.addEventListener('click', () => this.close());
+            if (this.closeBtn) {
+                this.closeBtn.addEventListener('click', () => this.close());
+            }
 
-            // Close only when clicking the translucent overlay backdrop, not the modal card itself
+            if (this.successDoneBtn) {
+                this.successDoneBtn.addEventListener('click', () => this.close());
+            }
+
+            // Close when clicking the backdrop
             this.overlay.addEventListener('click', (e) => {
                 if (e.target === this.overlay) this.close();
             });
@@ -219,11 +331,25 @@
             // Character counter
             this.descriptionInput.addEventListener('input', () => this.updateCharCounter());
 
-            // Real-time field clearing on input
-            [this.nameInput, this.emailInput, this.titleInput, this.budgetSelect, this.timelineSelect, this.agreeCheckbox].forEach(field => {
+            // Suggestion chips
+            document.querySelectorAll('.idea-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    const textToInsert = chip.getAttribute('data-insert');
+                    if (textToInsert) {
+                        const current = this.descriptionInput.value;
+                        const prefix = current.length > 0 && !current.endsWith('\n') && !current.endsWith(' ') ? '\n' : '';
+                        this.descriptionInput.value = current + prefix + textToInsert;
+                        this.descriptionInput.focus();
+                        this.updateCharCounter();
+                        this.clearFieldError(this.descriptionInput);
+                    }
+                });
+            });
+
+            // Real-time error clearing
+            [this.nameInput, this.emailInput, this.phoneInput, this.titleInput, this.budgetSelect, this.timelineSelect, this.agreeCheckbox].forEach(field => {
                 if (field) {
                     field.addEventListener('input', () => this.clearFieldError(field));
-                    // Also clear on change for select elements
                     field.addEventListener('change', () => this.clearFieldError(field));
                 }
             });
@@ -234,12 +360,10 @@
         open() {
             this.isOpen = true;
             this.overlay.classList.add('is-open');
-            // Lock background scroll on all browsers including iOS
             document.body.style.overflow = 'hidden';
             document.body.style.touchAction = 'none';
             this.overlay.setAttribute('aria-hidden', 'false');
 
-            // Move focus into the modal for screen readers
             setTimeout(() => {
                 if (this.nameInput) this.nameInput.focus();
             }, 80);
@@ -251,32 +375,37 @@
 
             setTimeout(() => {
                 this.overlay.classList.remove('is-open', 'is-closing');
-                // Restore scroll
                 document.body.style.overflow = '';
                 document.body.style.touchAction = '';
                 this.overlay.setAttribute('aria-hidden', 'true');
                 this.resetForm();
-            }, 300);
+            }, 280);
         }
 
         updateCharCounter() {
             const count = this.descriptionInput.value.length;
             this.charCountSpan.textContent = count;
 
-            // Update color based on count
+            const pill = this.charCountSpan.closest('.idea-char-pill');
+            if (!pill) return;
+
             if (count < 50) {
-                this.charCountSpan.classList.add('error');
-                this.charCountSpan.classList.remove('warning');
+                pill.classList.remove('is-valid', 'is-warning');
+                pill.classList.add('is-under');
             } else if (count > 450) {
-                this.charCountSpan.classList.add('warning');
-                this.charCountSpan.classList.remove('error');
+                pill.classList.remove('is-valid', 'is-under');
+                pill.classList.add('is-warning');
             } else {
-                this.charCountSpan.classList.remove('error', 'warning');
+                pill.classList.remove('is-under', 'is-warning');
+                pill.classList.add('is-valid');
             }
         }
 
         clearFieldError(field) {
             field.classList.remove('error');
+            const wrapper = field.closest('.idea-input-wrapper, .idea-select-wrapper, .idea-form-field');
+            if (wrapper) wrapper.classList.remove('has-error');
+
             if (field.id === 'ideaName' && this.errors.name) this.errors.name.classList.remove('show');
             if (field.id === 'ideaEmail' && this.errors.email) this.errors.email.classList.remove('show');
             if (field.id === 'ideaPhone' && this.errors.phone) this.errors.phone.classList.remove('show');
@@ -287,67 +416,66 @@
             if (field.id === 'ideaAgree' && this.errors.agree) this.errors.agree.classList.remove('show');
         }
 
+        markFieldError(field, errorElem) {
+            field.classList.add('error');
+            const wrapper = field.closest('.idea-input-wrapper, .idea-select-wrapper, .idea-form-field');
+            if (wrapper) wrapper.classList.add('has-error');
+            if (errorElem) errorElem.classList.add('show');
+        }
+
         validateForm() {
             let isValid = true;
 
-            // Name validation
+            // Name
             if (!this.nameInput.value.trim()) {
-                this.nameInput.classList.add('error');
-                this.errors.name.classList.add('show');
+                this.markFieldError(this.nameInput, this.errors.name);
                 isValid = false;
             }
 
-            // Email validation
+            // Email
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(this.emailInput.value)) {
-                this.emailInput.classList.add('error');
-                this.errors.email.classList.add('show');
+            if (!emailRegex.test(this.emailInput.value.trim())) {
+                this.markFieldError(this.emailInput, this.errors.email);
                 isValid = false;
             }
 
-            // Phone validation (optional, but if filled, must be valid)
+            // Phone (optional, but validated if present)
             if (this.phoneInput.value.trim()) {
-                const phoneRegex = /^\+?[\d\s\-()]{10,}$/;
-                if (!phoneRegex.test(this.phoneInput.value)) {
-                    this.phoneInput.classList.add('error');
-                    this.errors.phone.classList.add('show');
+                const phoneRegex = /^\+?[\d\s\-()]{7,}$/;
+                if (!phoneRegex.test(this.phoneInput.value.trim())) {
+                    this.markFieldError(this.phoneInput, this.errors.phone);
                     isValid = false;
                 }
             }
 
-            // Title validation
+            // Title
             if (!this.titleInput.value.trim()) {
-                this.titleInput.classList.add('error');
-                this.errors.title.classList.add('show');
+                this.markFieldError(this.titleInput, this.errors.title);
                 isValid = false;
             }
 
-            // Description validation (50-500 chars)
+            // Description (50-500 chars)
             const descLength = this.descriptionInput.value.trim().length;
             if (descLength < 50 || descLength > 500) {
-                this.descriptionInput.classList.add('error');
-                this.errors.description.classList.add('show');
+                this.markFieldError(this.descriptionInput, this.errors.description);
                 isValid = false;
             }
 
-            // Budget validation
+            // Budget
             if (!this.budgetSelect.value) {
-                this.budgetSelect.classList.add('error');
-                this.errors.budget.classList.add('show');
+                this.markFieldError(this.budgetSelect, this.errors.budget);
                 isValid = false;
             }
 
-            // Timeline validation
+            // Timeline
             if (!this.timelineSelect.value) {
-                this.timelineSelect.classList.add('error');
-                this.errors.timeline.classList.add('show');
+                this.markFieldError(this.timelineSelect, this.errors.timeline);
                 isValid = false;
             }
 
-            // Agreement checkbox
+            // Agreement
             if (!this.agreeCheckbox.checked) {
-                this.agreeCheckbox.classList.add('error');
-                this.errors.agree.classList.add('show');
+                this.markFieldError(this.agreeCheckbox, this.errors.agree);
                 isValid = false;
             }
 
@@ -357,13 +485,12 @@
         handleSubmit(e) {
             e.preventDefault();
 
-            // Validate
             if (!this.validateForm()) {
-                console.log('Form validation failed');
+                const firstError = this.form.querySelector('.idea-form-input.error, .idea-form-select.error, .idea-form-textarea.error, .idea-native-checkbox.error');
+                if (firstError) firstError.focus();
                 return;
             }
 
-            // Get form data
             const formData = {
                 name: this.nameInput.value.trim(),
                 email: this.emailInput.value.trim(),
@@ -376,24 +503,28 @@
                 submittedAt: new Date().toISOString()
             };
 
-            // Show loading state
             this.submitBtn.classList.add('loading');
             this.submitBtn.disabled = true;
 
-            // Submit to backend
             const csrfToken = (document.cookie.match(/csrftoken=([^;]+)/) || [])[1]
                 || (document.querySelector('meta[name="csrf-token"]') || {}).content
                 || '';
+
             fetch('/idea/', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json', 'X-CSRFToken': csrfToken},
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
                 body: JSON.stringify(formData)
-            }).then(r => r.json()).catch(() => ({success: true})).then(data => {
+            })
+            .then(r => r.json())
+            .catch(() => ({ success: true }))
+            .then(data => {
                 this.submitBtn.classList.remove('loading');
                 this.submitBtn.disabled = false;
                 this.form.style.display = 'none';
                 this.successDiv.classList.add('show');
-                setTimeout(() => { this.close(); }, 3000);
             });
         }
 
@@ -403,7 +534,9 @@
             this.successDiv.classList.remove('show');
             this.charCountSpan.textContent = '0';
 
-            // Clear all error states
+            const pill = this.charCountSpan.closest('.idea-char-pill');
+            if (pill) pill.classList.remove('is-valid', 'is-warning', 'is-under');
+
             const allFields = [
                 this.nameInput, this.emailInput, this.phoneInput,
                 this.titleInput, this.descriptionInput, this.budgetSelect,
@@ -411,16 +544,19 @@
             ];
 
             allFields.forEach(field => {
-                if (field) field.classList.remove('error');
+                if (field) {
+                    field.classList.remove('error');
+                    const wrapper = field.closest('.idea-input-wrapper, .idea-select-wrapper, .idea-form-field');
+                    if (wrapper) wrapper.classList.remove('has-error');
+                }
             });
 
             Object.values(this.errors).forEach(error => {
-                error.classList.remove('show');
+                if (error) error.classList.remove('show');
             });
         }
     }
 
-    // Initialize when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
             new IdeaModal();

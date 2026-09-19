@@ -1,0 +1,430 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_list %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static "admin/css/changelists.css" %}">
+  {% if cl.formset %}
+    <link rel="stylesheet" href="{% static "admin/css/forms.css" %}">
+  {% endif %}
+  {{ media.css }}
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+{{ media.js }}
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-list wp-list-table-page{% endblock %}
+
+{% block content_title %}
+  {{ cl.opts.verbose_name_plural|capfirst }}
+{% endblock %}
+
+{% block object-tools %}
+  {% block object-tools-items %}
+    {% change_list_object_tools %}
+  {% endblock %}
+{% endblock %}
+
+{% block content %}
+<div id="wp-content-wrap" class="wp-list-table-wrap">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       1. WORDPRESS STATUS TABS (.subsubsub) & SEARCH FORM
+       ═══════════════════════════════════════════════════════════ -->
+  <div class="wp-list-header-bar">
+    <!-- Filter status views -->
+    <ul class="subsubsub">
+      <li class="all">
+        <a href="?" class="{% if not request.GET.is_published and not request.GET.is_active and not request.GET.featured %}current{% endif %}">
+          All <span class="count">({{ cl.result_count }})</span>
+        </a> |
+      </li>
+      <li class="publish">
+        <a href="?is_published__exact=1" class="{% if request.GET.is_published__exact == '1' %}current{% endif %}">
+          Published <span class="count">({{ cl.result_count }})</span>
+        </a> |
+      </li>
+      <li class="draft">
+        <a href="?is_published__exact=0" class="{% if request.GET.is_published__exact == '0' %}current{% endif %}">
+          Drafts
+        </a> |
+      </li>
+      <li class="trash">
+        <a href="?is_active__exact=0" class="{% if request.GET.is_active__exact == '0' %}current{% endif %}">
+          Archived / Trash
+        </a>
+      </li>
+    </ul>
+
+    <!-- WordPress Top Right Search Box -->
+    {% if cl.search_fields %}
+    <form id="changelist-search" method="get" class="search-box">
+      <label class="screen-reader-text" for="post-search-input">Search {{ cl.opts.verbose_name_plural }}:</label>
+      <input type="search" id="post-search-input" name="q" value="{{ cl.query }}" placeholder="Search {{ cl.opts.verbose_name_plural }}..." autocomplete="off">
+      {% for pair in cl.params.items %}
+        {% if pair.0 != 'q' %}<input type="hidden" name="{{ pair.0 }}" value="{{ pair.1 }}">{% endif %}
+      {% endfor %}
+      <input type="submit" id="search-submit" class="button" value="Search {{ cl.opts.verbose_name_plural }}">
+      {% if cl.query %}
+        <a href="?" class="search-clear-link" title="Clear search">✕</a>
+      {% endif %}
+    </form>
+    {% endif %}
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       2. MAIN CHANGELIST FORM WITH WORDPRESS TABLE
+       ═══════════════════════════════════════════════════════════ -->
+  <form id="changelist-form" method="post" novalidate{% if cl.formset and cl.formset.is_multipart %} enctype="multipart/form-data"{% endif %}>
+    {% csrf_token %}
+    {% if cl.formset %}
+      <div>{{ cl.formset.management_form }}</div>
+    {% endif %}
+
+    <!-- Top Bulk Action Bar (.tablenav.top) -->
+    <div class="tablenav top">
+      <div class="alignleft actions bulkactions">
+        {% if action_form and cl.show_admin_actions %}
+          {% admin_actions %}
+        {% endif %}
+      </div>
+
+      <!-- Quick Filter Dropdowns (Date, Categories) -->
+      <div class="alignleft actions">
+        {% if cl.has_filters %}
+          <button type="button" class="button filter-toggle-btn" onclick="toggleFilterDrawer()">
+            <span>⚡ Filters</span>
+          </button>
+        {% endif %}
+      </div>
+
+      <!-- Top Pagination items count -->
+      <div class="tablenav-pages">
+        <span class="displaying-num">{{ cl.result_count }} item{{ cl.result_count|pluralize }}</span>
+      </div>
+      <br class="clear">
+    </div>
+
+    <!-- Collapsible Filter Drawer if filters are active -->
+    {% if cl.has_filters %}
+    <div id="changelist-filter" class="wp-filter-drawer" style="display:none;">
+      <div class="filter-drawer-header">
+        <h4>Filter {{ cl.opts.verbose_name_plural }}</h4>
+        <button type="button" class="filter-drawer-close" onclick="toggleFilterDrawer()">✕</button>
+      </div>
+      <div class="filter-drawer-body">
+        {% for spec in cl.filter_specs %}
+          {% admin_list_filter cl spec %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- ── Result Table (.wp-list-table) ── -->
+    <div class="results-table-container">
+      {% block result_list %}
+        {% result_list cl %}
+      {% endblock %}
+    </div>
+
+    <!-- Bottom Bulk Action Bar (.tablenav.bottom) -->
+    <div class="tablenav bottom">
+      <div class="alignleft actions bulkactions">
+        {% if action_form and cl.show_admin_actions %}
+          {% admin_actions %}
+        {% endif %}
+      </div>
+      <div class="tablenav-pages">
+        {% block pagination %}
+          {% pagination cl %}
+        {% endblock %}
+      </div>
+      <br class="clear">
+    </div>
+
+  </form>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       3. INLINE QUICK EDIT DRAWER TEMPLATE (WORDPRESS STYLE)
+       ═══════════════════════════════════════════════════════════ -->
+  <div id="wp-quick-edit-template" style="display:none;">
+    <tr class="inline-edit-row quick-edit-row" id="edit-row-placeholder">
+      <td colspan="15" class="colspanchange">
+        <fieldset class="inline-edit-col-left">
+          <legend class="inline-edit-legend">Quick Edit</legend>
+          <div class="inline-edit-col">
+            <label>
+              <span class="title">Title / Name</span>
+              <span class="input-text-wrap"><input type="text" name="post_title" class="ptitle qe-input-title" value=""></span>
+            </label>
+            <label>
+              <span class="title">Slug</span>
+              <span class="input-text-wrap"><input type="text" name="post_name" class="pslug qe-input-slug" value=""></span>
+            </label>
+            <label>
+              <span class="title">Order</span>
+              <span class="input-text-wrap"><input type="number" name="order" class="porder qe-input-order" value="0" style="width:80px;"></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="inline-edit-col-right">
+          <div class="inline-edit-col">
+            <label class="inline-edit-status alignleft">
+              <span class="title">Status</span>
+              <select name="_status" class="qe-input-status">
+                <option value="published">Published</option>
+                <option value="draft">Draft</option>
+              </select>
+            </label>
+            <div class="inline-edit-group wp-clearfix" style="margin-top:10px;">
+              <label class="alignleft" style="display:flex;align-items:center;gap:6px;">
+                <input type="checkbox" name="make_featured" class="qe-input-featured" value="1">
+                <span class="checkbox-title">Featured Showcase</span>
+              </label>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="submit inline-edit-save">
+          <button type="button" class="button cancel alignleft" onclick="cancelQuickEdit()">Cancel</button>
+          <button type="button" class="button button-primary save alignright" onclick="saveQuickEdit(this)">Update</button>
+          <span class="spinner"></span>
+          <br class="clear">
+        </div>
+      </td>
+    </tr>
+  </div>
+
+</div>
+
+<!-- WordPress ChangeList Interactive Scripts -->
+<script>
+  function toggleFilterDrawer() {
+    var drawer = document.getElementById('changelist-filter');
+    if (drawer) {
+      drawer.style.display = drawer.style.display === 'none' ? 'block' : 'none';
+    }
+  }
+
+  function getPublicViewUrl(row, model, rowId, titleText) {
+    // 1. Check if the row contains an explicit frontend link cell
+    var liveLink = row.querySelector('td.field-live_link a, td.field-preview a, a[href^="/projects/"], a[href^="/blog/"], a[href^="/services/"], a[href^="/workshop/"], a[href^="/tools/"], a[href^="/case-studies/"]');
+    if (liveLink) {
+      var lhref = liveLink.getAttribute('href');
+      if (lhref && !lhref.startsWith('/admin/')) return lhref;
+    }
+
+    // 2. Check for slug cell in table row
+    var slugCell = row.querySelector('td.field-slug, td.nowrap-slug');
+    var slug = slugCell ? slugCell.textContent.trim() : '';
+    if (!slug && titleText) {
+      slug = titleText.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    }
+
+    // 3. Map model to frontend live route
+    switch (model) {
+      case 'project':
+        return slug ? '/projects/' + slug + '/' : '/projects/' + rowId + '/';
+      case 'page':
+        if (slug === 'home' || slug === 'front-page' || titleText.indexOf('Front Page') !== -1) {
+          return '/';
+        }
+        return slug ? '/' + slug + '/' : '/';
+      case 'blogpost':
+        return slug ? '/blog/' + slug + '/' : '/blog/';
+      case 'aitool':
+        return slug ? '/tools/#tool-' + slug : '/tools/';
+      case 'workshopcard':
+        return '/workshop/' + rowId + '/';
+      case 'workshopday':
+        return '/workshop/';
+      case 'service':
+        if (['ai-development', 'ai-automation', 'ai-integration'].indexOf(slug) !== -1) {
+          return '/services/' + slug + '/';
+        }
+        return '/#services';
+      case 'casestudy':
+        return '/case-studies/';
+      case 'testimonial':
+        return '/#testimonials';
+      case 'faq':
+      case 'faqcategory':
+        return '/#faq';
+      case 'projectcategory':
+        return slug ? '/projects/?category=' + slug : '/projects/';
+      case 'technology':
+        return slug ? '/projects/?tech=' + slug : '/projects/';
+      case 'toolcategory':
+        return '/tools/';
+      case 'blogcategory':
+        return slug ? '/blog/?category=' + slug : '/blog/';
+      case 'tag':
+        return slug ? '/blog/?tag=' + slug : '/blog/';
+      case 'navigationitem':
+      case 'megamenutag':
+        var urlCell = row.querySelector('td.field-url');
+        return urlCell ? urlCell.textContent.trim() : '/';
+      case 'sociallink':
+        return '/#contact';
+      case 'pricingplan':
+        return '/#pricing';
+      case 'statitem':
+        return '/#numbers';
+      case 'seodata':
+        var pathCell = row.querySelector('td.field-path');
+        return pathCell ? pathCell.textContent.trim() : '/';
+      case 'redirect':
+        var fromCell = row.querySelector('td.field-from_path');
+        return fromCell ? fromCell.textContent.trim() : '/';
+      default:
+        return null;
+    }
+  }
+
+  // Enhance table rows with WordPress hover action links
+  document.addEventListener('DOMContentLoaded', function() {
+    var resultTable = document.getElementById('result_list');
+    if (!resultTable) return;
+
+    // Apply WordPress list table classes
+    resultTable.classList.add('wp-list-table', 'widefat', 'fixed', 'striped', 'table-view-list');
+
+    var model = '{{ opts.model_name|default:""|lower }}';
+    if (!model) {
+      var bodyClass = document.body.className;
+      var modelMatch = bodyClass.match(/model-([a-zA-Z0-9_]+)/);
+      model = modelMatch ? modelMatch[1].toLowerCase() : '';
+    }
+
+    var rows = resultTable.querySelectorAll('tbody tr');
+    rows.forEach(function(row) {
+      var firstThOrTd = row.querySelector('th, td.field-title, td.field-name, td:nth-child(2), td:nth-child(3)');
+      if (!firstThOrTd) return;
+
+      var link = firstThOrTd.querySelector('a');
+      if (!link) return;
+
+      var href = link.getAttribute('href');
+      var rowId = href ? href.replace(/\/change\/?$/, '').split('/').pop() : '';
+      var titleText = link.textContent.trim();
+
+      // Check if row-actions already exists
+      if (firstThOrTd.querySelector('.row-actions')) return;
+
+      var viewHtml = '';
+      var publicUrl = getPublicViewUrl(row, model, rowId, titleText);
+      if (publicUrl) {
+        viewHtml = ` | <span class="view"><a href="${publicUrl}" target="_blank" title="View live on website">View</a></span>`;
+      }
+
+      var rowActions = document.createElement('div');
+      rowActions.className = 'row-actions';
+      rowActions.innerHTML = `
+        <span class="edit"><a href="${href}">Edit</a> | </span>
+        <span class="inline hide-if-no-js"><button type="button" class="button-link editinline" onclick="openQuickEditRow(this, '${rowId}', '${titleText.replace(/'/g, "\\'")}')">Quick Edit</button> | </span>
+        <span class="trash"><a href="${href.replace(/\/change\/?$/, '/delete/')}" class="submitdelete">Trash</a></span>
+        ${viewHtml}
+      `;
+      firstThOrTd.appendChild(rowActions);
+    });
+  });
+
+  var activeQuickEditRow = null;
+
+  function openQuickEditRow(btn, id, title) {
+    cancelQuickEdit();
+    var tr = btn.closest('tr');
+    if (!tr) return;
+
+    var template = document.getElementById('wp-quick-edit-template');
+    if (!template) return;
+
+    var clone = template.firstElementChild.cloneNode(true);
+    clone.id = 'edit-' + id;
+    clone.setAttribute('data-id', id);
+
+    clone.querySelector('.qe-input-title').value = title || '';
+    
+    // Guess slug
+    var slugInput = clone.querySelector('.qe-input-slug');
+    if (slugInput) {
+      slugInput.value = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    }
+
+    tr.parentNode.insertBefore(clone, tr.nextSibling);
+    tr.style.display = 'none';
+    activeQuickEditRow = { originalTr: tr, editTr: clone, id: id };
+  }
+
+  function cancelQuickEdit() {
+    if (activeQuickEditRow) {
+      if (activeQuickEditRow.originalTr) activeQuickEditRow.originalTr.style.display = '';
+      if (activeQuickEditRow.editTr) activeQuickEditRow.editTr.remove();
+      activeQuickEditRow = null;
+    }
+  }
+
+  function saveQuickEdit(btn) {
+    if (!activeQuickEditRow) return;
+    var editTr = activeQuickEditRow.editTr;
+    var id = activeQuickEditRow.id;
+    var title = editTr.querySelector('.qe-input-title').value.trim();
+    var slug = editTr.querySelector('.qe-input-slug').value.trim();
+    var status = editTr.querySelector('.qe-input-status').value;
+
+    btn.textContent = 'Saving...';
+    btn.disabled = true;
+
+    // Detect app and model from body classes
+    var bodyClass = document.body.className;
+    var appMatch = bodyClass.match(/app-([a-zA-Z0-9_]+)/);
+    var modelMatch = bodyClass.match(/model-([a-zA-Z0-9_]+)/);
+    var appLabel = appMatch ? appMatch[1] : 'core';
+    var modelName = modelMatch ? modelMatch[1] : 'project';
+
+    var formData = new FormData();
+    formData.append('app_label', appLabel);
+    formData.append('model_name', modelName);
+    formData.append('object_id', id);
+    formData.append('title', title);
+    formData.append('slug', slug);
+    formData.append('status', status);
+
+    fetch('/admin/api/quick-edit/', {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+      },
+      body: formData
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data.success) {
+        // Update original row text
+        var link = activeQuickEditRow.originalTr.querySelector('th a, td.field-title a, td.field-name a');
+        if (link) link.textContent = data.title;
+        cancelQuickEdit();
+      } else {
+        alert('Quick Edit Error: ' + (data.error || 'Failed to update'));
+        btn.textContent = 'Update';
+        btn.disabled = false;
+      }
+    })
+    .catch(err => {
+      alert('Error updating: ' + err.message);
+      btn.textContent = 'Update';
+      btn.disabled = false;
+    });
+  }
+
+  function toggleTableColumn(colClass) {
+    var cells = document.querySelectorAll('#result_list .' + colClass);
+    cells.forEach(function(c) {
+      c.style.display = c.style.display === 'none' ? '' : 'none';
+    });
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,212 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block title %}Settings | ProjectsHub{% endblock %}
+{% block content_title %}Settings{% endblock %}
+{% block bodyclass %}{{ block.super }} options-general-php wp-core-ui{% endblock %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <style>
+    .nav-tab-wrapper {
+      margin-bottom: 20px;
+      border-bottom: 1px solid #c3c4c7;
+      display: flex;
+      gap: 4px;
+    }
+    .nav-tab {
+      padding: 8px 16px;
+      font-size: 14px;
+      text-decoration: none;
+      font-weight: 600;
+      background: #f0f0f1;
+      border: 1px solid #c3c4c7;
+      border-bottom: 1px solid #c3c4c7;
+      border-radius: 4px 4px 0 0;
+      color: #646970;
+      margin-bottom: -1px;
+    }
+    .nav-tab:hover {
+      background: #fff;
+      color: #1d2327;
+    }
+    .nav-tab.nav-tab-active {
+      background: #fff;
+      border-bottom: 1px solid #fff;
+      color: #1d2327;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div class="wrap">
+
+  <!-- WordPress Navigation Tabs Bar -->
+  <nav class="nav-tab-wrapper wp-clearfix">
+    <a href="?tab=general" class="nav-tab {% if active_tab == 'general' %}nav-tab-active{% endif %}">General</a>
+    <a href="?tab=writing" class="nav-tab {% if active_tab == 'writing' %}nav-tab-active{% endif %}">Writing</a>
+    <a href="?tab=reading" class="nav-tab {% if active_tab == 'reading' %}nav-tab-active{% endif %}">Reading</a>
+    <a href="?tab=permalinks" class="nav-tab {% if active_tab == 'permalinks' %}nav-tab-active{% endif %}">Permalinks</a>
+    <a href="?tab=analytics" class="nav-tab {% if active_tab == 'analytics' %}nav-tab-active{% endif %}">Analytics &amp; GA4</a>
+  </nav>
+
+  <form method="post" action="">
+    {% csrf_token %}
+
+    {% if active_tab == 'general' %}
+      <!-- General Settings Table (.form-table) -->
+      <table class="form-table" role="presentation" style="width:100%;max-width:900px;border-collapse:collapse;">
+        <tbody>
+          <tr>
+            <th scope="row" style="width:220px;padding:20px 10px 20px 0;text-align:left;font-size:14px;color:#2c3338;">
+              <label for="site_name">Site Title</label>
+            </th>
+            <td style="padding:15px 10px;">
+              <input name="site_name" type="text" id="site_name" value="{{ settings.site_name }}" class="regular-text" style="width:350px;padding:6px 10px;font-size:13px;border:1px solid #8c8f94;border-radius:3px;">
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" style="padding:20px 10px 20px 0;text-align:left;font-size:14px;color:#2c3338;">
+              <label for="tagline">Tagline</label>
+            </th>
+            <td style="padding:15px 10px;">
+              <input name="tagline" type="text" id="tagline" value="{{ settings.tagline }}" class="regular-text" style="width:450px;padding:6px 10px;font-size:13px;border:1px solid #8c8f94;border-radius:3px;">
+              <p class="description" style="font-size:12px;color:#646970;margin:4px 0 0 0;">In a few words, explain what this site is about.</p>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" style="padding:20px 10px 20px 0;text-align:left;font-size:14px;color:#2c3338;">
+              <label for="primary_email">Administration Email Address</label>
+            </th>
+            <td style="padding:15px 10px;">
+              <input name="primary_email" type="email" id="primary_email" value="{{ settings.primary_email }}" class="regular-text" style="width:350px;padding:6px 10px;font-size:13px;border:1px solid #8c8f94;border-radius:3px;">
+              <p class="description" style="font-size:12px;color:#646970;margin:4px 0 0 0;">This address is used for admin notifications and contact inquiry alerts.</p>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" style="padding:20px 10px 20px 0;text-align:left;font-size:14px;color:#2c3338;">
+              <label for="phone">Phone &amp; WhatsApp</label>
+            </th>
+            <td style="padding:15px 10px;">
+              <input name="phone" type="text" id="phone" value="{{ settings.phone }}" class="regular-text" style="width:240px;padding:6px 10px;font-size:13px;border:1px solid #8c8f94;border-radius:3px;margin-right:10px;">
+              <input name="whatsapp_number" type="text" id="whatsapp_number" value="{{ settings.whatsapp_number }}" placeholder="WhatsApp digits" class="regular-text" style="width:200px;padding:6px 10px;font-size:13px;border:1px solid #8c8f94;border-radius:3px;">
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" style="padding:20px 10px 20px 0;text-align:left;font-size:14px;color:#2c3338;">
+              <label for="location">Location / Office</label>
+            </th>
+            <td style="padding:15px 10px;">
+              <input name="location" type="text" id="location" value="{{ settings.location }}" class="regular-text" style="width:350px;padding:6px 10px;font-size:13px;border:1px solid #8c8f94;border-radius:3px;">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    {% elif active_tab == 'writing' %}
+      <table class="form-table" role="presentation" style="width:100%;max-width:900px;border-collapse:collapse;">
+        <tbody>
+          <tr>
+            <th scope="row" style="width:220px;padding:20px 10px 20px 0;text-align:left;font-size:14px;color:#2c3338;">
+              Default Post Category
+            </th>
+            <td style="padding:15px 10px;">
+              <select style="font-size:13px;padding:5px 8px;border:1px solid #8c8f94;border-radius:3px;">
+                <option selected>Machine Learning</option>
+                <option>Artificial Intelligence</option>
+                <option>Full-Stack Backend</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" style="padding:20px 10px 20px 0;text-align:left;font-size:14px;color:#2c3338;">
+              Default Post Format
+            </th>
+            <td style="padding:15px 10px;">
+              <select style="font-size:13px;padding:5px 8px;border:1px solid #8c8f94;border-radius:3px;">
+                <option selected>Standard (Detailed Showcase)</option>
+                <option>Video Demo</option>
+                <option>Case Study / Benchmark</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    {% elif active_tab == 'reading' %}
+      <table class="form-table" role="presentation" style="width:100%;max-width:900px;border-collapse:collapse;">
+        <tbody>
+          <tr>
+            <th scope="row" style="width:220px;padding:20px 10px 20px 0;text-align:left;font-size:14px;color:#2c3338;">
+              Your homepage displays
+            </th>
+            <td style="padding:15px 10px;">
+              <fieldset>
+                <label style="display:block;margin-bottom:8px;"><input type="radio" name="show_on_front" value="page" checked> A static page (ProjectsHub Full Showcase)</label>
+                <label style="display:block;"><input type="radio" name="show_on_front" value="posts"> Your latest project feed</label>
+              </fieldset>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" style="padding:20px 10px 20px 0;text-align:left;font-size:14px;color:#2c3338;">
+              Search engine visibility
+            </th>
+            <td style="padding:15px 10px;">
+              <label><input type="checkbox" checked disabled> Discourage search engines from indexing this site (Unchecked: Indexing is active)</label>
+              <p class="description" style="font-size:12px;color:#646970;margin:4px 0 0 0;">It is up to search engines to honor this request. Automated SEO &amp; Schema is currently active.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    {% elif active_tab == 'permalinks' %}
+      <table class="form-table" role="presentation" style="width:100%;max-width:900px;border-collapse:collapse;">
+        <tbody>
+          <tr>
+            <th scope="row" style="width:220px;padding:20px 10px 20px 0;text-align:left;font-size:14px;color:#2c3338;">
+              Common Settings
+            </th>
+            <td style="padding:15px 10px;">
+              <fieldset>
+                <label style="display:block;margin-bottom:8px;"><input type="radio" name="permalink_structure" value="plain"> <code>https://projectshub.co.in/?p=123</code> (Plain)</label>
+                <label style="display:block;margin-bottom:8px;"><input type="radio" name="permalink_structure" value="post_name" checked> <code>https://projectshub.co.in/projects/sample-post/</code> (Post name - Recommended)</label>
+                <label style="display:block;"><input type="radio" name="permalink_structure" value="custom"> <code>https://projectshub.co.in/blog/%postname%/</code> (Custom Structure)</label>
+              </fieldset>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    {% elif active_tab == 'analytics' %}
+      <table class="form-table" role="presentation" style="width:100%;max-width:900px;border-collapse:collapse;">
+        <tbody>
+          <tr>
+            <th scope="row" style="width:220px;padding:20px 10px 20px 0;text-align:left;font-size:14px;color:#2c3338;">
+              <label for="google_analytics_id">Google Analytics Measurement ID</label>
+            </th>
+            <td style="padding:15px 10px;">
+              <input name="google_analytics_id" type="text" id="google_analytics_id" value="{{ settings.google_analytics_id }}" placeholder="G-XXXXXXXXXX" class="regular-text" style="width:300px;padding:6px 10px;font-size:13px;border:1px solid #8c8f94;border-radius:3px;">
+              <p class="description" style="font-size:12px;color:#646970;margin:4px 0 0 0;">Google Analytics 4 (GA4) Measurement ID. Renders gtag.js script automatically across all public pages.</p>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" style="padding:20px 10px 20px 0;text-align:left;font-size:14px;color:#2c3338;">
+              <label for="custom_head_code">Custom Header Code</label>
+            </th>
+            <td style="padding:15px 10px;">
+              <textarea name="custom_head_code" id="custom_head_code" rows="6" class="large-text code" style="width:100%;font-family:monospace;font-size:12px;padding:8px 10px;border:1px solid #8c8f94;border-radius:3px;">{{ settings.custom_head_code }}</textarea>
+              <p class="description" style="font-size:12px;color:#646970;margin:4px 0 0 0;">Injected directly before &lt;/head&gt; (e.g. Google Tag Manager, Meta Pixel, Search Console verification tag).</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    {% endif %}
+
+    <p class="submit" style="margin-top:24px;">
+      <button type="submit" name="submit" id="submit" class="button button-primary button-large">Save Changes</button>
+    </p>
+
+  </form>
+
+</div>
+{% endblock %}

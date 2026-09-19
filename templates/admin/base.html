@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="{% static 'admin/css/base.css' %}">
   <link rel="stylesheet" href="{% static 'admin/css/responsive.css' %}">
   {% block extrastyle %}{% endblock %}
-  <link rel="stylesheet" href="{% static 'css/wp-admin.css' %}?v=9">
+  <link rel="stylesheet" href="{% static 'css/wp-admin.css' %}?v=10">
   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'image/Favicon-new/favicon-32x32.png' %}">
   
   {% block extrahead %}{% endblock %}
@@ -88,6 +88,7 @@
           <li><a href="/admin/core/projecthighlight/add/">📊 Project Highlight</a></li>
           <li><a href="/admin/core/megamenutag/add/">🏷️ Popular Tag (Mega Menu)</a></li>
           <li><a href="/admin/core/blogpost/add/">📝 Blog Post</a></li>
+          <li><a href="/admin/core/page/add/">📄 Page (ACF Blocks)</a></li>
           <li><a href="/admin/core/blogsection/add/">📑 Blog Section</a></li>
           <li><a href="/admin/core/aitool/add/">🛠️ AI Tool</a></li>
           <li><a href="/admin/core/service/add/">💼 Service</a></li>
@@ -227,6 +228,20 @@
           </ul>
         </li>
 
+        <!-- Pages (WordPress Pages with ACF Blocks) -->
+        <li class="wp-menu-item {% if '/admin/core/page/' in request.path or '/admin/pages/' in request.path %}current{% endif %}" data-path="/admin/core/page/">
+          <a href="/admin/core/page/" class="wp-menu-link">
+            <span class="wp-menu-icon">📄</span>
+            <span class="wp-menu-name">Pages</span>
+            <span class="wp-menu-count blue">{{ model_counts.page|default:'8' }}</span>
+          </a>
+          <ul class="wp-submenu">
+            <li class="wp-submenu-head">Pages</li>
+            <li><a href="/admin/core/page/">All Pages ({{ model_counts.page|default:'8' }})</a></li>
+            <li><a href="/admin/core/page/add/">➕ Add New Page</a></li>
+          </ul>
+        </li>
+
         <!-- 4. AI Tools -->
         <li class="wp-menu-item {% if '/admin/core/aitool/' in request.path or '/admin/core/toolcategory/' in request.path %}current{% endif %}" data-path="/admin/core/aitool/">
           <a href="/admin/core/aitool/" class="wp-menu-link">
@@ -315,34 +330,35 @@
 
         <li class="wp-menu-separator"></li>
 
+        <li class="wp-menu-separator"></li>
+
         <!-- 9. Appearance -->
-        <li class="wp-menu-item {% if '/admin/core/navigationitem/' in request.path or '/admin/core/megamenutag/' in request.path or '/admin/core/sociallink/' in request.path or '/admin/core/statitem/' in request.path %}current{% endif %}" data-path="/admin/core/navigationitem/">
-          <a href="/admin/core/navigationitem/" class="wp-menu-link">
+        <li class="wp-menu-item {% if '/admin/appearance/' in request.path or '/admin/core/navigationitem/' in request.path or '/admin/core/megamenutag/' in request.path or '/admin/core/sociallink/' in request.path or '/admin/core/statitem/' in request.path %}current{% endif %}" data-path="/admin/appearance/menus/">
+          <a href="/admin/appearance/menus/" class="wp-menu-link">
             <span class="wp-menu-icon">🎨</span>
             <span class="wp-menu-name">Appearance</span>
           </a>
           <ul class="wp-submenu">
             <li class="wp-submenu-head">Appearance</li>
-            <li><a href="/admin/core/navigationitem/">Menus &amp; Navigation</a></li>
-            <li><a href="/admin/core/megamenutag/" style="font-weight:600;color:#2271b1;">🏷️ Popular Tags (Mega Menu)</a></li>
-            <li><a href="/admin/core/sociallink/">Social Links</a></li>
-            <li><a href="/admin/core/statitem/">Hero Stats</a></li>
+            <li><a href="/admin/appearance/menus/" style="font-weight:600;color:#72aee6;">Menus</a></li>
+            <li><a href="/admin/core/navigationitem/">Navigation Items ({{ model_counts.navigationitem|default:'0' }})</a></li>
+            <li><a href="/admin/core/megamenutag/">🏷️ Popular Tags (Mega Menu)</a></li>
+            <li><a href="/admin/core/sociallink/">Social Links ({{ model_counts.sociallink|default:'0' }})</a></li>
+            <li><a href="/admin/core/statitem/">Hero &amp; Trust Stats</a></li>
           </ul>
         </li>
 
-        <!-- 10. SEO & Redirects -->
-        <li class="wp-menu-item {% if '/admin/core/seodata/' in request.path or '/admin/core/redirect/' in request.path %}current{% endif %}" data-path="/admin/core/seodata/">
-          <a href="/admin/core/seodata/" class="wp-menu-link">
-            <span class="wp-menu-icon">🔍</span>
-            <span class="wp-menu-name">SEO &amp; Tools</span>
+        <!-- 10. Plugins -->
+        <li class="wp-menu-item {% if '/admin/plugins/' in request.path %}current{% endif %}" data-path="/admin/plugins/">
+          <a href="/admin/plugins/" class="wp-menu-link">
+            <span class="wp-menu-icon">🔌</span>
+            <span class="wp-menu-name">Plugins</span>
+            <span class="wp-menu-count blue">6</span>
           </a>
           <ul class="wp-submenu">
-            <li class="wp-submenu-head">SEO &amp; Redirects</li>
-            <li><a href="/admin/core/seodata/">SEO Metadata</a></li>
-            <li><a href="/admin/core/redirect/">301/302 Redirects</a></li>
-            <li><a href="/admin/backup/">💾 Backup Database</a></li>
-            <li><a href="/sitemap.xml" target="_blank">XML Sitemap ↗</a></li>
-            <li><a href="/robots.txt" target="_blank">Robots.txt ↗</a></li>
+            <li class="wp-submenu-head">Plugins</li>
+            <li><a href="/admin/plugins/">Installed Plugins</a></li>
+            <li><a href="/admin/plugins/?tab=featured">Add New Plugin</a></li>
           </ul>
         </li>
 
@@ -356,22 +372,43 @@
           <ul class="wp-submenu">
             <li class="wp-submenu-head">Users</li>
             <li><a href="/admin/auth/user/">All Users</a></li>
-            <li><a href="/admin/auth/user/add/">Add New</a></li>
+            <li><a href="/admin/auth/user/add/">Add New User</a></li>
+            <li><a href="/admin/password_change/">Profile</a></li>
             <li><a href="/admin/auth/group/">User Groups</a></li>
-            <li><a href="/admin/auth/permission/">Permissions &amp; Capabilities ({{ model_counts.permission|default:'0' }})</a></li>
+            <li><a href="/admin/auth/permission/">Permissions &amp; Capabilities</a></li>
           </ul>
         </li>
 
-        <!-- 12. Settings -->
-        <li class="wp-menu-item {% if '/admin/core/sitesettings' in request.path or '/admin/backup/' in request.path %}current{% endif %}" data-path="/admin/core/sitesettings/">
-          <a href="/admin/core/sitesettings/" class="wp-menu-link">
+        <!-- 12. Tools -->
+        <li class="wp-menu-item {% if '/admin/backup/' in request.path or '/admin/guide/' in request.path or '/admin/core/seodata/' in request.path or '/admin/core/redirect/' in request.path %}current{% endif %}" data-path="/admin/backup/">
+          <a href="/admin/backup/" class="wp-menu-link">
+            <span class="wp-menu-icon">🧰</span>
+            <span class="wp-menu-name">Tools</span>
+          </a>
+          <ul class="wp-submenu">
+            <li class="wp-submenu-head">Tools</li>
+            <li><a href="/admin/backup/">Export &amp; Backup</a></li>
+            <li><a href="/admin/guide/">Project Guide &amp; SOPs</a></li>
+            <li><a href="/admin/core/seodata/">SEO Overrides</a></li>
+            <li><a href="/admin/core/redirect/">URL Redirects</a></li>
+            <li><a href="/sitemap.xml" target="_blank">XML Sitemap ↗</a></li>
+          </ul>
+        </li>
+
+        <!-- 13. Settings -->
+        <li class="wp-menu-item {% if '/admin/settings/' in request.path or '/admin/core/sitesettings' in request.path %}current{% endif %}" data-path="/admin/settings/">
+          <a href="/admin/settings/" class="wp-menu-link">
             <span class="wp-menu-icon">⚙️</span>
             <span class="wp-menu-name">Settings</span>
           </a>
           <ul class="wp-submenu">
             <li class="wp-submenu-head">Settings</li>
-            <li><a href="/admin/core/sitesettings/">General Settings</a></li>
-            <li><a href="/admin/backup/" style="font-weight:600;color:#72aee6;">💾 Backup &amp; Export</a></li>
+            <li><a href="/admin/settings/?tab=general">General</a></li>
+            <li><a href="/admin/settings/?tab=writing">Writing</a></li>
+            <li><a href="/admin/settings/?tab=reading">Reading</a></li>
+            <li><a href="/admin/settings/?tab=permalinks">Permalinks</a></li>
+            <li><a href="/admin/settings/?tab=analytics">Analytics &amp; GA4</a></li>
+            <li><a href="/admin/core/sitesettings/">Legacy Site Settings</a></li>
           </ul>
         </li>
 
@@ -391,6 +428,57 @@
         <div id="wpbody-content">
 
           {% if user.is_authenticated and not is_popup %}
+          <!-- Screen Meta Slide-Down Panels (WordPress Screen Options & Help) -->
+          <div id="screen-meta" class="metabox-prefs" style="display:none;position:relative;background:#ffffff;border-bottom:1px solid #c3c4c7;box-shadow:0 4px 12px rgba(0,0,0,0.06);margin:0 -20px 18px -20px;padding:16px 24px;z-index:9999;">
+            
+            <!-- 1. Screen Options Tab -->
+            <div id="screen-options-wrap" style="display:none;">
+              <h5 style="margin:0 0 10px 0;font-size:13px;font-weight:700;color:#1d2327;">Columns &amp; Screen Elements</h5>
+              <div style="display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:#2c3338;margin-bottom:12px;">
+                <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;"><input type="checkbox" checked onchange="toggleTableColumn('column-media')"> Media Thumbnail</label>
+                <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;"><input type="checkbox" checked onchange="toggleTableColumn('column-category')"> Category</label>
+                <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;"><input type="checkbox" checked onchange="toggleTableColumn('column-tags')"> Tags</label>
+                <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;"><input type="checkbox" checked onchange="toggleTableColumn('column-date')"> Date Published</label>
+                <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;"><input type="checkbox" checked onchange="toggleTableColumn('column-status')"> Status / Visibility</label>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;font-size:12px;border-top:1px solid #f0f0f1;padding-top:10px;">
+                <span>Pagination:</span>
+                <input type="number" value="20" min="5" max="100" style="width:55px;padding:3px 6px;border:1px solid #8c8f94;border-radius:3px;">
+                <span style="color:#646970;">items per page</span>
+                <button type="button" class="button button-small" onclick="toggleScreenOptions()">Apply</button>
+              </div>
+            </div>
+
+            <!-- 2. Help Tab -->
+            <div id="contextual-help-wrap" style="display:none;">
+              <div style="display:flex;gap:24px;">
+                <div style="width:180px;border-right:1px solid #f0f0f1;padding-right:12px;">
+                  <ul style="list-style:none;margin:0;padding:0;font-size:12px;display:flex;flex-direction:column;gap:6px;">
+                    <li><a href="#" style="font-weight:700;color:#2271b1;" onclick="switchHelpTab('overview', this); return false;">Overview</a></li>
+                    <li><a href="#" style="color:#646970;" onclick="switchHelpTab('screen-content', this); return false;">Screen Content</a></li>
+                    <li><a href="#" style="color:#646970;" onclick="switchHelpTab('quick-actions', this); return false;">Quick Actions</a></li>
+                  </ul>
+                </div>
+                <div style="flex:1;font-size:12.5px;line-height:1.5;color:#2c3338;">
+                  <div id="help-pane-overview">
+                    <h5 style="margin:0 0 6px 0;font-size:13px;font-weight:700;">ProjectsHub Administration Help</h5>
+                    <p style="margin:0 0 8px 0;">This control panel allows you to manage showcases, blog posts, curated AI tools, workshops, customer inquiries, menus, and site settings with full WordPress familiarity.</p>
+                    <p style="margin:0;">Hover over any item row to reveal instant <strong>Edit</strong>, <strong>Quick Edit</strong>, <strong>Trash</strong>, or <strong>View Live</strong> actions.</p>
+                  </div>
+                  <div id="help-pane-screen-content" style="display:none;">
+                    <h5 style="margin:0 0 6px 0;font-size:13px;font-weight:700;">Customizing Display</h5>
+                    <p>Use the <strong>Screen Options</strong> tab above to show or hide specific data columns according to your display preferences.</p>
+                  </div>
+                  <div id="help-pane-quick-actions" style="display:none;">
+                    <h5 style="margin:0 0 6px 0;font-size:13px;font-weight:700;">Keyboard &amp; Quick Actions</h5>
+                    <p>Clicking <strong>Quick Edit</strong> expands an inline editing drawer right in the table, saving you from navigating back and forth.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
           <!-- Top WordPress Screen Header Bar -->
           <div class="wp-screen-header">
             <div>
@@ -404,19 +492,9 @@
 
             <!-- Screen Options & Help Toggles -->
             <div class="screen-meta-toggle">
-              <button type="button" class="screen-meta-btn" onclick="toggleScreenOptions()">Screen Options ▾</button>
-              <button type="button" class="screen-meta-btn" onclick="toggleHelpTab()">Help ▾</button>
+              <button type="button" id="screen-options-link" class="screen-meta-btn" onclick="toggleScreenOptions()">Screen Options ▾</button>
+              <button type="button" id="contextual-help-link" class="screen-meta-btn" onclick="toggleHelpTab()">Help ▾</button>
             </div>
-          </div>
-
-          <!-- Hidden Screen Options Panel (WordPress Style) -->
-          <div id="screen-options-wrap" style="display:none;background:#ffffff;border:1px solid #c3c4c7;padding:12px 16px;margin-bottom:15px;border-radius:3px;">
-            <p style="margin:0 0 6px 0;font-weight:600;">Screen Elements</p>
-            <label style="margin-right:15px;"><input type="checkbox" checked disabled> Welcome Panel</label>
-            <label style="margin-right:15px;"><input type="checkbox" checked disabled> At a Glance</label>
-            <label style="margin-right:15px;"><input type="checkbox" checked disabled> Activity</label>
-            <label style="margin-right:15px;"><input type="checkbox" checked disabled> Quick Draft</label>
-            <label><input type="checkbox" checked disabled> Platform Health</label>
           </div>
           {% endif %}
 
@@ -543,16 +621,8 @@
         });
       });
     })();
-
-    function toggleScreenOptions() {
-      var wrap = document.getElementById('screen-options-wrap');
-      if (wrap) wrap.style.display = wrap.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function toggleHelpTab() {
-      alert('ProjectsHub Admin Help:\n\n• Manage projects, tools, workshops and blogs from the sidebar.\n• Track new CRM inquiries in real-time.\n• Changes are instantly reflected on the live site.');
-    }
   </script>
+  <script src="{% static 'js/wp-admin.js' %}?v=10"></script>
 
   {% block footer %}{% endblock %}
 </body>

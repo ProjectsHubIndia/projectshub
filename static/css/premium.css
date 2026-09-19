@@ -174,23 +174,11 @@ body.light .hero-title {
 
 body.light .hero-title__gradient {
   background: linear-gradient(135deg, #6366f1 0%, #8B5CF6 50%, #60A5FA 100%) !important;
-  background-size: 200% 200% !important;
-  animation: gradShift 5s ease infinite !important;
+  background-size: 100% !important;
+  animation: none !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;
-}
-
-@keyframes gradShift {
-
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
 }
 
 body.light .hero-desc {
@@ -330,8 +318,8 @@ body.light .about-desc {
 
 body.light .gradient-word {
   background: linear-gradient(135deg, #6366f1, #8B5CF6, #60A5FA) !important;
-  background-size: 200% 200% !important;
-  animation: gradShift 5s ease infinite !important;
+  background-size: 100% !important;
+  animation: none !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;
@@ -995,8 +983,7 @@ body.light [class*="gate-btn"] {
 }
 
 /* Idea modal */
-body.light .idea-modal,
-body.light [class*="idea-modal"] {
+body.light .idea-modal {
   background: rgba(255, 255, 255, .97) !important;
   border: 1px solid rgba(99, 102, 241, .1) !important;
   border-radius: 24px !important;

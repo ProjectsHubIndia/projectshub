@@ -16,14 +16,23 @@
   "routes": [
     {
       "src": "/static/(.*)",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      },
       "dest": "/$1"
     },
     {
       "src": "/media/(.*)",
+      "headers": {
+        "cache-control": "public, max-age=86400, stale-while-revalidate=604800"
+      },
       "dest": "/media/$1"
     },
     {
       "src": "/favicon.ico",
+      "headers": {
+        "cache-control": "public, max-age=86400"
+      },
       "dest": "/image/Favicon-new/favicon.ico"
     },
     {

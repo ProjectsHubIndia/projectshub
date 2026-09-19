@@ -1072,47 +1072,46 @@
 
   function initMarquee() {
     var winW = window.innerWidth;
-    document.querySelectorAll(".marquee-track").forEach(function (track) {
-      var original = track.innerHTML;
-      var initialW = track.scrollWidth;
-      if (!initialW) return;
+    var tracks = Array.prototype.slice.call(document.querySelectorAll(".marquee-track"));
+    if (!tracks.length) return;
+
+    // Phase 1: Batch all geometric reads (eliminates layout thrashing)
+    var trackData = tracks.map(function (track) {
+      return {
+        track: track,
+        original: track.innerHTML,
+        initialW: track.scrollWidth,
+        isReverse: track.classList.contains("marquee-track--reverse"),
+        id: track.id || "mq-" + Math.random().toString(36).slice(2)
+      };
+    });
+
+    // Phase 2: Batch all DOM mutations & single style injection
+    var combinedStyles = "";
+    trackData.forEach(function (item) {
+      if (!item.initialW) return;
       var targetW = winW * 2.5;
-      var sets = Math.max(2, Math.ceil(targetW / initialW));
+      var sets = Math.max(2, Math.ceil(targetW / item.initialW));
       var newHtml = "";
       for (var s = 0; s < sets; s++) {
-        newHtml += original;
+        newHtml += item.original;
       }
-      track.innerHTML = newHtml;
+      item.track.innerHTML = newHtml;
+      item.track.id = item.id;
 
       var pct = ((1 / sets) * 100).toFixed(4);
-      var isReverse = track.classList.contains("marquee-track--reverse");
-      var id = track.id || "mq-" + Math.random().toString(36).slice(2);
-      track.id = id;
-
-      var style = document.createElement("style");
-      style.textContent = isReverse
-        ? "#" +
-          id +
-          " { animation-name: marquee-right-" +
-          id +
-          "; } " +
-          "@keyframes marquee-right-" +
-          id +
-          " { from { transform: translateX(-" +
-          pct +
-          "%); } to { transform: translateX(0); } }"
-        : "#" +
-          id +
-          " { animation-name: marquee-left-" +
-          id +
-          "; } " +
-          "@keyframes marquee-left-" +
-          id +
-          " { from { transform: translateX(0); } to { transform: translateX(-" +
-          pct +
-          "%); } }";
-      document.head.appendChild(style);
+      combinedStyles += item.isReverse
+        ? "#" + item.id + " { animation-name: marquee-right-" + item.id + "; } " +
+          "@keyframes marquee-right-" + item.id + " { from { transform: translateX(-" + pct + "%); } to { transform: translateX(0); } }\n"
+        : "#" + item.id + " { animation-name: marquee-left-" + item.id + "; } " +
+          "@keyframes marquee-left-" + item.id + " { from { transform: translateX(0); } to { transform: translateX(-" + pct + "%); } }\n";
     });
+
+    if (combinedStyles) {
+      var style = document.createElement("style");
+      style.textContent = combinedStyles;
+      document.head.appendChild(style);
+    }
   }
   /* ════════════════════════════════════════
        CONTACT FORM SUBMISSION

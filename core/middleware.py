@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.utils.deprecation import MiddlewareMixin
 from core.models import Redirect
@@ -5,14 +6,30 @@ from core.models import Redirect
 
 class RedirectMiddleware(MiddlewareMixin):
     """
-    Checks if the incoming request path matches any active Redirect rule.
-    Performs fast 301 / 302 redirects with zero overhead.
+    Checks if the incoming request matches canonical domain rules (www to apex, HTTP to HTTPS)
+    or any active custom Redirect rule from the database. Performs fast 301 / 302 redirects.
     """
     def process_request(self, request):
         path = request.path
         # Skip static assets and media to optimize performance
         if path.startswith(('/static/', '/media/', '/favicon.ico')):
             return None
+
+        # 1. Canonical Domain & HTTPS Normalization
+        host = request.get_host().lower().split(':')[0]
+        if host == 'www.projectshub.co.in':
+            target = f"https://projectshub.co.in{request.get_full_path()}"
+            return HttpResponsePermanentRedirect(target)
+
+        # Enforce HTTPS in production when accessed over plain HTTP
+        if not request.is_secure() and host == 'projectshub.co.in' and not settings.DEBUG:
+            target = f"https://projectshub.co.in{request.get_full_path()}"
+            return HttpResponsePermanentRedirect(target)
+
+        # Seamlessly normalize /admin to /admin/ with query parameters preserved
+        if path == '/admin':
+            qs = request.META.get('QUERY_STRING', '')
+            return HttpResponsePermanentRedirect(f'/admin/?{qs}' if qs else '/admin/')
 
         try:
             rule = Redirect.objects.filter(old_path=path, is_active=True).first()
@@ -48,11 +65,12 @@ class SecurityHeadersMiddleware(MiddlewareMixin):
         if 'Content-Security-Policy' not in response:
             response['Content-Security-Policy'] = (
                 "default-src 'self' https:; "
-                "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; "
+                "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://www.googletagmanager.com https://www.google-analytics.com; "
                 "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; "
                 "font-src 'self' https://fonts.gstatic.com data:; "
                 "img-src 'self' data: https: blob:; "
-                "connect-src 'self' https:; "
+                "connect-src 'self' https: https://www.google-analytics.com https://region1.google-analytics.com; "
+                "frame-src 'self' https:; "
                 "frame-ancestors 'self';"
             )
         return response

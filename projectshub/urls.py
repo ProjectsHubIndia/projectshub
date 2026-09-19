@@ -2,10 +2,12 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf import settings
 from django.views.static import serve
+from django.views.generic.base import RedirectView
 from core.views import (
     admin_guide_view, toggle_guide_note, admin_assets_view, admin_asset_delete_view,
     admin_backup_view, admin_backup_download_json, admin_backup_download_db,
     admin_backup_sync_initial, admin_backup_restore,
+    admin_nav_menus_view, admin_plugins_view, admin_settings_view, admin_quick_edit_api,
     error_400, error_404, error_500
 )
 
@@ -19,10 +21,18 @@ admin.site.index_title = "Dashboard"
 admin.site.catch_all_view = lambda request, url: render(request, 'admin/404.html', status=404)
 
 urlpatterns = [
+    # Seamless redirect for /admin without trailing slash
+    path('admin', RedirectView.as_view(url='/admin/', permanent=True, query_string=True)),
     path('admin/guide/toggle/<int:note_id>/', toggle_guide_note, name='toggle_guide_note'),
     path('admin/guide/', admin_guide_view, name='admin_guide'),
     path('admin/assets/delete/', admin_asset_delete_view, name='admin_asset_delete'),
     path('admin/assets/', admin_assets_view, name='admin_assets'),
+    path('admin/appearance/menus/', admin_nav_menus_view, name='admin_nav_menus'),
+    path('admin/plugins/', admin_plugins_view, name='admin_plugins'),
+    path('admin/settings/', admin_settings_view, name='admin_settings'),
+    path('admin/pages/', RedirectView.as_view(url='/admin/core/page/', permanent=False)),
+    path('admin/pages/new/', RedirectView.as_view(url='/admin/core/page/add/', permanent=False)),
+    path('admin/api/quick-edit/', admin_quick_edit_api, name='admin_quick_edit_api'),
     path('admin/backup/download-json/', admin_backup_download_json, name='admin_backup_download_json'),
     path('admin/backup/download-db/', admin_backup_download_db, name='admin_backup_download_db'),
     path('admin/backup/sync-initial/', admin_backup_sync_initial, name='admin_backup_sync_initial'),
