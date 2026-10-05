@@ -258,11 +258,15 @@ class AllowedHostsAndErrorViewsTests(TestCase):
         self.assertEqual(res.status_code, 200)
 
     def test_custom_domain_host_allowed(self):
-        res = self.client.get('/', HTTP_HOST='projectshub.co.in')
+        res = self.client.get('/', HTTP_HOST='projectshub.co.in', secure=True)
         self.assertEqual(res.status_code, 200)
+
+    def test_custom_domain_http_redirects_to_https(self):
+        res = self.client.get('/', HTTP_HOST='projectshub.co.in')
+        self.assertEqual(res.status_code, 301)
+        self.assertEqual(res['Location'], 'https://projectshub.co.in/')
 
     def test_error_400_view_renders_properly(self):
         res = self.client.get('/400/')
         self.assertEqual(res.status_code, 400)
         self.assertIn(b'400 - Bad Request', res.content)
-

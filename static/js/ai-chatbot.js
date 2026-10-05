@@ -434,6 +434,43 @@
             };
         }
 
+        getLeadCardCopy(interest) {
+            var copyByInterest = {
+                'AI Projects & Source Code': {
+                    title: 'Get AI Project Recommendations',
+                    description: 'Receive project and source-code recommendations matched to your goals.',
+                    button: 'Request Project Recommendations',
+                    success: 'Project Request Confirmed!'
+                },
+                '3-Day Autonomous Agents Bootcamp': {
+                    title: 'Get the 3-Day Bootcamp Curriculum',
+                    description: 'Receive the bootcamp curriculum, schedule, and enrollment details.',
+                    button: 'Request Bootcamp Details',
+                    success: 'Bootcamp Details Requested!'
+                },
+                'Custom AI Development for Business': {
+                    title: 'Discuss Your Custom AI Project',
+                    description: 'Share your goals and receive a follow-up about your AI development needs.',
+                    button: 'Request a Project Call',
+                    success: 'Project Call Requested!'
+                },
+                'Pricing & Project Estimation': {
+                    title: 'Request Pricing & Estimation',
+                    description: 'Tell us what you need and receive relevant pricing and scope details.',
+                    button: 'Request an Estimate',
+                    success: 'Estimate Requested!'
+                },
+                'General AI Consultation': {
+                    title: 'Talk to the ProjectsHub Team',
+                    description: 'Leave your details and our team will follow up about your AI inquiry.',
+                    button: 'Request a Callback',
+                    success: 'Callback Requested!'
+                }
+            };
+
+            return copyByInterest[interest] || copyByInterest['General AI Consultation'];
+        }
+
         submitLeadCard(e, formEl) {
             e.preventDefault();
             var name = formEl.querySelector('input[name="name"]').value.trim();
@@ -468,13 +505,14 @@
                 if (data.success) {
                     var cardContainer = formEl.closest('.ai-chatbot-lead-card');
                     if (cardContainer) {
+                        var leadCardCopy = self.getLeadCardCopy(interest);
                         cardContainer.innerHTML = `
                             <div class="ai-chatbot-lead-success">
-                                <div class="ai-chatbot-lead-success-title">🎯 Consultation Request Confirmed!</div>
+                                <div class="ai-chatbot-lead-success-title">🎯 ${leadCardCopy.success}</div>
                                 <div class="ai-chatbot-lead-success-msg">
-                                    Thank you, <strong>${self.escapeHtml(name || 'there')}</strong>! A senior AI engineer has received your inquiry for <em>${self.escapeHtml(interest)}</em> and will contact you via WhatsApp/Email shortly.
+                                    Thank you, <strong>${self.escapeHtml(name || 'there')}</strong>! Our team has received your request about <em>${self.escapeHtml(interest)}</em> and will follow up using your contact details.
                                 </div>
-                                <a href="https://wa.me/${WHATSAPP_PHONE}?text=Hi%20ProjectsHub%20Team%2C%20my%20name%20is%20${encodeURIComponent(name)}.%20I%20just%20submitted%20a%20consultation%20request%20for%20${encodeURIComponent(interest)}." target="_blank" rel="noopener noreferrer" class="ai-chatbot-whatsapp-btn">
+                                <a href="https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(`Hi ProjectsHub Team, my name is ${name}. I just submitted a request about ${interest}.`)}" target="_blank" rel="noopener noreferrer" class="ai-chatbot-whatsapp-btn">
                                     <span>💬 Chat on WhatsApp Directly &rarr;</span>
                                 </a>
                             </div>
@@ -483,13 +521,13 @@
                     self.saveMessages();
                 } else {
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = '<span>Request Consultation &rarr;</span>';
+                    submitBtn.innerHTML = `<span>${self.getLeadCardCopy(interest).button} &rarr;</span>`;
                     alert(data.error || 'Submission failed. Please try again.');
                 }
             })
             .catch(function (err) {
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = '<span>Request Consultation &rarr;</span>';
+                submitBtn.innerHTML = `<span>${self.getLeadCardCopy(interest).button} &rarr;</span>`;
                 console.error('Lead submission error:', err);
                 alert('Network error. Please chat with us on WhatsApp or submit through our contact page.');
             });
@@ -525,13 +563,14 @@
 
                 // Render Lead Capture Card if present
                 if (msg.showLeadCard) {
+                    var leadCardCopy = self.getLeadCardCopy(msg.leadInterest);
                     contentHtml += `
                         <div class="ai-chatbot-lead-card" data-card-idx="${idx}">
                             <div class="ai-chatbot-lead-card-header">
                                 <span class="ai-chatbot-lead-card-icon">🎯</span>
                                 <div>
-                                    <h4 class="ai-chatbot-lead-card-title">Direct AI Engineer Consultation</h4>
-                                    <p class="ai-chatbot-lead-card-desc">Receive tailored repository recommendations, syllabus, and custom pricing.</p>
+                                    <h4 class="ai-chatbot-lead-card-title">${leadCardCopy.title}</h4>
+                                    <p class="ai-chatbot-lead-card-desc">${leadCardCopy.description}</p>
                                 </div>
                             </div>
                             <form class="ai-chatbot-lead-form" onsubmit="window.chatbot.submitLeadCard(event, this)">
@@ -546,7 +585,7 @@
                                     <option value="General AI Consultation" ${msg.leadInterest === 'General AI Consultation' ? 'selected' : ''}>General Consultation</option>
                                 </select>
                                 <button type="submit" class="ai-chatbot-lead-submit">
-                                    <span>Request Consultation &rarr;</span>
+                                    <span>${leadCardCopy.button} &rarr;</span>
                                 </button>
                             </form>
                         </div>

@@ -159,23 +159,42 @@ class SiteSettingsAdmin(admin.ModelAdmin):
 
 @admin.register(NavigationItem)
 class NavigationItemAdmin(admin.ModelAdmin):
-    list_display = ('title', 'group', 'url', 'badge_preview', 'order', 'is_active', 'open_in_new_tab')
+    list_display = ('title', 'group', 'icon_preview', 'url', 'badge_preview', 'order', 'is_active', 'open_in_new_tab')
     list_filter = ('group', 'is_active', 'badge_color')
     list_editable = ('order', 'is_active')
-    search_fields = ('title', 'url', 'description', 'badge_text')
+    search_fields = ('title', 'url', 'description', 'badge_text', 'icon_svg')
     fieldsets = (
         ('Navigation Link', {
             'fields': ('title', 'url', 'group', 'parent'),
-            'description': 'Main target and hierarchy grouping for this navigation element.'
+            'description': (
+                'To add a mobile submenu item, choose Mega Menu — Our Work, '
+                'Mega Menu — How We Help (Students), or Mega Menu — How We Help (Businesses). '
+                'Keep the item active to show it on the site.'
+            )
         }),
         ('Mega Menu UI/UX Presentation', {
             'fields': ('description', 'badge_text', 'badge_color', 'image', 'icon_svg'),
-            'description': 'Visual card elements rendered in the Mega Menu (badges, card thumbnails, icons, and descriptions).'
+            'description': (
+                'Set Icon to an emoji or Unicode symbol for the mobile submenu and desktop menu. '
+                'HTML/SVG is escaped and displayed as text.'
+            )
         }),
         ('Behavior & Ordering', {
             'fields': ('order', 'is_active', 'open_in_new_tab'),
         }),
     )
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        form.base_fields['icon_svg'].label = 'Icon / Emoji'
+        return form
+
+    @admin.display(description='Icon')
+    def icon_preview(self, obj):
+        return format_html(
+            '<span style="font-size:20px;line-height:1;">{}</span>',
+            obj.icon_svg.strip() or '—',
+        )
 
     def badge_preview(self, obj):
         if not obj.badge_text:
@@ -1515,7 +1534,5 @@ class PageAdmin(admin.ModelAdmin):
             p.is_front_page = False
             p.save()
     duplicate_page.short_description = "Duplicate selected page(s)"
-
-
 
 

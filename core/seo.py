@@ -18,16 +18,11 @@ DEFAULT_ROBOTS = "index, follow, max-image-preview:large, max-snippet:-1, max-vi
 def get_base_url(request=None):
     if request:
         try:
-            uri = request.build_absolute_uri('/').rstrip('/')
-            if 'projectshub.co.in' in uri or getattr(settings, 'IS_PRODUCTION', False):
-                return uri.replace('http://', 'https://')
-            return uri
+            return request.build_absolute_uri('/').rstrip('/')
         except Exception:
             pass
     site_url = getattr(settings, 'SITE_URL', '').rstrip('/')
     if site_url:
-        if 'projectshub.co.in' in site_url:
-            return site_url.replace('http://', 'https://')
         return site_url
     return DEFAULT_DOMAIN.rstrip('/')
 
@@ -63,7 +58,7 @@ def build_website_schema(base_url):
         "url": base_url,
         "potentialAction": {
             "@type": "SearchAction",
-            "target": f"{base_url}/projects/?q={{search_term_string}}",
+            "target": f"{base_url}/projects/?search={{search_term_string}}",
             "query-input": "required name=search_term_string"
         }
     }
@@ -160,20 +155,8 @@ def get_seo_for_request(request, view_context=None):
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
             "name": prj.title,
-            "operatingSystem": "Web, Linux, Docker, Python 3.12",
-            "applicationCategory": getattr(prj.category, 'name', 'DeveloperApplication') if getattr(prj, 'category', None) else "DeveloperApplication",
+            "applicationCategory": prj.get_category_display(),
             "description": meta_description,
-            "offers": {
-                "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "USD",
-                "availability": "https://schema.org/InStock"
-            },
-            "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": "4.9",
-                "reviewCount": "48"
-            }
         })
 
     # D. BLOG LISTING
@@ -189,11 +172,12 @@ def get_seo_for_request(request, view_context=None):
     elif path.startswith('/blog/') and view_context and 'post' in view_context:
         post = view_context['post']
         meta_title = f"{post.title} | ProjectsHub Blog"
-        clean_desc = strip_tags(post.excerpt or post.content or post.title)[:155].strip()
+        clean_desc = strip_tags(post.excerpt or post.get_lead() or post.content or post.title)[:155].strip()
         meta_description = clean_desc
         og_type = "article"
-        if getattr(post, 'featured_image', None):
-            og_image = f"{base_url}{post.featured_image.url}"
+        image_src = post.get_image_src()
+        if image_src:
+            og_image = image_src if urlparse(image_src).scheme else f"{base_url}/{image_src.lstrip('/')}"
         
         schemas.append(build_breadcrumbs_schema([
             ("Home", "/"),
@@ -205,11 +189,13 @@ def get_seo_for_request(request, view_context=None):
             "@type": "BlogPosting",
             "headline": post.title,
             "description": meta_description,
-            "datePublished": post.created_at.isoformat() if hasattr(post, 'created_at') and post.created_at else "",
-            "dateModified": post.updated_at.isoformat() if hasattr(post, 'updated_at') and post.updated_at else "",
+            "datePublished": post.published_at.isoformat() if post.published_at else "",
+            "dateModified": post.updated_at.isoformat() if post.updated_at else "",
+            "image": og_image,
+            "articleSection": post.get_category_display(),
             "author": {
                 "@type": "Person",
-                "name": getattr(post.author, 'get_full_name', lambda: 'ProjectsHub AI Team')() or 'ProjectsHub AI Team'
+                "name": post.author_name or "ProjectsHub"
             },
             "publisher": {
                 "@type": "Organization",

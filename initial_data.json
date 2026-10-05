@@ -3623,6 +3623,38 @@
     }
   },
   {
+    "model": "core.blogpost",
+    "pk": 6,
+    "fields": {
+      "title": "A Practical Checklist for Building a Production-Ready AI API",
+      "slug": "production-ready-ai-api-checklist",
+      "category": "engineering",
+      "category_ref": null,
+      "excerpt": "Plan a reliable AI API with clear contracts, bounded inputs, predictable errors, privacy-aware logging, and deployment checks.",
+      "lead": "An AI endpoint is more than a model call behind an HTTP route. A dependable API defines what it accepts, limits the work each request can trigger, and gives clients useful failures when a dependency is unavailable. Use this checklist before putting an AI feature in front of real users.",
+      "content": "",
+      "emoji": "🧰",
+      "gradient_from": "#2563eb",
+      "gradient_to": "#7c3aed",
+      "accent": "#2563eb",
+      "featured_image": "",
+      "image": "",
+      "image_url": "",
+      "read_time": "3 min read",
+      "published_at": "2026-10-05",
+      "author_name": "ProjectsHub Editorial Team",
+      "author_role": "Engineering",
+      "author_initials": "PH",
+      "is_active": true,
+      "is_published": true,
+      "is_featured": true,
+      "order": 1,
+      "created_at": "2026-10-05T00:00:00Z",
+      "updated_at": "2026-10-05T00:00:00Z",
+      "tags": []
+    }
+  },
+  {
     "model": "core.blogsection",
     "pk": 1,
     "fields": {
@@ -3774,6 +3806,72 @@
       "body": "hello",
       "code": "def create(nothing):",
       "order": 0
+    }
+  },
+  {
+    "model": "core.blogsection",
+    "pk": 15,
+    "fields": {
+      "post": 6,
+      "heading": "1. Define a small, explicit API contract",
+      "body": "Decide the request and response shape before wiring in a model. Validate required fields, accepted formats, and reasonable length limits at the boundary. Keep the response predictable so a client can handle it without knowing which model or provider produced it.",
+      "code": "from pydantic import BaseModel, Field\n\nclass GenerateRequest(BaseModel):\n    prompt: str = Field(min_length=1, max_length=4000)\n\nclass GenerateResponse(BaseModel):\n    result: str",
+      "order": 0
+    }
+  },
+  {
+    "model": "core.blogsection",
+    "pk": 16,
+    "fields": {
+      "post": 6,
+      "heading": "2. Bound the work each request can trigger",
+      "body": "Input validation is also a capacity control. Set request-body and prompt limits, configure timeouts for model and retrieval calls, and apply rate limits appropriate to your users and provider quota. Avoid accepting arbitrary model names or tool settings from an untrusted caller unless you explicitly validate and authorize them.",
+      "code": "",
+      "order": 1
+    }
+  },
+  {
+    "model": "core.blogsection",
+    "pk": 17,
+    "fields": {
+      "post": 6,
+      "heading": "3. Separate HTTP handling from inference",
+      "body": "Keep the route responsible for parsing input, calling an application service, and formatting the response. Put provider-specific requests, retrieval, and model selection behind a small service boundary. This makes it easier to test the endpoint with a stub and to change providers without rewriting request handling. Use asynchronous handlers only when the I/O libraries you call are async as well; putting blocking work in an async function does not make it non-blocking.",
+      "code": "",
+      "order": 2
+    }
+  },
+  {
+    "model": "core.blogsection",
+    "pk": 18,
+    "fields": {
+      "post": 6,
+      "heading": "4. Make failures safe and useful",
+      "body": "Map expected failures to stable HTTP responses: invalid input should be a client error, while a temporary provider outage should be represented as a service failure that clients can retry according to policy. Do not return stack traces, provider credentials, or raw internal prompts in error responses. Log a request identifier and useful timing or status data, but avoid recording secrets and personal information by default.",
+      "code": "",
+      "order": 3
+    }
+  },
+  {
+    "model": "core.blogsection",
+    "pk": 19,
+    "fields": {
+      "post": 6,
+      "heading": "5. Test the whole request path",
+      "body": "Cover valid requests, malformed and oversized inputs, provider timeouts, and unexpected provider responses. Stub external model calls in ordinary tests so results are repeatable and tests do not spend money or depend on network availability. Before release, verify environment-based secrets, health checks, and the production configuration separately from local development.",
+      "code": "",
+      "order": 4
+    }
+  },
+  {
+    "model": "core.blogsection",
+    "pk": 20,
+    "fields": {
+      "post": 6,
+      "heading": "Conclusion",
+      "body": "A production-ready AI API starts with a narrow contract and clear operational limits, not a more complicated prompt. Validate at the boundary, isolate inference, handle failures deliberately, and test the behavior clients actually depend on. For hands-on examples, browse our AI project catalog, try the developer tools, and use the AI engineering roadmap to plan what to learn next.",
+      "code": "",
+      "order": 5
     }
   },
   {

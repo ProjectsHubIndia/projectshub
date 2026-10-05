@@ -113,7 +113,11 @@ class NavigationItem(models.Model):
     badge_text = models.CharField(max_length=40, blank=True, help_text="Optional badge e.g. '50+ Projects', 'HOT', 'NEW'")
     badge_color = models.CharField(max_length=30, blank=True, default='cyan', choices=BADGE_COLOR_CHOICES, help_text="Badge color styling")
     image = models.ImageField(upload_to='navigation/', blank=True, null=True, help_text="Card banner or thumbnail image")
-    icon_svg = models.TextField(blank=True, help_text="Emoji or inline SVG icon")
+    icon_svg = models.TextField(
+        verbose_name="icon / emoji",
+        blank=True,
+        help_text="Optional emoji or Unicode icon (for example, 🎯). HTML/SVG markup is displayed as text, not rendered.",
+    )
     open_in_new_tab = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     order = models.PositiveIntegerField(default=0)
@@ -1458,6 +1462,4 @@ class Page(models.Model):
         if self.is_front_page:
             Page.objects.exclude(pk=self.pk).filter(is_front_page=True).update(is_front_page=False)
         super().save(*args, **kwargs)
-
-
 

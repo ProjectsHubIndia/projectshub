@@ -52,6 +52,7 @@ urlpatterns = [
     path('api/blog/', views.api_blog, name='api_blog'),
     path('api/chatbot/message/', views.api_chatbot_message, name='api_chatbot_message'),
     path('api/chatbot/history/', views.api_chatbot_history, name='api_chatbot_history'),
+    path('api/chatbot/lead/', views.api_chatbot_lead, name='api_chatbot_lead'),
 
     # Legal
     path('terms/', views.terms, name='terms'),
@@ -61,6 +62,7 @@ urlpatterns = [
 
     # SEO
     path('robots.txt', views.robots_txt, name='robots_txt'),
+    path('llms.txt', views.llms_txt, name='llms_txt'),
     path('sitemap.xml', views.sitemap_xml, name='sitemap_xml'),
 
     # Direct Page Slugs (e.g. /about/, /contact-us/)

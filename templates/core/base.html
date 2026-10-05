@@ -17,7 +17,7 @@
   <meta name="csrf-token" content="{{ csrf_token }}" />
 
   <!-- Canonical -->
-  <link rel="canonical" href="{% block canonical %}{{ seo.canonical_url|default:site_url }}{% endblock %}" />
+  {% block canonical_link %}<link rel="canonical" href="{% block canonical %}{{ seo.canonical_url|default:site_url }}{% endblock %}" />{% endblock %}
 
   <!-- Open Graph -->
   <meta property="og:type" content="{% block og_type %}{{ seo.og_type|default:'website' }}{% endblock %}" />
@@ -104,7 +104,7 @@
   <noscript><link rel="stylesheet" href="{% static 'css/idea-modal.css' %}?v=10" /></noscript>
 
   <!-- Modern Design System & Accessible Tokens -->
-  <link rel="stylesheet" href="{% static 'css/modern-design-system.css' %}?v=24" />
+  <link rel="stylesheet" href="{% static 'css/modern-design-system.css' %}?v=30" />
 
   <!-- Cookie Consent Stylesheet (Non-render-blocking) -->
   <link rel="stylesheet" href="{% static 'css/cookie-consent.css' %}?v=1" media="print" onload="this.media='all'" />
@@ -243,9 +243,9 @@
   <!-- ── Scripts ── -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
   <script src="{% static 'js/cookie-consent.js' %}?v=1" defer></script>
-  <script src="{% static 'js/ai-chatbot.js' %}?v=5" defer></script>
+  <script src="{% static 'js/ai-chatbot.js' %}?v=6" defer></script>
 
-  <script src="{% static 'js/script.js' %}?v=3" defer></script>
+  <script src="{% static 'js/script.js' %}?v=5" defer></script>
   <script src="{% static 'js/idea-modal.js' %}?v=10" defer></script>
   <script>
     // Book a Free Call dropdown toggle
@@ -288,25 +288,6 @@
       });
     })();
   </script>
-  <!-- Mobile nav accordion -->
-  <script>
-    (function () {
-      document.querySelectorAll(".mob-btn--expand").forEach(function (btn) {
-        if (btn.dataset.accordionBound) return;
-        btn.dataset.accordionBound = "true";
-        btn.addEventListener("click", function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-          var item = btn.closest(".mob-item");
-          if (!item) return;
-          var isOpen = item.classList.toggle("is-open");
-          item.classList.toggle("open", isOpen);
-          btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
-        });
-      });
-    })();
-  </script>
-
   <!-- Dropdown active link highlight based on current URL -->
   <script>
     (function () {

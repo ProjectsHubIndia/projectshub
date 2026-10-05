@@ -3,7 +3,7 @@
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![Django](https://img.shields.io/badge/Django-4.2%20LTS-092E20.svg?logo=django&logoColor=white)](https://www.djangoproject.com/)
 [![Database](https://img.shields.io/badge/Database-SQLite%20%7C%20PostgreSQL-336791.svg?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Tests](https://img.shields.io/badge/Tests-21%20Passed-success.svg)](#testing--verification)
+[![Tests](https://img.shields.io/badge/Tests-55%20Passed-success.svg)](#testing--verification)
 [![License](https://img.shields.io/badge/License-Proprietary-orange.svg)](#)
 
 > **From Ideas to AI-Powered Products**  
@@ -84,7 +84,7 @@ projectsHub/
 ├── core/                           # Primary application module
 │   ├── management/commands/        # Custom CLI commands (seeding, SEO, audits)
 │   ├── migrations/                 # Database schema migrations
-│   ├── tests/                      # Automated test suite (21 unit & view tests)
+│   ├── tests/                      # Automated test suite (55 unit & view tests)
 │   ├── admin.py                    # Advanced admin dashboard, inlines & CSV exports
 │   ├── context_processors.py       # Global site settings, metrics & telemetry
 │   ├── middleware.py               # Security headers & dynamic redirect engine
@@ -217,7 +217,8 @@ All form endpoints accept POST requests, enforce CSRF validation, log client IP,
 | Endpoint | View Name | Description |
 |---|---|---|
 | `/robots.txt` | `robots_txt` | Search engine crawl rules referencing the sitemap |
-| `/sitemap.xml` | `sitemap_xml` | Dynamic XML sitemap covering all active pages and slugs |
+| `/sitemap.xml` | `sitemap_xml` | XML sitemap with active project and published blog URLs |
+| `/llms.txt` | `llms_txt` | Concise index of the site's public sections for AI systems |
 | `/sitemap/` | `html_sitemap` | User-facing HTML sitemap with hierarchical links |
 | `/terms/` | `terms` | Terms of Service |
 | `/privacy/` | `privacy` | Privacy Policy |
@@ -234,6 +235,7 @@ The Django Admin (`/admin/`) has been heavily tailored for business operations:
 - **One-Click CSV Exports**: Export contact inquiries, project gate leads, and workshop enrollments directly to CSV for CRM ingestion.
 - **Inline Editors**: Manage project images, architectural diagrams, chronological phases, and service features directly inside their parent model's page.
 - **Direct Filtering & Search**: Filter leads by status (`new`, `contacted`, `converted`, `spam`), date ranges, or keyword searches.
+- **Editable Navigation Menus**: In Appearance → Menus, choose Our Work or either How We Help group to add, reorder, and edit mobile submenu links. Set an emoji or Unicode symbol in the Icon field; HTML/SVG markup is escaped rather than rendered.
 
 ---
 
@@ -278,7 +280,7 @@ python manage.py check
 python -m compileall -q .
 ```
 
-All 21 core tests run in isolated temporary databases with full coverage across public views and API endpoints.
+All 55 core tests run in isolated temporary databases with full coverage across public views and API endpoints.
 
 ---
 

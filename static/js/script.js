@@ -72,6 +72,8 @@
         var isOpen = item.classList.toggle("is-open");
         item.classList.toggle("open", isOpen);
         btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        var submenu = document.getElementById(btn.getAttribute("aria-controls"));
+        if (submenu) submenu.setAttribute("aria-hidden", isOpen ? "false" : "true");
       });
     });
 
@@ -99,6 +101,57 @@
       }
     });
   }
+
+  // ── Accessible desktop navigation dropdowns ──
+  document.querySelectorAll(".navbar__links .nav-dropdown-toggle").forEach(function (toggle) {
+    var dropdown = toggle.closest(".nav-item-dropdown");
+    var menu = dropdown && dropdown.querySelector(".mega-menu");
+    if (!dropdown || !menu) return;
+
+    function setDropdownState(isOpen) {
+      dropdown.classList.toggle("is-open", isOpen);
+      toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      menu.setAttribute("aria-hidden", isOpen ? "false" : "true");
+    }
+
+    toggle.addEventListener("click", function (event) {
+      setDropdownState(event.detail > 0 || !dropdown.classList.contains("is-open"));
+    });
+
+    dropdown.addEventListener("pointerenter", function (event) {
+      if (event.pointerType === "mouse" || event.pointerType === "pen") {
+        setDropdownState(true);
+      }
+    });
+
+    dropdown.addEventListener("pointerleave", function (event) {
+      if ((event.pointerType === "mouse" || event.pointerType === "pen") &&
+          !dropdown.contains(document.activeElement)) {
+        setDropdownState(false);
+      }
+    });
+
+    dropdown.addEventListener("focusin", function () {
+      setDropdownState(true);
+    });
+
+    dropdown.addEventListener("focusout", function (event) {
+      if (!dropdown.contains(event.relatedTarget) && !dropdown.matches(":hover")) {
+        setDropdownState(false);
+      }
+    });
+
+    document.addEventListener("click", function (event) {
+      if (!dropdown.contains(event.target)) setDropdownState(false);
+    });
+
+    dropdown.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && dropdown.classList.contains("is-open")) {
+        setDropdownState(false);
+        toggle.focus();
+      }
+    });
+  });
 
   // ── Universal Toast Notifications ──
   window.showToast = function (message, type) {

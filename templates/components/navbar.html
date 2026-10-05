@@ -28,15 +28,19 @@
     <!-- Navigation Links -->
     <nav class="navbar__links" aria-label="Primary Navigation">
       <div class="nav-item-dropdown">
-        <a href="/projects/" class="nav-link {% block nav_projects %}{% endblock %}" aria-haspopup="true"
-          aria-expanded="false" id="navOurWork">
+        <a href="/projects/" class="nav-link {% block nav_projects %}{% endblock %}">
           Our Work
+        </a>
+        <button type="button" class="nav-dropdown-toggle" id="navOurWorkToggle"
+          aria-label="Toggle Our Work menu" aria-haspopup="true" aria-expanded="false"
+          aria-controls="megaMenuWork">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
-        </a>
-        <div class="mega-menu mega-menu--work" aria-labelledby="navOurWork" role="region">
+        </button>
+        <div class="mega-menu mega-menu--work" id="megaMenuWork"
+          aria-labelledby="navOurWorkToggle" aria-hidden="true" role="region">
           <div class="mega-work-grid">
             {% if mega_work_items %}
             {% for card in mega_work_items %}
@@ -144,14 +148,17 @@
       <a href="/#about" class="nav-link">Who We Help</a>
 
       <div class="nav-item-dropdown">
-        <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false" id="navHowWeHelp">
+        <button type="button" class="nav-link nav-dropdown-toggle nav-link--menu"
+          id="navHowWeHelp" aria-label="Toggle How We Help menu" aria-haspopup="true"
+          aria-expanded="false" aria-controls="megaMenuHelp">
           How We Help
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
-        </a>
-        <div class="mega-menu mega-menu--help" aria-labelledby="navHowWeHelp" role="region">
+        </button>
+        <div class="mega-menu mega-menu--help" id="megaMenuHelp"
+          aria-labelledby="navHowWeHelp" aria-hidden="true" role="region">
           <div class="mega-help-grid">
             <!-- Card 1: For Students -->
             <div class="mega-audience-card">
@@ -257,21 +264,8 @@
       <a href="{% url 'contact' %}" class="nav-link {% block nav_contact %}{% endblock %}">Contact</a>
     </nav>
 
-    <!-- Actions: Search + CTA + Contact Dropdown + Mobile Button -->
-    <div class="navbar__actions" style="display:flex;align-items:center;gap:10px;">
-      <!-- Quick Search (⌘K / Ctrl+K) -->
-      <button type="button" class="p-btn p-btn--secondary p-btn--sm d-none d-sm-inline-flex" onclick="window.ProjectsHubPlatform && window.ProjectsHubPlatform.openSearch()" aria-label="Search site (Ctrl+K)" title="Quick Search (Ctrl+K)" style="border-radius:20px;padding:6px 14px;font-size:12px;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-          <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-        <span style="opacity:0.75;margin-left:4px;">⌘K</span>
-      </button>
-
-      <!-- Primary CTA: Start a Project -->
-      <a href="/contact/" class="p-btn p-btn--primary p-btn--sm d-none d-md-inline-flex" style="border-radius:8px;">
-        Start a Project →
-      </a>
-
+    <!-- Actions: CTA + Theme + Mobile Button -->
+    <div class="navbar__actions">
       <!-- Book a Free Call Dropdown -->
       <div class="call-cta-wrap" id="callCtaWrap">
         <button class="btn-glass-wave" id="bookCallBtn" aria-expanded="false" aria-haspopup="true"
@@ -280,7 +274,7 @@
             <path
               d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z" />
           </svg>
-          <span class="d-none d-lg-inline">Book a Call</span>
+          Book a Free Call
         </button>
 
         <div class="call-dropdown" id="callDropdown" role="menu" aria-label="Contact options">
@@ -356,14 +350,19 @@ not the navbar (which has backdrop-filter creating a new containing block).
       <div class="mob-item">
         <button class="mob-btn mob-btn--expand" type="button" aria-expanded="false" aria-controls="mobSubWork">
           Our Work
+          <svg class="mob-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
         </button>
-        <ul class="mob-sub" id="mobSubWork">
+        <ul class="mob-sub" id="mobSubWork" aria-hidden="true">
           <li class="mob-sub-title">Featured Work</li>
           {% if mega_work_items %}
           {% for item in mega_work_items %}
           <li>
-            <a href="{{ item.url }}" class="mob-sub-link">
-              {{ item.icon_svg|default:'📁' }} {{ item.title }}
+            <a href="{{ item.url }}" class="mob-sub-link" {% if item.open_in_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+              <span class="mob-sub-icon" aria-hidden="true">{{ item.icon_svg|default:'📁' }}</span>
+              <span class="mob-sub-link__title">{{ item.title }}</span>
               {% if item.badge_text %}
               <span class="mega-card__badge mega-card__badge--{{ item.badge_color|default:'cyan' }}"
                 style="font-size:10px;padding:2px 6px;margin-left:6px;">{{ item.badge_text }}</span>
@@ -391,13 +390,14 @@ not the navbar (which has backdrop-filter creating a new containing block).
             <polyline points="6 9 12 15 18 9" />
           </svg>
         </button>
-        <ul class="mob-sub" id="mobSubHelp">
+        <ul class="mob-sub" id="mobSubHelp" aria-hidden="true">
           <li class="mob-sub-title">For Students &amp; Developers</li>
           {% if mega_student_items %}
           {% for item in mega_student_items %}
           <li>
-            <a href="{{ item.url }}" class="mob-sub-link">
-              {{ item.icon_svg|default:'🎯' }} {{ item.title }}
+            <a href="{{ item.url }}" class="mob-sub-link" {% if item.open_in_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+              <span class="mob-sub-icon" aria-hidden="true">{{ item.icon_svg|default:'🎯' }}</span>
+              <span class="mob-sub-link__title">{{ item.title }}</span>
             </a>
           </li>
           {% endfor %}
@@ -412,8 +412,9 @@ not the navbar (which has backdrop-filter creating a new containing block).
           {% if mega_business_items %}
           {% for item in mega_business_items %}
           <li>
-            <a href="{{ item.url }}" class="mob-sub-link">
-              {{ item.icon_svg|default:'🤖' }} {{ item.title }}
+            <a href="{{ item.url }}" class="mob-sub-link" {% if item.open_in_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+              <span class="mob-sub-icon" aria-hidden="true">{{ item.icon_svg|default:'🤖' }}</span>
+              <span class="mob-sub-link__title">{{ item.title }}</span>
             </a>
           </li>
           {% endfor %}

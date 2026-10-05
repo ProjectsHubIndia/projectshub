@@ -38,7 +38,7 @@ from .models import (
     AdminGuideNote,
     Page
 )
-from .seo import get_base_url
+from .seo import get_base_url, get_seo_for_request
 
 logger = logging.getLogger(__name__)
 
@@ -317,16 +317,17 @@ def blog_page(request):
 def blog_detail(request, slug):
     post = get_object_or_404(
         BlogPost.objects.prefetch_related('sections'),
-        slug=slug, is_active=True
+        slug=slug, is_active=True, is_published=True
     )
     related_posts = (
         BlogPost.objects
-        .filter(is_active=True, category=post.category)
+        .filter(is_active=True, is_published=True, category=post.category)
         .exclude(pk=post.pk)[:3]
     )
     return render(request, 'core/blog_detail.html', {
         'post': post,
         'related_posts': related_posts,
+        'seo': get_seo_for_request(request, {'post': post}),
     })
 
 
@@ -726,7 +727,7 @@ def api_workshops(request):
 
 
 def api_blog(request):
-    posts = BlogPost.objects.filter(is_active=True)
+    posts = BlogPost.objects.filter(is_active=True, is_published=True)
     data = [
         {
             'id': p.id,
@@ -745,8 +746,6 @@ def api_blog(request):
 
 def robots_txt(request):
     base_url = get_base_url(request)
-    if 'projectshub.co.in' in base_url:
-        base_url = base_url.replace('http://', 'https://')
     lines = [
         'User-agent: *',
         'Allow: /',
@@ -763,12 +762,33 @@ def robots_txt(request):
     return HttpResponse('\n'.join(lines), content_type='text/plain')
 
 
+def llms_txt(request):
+    base_url = get_base_url(request)
+    content = f"""# ProjectsHub
+
+> ProjectsHub publishes AI and machine-learning project examples, developer tools, learning resources, and AI engineering services.
+
+Use the linked pages as the source of truth for current content and offerings.
+
+## Main sections
+
+- [Projects catalog]({base_url}/projects/): AI, machine-learning, computer-vision, and web-development project examples.
+- [Developer tools]({base_url}/tools/): Online tools listed in the ProjectsHub directory.
+- [AI roadmap]({base_url}/ai-roadmap/): A guide to AI engineering topics and learning paths.
+- [Workshops]({base_url}/workshop/): Current workshop information.
+- [AI development services]({base_url}/services/ai-development/): AI development services.
+- [AI automation services]({base_url}/services/ai-automation/): AI automation services.
+- [AI integration services]({base_url}/services/ai-integration/): AI integration services.
+- [Case studies]({base_url}/case-studies/): Published case-study content.
+- [Blog]({base_url}/blog/): Articles and tutorials.
+- [Contact]({base_url}/contact/): Contact options.
+- [XML sitemap]({base_url}/sitemap.xml): Public URLs listed for search crawlers.
+"""
+    return HttpResponse(content, content_type='text/plain; charset=utf-8')
+
+
 def sitemap_xml(request):
     base_url = get_base_url(request)
-    if 'projectshub.co.in' in base_url:
-        base_url = base_url.replace('http://', 'https://')
-    today_str = datetime.utcnow().strftime("%Y-%m-%d")
-
     xml = ['<?xml version="1.0" encoding="UTF-8"?>']
     xml.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
 
@@ -791,53 +811,39 @@ def sitemap_xml(request):
         ('/sitemap/', '0.3', 'monthly'),
     ]
 
-    for path, priority, freq in static_pages:
+    def append_url(path, priority, freq, lastmod=None):
         xml.append('  <url>')
-        xml.append(f'    <loc>{base_url}{path}</loc>')
-        xml.append(f'    <lastmod>{today_str}</lastmod>')
+        xml.append(f'    <loc>{html.escape(f"{base_url}{path}")}</loc>')
+        if lastmod:
+            xml.append(f'    <lastmod>{lastmod}</lastmod>')
         xml.append(f'    <changefreq>{freq}</changefreq>')
         xml.append(f'    <priority>{priority}</priority>')
         xml.append('  </url>')
 
-    # Published Dynamic Pages (e.g. /about/, /contact-us/)
-    for page in Page.objects.filter(status='published').order_by('-updated_at'):
-        page_mod = (page.updated_at or page.created_at).strftime("%Y-%m-%d") if (page.updated_at or page.created_at) else today_str
-        xml.append('  <url>')
-        xml.append(f'    <loc>{base_url}/{page.slug}/</loc>')
-        xml.append(f'    <lastmod>{page_mod}</lastmod>')
-        xml.append('    <changefreq>monthly</changefreq>')
-        xml.append('    <priority>0.7</priority>')
-        xml.append('  </url>')
+    for path, priority, freq in static_pages:
+        append_url(path, priority, freq)
 
-    # Active Projects
-    for p in Project.objects.filter(is_active=True).order_by('-created_at'):
-        loc = f"{base_url}/projects/{p.slug}/" if p.slug else f"{base_url}/projects/{p.id}/"
-        p_mod = (p.updated_at or p.created_at).strftime("%Y-%m-%d") if (p.updated_at or p.created_at) else today_str
-        xml.append('  <url>')
-        xml.append(f'    <loc>{loc}</loc>')
-        xml.append(f'    <lastmod>{p_mod}</lastmod>')
-        xml.append('    <changefreq>weekly</changefreq>')
-        xml.append('    <priority>0.8</priority>')
-        xml.append('  </url>')
+    included_paths = {path for path, _, _ in static_pages}
 
-    # Active Blog Posts
-    for b in BlogPost.objects.filter(is_active=True).order_by('-published_at'):
-        b_mod = b.published_at.strftime("%Y-%m-%d") if b.published_at else today_str
-        xml.append('  <url>')
-        xml.append(f'    <loc>{base_url}/blog/{b.slug}/</loc>')
-        xml.append(f'    <lastmod>{b_mod}</lastmod>')
-        xml.append('    <changefreq>monthly</changefreq>')
-        xml.append('    <priority>0.7</priority>')
-        xml.append('  </url>')
+    for page in Page.objects.filter(status='published', is_front_page=False).order_by('order', 'title'):
+        page_path = page.get_absolute_url()
+        if page_path not in included_paths:
+            append_url(page_path, '0.6', 'monthly', page.updated_at.strftime('%Y-%m-%d'))
+            included_paths.add(page_path)
 
-    # Active Workshops
-    for w in WorkshopCard.objects.filter(is_active=True):
-        xml.append('  <url>')
-        xml.append(f'    <loc>{base_url}/workshop/{w.id}/</loc>')
-        xml.append(f'    <lastmod>{today_str}</lastmod>')
-        xml.append('    <changefreq>monthly</changefreq>')
-        xml.append('    <priority>0.7</priority>')
-        xml.append('  </url>')
+    for p in Project.objects.filter(is_active=True, is_published=True).order_by('-created_at'):
+        loc = f"/projects/{p.slug}/" if p.slug else f"/projects/{p.id}/"
+        if loc not in included_paths:
+            append_url(loc, '0.7', 'monthly', p.updated_at.strftime('%Y-%m-%d'))
+            included_paths.add(loc)
+
+    for b in BlogPost.objects.filter(
+        is_active=True, is_published=True
+    ).order_by('-published_at'):
+        post_path = b.get_absolute_url()
+        if post_path not in included_paths:
+            append_url(post_path, '0.7', 'monthly', b.updated_at.strftime('%Y-%m-%d'))
+            included_paths.add(post_path)
 
     xml.append('</urlset>')
     return HttpResponse('\n'.join(xml), content_type='application/xml')
@@ -953,6 +959,92 @@ def api_chatbot_message(request):
         })
     except Exception as e:
         logger.exception("Error saving chatbot message")
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+def api_chatbot_lead(request):
+    """
+    Dedicated high-conversion endpoint to capture leads from in-chat lead generation cards.
+    Saves/updates ChatbotConversation, creates ContactInquiry in CRM, and returns instant success.
+    """
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
+
+    try:
+        data = _parse_request_data(request)
+        session_id = data.get('session_id', '').strip()
+        if not session_id:
+            return JsonResponse({'success': False, 'error': 'session_id is required'}, status=400)
+
+        name = (data.get('name') or data.get('user_name') or '').strip()
+        email = (data.get('email') or data.get('user_email') or '').strip()
+        phone = (data.get('phone') or data.get('user_phone') or '').strip()
+        interest = (data.get('interest') or data.get('service_interest') or '').strip() or 'General AI Consultation'
+        notes = (data.get('notes') or data.get('message') or '').strip()
+        page_url = data.get('page_url', '').strip() or request.META.get('HTTP_REFERER', '/')
+
+        if not email and not phone:
+            return JsonResponse({'success': False, 'error': 'Please provide either an email or phone number.'}, status=400)
+
+        ip_addr = get_client_ip(request)
+        user_agent = request.META.get('HTTP_USER_AGENT', '')
+
+        # 1. Update or create ChatbotConversation
+        conv, _ = ChatbotConversation.objects.get_or_create(
+            session_id=session_id,
+            defaults={
+                'page_url': page_url,
+                'ip_address': ip_addr,
+                'user_agent': user_agent,
+                'status': 'lead',
+            }
+        )
+        if name:
+            conv.user_name = name
+        if email:
+            conv.user_email = email
+        if phone:
+            conv.user_phone = phone
+        if interest:
+            conv.service_interest = interest
+        conv.status = 'lead'
+        if page_url and conv.page_url != page_url:
+            conv.page_url = page_url
+        conv.save()
+
+        # 2. Record lead message in conversation history
+        lead_summary = f"[Lead Captured] Name: {name or 'N/A'} | Email: {email or 'N/A'} | Phone: {phone or 'N/A'} | Interest: {interest}"
+        if notes:
+            lead_summary += f" | Note: {notes}"
+        ChatbotMessage.objects.create(
+            conversation=conv,
+            sender='user',
+            message=lead_summary,
+        )
+
+        # 3. Create or sync with ContactInquiry for CRM tracking
+        inquiry_subject = f"Chatbot Lead: {interest}"
+        inquiry_message = f"Lead captured via ProjectsHub AI Chatbot.\nInterest: {interest}\nName: {name}\nEmail: {email}\nPhone: {phone}\nPage: {page_url}\nNotes: {notes or 'None'}"
+
+        ContactInquiry.objects.create(
+            name=name or 'Chatbot Visitor',
+            email=email or 'chatbot-lead@projectshub.co.in',
+            phone=phone,
+            subject=inquiry_subject,
+            message=inquiry_message,
+            source_page=f"Chatbot ({page_url})",
+            status='new',
+            ip_address=ip_addr,
+        )
+
+        return JsonResponse({
+            'success': True,
+            'message': 'Thank you! A senior AI engineer will connect with you shortly.',
+            'conversation_id': conv.id,
+            'status': 'lead',
+        })
+    except Exception as e:
+        logger.exception("Error capturing chatbot lead")
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
 
@@ -1792,12 +1884,14 @@ def admin_nav_menus_view(request):
         if action == 'add_custom':
             title = request.POST.get('link_text', '').strip()
             url = request.POST.get('url', '').strip()
+            icon = request.POST.get('icon', '').strip()
             if title and url:
                 max_order = NavigationItem.objects.filter(group=current_group).aggregate(models.Max('order'))['order__max'] or 0
                 NavigationItem.objects.create(
                     title=title,
                     url=url,
                     group=current_group,
+                    icon_svg=icon,
                     order=max_order + 1,
                     is_active=True
                 )
@@ -1813,9 +1907,11 @@ def admin_nav_menus_view(request):
                     title = request.POST.get(f'title_{i_id}', item.title).strip()
                     url = request.POST.get(f'url_{i_id}', item.url).strip()
                     badge_text = request.POST.get(f'badge_{i_id}', item.badge_text).strip()
+                    icon = request.POST.get(f'icon_{i_id}', item.icon_svg).strip()
                     item.title = title
                     item.url = url
                     item.badge_text = badge_text
+                    item.icon_svg = icon
                     item.order = index
                     item.save()
                 except NavigationItem.DoesNotExist:
@@ -2094,9 +2190,3 @@ def page_detail_view(request, slug):
         context['faqs_list'] = list(FAQ.objects.filter(is_published=True).order_by('sort_order')[:8])
 
     return render(request, 'core/page_detail.html', context)
-
-
-
-
-
-

@@ -1,35 +1,14 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-{% block title %}{{ post.title }} | ProjectsHub Blog{% endblock %}
-{% block meta_description %}{{ post.excerpt|truncatechars:160 }}{% endblock %}
-{% block canonical %}{{ site_url }}{% url 'blog_detail' post.slug %}{% endblock %}
-{% block og_title %}{{ post.title }} | ProjectsHub{% endblock %}
-{% block og_description %}{{ post.excerpt|truncatechars:160 }}{% endblock %}
-{% block og_url %}{{ site_url }}{% url 'blog_detail' post.slug %}{% endblock %}
-{% if post.get_image_src %}{% block og_image %}{{ post.get_image_src }}{% endblock %}{% endif %}
+{% block title %}{{ seo.meta_title }}{% endblock %}
+{% block meta_description %}{{ seo.meta_description }}{% endblock %}
+{% block canonical %}{{ seo.canonical_url }}{% endblock %}
+{% block og_title %}{{ seo.og_title }}{% endblock %}
+{% block og_description %}{{ seo.og_description }}{% endblock %}
+{% block og_url %}{{ seo.og_url }}{% endblock %}
+{% block og_image %}{{ seo.og_image }}{% endblock %}
 {% block nav_resources %}active{% endblock %}
-
-{% block schema %}
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "{{ post.title|escapejs }}",
-  "description": "{{ post.excerpt|truncatechars:160|escapejs }}",
-  "datePublished": "{{ post.published_at|date:'Y-m-d' }}",
-  "dateModified": "{{ post.updated_at|date:'Y-m-d' }}",
-  "url": "{{ site_url }}{% url 'blog_detail' post.slug %}",
-  {% if post.get_image_src %}"image": "{{ post.get_image_src }}",{% endif %}
-  "author": {"@type": "Person", "name": "{{ post.author_name|escapejs }}"},
-  "publisher": {
-    "@type": "Organization",
-    "name": "ProjectsHub",
-    "logo": {"@type": "ImageObject", "url": "{{ site_url }}/static/image/favicon_io/logo.png"}
-  }
-}
-</script>
-{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/blog.css' %}?v=3" />
@@ -111,6 +90,15 @@
     {% endif %}
   </div>
   {% endfor %}
+
+  <nav class="bd-toc" aria-label="Explore related ProjectsHub resources">
+    <h2 class="bd-toc__title">Continue learning</h2>
+    <ul class="bd-toc__list">
+      <li><a class="bd-toc__link" href="{% url 'projects' %}">Browse AI and machine-learning projects</a></li>
+      <li><a class="bd-toc__link" href="{% url 'tools' %}">Explore developer tools</a></li>
+      <li><a class="bd-toc__link" href="{% url 'ai_roadmap' %}">Follow the AI engineering roadmap</a></li>
+    </ul>
+  </nav>
 
   <!-- Share buttons -->
   <div class="bd-share">
