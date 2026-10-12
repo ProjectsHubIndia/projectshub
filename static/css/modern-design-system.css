@@ -373,25 +373,33 @@ body:not(.light) .nav-link.active {
 .nav-item-dropdown {
   display: inline-flex;
   align-items: center;
+  border-radius: 8px;
+  transition: background-color 0.18s ease;
 }
 
-.navbar__links > .nav-item-dropdown:first-child > .nav-dropdown-toggle {
-  margin-left: -18px;
+/* The chevron belongs to its label: it sits flush against the text with no box,
+   border or hover pill of its own (`:not(.nav-link)` keeps the "How We Help"
+   button, which is both link and toggle, on its normal nav-link padding). */
+.navbar__links > .nav-item-dropdown > .nav-dropdown-toggle:not(.nav-link) {
+  margin-left: -0.6rem;
 }
 
 .nav-dropdown-toggle {
+  -webkit-appearance: none;
+  appearance: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 44px;
-  min-height: 44px;
-  padding: 0 0.7rem;
-  border: 0;
-  border-radius: 8px;
-  background: transparent;
-  color: #475569;
+  padding: 0.55rem 0.95rem 0.55rem 0;
+  border: 0 !important;
+  border-radius: 0 8px 8px 0;
+  background: transparent !important;
+  box-shadow: none !important;
+  font: inherit;
+  line-height: 1;
+  color: #64748b;
   cursor: pointer;
-  transition: color 0.18s ease, background-color 0.18s ease;
+  transition: color 0.18s ease;
 }
 
 .nav-dropdown-toggle svg {
@@ -403,10 +411,25 @@ body:not(.light) .nav-link.active {
   transform: rotate(180deg);
 }
 
-.nav-dropdown-toggle:hover,
-.nav-dropdown-toggle:focus-visible {
-  color: #4f46e5;
+/* Label + chevron highlight as one unit, whichever half is hovered. */
+.nav-item-dropdown:hover,
+.nav-item-dropdown:focus-within,
+.nav-item-dropdown.is-open {
   background: rgba(79, 70, 229, 0.08);
+}
+
+.nav-item-dropdown:hover > .nav-link,
+.nav-item-dropdown:focus-within > .nav-link,
+.nav-item-dropdown.is-open > .nav-link,
+.nav-item-dropdown > .nav-link:hover {
+  background: transparent !important;
+  color: #4f46e5 !important;
+}
+
+.nav-item-dropdown:hover > .nav-dropdown-toggle,
+.nav-item-dropdown:focus-within > .nav-dropdown-toggle,
+.nav-item-dropdown.is-open > .nav-dropdown-toggle {
+  color: #4f46e5;
 }
 
 .nav-dropdown-toggle:focus-visible,
@@ -424,10 +447,24 @@ body:not(.light) .nav-dropdown-toggle {
   color: #cbd5e1;
 }
 
-body:not(.light) .nav-dropdown-toggle:hover,
-body:not(.light) .nav-dropdown-toggle:focus-visible {
-  color: #a5b4fc;
+body:not(.light) .nav-item-dropdown:hover,
+body:not(.light) .nav-item-dropdown:focus-within,
+body:not(.light) .nav-item-dropdown.is-open {
   background: rgba(99, 102, 241, 0.14);
+}
+
+body:not(.light) .nav-item-dropdown:hover > .nav-link,
+body:not(.light) .nav-item-dropdown:focus-within > .nav-link,
+body:not(.light) .nav-item-dropdown.is-open > .nav-link,
+body:not(.light) .nav-item-dropdown > .nav-link:hover {
+  background: transparent !important;
+  color: #a5b4fc !important;
+}
+
+body:not(.light) .nav-item-dropdown:hover > .nav-dropdown-toggle,
+body:not(.light) .nav-item-dropdown:focus-within > .nav-dropdown-toggle,
+body:not(.light) .nav-item-dropdown.is-open > .nav-dropdown-toggle {
+  color: #a5b4fc;
 }
 
 @media (min-width: 992px) and (max-width: 1170px) {

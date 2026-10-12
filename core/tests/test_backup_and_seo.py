@@ -55,6 +55,23 @@ class BackupRestoreTests(TestCase):
         self.assertEqual(post.title, 'From live')
         self.assertEqual(post.sections.count(), 1)
 
+    def test_fetch_imports_initial_data_json_from_the_deploy(self):
+        fixture = [{'model': 'core.seodata', 'pk': 4, 'fields': {'path': '/fetched/', 'meta_title': 'T', 'meta_description': 'D'}}]
+        with open(os.path.join(self.tmp, 'initial_data.json'), 'w', encoding='utf-8') as fh:
+            json.dump(fixture, fh)
+        res = self.client.post('/admin/backup/fetch/', {'source': 'fixture'}, follow=True)
+        msgs = [str(m) for m in res.context['messages']]
+        self.assertTrue(any('initial_data.json' in m and 'Restored 1 records' in m for m in msgs), msgs)
+        self.assertTrue(SEOData.objects.filter(path='/fetched/').exists())
+
+    def test_fetch_from_a_missing_fixture_reports_instead_of_failing(self):
+        res = self.client.post('/admin/backup/fetch/', {'source': 'fixture'}, follow=True)
+        self.assertTrue(any('no initial_data.json' in str(m) for m in res.context['messages']))
+
+    def test_fetch_rejects_a_non_http_link(self):
+        res = self.client.post('/admin/backup/fetch/', {'source': 'url', 'backup_url': 'file:///etc/passwd'}, follow=True)
+        self.assertTrue(any('http:// or https://' in str(m) for m in res.context['messages']))
+
     def test_restoring_twice_is_safe(self):
         backup = [{'model': 'core.seodata', 'pk': 3, 'fields': {'path': '/x/', 'meta_title': 'T', 'meta_description': 'D'}}]
         self.upload(backup)

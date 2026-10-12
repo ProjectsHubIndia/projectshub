@@ -43,6 +43,7 @@ class SuperuserAdminGuardTests(TestCase):
             reverse('admin_backup_download_json'),
             reverse('admin_backup_sync_initial'),
             reverse('admin_backup_restore'),
+            reverse('admin_backup_fetch'),
             reverse('admin_asset_delete'),
         ]
 

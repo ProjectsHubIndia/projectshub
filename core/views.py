@@ -1875,7 +1875,13 @@ def admin_backup_restore(request):
         messages.error(request, f"Restore failed and nothing was changed: {e}")
         return redirect('admin_backup')
 
-    summary = f"Restored {report['total']} records from '{uploaded_file.name}'."
+    messages.success(request, _restore_summary(report, uploaded_file.name))
+    return redirect('admin_backup')
+
+
+def _restore_summary(report, source_label):
+    """One readable sentence describing what a restore changed."""
+    summary = f"Restored {report['total']} records from '{source_label}'."
     if report['remapped']:
         summary += f" Matched {len(report['remapped'])} existing record(s) by slug/path instead of duplicating them."
     if report['replaced']:
@@ -1884,7 +1890,86 @@ def admin_backup_restore(request):
         skipped = ', '.join(f"{k} ({v})" for k, v in report['skipped_models'].items())
         summary += f" Skipped data for models this site doesn't have: {skipped}."
     summary += f" A safety snapshot of the previous data was saved as backups/{os.path.basename(report['snapshot'])}."
-    messages.success(request, summary)
+    return summary
+
+
+MAX_BACKUP_BYTES = 50 * 1024 * 1024
+
+
+def _download_backup(url):
+    """Download a .json backup over http(s). Raises ValueError with a readable message."""
+    from urllib.error import HTTPError, URLError
+    from urllib.request import Request, urlopen
+
+    if not url.lower().startswith(('http://', 'https://')):
+        raise ValueError('Enter a full http:// or https:// link to a .json backup file.')
+    request = Request(url, headers={'User-Agent': 'ProjectsHub-Admin/1.0'})
+    try:
+        with urlopen(request, timeout=30) as response:
+            if not response.geturl().lower().startswith(('http://', 'https://')):
+                raise ValueError('That link redirected somewhere this server will not follow.')
+            raw = response.read(MAX_BACKUP_BYTES + 1)
+    except HTTPError as exc:
+        raise ValueError(f'The server answered {exc.code} {exc.reason}. '
+                         f'If the link needs a login, download the file and use "Upload & Restore" instead.')
+    except URLError as exc:
+        raise ValueError(f'Could not reach that link ({exc.reason}).')
+    if len(raw) > MAX_BACKUP_BYTES:
+        raise ValueError('That file is larger than 50 MB.')
+    if not raw.strip():
+        raise ValueError('That link returned an empty file.')
+    return raw
+
+
+@superuser_required
+@require_POST
+def admin_backup_fetch(request):
+    """
+    Pull data into this database without uploading a file by hand — the two things
+    a fresh Railway/Vercel deploy needs:
+      * source=fixture: load initial_data.json that shipped with this deploy
+      * source=url:     download a .json backup from a link (e.g. the live site's
+                        /admin/backup/download-json/ saved to a public URL)
+    Both go through the same safe restore path as "Upload & Restore".
+    """
+    from django.contrib import messages
+    from django.shortcuts import redirect
+    from .backup_tools import RestoreError, restore_backup
+
+    source = (request.POST.get('source') or 'fixture').strip()
+    if source == 'url':
+        url = (request.POST.get('backup_url') or '').strip()
+        label = url
+        try:
+            raw = _download_backup(url)
+        except ValueError as e:
+            messages.error(request, f"Fetch failed: {e}")
+            return redirect('admin_backup')
+        except Exception as e:
+            logger.exception("Failed to download backup from %s", url)
+            messages.error(request, f"Fetch failed and nothing was changed: {e}")
+            return redirect('admin_backup')
+    else:
+        path = os.path.join(settings.BASE_DIR, 'initial_data.json')
+        label = 'initial_data.json'
+        if not os.path.exists(path):
+            messages.error(request, "This deploy has no initial_data.json. Sync it from a copy of the site that has "
+                                    "your content, commit it, then deploy again.")
+            return redirect('admin_backup')
+        with open(path, 'rb') as fh:
+            raw = fh.read()
+
+    try:
+        report = restore_backup(raw)
+    except RestoreError as e:
+        messages.error(request, f"Import not started: {e}")
+        return redirect('admin_backup')
+    except Exception as e:
+        logger.exception("Failed to import data from %s", label)
+        messages.error(request, f"Import failed and nothing was changed: {e}")
+        return redirect('admin_backup')
+
+    messages.success(request, _restore_summary(report, label))
     return redirect('admin_backup')
 
 

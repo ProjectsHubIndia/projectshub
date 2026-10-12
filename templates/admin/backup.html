@@ -286,6 +286,22 @@
     background: #fafafa;
     cursor: pointer;
   }
+  .bk-upload-form input[type="url"] {
+    font-size: 12px;
+    border: 1px solid var(--bk-border);
+    padding: 8px 10px;
+    border-radius: 4px;
+    background: #ffffff;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .bk-or {
+    font-size: 11px;
+    font-weight: 700;
+    color: #8c8f94;
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
 </style>
 {% endblock %}
 
@@ -428,6 +444,56 @@
             <span>⬆️</span> Upload &amp; Restore
           </button>
         </form>
+      </div>
+    </div>
+
+    <!-- Card 5: Fetch data into this deploy -->
+    <div class="bk-card">
+      <div>
+        <div class="bk-card__head">
+          <div class="bk-card__icon">🌐</div>
+          <div>
+            <h3 class="bk-card__title">Fetch Data Into This Deploy</h3>
+            <p class="bk-card__desc">
+              For a fresh Railway/Vercel deploy that boots with an empty database: pull the content in
+              without downloading a file first. Same safety net as a restore — a snapshot of the current
+              data is saved to <code>backups/</code> before anything changes.
+            </p>
+          </div>
+        </div>
+        {% if initial_exists %}
+        <p style="font-size:11.5px;color:#00a32a;margin:4px 0 0 0;font-weight:600;">
+          ✓ initial_data.json shipped with this deploy ({{ initial_size_kb }} KB)
+        </p>
+        {% else %}
+        <p style="font-size:11.5px;color:#d63638;margin:4px 0 0 0;">
+          ⚠ No initial_data.json on this server — use a link instead.
+        </p>
+        {% endif %}
+      </div>
+      <div class="bk-card__actions">
+        <form method="post" action="{% url 'admin_backup_fetch' %}" style="margin:0;"
+          onsubmit="return confirm('Import initial_data.json into this database? Matching records will be updated.');">
+          {% csrf_token %}
+          <input type="hidden" name="source" value="fixture">
+          <button type="submit" class="bk-btn bk-btn--primary" {% if not initial_exists %}disabled{% endif %}>
+            <span>📦</span> Import initial_data.json
+          </button>
+        </form>
+        <p class="bk-or">— OR FROM A LINK —</p>
+        <form method="post" action="{% url 'admin_backup_fetch' %}" class="bk-upload-form"
+          onsubmit="return confirm('Download and import this backup? Matching records will be updated.');">
+          {% csrf_token %}
+          <input type="hidden" name="source" value="url">
+          <input type="url" name="backup_url" placeholder="https://example.com/projectshub_all_backup.json" required>
+          <button type="submit" class="bk-btn bk-btn--secondary" style="font-weight:600;">
+            <span>⬇️</span> Fetch &amp; Restore
+          </button>
+        </form>
+        <p style="font-size:11px;color:#646970;margin:0;">
+          The link must be publicly reachable (50 MB max). A login-protected admin URL will not work —
+          download it and use “Upload &amp; Restore”.
+        </p>
       </div>
     </div>
 
