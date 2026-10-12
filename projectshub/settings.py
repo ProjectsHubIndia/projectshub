@@ -110,6 +110,15 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SITE_URL = os.environ.get('SITE_URL', '').rstrip('/')
 SITE_DOMAIN = os.environ.get('SITE_DOMAIN', 'projectshub.co.in')
 
+# Canonical public origin used for <link rel=canonical>, og:url, JSON-LD, robots.txt and
+# sitemap.xml. Always the primary domain so platform hosts (*.railway.app, *.vercel.app)
+# never advertise themselves as canonical copies of the site.
+CANONICAL_SITE_URL = (SITE_URL or f'https://{SITE_DOMAIN}').rstrip('/')
+# Hosts that may serve the site but must never be indexed (preview / platform domains).
+NON_CANONICAL_HOST_SUFFIXES = ('.railway.app', '.vercel.app')
+# Number of trusted reverse proxies in front of Django that append to X-Forwarded-For.
+TRUSTED_PROXY_COUNT = int(os.environ.get('TRUSTED_PROXY_COUNT', '1' if IS_PRODUCTION else '0'))
+
 if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
@@ -130,6 +139,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'core.middleware.AutoMigrateMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'core.middleware.SecurityHeadersMiddleware',
@@ -272,3 +282,12 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'support@projectshub.co.in')
 SERVER_EMAIL = os.environ.get('SERVER_EMAIL', DEFAULT_FROM_EMAIL)
 
+
+# Live chat: who gets emailed when a visitor is waiting and nobody is in the inbox.
+CHAT_NOTIFY_EMAILS = [e.strip() for e in os.environ.get('CHAT_NOTIFY_EMAILS', DEFAULT_FROM_EMAIL).split(',') if e.strip()]
+# Send chat emails on a background thread so SMTP latency never delays a chat reply.
+CHAT_EMAIL_ASYNC = 'test' not in sys.argv
+EMAIL_TIMEOUT = int(os.environ.get('EMAIL_TIMEOUT', 10))
+
+# Apply pending database migrations automatically on the first request after a restart.
+AUTO_APPLY_MIGRATIONS = os.environ.get('AUTO_APPLY_MIGRATIONS', 'True').lower() in ('true', '1', 'yes') and 'test' not in sys.argv

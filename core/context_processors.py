@@ -14,11 +14,12 @@ from core.models import (
     ContactInquiry, IdeaSubmission, WorkshopCard, WorkshopDay, WorkshopEnrollment, ProjectGateLead, ContactMessage,
     BlogPost, BlogSection, BlogCategory, Tag, FAQ, FAQCategory,
     SEOData, Redirect, ChatbotConversation, ChatbotMessage, AdminGuideNote,
-    Page
+    Page,
+    RoadmapNode, RoadmapGroup, RoadmapTopic, RoadmapResource,
 )
 
 
-from core.seo import get_seo_for_request
+from core.seo import get_seo_for_request, get_base_url
 
 
 def site_context(request):
@@ -56,16 +57,17 @@ def site_context(request):
         primary_nav_items = []
 
     # Dynamic Domain and Site URL (automatically detected from incoming request)
-    site_url = ""
+    # site_url feeds canonical links, og:url and JSON-LD in every template, so it is the
+    # fixed canonical origin — never the request Host (which may be a Railway/Vercel
+    # platform domain or attacker-controlled).
+    site_url = get_base_url(request)
     current_domain = ""
     if request:
         try:
-            site_url = request.build_absolute_uri('/').rstrip('/')
             current_domain = request.get_host()
         except Exception:
             pass
-    if not site_url:
-        site_url = getattr(settings, 'SITE_URL', 'https://projectshub.co.in').rstrip('/')
+    if not current_domain:
         current_domain = getattr(settings, 'SITE_DOMAIN', 'projectshub.co.in')
 
     scheme = 'https' if (request and request.is_secure()) else 'http'
@@ -93,6 +95,14 @@ def site_context(request):
                 context['seo'] = seo_data
         except Exception:
             pass
+
+    # Unapplied database updates → banner with a one-click fix on every admin page
+    if request.path.startswith('/admin') and getattr(request, 'user', None) is not None and request.user.is_staff:
+        try:
+            from core.backup_tools import pending_migrations
+            context['pending_migrations'] = pending_migrations()
+        except Exception:
+            context['pending_migrations'] = []
 
     if request.path.startswith('/admin'):
         try:
@@ -185,9 +195,20 @@ def site_context(request):
                     'chatbotconversation': ChatbotConversation.objects.count(),
                     'chatbotmessage': ChatbotMessage.objects.count(),
                     'adminguidenote': AdminGuideNote.objects.count(),
+                    'roadmapnode': RoadmapNode.objects.count(),
+                    'roadmapgroup': RoadmapGroup.objects.count(),
+                    'roadmaptopic': RoadmapTopic.objects.count(),
+                    'roadmapresource': RoadmapResource.objects.count(),
                 }
 
             context['model_counts'] = cache.get_or_set('admin_model_counts', compute_model_counts, 60)
+
+            # Live chat: conversations waiting for a human (uncached so the badge is current)
+            try:
+                from core.live_chat import inbox_queryset
+                context['live_chat_waiting'] = inbox_queryset('waiting', request.user).count() if request.user.is_staff else 0
+            except Exception:
+                context['live_chat_waiting'] = 0
 
             # Recent CRM Activities & Content for WordPress Dashboard widgets
             context['recent_inquiries'] = ContactInquiry.objects.order_by('-created_at')[:5]

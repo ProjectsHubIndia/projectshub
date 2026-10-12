@@ -1,0 +1,159 @@
+"""Backup restore robustness, admin database updates, and the SEO dashboard."""
+import json
+import os
+import shutil
+import tempfile
+from unittest import mock
+
+from django.contrib.auth import get_user_model
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import TestCase, override_settings
+
+from core import backup_tools, seo_audit
+from core.models import BlogPost, Redirect, SEOData
+
+
+class BackupRestoreTests(TestCase):
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.override = override_settings(BASE_DIR=self.tmp)
+        self.override.enable()
+        self.su = get_user_model().objects.create_superuser('su', 'su@example.com', 'pw-Strong-123!')
+        self.client.force_login(self.su)
+
+    def tearDown(self):
+        self.override.disable()
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def upload(self, objects, name='backup.json'):
+        f = SimpleUploadedFile(name, json.dumps(objects).encode(), content_type='application/json')
+        return self.client.post('/admin/backup/restore/', {'backup_file': f}, follow=True)
+
+    def test_backup_from_another_site_with_different_ids_restores(self):
+        # Local copy has /admin under id 7; the live backup has it under id 8 (the reported error).
+        Redirect.objects.create(pk=7, old_path='/admin', new_path='/admin/')
+        backup = [
+            {'model': 'core.redirect', 'pk': 8, 'fields': {'old_path': '/admin', 'new_path': '/admin/', 'status_code': 301, 'is_active': True, 'notes': 'from live'}},
+            {'model': 'core.redirect', 'pk': 1, 'fields': {'old_path': '/portfolio/', 'new_path': '/projects/', 'status_code': 301, 'is_active': True, 'notes': ''}},
+        ]
+        res = self.upload(backup)
+        msgs = [str(m) for m in res.context['messages']]
+        self.assertTrue(any('Restored 2 records' in m for m in msgs), msgs)
+        self.assertEqual(Redirect.objects.filter(old_path='/admin').count(), 1)
+        self.assertEqual(Redirect.objects.get(old_path='/admin').notes, 'from live')
+        self.assertTrue(os.listdir(os.path.join(self.tmp, 'backups')), 'safety snapshot must be written')
+
+    def test_foreign_keys_follow_remapped_ids(self):
+        BlogPost.objects.create(pk=5, title='Local', slug='same-slug', is_active=True, is_published=True)
+        backup = [
+            {'model': 'core.blogpost', 'pk': 9, 'fields': {'title': 'From live', 'slug': 'same-slug', 'is_active': True, 'is_published': True}},
+            {'model': 'core.blogsection', 'pk': 100, 'fields': {'post': 9, 'heading': 'Intro', 'order': 1}},
+        ]
+        self.upload(backup)
+        post = BlogPost.objects.get(slug='same-slug')
+        self.assertEqual(post.pk, 5)
+        self.assertEqual(post.title, 'From live')
+        self.assertEqual(post.sections.count(), 1)
+
+    def test_restoring_twice_is_safe(self):
+        backup = [{'model': 'core.seodata', 'pk': 3, 'fields': {'path': '/x/', 'meta_title': 'T', 'meta_description': 'D'}}]
+        self.upload(backup)
+        self.upload(backup)
+        self.assertEqual(SEOData.objects.filter(path='/x/').count(), 1)
+
+    def test_invalid_files_are_rejected_without_changes(self):
+        res = self.client.post('/admin/backup/restore/', {'backup_file': SimpleUploadedFile('b.json', b'not json')}, follow=True)
+        self.assertTrue(any('not valid JSON' in str(m) for m in res.context['messages']))
+        res = self.upload({'hello': 'world'})
+        self.assertTrue(any('does not look like' in str(m) for m in res.context['messages']))
+
+    def test_unknown_models_are_skipped_not_fatal(self):
+        res = self.upload([
+            {'model': 'oldapp.thing', 'pk': 1, 'fields': {}},
+            {'model': 'core.seodata', 'pk': 1, 'fields': {'path': '/y/', 'meta_title': 'T', 'meta_description': 'D'}},
+        ])
+        msgs = ' '.join(str(m) for m in res.context['messages'])
+        self.assertIn('Skipped', msgs)
+        self.assertTrue(SEOData.objects.filter(path='/y/').exists())
+
+    def test_restore_requires_superuser(self):
+        staff = get_user_model().objects.create_user('st', 'st@example.com', 'pw-Strong-123!', is_staff=True)
+        self.client.force_login(staff)
+        res = self.client.post('/admin/backup/restore/', {})
+        self.assertEqual(res.status_code, 302)
+        self.assertIn('/admin/login/', res['Location'])
+
+
+class MigrationBannerTests(TestCase):
+    def setUp(self):
+        self.su = get_user_model().objects.create_superuser('su', 'su@example.com', 'pw-Strong-123!')
+        self.client.force_login(self.su)
+
+    def test_banner_and_apply_button(self):
+        with mock.patch('core.backup_tools.pending_migrations', return_value=['core.9999_future']):
+            res = self.client.get('/admin/backup/')
+            self.assertContains(res, 'Database update needed')
+            self.assertContains(res, 'Apply database update')
+        res = self.client.get('/admin/backup/')
+        self.assertNotContains(res, 'Database update needed')
+
+    def test_apply_view(self):
+        with mock.patch('core.backup_tools.pending_migrations', return_value=['core.9999_future']), \
+             mock.patch('core.backup_tools.apply_migrations', return_value='ok') as apply, \
+             mock.patch('core.backup_tools.snapshot_db_file', return_value=None):
+            res = self.client.post('/admin/maintenance/migrate/', {'next': '/admin/backup/'}, follow=True)
+            apply.assert_called_once()
+        self.assertTrue(any('Database updated' in str(m) for m in res.context['messages']))
+        self.assertEqual(self.client.get('/admin/maintenance/migrate/').status_code, 405)
+
+    def test_apply_rejects_offsite_next(self):
+        res = self.client.post('/admin/maintenance/migrate/', {'next': 'https://evil.example/'})
+        self.assertEqual(res['Location'], '/admin/')
+
+
+@override_settings(CANONICAL_SITE_URL='https://projectshub.co.in', ALLOWED_HOSTS=['*'])
+class SeoDashboardTests(TestCase):
+    def setUp(self):
+        from django.core.cache import cache
+        cache.clear()
+        self.staff = get_user_model().objects.create_user('ed', 'ed@example.com', 'pw-Strong-123!', is_staff=True)
+        self.client.force_login(self.staff)
+
+    def test_dashboard_audits_sitemap_pages(self):
+        BlogPost.objects.create(title='Hi', slug='hi', is_active=True, is_published=True)
+        res = self.client.get('/admin/seo/')
+        self.assertEqual(res.status_code, 200)
+        audit = res.context['audit']
+        paths = [p['path'] for p in audit['pages']]
+        self.assertIn('/', paths)
+        self.assertIn('/blog/hi/', paths)
+        self.assertContains(res, 'not a Google ranking metric')
+        self.assertContains(res, 'Google Search Console')
+        for p in audit['pages']:
+            self.assertGreaterEqual(p['score'], 0)
+            self.assertLessEqual(p['score'], 100)
+
+    def test_noindex_page_in_sitemap_is_flagged_critical(self):
+        client, _ = seo_audit._client()
+        SEOData.objects.create(path='/terms/', meta_title='Terms', meta_description='x' * 80, robots='noindex, nofollow', is_indexable=True)
+        page = seo_audit.audit_page(client, '/terms/')
+        self.assertTrue(any(i['severity'] == 'critical' and i['check'] == 'Indexability' for i in page['issues']))
+
+    def test_redirect_problems_listed(self):
+        Redirect.objects.create(old_path='/industries/', new_path='/services/ai-development/')
+        Redirect.objects.create(old_path='/a/', new_path='/b/')
+        Redirect.objects.create(old_path='/b/', new_path='/c/')   # chain a -> b -> c
+        result = seo_audit.run_audit()
+        rules = ' '.join(r['rule'] + r['problem'] for r in result['redirect_problems'])
+        self.assertIn('/a/ → /b/', rules)
+
+    def test_run_and_export(self):
+        res = self.client.post('/admin/seo/run/', follow=True)
+        self.assertTrue(any('Audit finished' in str(m) for m in res.context['messages']))
+        res = self.client.get('/admin/seo/export.csv')
+        self.assertEqual(res['Content-Type'], 'text/csv; charset=utf-8')
+        self.assertIn('URL,Score,Severity', res.content.decode())
+
+    def test_requires_staff(self):
+        self.client.logout()
+        self.assertEqual(self.client.get('/admin/seo/').status_code, 302)

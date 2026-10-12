@@ -1,0 +1,92 @@
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block title %}Live Chat{% endblock %}
+{% block content_title %}💬 Live Chat{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/live-chat-admin.css' %}?v=1">
+{% endblock %}
+
+{% block content %}
+<div class="lc" id="liveChat"
+     data-initial="{{ initial_conversation|escape }}"
+     data-available="{{ agent_status.is_available|yesno:'1,0' }}"
+     data-name="{{ agent_status.public_name|escape }}">
+
+  <div class="lc-banner" id="lcAwayBanner" role="status">
+    You're set to <strong>Away</strong>, so visitors see the team as offline and get the automated assistant.
+    Switch to <strong>Available</strong> to take live chats on this page.
+  </div>
+
+  <div class="lc-topbar">
+    <div class="lc-avail">
+      <button type="button" class="lc-switch" id="lcAvailSwitch" role="switch" aria-checked="false" aria-labelledby="lcAvailLabel"></button>
+      <div>
+        <div class="lc-avail-label" id="lcAvailLabel">Away</div>
+        <div class="lc-avail-hint" id="lcAvailHint">Visitors see the team as offline</div>
+      </div>
+    </div>
+    <label class="lc-name">Name shown to visitors
+      <input type="text" id="lcDisplayName" maxlength="60" autocomplete="off">
+    </label>
+    <div class="lc-spacer"></div>
+    <div class="lc-team" id="lcTeam"></div>
+    <button type="button" class="lc-notify-btn" id="lcNotifyBtn" hidden>🔔 Enable desktop alerts</button>
+  </div>
+
+  <div class="lc-grid">
+    <section class="lc-col lc-list-col" aria-label="Conversations">
+      <div class="lc-tabs" role="tablist">
+        <button type="button" class="lc-tab" role="tab" data-filter="waiting" aria-selected="false">Needs reply <span class="n" data-count="waiting">0</span></button>
+        <button type="button" class="lc-tab" role="tab" data-filter="mine" aria-selected="false">Mine <span class="n" data-count="mine">0</span></button>
+        <button type="button" class="lc-tab" role="tab" data-filter="open" aria-selected="true">Open <span class="n" data-count="open">0</span></button>
+        <button type="button" class="lc-tab" role="tab" data-filter="resolved" aria-selected="false">Resolved</button>
+      </div>
+      <div class="lc-search"><input type="search" id="lcSearch" placeholder="Search name, email or message…" aria-label="Search conversations"></div>
+      <ul class="lc-list" id="lcList" aria-live="polite"><li class="lc-empty">Loading conversations…</li></ul>
+    </section>
+
+    <section class="lc-col lc-thread-col" aria-label="Conversation">
+      <div class="lc-placeholder" id="lcPlaceholder">
+        <div><div class="lc-placeholder-icon">💬</div>Select a conversation to reply.<br>
+        New chats appear on the left, with a sound when someone is waiting.</div>
+      </div>
+      <div class="lc-col lc-thread" id="lcThread" hidden>
+        <div class="lc-thread-head">
+          <div class="lc-av" id="lcThreadAv"><span class="dot"></span></div>
+          <div class="lc-thread-headtext">
+            <div class="lc-thread-title" id="lcThreadTitle"></div>
+            <div class="lc-thread-sub" id="lcThreadSub"></div>
+          </div>
+          <div class="lc-thread-actions">
+            <button type="button" class="lc-btn" id="lcResolveBtn">Resolve</button>
+          </div>
+        </div>
+        <div class="lc-msgs" id="lcMsgs" aria-live="polite"></div>
+        <div class="lc-typing" id="lcTyping"></div>
+        <form class="lc-compose" id="lcCompose" autocomplete="off">
+          <div class="lc-canned" id="lcCanned">
+            <button type="button" data-text="Hi{name}! Thanks for reaching out. How can I help you today?">👋 Greeting</button>
+            <button type="button" data-text="Could you tell me a bit more about your project: topic, tech stack and deadline?">❓ Ask details</button>
+            <button type="button" data-text="Could you share your email or WhatsApp number so I can send you the details?">📧 Ask contact</button>
+            <button type="button" data-text="You can browse all projects with source code here: https://projectshub.co.in/projects/">🚀 Projects link</button>
+            <button type="button" data-text="Thanks for chatting with us! Message here any time.">✅ Wrap up</button>
+          </div>
+          <div class="lc-compose-row">
+            <textarea id="lcInput" rows="1" placeholder="Type your reply…" aria-label="Reply to visitor" maxlength="4000"></textarea>
+            <button type="submit" class="lc-btn primary" id="lcSend">Send</button>
+          </div>
+          <div class="lc-hint">Enter to send · Shift+Enter for a new line · If the visitor has left the site, your reply is also emailed to them.</div>
+        </form>
+      </div>
+    </section>
+
+    <aside class="lc-col lc-info-col" aria-label="Visitor details">
+      <div class="lc-info" id="lcInfo"><div class="lc-empty">Visitor details appear here.</div></div>
+    </aside>
+  </div>
+</div>
+<script src="{% static 'js/live-chat-admin.js' %}?v=1" defer></script>
+{% endblock %}

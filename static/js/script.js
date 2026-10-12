@@ -710,6 +710,80 @@
     );
   }
 
+  function initRobotScene() {
+    var canvas = document.getElementById("robot-canvas");
+    var nextLessonButton = document.getElementById("robot-next-lesson");
+    var explanation = document.getElementById("robot-explanation");
+    var code = document.getElementById("robot-code");
+    var lessonCount = document.getElementById("robot-lesson-count");
+    var actionStatus = document.getElementById("robot-action-status");
+    if (!explanation || !code) return;
+
+    var lessons = [
+      {
+        explanation: "model.compile() configures how the network learns. The Adam optimizer updates weights to reduce prediction error.",
+        code: 'model.compile(\n    optimizer="adam",\n    metrics=["accuracy"]\n)',
+      },
+      {
+        explanation: "model.fit() trains the network on examples. An epoch is one complete pass through the training data.",
+        code: "model.fit(\n    train_data,\n    epochs=10\n)",
+      },
+      {
+        explanation: "model.evaluate() checks how well the trained model performs on data it has not seen before.",
+        code: "loss, accuracy = model.evaluate(\n    test_data\n)",
+      },
+    ];
+    function showBubble() {
+      var current = explanation.dataset.index ? Number(explanation.dataset.index) : 0;
+      current = (current + 1) % lessons.length;
+      explanation.textContent = lessons[current].explanation;
+      code.textContent = lessons[current].code;
+      explanation.dataset.index = String(current);
+      if (lessonCount) {
+        var lessonNumber = String(current + 1).padStart(2, "0");
+        var totalLessons = String(lessons.length).padStart(2, "0");
+        lessonCount.textContent = lessonNumber + " / " + totalLessons;
+        lessonCount.setAttribute("aria-label", "Lesson " + (current + 1) + " of " + lessons.length);
+      }
+    }
+    if (nextLessonButton) nextLessonButton.addEventListener("click", showBubble);
+    if (!canvas) return;
+
+    // The 3D model lives in static/js/aara-robot.js (loaded in the page head).
+    var robotCtl = null;
+    var partNames = {
+      "left-arm": "left arm", "right-arm": "right arm", head: "head",
+      chest: "core", "left-leg": "left leg", "right-leg": "right leg",
+    };
+    var mountOpts = {
+      onInteract: function (part, fallback) {
+        showBubble();
+        if (actionStatus) {
+          actionStatus.textContent = fallback
+            ? "Aara waved hello."
+            : "Aara moved her " + (partNames[part] || part) + ".";
+        }
+      },
+      onError: function (message) {
+        if (explanation) explanation.textContent = message;
+      },
+    };
+    if (nextLessonButton) {
+      nextLessonButton.addEventListener("click", function () {
+        if (robotCtl) robotCtl.speak(1600);
+      });
+    }
+    if (window.phAara) {
+      robotCtl = window.phAara.mount(canvas, mountOpts);
+    } else {
+      window.phAaraQueue = {
+        canvas: canvas,
+        opts: mountOpts,
+        onMounted: function (ctl) { robotCtl = ctl; },
+      };
+    }
+  }
+
   /* ════════════════════════════════════════
        10. WORKSHOP — Day cards + Feature items
        ════════════════════════════════════════ */
@@ -1365,6 +1439,7 @@
     initPills();
     initStats();
     initCardTilt();
+    initRobotScene();
     initProjectCards();
     initReadMore();
     initPricingCards();

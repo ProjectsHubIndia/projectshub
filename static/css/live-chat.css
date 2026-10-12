@@ -1,0 +1,327 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   ProjectsHub — Live chat widget styles (namespaced .phc-*)
+   ═══════════════════════════════════════════════════════════════════════════ */
+.phc {
+  --phc-accent: #4f46e5;
+  --phc-accent-hover: #4338ca;
+  --phc-accent-soft: #eef2ff;
+  --phc-ink: #0f172a;
+  --phc-ink-2: #334155;
+  --phc-muted: #64748b;
+  --phc-line: #e2e8f0;
+  --phc-surface: #ffffff;
+  --phc-canvas: #f8fafc;
+  --phc-green: #16a34a;
+  --phc-red: #dc2626;
+  --phc-radius: 18px;
+  --phc-shadow: 0 24px 60px -12px rgba(15, 23, 42, .28), 0 8px 20px -8px rgba(15, 23, 42, .18);
+  position: fixed;
+  left: max(20px, env(safe-area-inset-left));
+  bottom: max(20px, env(safe-area-inset-bottom));
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  font-family: var(--ph-font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--phc-ink);
+  pointer-events: none;
+}
+.phc *, .phc *::before, .phc *::after { box-sizing: border-box; }
+.phc > * { pointer-events: auto; }
+.phc button, .phc input, .phc textarea { font: inherit; color: inherit; margin: 0; }
+.phc button { cursor: pointer; background: none; border: 0; padding: 0; }
+.phc svg { display: block; width: 100%; height: 100%; }
+.phc a { color: inherit; }
+.phc [hidden] { display: none !important; }
+.phc-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.phc :focus-visible { outline: 2px solid var(--phc-accent); outline-offset: 2px; }
+
+/* ── Launcher ─────────────────────────────────────────────────────────── */
+.phc-launcher {
+  position: relative;
+  width: 58px; height: 58px;
+  border-radius: 50%;
+  background: var(--phc-accent) !important;
+  color: #fff !important;
+  box-shadow: 0 10px 24px -6px rgba(79, 70, 229, .55), 0 2px 6px rgba(15, 23, 42, .15);
+  display: grid; place-items: center;
+  transition: transform .2s ease, background-color .2s ease, box-shadow .2s ease;
+}
+.phc-launcher:hover { background: var(--phc-accent-hover) !important; transform: translateY(-2px); }
+.phc-launcher:active { transform: scale(.95); }
+.phc-launcher:focus-visible { outline: 3px solid #a5b4fc; outline-offset: 3px; }
+.phc-launcher-icon { grid-area: 1 / 1; width: 26px; height: 26px; transition: transform .25s ease, opacity .2s ease; }
+.phc-launcher-icon--close { width: 22px; height: 22px; opacity: 0; transform: rotate(-90deg) scale(.6); }
+.phc.is-open .phc-launcher-icon--chat { opacity: 0; transform: rotate(90deg) scale(.6); }
+.phc.is-open .phc-launcher-icon--close { opacity: 1; transform: none; }
+.phc-launcher-online {
+  position: absolute; left: 3px; bottom: 3px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--phc-green); border: 2.5px solid #fff;
+}
+.phc.is-open .phc-launcher-online { display: none; }
+.phc-badge {
+  position: absolute; top: -3px; left: -3px;
+  min-width: 22px; height: 22px; padding: 0 6px;
+  border-radius: 99px; background: var(--phc-red); color: #fff;
+  font-size: 12px; font-weight: 700; line-height: 22px; text-align: center;
+  border: 2px solid #fff;
+}
+.phc-launcher.is-nudging { animation: phcNudge .9s ease; }
+@keyframes phcNudge { 0%,100% { transform: none; } 20% { transform: rotate(-10deg); } 40% { transform: rotate(9deg); } 60% { transform: rotate(-6deg); } 80% { transform: rotate(3deg); } }
+
+/* ── Teaser ───────────────────────────────────────────────────────────── */
+.phc-teaser {
+  position: relative;
+  max-width: 290px;
+  background: var(--phc-surface);
+  border: 1px solid var(--phc-line);
+  border-radius: 16px 16px 16px 4px;
+  box-shadow: 0 14px 34px -10px rgba(15, 23, 42, .25);
+  opacity: 0; transform: translateY(8px);
+  transition: opacity .25s ease, transform .25s ease;
+}
+.phc-teaser.is-visible { opacity: 1; transform: none; }
+.phc .phc-teaser-body { display: flex; gap: 10px; align-items: flex-start; padding: 14px 30px 14px 14px; text-align: left; width: 100%; }
+.phc .phc-teaser-text { font-size: 13.5px; color: var(--phc-ink-2); }
+.phc .phc-teaser-close { position: absolute; top: 8px; right: 8px; width: 22px; height: 22px; padding: 5px; border-radius: 50%; color: var(--phc-muted); }
+.phc-teaser-close:hover { background: var(--phc-canvas); color: var(--phc-ink); }
+
+/* ── Avatars ──────────────────────────────────────────────────────────── */
+.phc-avatars { display: inline-flex; flex: none; }
+.phc-avatars .phc-av + .phc-av { margin-left: -10px; }
+.phc-av {
+  width: 34px; height: 34px; flex: none;
+  border-radius: 50%;
+  display: inline-grid; place-items: center;
+  color: #fff; font-weight: 700; font-size: 12.5px; letter-spacing: .02em;
+  border: 2px solid #fff;
+  background: var(--phc-accent);
+}
+.phc-av--brand { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
+.phc-av--bot { background: #e0e7ff; color: #4338ca; padding: 6px; }
+.phc-msg-av .phc-av { width: 28px; height: 28px; font-size: 11px; border-width: 0; }
+.phc-msg-av .phc-av--bot { padding: 5px; }
+
+/* ── Panel ────────────────────────────────────────────────────────────── */
+.phc .phc-panel {
+  margin: 0; padding: 0;
+  width: 380px;
+  height: min(620px, calc(100vh - 120px));
+  height: min(620px, calc(100dvh - 120px));
+  background: var(--phc-surface);
+  border-radius: var(--phc-radius);
+  box-shadow: var(--phc-shadow);
+  border: 1px solid rgba(15, 23, 42, .06);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  transform-origin: bottom left;
+  animation: phcIn .22s cubic-bezier(.2, .9, .3, 1.2);
+}
+@keyframes phcIn { from { opacity: 0; transform: translateY(12px) scale(.97); } to { opacity: 1; transform: none; } }
+
+.phc-head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 12px 14px 16px;
+  background: var(--phc-ink);
+  color: #fff;
+}
+.phc-head .phc-av { border-color: var(--phc-ink); }
+.phc-head-text { flex: 1; min-width: 0; }
+.phc .phc-title { margin: 0; font-size: 15.5px; font-weight: 700; color: #fff; letter-spacing: -.01em; line-height: 1.25; font-family: inherit; }
+.phc .phc-status { margin: 2px 0 0; font-size: 12px; color: #cbd5e1; display: flex; align-items: center; gap: 6px; line-height: 1.3; }
+.phc-dot { width: 8px; height: 8px; border-radius: 50%; background: #94a3b8; flex: none; }
+.phc-status.is-online .phc-dot { background: #4ade80; box-shadow: 0 0 0 3px rgba(74, 222, 128, .2); }
+.phc .phc-icon-btn {
+  width: 36px; height: 36px; padding: 8px; flex: none;
+  border-radius: 10px; color: #e2e8f0 !important;
+  display: grid; place-items: center; text-decoration: none;
+  transition: background-color .15s ease, color .15s ease;
+}
+.phc-icon-btn:hover { background: rgba(255, 255, 255, .12); color: #fff !important; }
+.phc-wa:hover { color: #4ade80 !important; }
+.phc-head .phc-icon-btn:focus-visible { outline-color: #a5b4fc; }
+
+.phc-body { flex: 1; overflow-y: auto; overscroll-behavior: contain; background: var(--phc-canvas); padding: 16px 14px 8px; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { .phc-body { scroll-behavior: auto; } }
+
+.phc-intro-card {
+  display: flex; gap: 10px; align-items: flex-start;
+  background: var(--phc-surface); border: 1px solid var(--phc-line);
+  border-radius: 14px; padding: 12px 14px; margin-bottom: 14px;
+}
+.phc-intro-card .phc-avatars, .phc-intro-card > .phc-av { margin-top: 1px; }
+.phc .phc-intro-card p { margin: 0; font-size: 13.5px; color: var(--phc-ink-2); }
+
+/* ── Messages ─────────────────────────────────────────────────────────── */
+.phc-log { display: flex; flex-direction: column; }
+.phc-msg { display: flex; gap: 8px; align-items: flex-end; margin-top: 2px; max-width: 100%; }
+.phc-msg.is-first { margin-top: 12px; }
+.phc-msg-av { width: 28px; flex: none; }
+.phc-msg-main { display: flex; flex-direction: column; min-width: 0; max-width: 80%; }
+.phc-msg--user { justify-content: flex-end; }
+.phc-msg--user .phc-msg-main { align-items: flex-end; }
+.phc-msg-name { font-size: 11.5px; font-weight: 600; color: var(--phc-ink-2); margin: 0 0 4px 4px; }
+.phc-msg-role { font-weight: 400; color: var(--phc-muted); }
+.phc-tag { display: inline-block; margin-left: 4px; padding: 0 6px; border-radius: 99px; background: #e0e7ff; color: #4338ca; font-size: 10px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; vertical-align: 1px; }
+.phc-bubble {
+  padding: 9px 13px;
+  border-radius: 18px;
+  font-size: 14px; line-height: 1.45;
+  white-space: pre-wrap; overflow-wrap: anywhere;
+}
+.phc-bubble a { text-decoration: underline; text-underline-offset: 2px; }
+.phc-msg--agent .phc-bubble, .phc-msg--bot .phc-bubble { background: var(--phc-surface); border: 1px solid var(--phc-line); color: var(--phc-ink); }
+.phc-msg--agent .phc-bubble a, .phc-msg--bot .phc-bubble a { color: var(--phc-accent); }
+.phc-msg--bot .phc-bubble { background: #f5f7ff; border-color: #e0e7ff; }
+.phc-msg--agent:not(.is-last) .phc-bubble, .phc-msg--bot:not(.is-last) .phc-bubble { border-bottom-left-radius: 6px; }
+.phc-msg--agent:not(.is-first) .phc-bubble, .phc-msg--bot:not(.is-first) .phc-bubble { border-top-left-radius: 6px; }
+.phc-msg--agent.is-last .phc-bubble, .phc-msg--bot.is-last .phc-bubble { border-bottom-left-radius: 6px; }
+.phc-msg--user .phc-bubble { background: var(--phc-accent); color: #fff; }
+.phc-msg--user:not(.is-last) .phc-bubble { border-bottom-right-radius: 6px; }
+.phc-msg--user:not(.is-first) .phc-bubble { border-top-right-radius: 6px; }
+.phc-msg--user.is-last .phc-bubble { border-bottom-right-radius: 6px; }
+.phc-msg.is-pending .phc-bubble { opacity: .65; }
+.phc-msg.is-failed .phc-bubble { background: #fee2e2; color: #991b1b; }
+.phc-meta { font-size: 11px; color: var(--phc-muted); margin: 4px 6px 0; }
+.phc .phc-retry { font-size: 11.5px; color: var(--phc-red) !important; font-weight: 600; margin: 4px 6px 0; text-decoration: underline; }
+
+.phc-sys {
+  align-self: center; text-align: center;
+  max-width: 92%;
+  margin: 14px auto 2px;
+  font-size: 12.5px; color: var(--phc-muted);
+  padding: 6px 12px;
+  background: rgba(100, 116, 139, .08);
+  border-radius: 12px;
+}
+.phc-sys a { color: var(--phc-accent); }
+.phc-sys--error { background: #fef2f2; color: #b91c1c; }
+
+.phc-typing { display: flex; align-items: center; gap: 8px; padding: 10px 2px 2px 36px; font-size: 12px; color: var(--phc-muted); }
+.phc-typing-dots { display: inline-flex; gap: 3px; padding: 8px 10px; background: var(--phc-surface); border: 1px solid var(--phc-line); border-radius: 14px; }
+.phc-typing-dots i { width: 6px; height: 6px; border-radius: 50%; background: #94a3b8; animation: phcDot 1.2s infinite ease-in-out; }
+.phc-typing-dots i:nth-child(2) { animation-delay: .15s; }
+.phc-typing-dots i:nth-child(3) { animation-delay: .3s; }
+@keyframes phcDot { 0%, 60%, 100% { transform: translateY(0); opacity: .5; } 30% { transform: translateY(-4px); opacity: 1; } }
+
+/* ── Contact card ─────────────────────────────────────────────────────── */
+.phc-contact {
+  margin: 14px 0 6px;
+  background: var(--phc-surface);
+  border: 1px solid var(--phc-line);
+  border-radius: 14px;
+  padding: 14px;
+}
+.phc .phc-contact-title { margin: 0; font-weight: 700; font-size: 14px; color: var(--phc-ink); }
+.phc .phc-contact-sub { margin: 2px 0 10px; font-size: 12.5px; color: var(--phc-muted); }
+.phc-field { display: block; margin-bottom: 8px; }
+.phc-field span { display: block; font-size: 11.5px; font-weight: 600; color: var(--phc-ink-2); margin-bottom: 3px; }
+.phc-field em { font-style: normal; font-weight: 400; color: var(--phc-muted); }
+.phc-field input {
+  width: 100%; height: 38px; padding: 0 11px;
+  border: 1px solid var(--phc-line); border-radius: 10px; background: #fff;
+  font-size: 14px; color: var(--phc-ink);
+}
+.phc-field input:focus { outline: none; border-color: var(--phc-accent); box-shadow: 0 0 0 3px rgba(79, 70, 229, .15); }
+.phc .phc-contact-error { margin: 0 0 6px; font-size: 12px; color: var(--phc-red); min-height: 0; }
+.phc-contact-error:empty { display: none; }
+.phc-contact-actions { display: flex; align-items: center; gap: 12px; }
+.phc .phc-btn {
+  height: 38px; padding: 0 16px; border-radius: 10px;
+  background: var(--phc-accent) !important; color: #fff !important; font-weight: 600; font-size: 13.5px;
+}
+.phc-btn:hover { background: var(--phc-accent-hover) !important; }
+.phc-btn:disabled { opacity: .6; cursor: progress; }
+.phc-link { font-size: 13px; color: var(--phc-muted) !important; text-decoration: underline; }
+
+/* ── Quick replies ────────────────────────────────────────────────────── */
+.phc-quick {
+  display: flex; gap: 6px; flex-wrap: wrap;
+  padding: 10px 14px 4px;
+  background: var(--phc-canvas);
+}
+.phc .phc-quick button {
+  padding: 6px 11px;
+  border-radius: 99px;
+  border: 1px solid #c7d2fe;
+  background: #fff;
+  color: var(--phc-accent) !important;
+  font-size: 12.5px; font-weight: 600;
+  transition: background-color .15s ease, border-color .15s ease;
+}
+.phc-quick button:hover { background: var(--phc-accent-soft); border-color: var(--phc-accent); }
+
+/* ── Composer ─────────────────────────────────────────────────────────── */
+.phc-composer {
+  display: flex; align-items: flex-end; gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--phc-line);
+  background: var(--phc-surface);
+}
+.phc-composer textarea {
+  flex: 1; resize: none;
+  min-height: 42px; max-height: 120px;
+  padding: 10px 14px;
+  border: 1px solid var(--phc-line); border-radius: 21px;
+  background: var(--phc-canvas);
+  font-size: 14.5px; line-height: 1.4; color: var(--phc-ink);
+  transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+}
+.phc-composer textarea::placeholder { color: #94a3b8; }
+.phc-composer textarea:focus { outline: none; border-color: var(--phc-accent); background: #fff; box-shadow: 0 0 0 3px rgba(79, 70, 229, .14); }
+.phc .phc-send {
+  width: 42px; height: 42px; flex: none;
+  border-radius: 50%; padding: 11px;
+  background: var(--phc-accent) !important; color: #fff !important;
+  transition: background-color .15s ease, transform .15s ease, opacity .15s ease;
+}
+.phc-send:hover:not(:disabled) { background: var(--phc-accent-hover) !important; }
+.phc-send:active:not(:disabled) { transform: scale(.92); }
+.phc-send:disabled { opacity: .35; cursor: default; }
+.phc .phc-foot { margin: 0; padding: 0 14px 10px; background: var(--phc-surface); font-size: 11px; color: var(--phc-muted); text-align: center; }
+.phc-foot a { color: var(--phc-muted); text-decoration: underline; }
+.phc-counter { color: var(--phc-red); font-weight: 600; }
+
+/* ── Responsive ───────────────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .phc { left: 14px; bottom: max(14px, env(safe-area-inset-bottom)); }
+  .phc.is-open { inset: 0; left: 0; bottom: 0; gap: 0; }
+  .phc.is-open .phc-launcher { display: none; }
+  .phc .phc-panel { width: 100vw; height: 100vh; height: 100dvh; border-radius: 0; border: 0; animation: phcUp .25s ease; }
+  .phc-head { padding-top: max(14px, env(safe-area-inset-top)); }
+  .phc-composer { padding-bottom: max(10px, env(safe-area-inset-bottom)); }
+  .phc-composer textarea { font-size: 16px; }   /* prevents iOS zoom on focus */
+  .phc-field input { font-size: 16px; }
+  .phc-teaser { max-width: calc(100vw - 90px); }
+  html.phc-lock, html.phc-lock body { overflow: hidden !important; }
+  body:has(.ph-cookie-banner.ph-cookie-visible) .phc:not(.is-open) { bottom: 210px; }
+}
+@keyframes phcUp { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .phc-panel, .phc-launcher.is-nudging { animation: none; }
+  .phc-typing-dots i { animation: none; opacity: .8; }
+  .phc-launcher, .phc-launcher-icon, .phc-teaser { transition: none; }
+}
+
+@media print { .phc { display: none !important; } }
+
+/* ── Back-to-top reclaims the bottom-right corner ─────────────────────────
+   The chat launcher used to sit bottom-right, so the back-to-top button was
+   pushed ~5.5rem up to clear it. The launcher is docked bottom-left now, so
+   the button can sit in the corner it belongs in. */
+.back-to-top {
+  bottom: 1.5rem;
+  right: 1.5rem;
+}
+
+@media (max-width: 520px) {
+  .back-to-top {
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    right: 1rem;
+  }
+}

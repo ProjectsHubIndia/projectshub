@@ -16,15 +16,32 @@ DEFAULT_ROBOTS = "index, follow, max-image-preview:large, max-snippet:-1, max-vi
 
 
 def get_base_url(request=None):
-    if request:
-        try:
-            return request.build_absolute_uri('/').rstrip('/')
-        except Exception:
-            pass
-    site_url = getattr(settings, 'SITE_URL', '').rstrip('/')
-    if site_url:
-        return site_url
-    return DEFAULT_DOMAIN.rstrip('/')
+    """
+    Canonical public origin. Deliberately ignores the request Host header so that
+    platform domains (Railway/Vercel previews) and spoofed Host headers can never
+    leak into canonical URLs, og:url, JSON-LD, robots.txt or sitemap.xml.
+    """
+    canonical = getattr(settings, 'CANONICAL_SITE_URL', '') or getattr(settings, 'SITE_URL', '')
+    return (canonical or DEFAULT_DOMAIN).rstrip('/')
+
+
+def safe_json_ld(data):
+    """Serialise JSON-LD so admin-entered text can never close the <script> element."""
+    return (
+        json.dumps(data, indent=2, ensure_ascii=False)
+        .replace('<', '\\u003c').replace('>', '\\u003e').replace('&', '\\u0026')
+    )
+
+
+def clean_description(text, limit=155):
+    """Plain-text meta description: strip HTML and Markdown emphasis, collapse whitespace."""
+    import re
+    plain = strip_tags(text or '')
+    plain = re.sub(r'[*_`#>]+', '', plain)
+    plain = re.sub(r'\s+', ' ', plain).strip()
+    if len(plain) > limit:
+        plain = plain[:limit].rsplit(' ', 1)[0].rstrip(' ,.;:') + '…'
+    return plain
 
 
 def build_organization_schema(base_url):
@@ -140,11 +157,15 @@ def get_seo_for_request(request, view_context=None):
     elif path.startswith('/projects/') and view_context and 'project' in view_context:
         prj = view_context['project']
         meta_title = f"{prj.title} — AI Project Showcase | ProjectsHub"
-        clean_desc = strip_tags(prj.description or prj.title)[:155].strip()
+        clean_desc = clean_description(getattr(prj, 'subtitle', '') or prj.description or prj.title)
         meta_description = clean_desc if clean_desc else f"Explore {prj.title} with code, architecture, and live deployment."
         og_type = "product"
-        if getattr(prj, 'image', None):
-            og_image = f"{base_url}{prj.image.url}"
+        try:
+            img_src = prj.get_image_src() if hasattr(prj, 'get_image_src') else ''
+        except Exception:
+            img_src = ''
+        if img_src:
+            og_image = img_src if urlparse(img_src).scheme else f"{base_url}/{img_src.lstrip('/')}"
         
         schemas.append(build_breadcrumbs_schema([
             ("Home", "/"),
@@ -172,7 +193,7 @@ def get_seo_for_request(request, view_context=None):
     elif path.startswith('/blog/') and view_context and 'post' in view_context:
         post = view_context['post']
         meta_title = f"{post.title} | ProjectsHub Blog"
-        clean_desc = strip_tags(post.excerpt or post.get_lead() or post.content or post.title)[:155].strip()
+        clean_desc = clean_description(post.excerpt or post.get_lead() or post.content or post.title)
         meta_description = clean_desc
         og_type = "article"
         image_src = post.get_image_src()
@@ -184,13 +205,11 @@ def get_seo_for_request(request, view_context=None):
             ("Blog", "/blog/"),
             (post.title, post.get_absolute_url() if hasattr(post, 'get_absolute_url') else path)
         ], base_url))
-        schemas.append({
+        posting = {
             "@context": "https://schema.org",
             "@type": "BlogPosting",
             "headline": post.title,
             "description": meta_description,
-            "datePublished": post.published_at.isoformat() if post.published_at else "",
-            "dateModified": post.updated_at.isoformat() if post.updated_at else "",
             "image": og_image,
             "articleSection": post.get_category_display(),
             "author": {
@@ -209,7 +228,13 @@ def get_seo_for_request(request, view_context=None):
                 "@type": "WebPage",
                 "@id": full_url
             }
-        })
+        }
+        # Omit dates rather than emit empty strings (invalid per schema.org / Google).
+        if post.published_at:
+            posting["datePublished"] = post.published_at.isoformat()
+        if post.updated_at:
+            posting["dateModified"] = post.updated_at.isoformat()
+        schemas.append(posting)
 
     # F. AI TOOLS DIRECTORY
     elif path == '/tools/':
@@ -342,7 +367,7 @@ def get_seo_for_request(request, view_context=None):
 
     # Consolidate schema JSON-LD script tags
     schema_json_strings = [
-        f'<script type="application/ld+json">\n{json.dumps(s, indent=2)}\n</script>'
+        f'<script type="application/ld+json">\n{safe_json_ld(s)}\n</script>'
         for s in schemas
     ]
     schema_markup = "\n".join(schema_json_strings)

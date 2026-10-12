@@ -96,6 +96,8 @@
           <li><a href="/admin/core/pricingplan/add/">💳 Pricing Plan</a></li>
           <li><a href="/admin/core/pricingfeature/add/">✨ Pricing Feature</a></li>
           <li><a href="/admin/core/workshopcard/add/">🎓 Workshop</a></li>
+          <li><a href="/admin/core/roadmapnode/add/">🗺️ Roadmap Chapter</a></li>
+          <li><a href="/admin/core/roadmaptopic/add/">📍 Roadmap Topic</a></li>
           <li><a href="/admin/core/contactinquiry/add/">📬 Contact Inquiry</a></li>
           <li><a href="/admin/core/testimonial/add/">💬 Testimonial</a></li>
           <li><a href="/admin/core/faq/add/">❓ FAQ Item</a></li>
@@ -152,6 +154,35 @@
             <li class="wp-submenu-head">Dashboard</li>
             <li><a href="{% url 'admin:index' %}">Home</a></li>
             <li><a href="/admin/core/sitesettings/">Site Telemetry</a></li>
+          </ul>
+        </li>
+
+        <!-- SEO dashboard (technical audit of every sitemap URL) -->
+        <li class="wp-menu-item {% if '/admin/seo/' in request.path %}current{% endif %}" data-path="/admin/seo/">
+          <a href="/admin/seo/" class="wp-menu-link">
+            <span class="wp-menu-icon">📈</span>
+            <span class="wp-menu-name">SEO Dashboard</span>
+          </a>
+          <ul class="wp-submenu">
+            <li class="wp-submenu-head">SEO</li>
+            <li><a href="/admin/seo/">Audit overview</a></li>
+            <li><a href="/admin/core/seodata/">SEO overrides</a></li>
+            <li><a href="/admin/core/redirect/">Redirects</a></li>
+          </ul>
+        </li>
+
+        <!-- Live Chat inbox (real-time replies to website visitors) -->
+        <li class="wp-menu-item {% if '/admin/live-chat/' in request.path %}current{% endif %}" data-path="/admin/live-chat/">
+          <a href="/admin/live-chat/" class="wp-menu-link">
+            <span class="wp-menu-icon">💬</span>
+            <span class="wp-menu-name">Live Chat</span>
+            <span class="wp-menu-count {% if live_chat_waiting %}red{% else %}blue{% endif %}" id="wpLiveChatCount">{{ live_chat_waiting|default:'0' }}</span>
+          </a>
+          <ul class="wp-submenu">
+            <li class="wp-submenu-head">Live Chat</li>
+            <li><a href="/admin/live-chat/">Inbox</a></li>
+            <li><a href="/admin/core/chatbotconversation/">All conversations</a></li>
+            <li><a href="/admin/core/chatagentstatus/">Chat agents</a></li>
           </ul>
         </li>
 
@@ -274,6 +305,23 @@
           </ul>
         </li>
 
+        <!-- 5b. AI Roadmap -->
+        <li class="wp-menu-item {% if '/admin/core/roadmap' in request.path %}current{% endif %}" data-path="/admin/core/roadmap">
+          <a href="/admin/core/roadmapnode/" class="wp-menu-link">
+            <span class="wp-menu-icon">🗺️</span>
+            <span class="wp-menu-name">AI Roadmap</span>
+          </a>
+          <ul class="wp-submenu">
+            <li class="wp-submenu-head">AI Roadmap</li>
+            <li><a href="/admin/core/roadmapnode/">Chapters ({{ model_counts.roadmapnode|default:'0' }})</a></li>
+            <li><a href="/admin/core/roadmapgroup/">Sub-sections ({{ model_counts.roadmapgroup|default:'0' }})</a></li>
+            <li><a href="/admin/core/roadmaptopic/">Topics ({{ model_counts.roadmaptopic|default:'0' }})</a></li>
+            <li><a href="/admin/core/roadmapresource/">Resources ({{ model_counts.roadmapresource|default:'0' }})</a></li>
+            <li><a href="/admin/core/roadmapsettings/">⚙️ Page &amp; Pop-up Settings</a></li>
+            <li><a href="/admin/core/roadmapnode/add/">➕ Add Chapter</a></li>
+          </ul>
+        </li>
+
         <!-- 6. Services & Work -->
         <li class="wp-menu-item {% if '/admin/core/service' in request.path or '/admin/core/casestudy' in request.path or '/admin/core/pricing' in request.path %}current{% endif %}" data-path="/admin/core/service/">
           <a href="/admin/core/service/" class="wp-menu-link">
@@ -323,6 +371,7 @@
             <li><a href="/admin/core/ideasubmission/">Idea Proposals ({{ model_counts.ideasubmission|default:'0' }})</a></li>
             <li><a href="/admin/core/projectgatelead/">Gate Leads ({{ model_counts.projectgatelead|default:'0' }})</a></li>
             <li><a href="/admin/core/contactmessage/">Direct Messages ({{ model_counts.contactmessage|default:'0' }})</a></li>
+            <li><a href="/admin/live-chat/">💬 Live Chat Inbox</a></li>
             <li><a href="/admin/core/chatbotconversation/">Chatbot Conversations ({{ model_counts.chatbotconversation|default:'0' }})</a></li>
             <li><a href="/admin/core/chatbotmessage/">All Chat Messages ({{ model_counts.chatbotmessage|default:'0' }})</a></li>
           </ul>
@@ -389,6 +438,7 @@
             <li class="wp-submenu-head">Tools</li>
             <li><a href="/admin/backup/">Export &amp; Backup</a></li>
             <li><a href="/admin/guide/">Project Guide &amp; SOPs</a></li>
+            <li><a href="/admin/seo/">📈 SEO Dashboard</a></li>
             <li><a href="/admin/core/seodata/">SEO Overrides</a></li>
             <li><a href="/admin/core/redirect/">URL Redirects</a></li>
             <li><a href="/sitemap.xml" target="_blank">XML Sitemap ↗</a></li>
@@ -504,6 +554,24 @@
           {% endblock %}
 
           <!-- WordPress Dismissible Notices -->
+          {% if pending_migrations %}
+            <div class="wp-notices">
+              <div class="notice notice-warning" role="alert" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 14px;">
+                <p style="margin:0;flex:1;min-width:260px;"><strong>Database update needed.</strong>
+                  This version of the site added {{ pending_migrations|length }} database change{{ pending_migrations|length|pluralize }}
+                  ({{ pending_migrations|join:", " }}). Until it's applied, features that use it (like live chat and backups) won't work.</p>
+                {% if user.is_superuser %}
+                <form method="post" action="{% url 'admin_apply_migrations' %}" style="margin:0;">
+                  {% csrf_token %}
+                  <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                  <button type="submit" class="button button-primary">Apply database update</button>
+                </form>
+                {% else %}
+                <p style="margin:0;">Ask a superuser to apply it.</p>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
           {% block messages %}
             {% if messages %}
               <div class="wp-notices">

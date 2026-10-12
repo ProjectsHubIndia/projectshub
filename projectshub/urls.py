@@ -6,12 +6,13 @@ from django.views.generic.base import RedirectView
 from core.views import (
     admin_guide_view, toggle_guide_note, admin_assets_view, admin_asset_delete_view,
     admin_backup_view, admin_backup_download_json, admin_backup_download_db,
-    admin_backup_sync_initial, admin_backup_restore,
+    admin_backup_sync_initial, admin_backup_restore, admin_apply_migrations,
     admin_nav_menus_view, admin_plugins_view, admin_settings_view, admin_quick_edit_api,
     error_400, error_404, error_500
 )
 
 from django.shortcuts import render
+from core import chat_views, seo_views
 
 admin.site.site_header = "AI ProjectsHub Admin"
 admin.site.site_title = "AI ProjectsHub"
@@ -38,6 +39,17 @@ urlpatterns = [
     path('admin/backup/sync-initial/', admin_backup_sync_initial, name='admin_backup_sync_initial'),
     path('admin/backup/restore/', admin_backup_restore, name='admin_backup_restore'),
     path('admin/backup/', admin_backup_view, name='admin_backup'),
+    path('admin/maintenance/migrate/', admin_apply_migrations, name='admin_apply_migrations'),
+    path('admin/seo/', seo_views.admin_seo_dashboard, name='admin_seo_dashboard'),
+    path('admin/seo/run/', seo_views.admin_seo_run_audit, name='admin_seo_run_audit'),
+    path('admin/seo/export.csv', seo_views.admin_seo_export, name='admin_seo_export'),
+    path('admin/live-chat/', chat_views.admin_live_chat_view, name='admin_live_chat'),
+    path('admin/api/chat/inbox/', chat_views.admin_chat_inbox, name='admin_chat_inbox'),
+    path('admin/api/chat/presence/', chat_views.admin_chat_presence, name='admin_chat_presence'),
+    path('admin/api/chat/<int:pk>/messages/', chat_views.admin_chat_thread, name='admin_chat_thread'),
+    path('admin/api/chat/<int:pk>/reply/', chat_views.admin_chat_reply, name='admin_chat_reply'),
+    path('admin/api/chat/<int:pk>/typing/', chat_views.admin_chat_typing, name='admin_chat_typing'),
+    path('admin/api/chat/<int:pk>/status/', chat_views.admin_chat_status, name='admin_chat_status'),
     path('admin/', admin.site.urls),
 
     # Serve user-uploaded media unconditionally (production host has no

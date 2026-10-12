@@ -1,0 +1,238 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}SEO Dashboard{% endblock %}
+{% block content_title %}📈 SEO Dashboard{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/seo-dashboard.css' %}?v=1">
+{% endblock %}
+
+{% block content %}
+<div id="seoDash">
+
+  <!-- Toolbar -->
+  <div class="sd-toolbar">
+    <div class="sd-toolbar-text">
+      <strong>Technical SEO audit</strong> of every URL in your sitemap
+      <span class="sd-muted">· last run {{ ran_at|date:"j M Y, H:i" }} ({{ audit.duration_s }}s, {{ summary.pages }} pages, host {{ audit.host }})</span>
+    </div>
+    <div class="sd-toolbar-actions">
+      <form method="post" action="{% url 'admin_seo_run_audit' %}">{% csrf_token %}
+        <button type="submit" class="sd-btn sd-btn--primary" id="sdRun">↻ Run audit now</button>
+      </form>
+      <a class="sd-btn" href="{% url 'admin_seo_export' %}">⬇ Export CSV</a>
+      <a class="sd-btn" href="/sitemap.xml" target="_blank" rel="noopener">sitemap.xml ↗</a>
+      <a class="sd-btn" href="/robots.txt" target="_blank" rel="noopener">robots.txt ↗</a>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="sd-kpis">
+    <div class="sd-kpi sd-kpi--score">
+      <div class="sd-kpi-label">Site health score</div>
+      <div class="sd-kpi-value {% if summary.avg_score >= 85 %}is-good{% elif summary.avg_score >= 65 %}is-ok{% else %}is-bad{% endif %}">{{ summary.avg_score }}<small>/100</small></div>
+      <div class="sd-kpi-note">Internal checklist score, not a Google ranking metric</div>
+    </div>
+    <div class="sd-kpi">
+      <div class="sd-kpi-label">Pages checked</div>
+      <div class="sd-kpi-value">{{ summary.pages }}</div>
+      <div class="sd-kpi-note">{{ summary.healthy_pages }} with no critical issues or warnings</div>
+    </div>
+    <div class="sd-kpi">
+      <div class="sd-kpi-label">Critical</div>
+      <div class="sd-kpi-value {% if summary.counts.critical %}is-bad{% else %}is-good{% endif %}">{{ summary.counts.critical }}</div>
+      <div class="sd-kpi-note">Block indexing or send conflicting signals</div>
+    </div>
+    <div class="sd-kpi">
+      <div class="sd-kpi-label">Warnings</div>
+      <div class="sd-kpi-value {% if summary.counts.warning %}is-ok{% else %}is-good{% endif %}">{{ summary.counts.warning }}</div>
+      <div class="sd-kpi-note">Likely to hurt how pages appear in results</div>
+    </div>
+    <div class="sd-kpi">
+      <div class="sd-kpi-label">Notices</div>
+      <div class="sd-kpi-value">{{ summary.counts.notice }}</div>
+      <div class="sd-kpi-note">Worth improving when you have time</div>
+    </div>
+    <div class="sd-kpi">
+      <div class="sd-kpi-label">Site checks</div>
+      <div class="sd-kpi-value {% if summary.failed_site_checks %}is-bad{% else %}is-good{% endif %}">{% if summary.failed_site_checks %}{{ summary.failed_site_checks }} failing{% else %}All pass{% endif %}</div>
+      <div class="sd-kpi-note">robots.txt, sitemap, redirects</div>
+    </div>
+  </div>
+
+  <div class="sd-grid">
+    <!-- Top issues -->
+    <section class="sd-card">
+      <h2>Fix these first</h2>
+      {% if summary.top_issues %}
+      <ul class="sd-top">
+        {% for t in summary.top_issues %}
+        <li><span class="sd-sev sd-sev--{{ t.severity }}">{{ t.severity }}</span>
+          <button type="button" class="sd-linkbtn" data-filter-check="{{ t.check }}">{{ t.check }}</button>
+          <span class="sd-muted">on {{ t.pages }} page{{ t.pages|pluralize }}</span></li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="sd-empty">No issues found. 🎉</p>
+      {% endif %}
+    </section>
+
+    <!-- Site checks -->
+    <section class="sd-card">
+      <h2>Site checks</h2>
+      <ul class="sd-checks">
+        {% for c in audit.site_checks %}
+        <li class="{% if c.ok %}sd-pass{% else %}sd-fail{% endif %}">
+          <span class="sd-check-icon" aria-hidden="true">{% if c.ok %}✓{% else %}✕{% endif %}</span>
+          <span><strong>{{ c.name }}</strong><br><span class="sd-muted">{{ c.detail }}{% if not c.ok and c.fix %} · {{ c.fix }}{% endif %}</span></span>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <!-- Integrations -->
+    <section class="sd-card">
+      <h2>Search data integrations</h2>
+      <ul class="sd-integrations">
+        <li><span class="sd-pill sd-pill--off">Not connected</span><strong>Google Search Console</strong>
+          <span class="sd-muted">Needed for real clicks, impressions, CTR and average position. Nothing here is estimated.</span></li>
+        <li>{% if audit.ga_id %}<span class="sd-pill sd-pill--on">Tag installed</span>{% else %}<span class="sd-pill sd-pill--off">No tag</span>{% endif %}<strong>Google Analytics</strong>
+          <span class="sd-muted">{% if audit.ga_id %}Measurement ID {{ audit.ga_id }} is on the site; view traffic in Google Analytics.{% else %}Add your Measurement ID in <a href="/admin/settings/">Settings</a>.{% endif %}</span></li>
+        <li><span class="sd-pill sd-pill--off">Provider required</span><strong>Keyword rank tracking</strong>
+          <span class="sd-muted">Needs an authorised SERP data provider; Google results aren't scraped.</span></li>
+        <li><span class="sd-pill sd-pill--off">Not connected</span><strong>Google Ads / Keyword Planner</strong>
+          <span class="sd-muted">Needs Google Ads API access. Planner volumes are estimates.</span></li>
+      </ul>
+    </section>
+  </div>
+
+  <!-- Pages -->
+  <section class="sd-card sd-pages">
+    <div class="sd-pages-head">
+      <h2>Pages <span class="sd-muted" id="sdShown"></span></h2>
+      <div class="sd-filters" role="group" aria-label="Filter pages">
+        <button type="button" class="sd-chip is-active" data-filter="all">All</button>
+        <button type="button" class="sd-chip" data-filter="critical">Critical</button>
+        <button type="button" class="sd-chip" data-filter="warning">Warnings</button>
+        <button type="button" class="sd-chip" data-filter="healthy">Healthy</button>
+        <input type="search" id="sdSearch" placeholder="Filter by URL or title…" aria-label="Filter pages by URL or title">
+      </div>
+    </div>
+    <div class="sd-table-wrap">
+      <table class="sd-table">
+        <thead>
+          <tr>
+            <th scope="col">URL</th>
+            <th scope="col">Score</th>
+            <th scope="col" title="Characters ({{ thresholds.title.0 }}–{{ thresholds.title.1 }} recommended)">Title</th>
+            <th scope="col" title="Characters ({{ thresholds.desc.0 }}–{{ thresholds.desc.1 }} recommended)">Description</th>
+            <th scope="col">H1</th>
+            <th scope="col">Words</th>
+            <th scope="col">Schema</th>
+            <th scope="col">Issues</th>
+            <th scope="col"><span class="sd-sr">Details</span></th>
+          </tr>
+        </thead>
+        {% for p in audit.pages %}
+        <tbody class="sd-row" data-crit="{{ p.counts.critical }}" data-warn="{{ p.counts.warning }}"
+               data-text="{{ p.path|lower }} {{ p.title|default:''|lower }}" data-checks="{% for i in p.issues %}{{ i.check }}|{% endfor %}">
+          <tr>
+            <td class="sd-url"><a href="{{ p.path }}" target="_blank" rel="noopener">{{ p.path }}</a>{% if p.status != 200 %} <span class="sd-sev sd-sev--critical">{{ p.status }}</span>{% endif %}</td>
+            <td><span class="sd-score {% if p.score >= 85 %}is-good{% elif p.score >= 65 %}is-ok{% else %}is-bad{% endif %}">{{ p.score }}</span></td>
+            <td class="{% if p.title_len < thresholds.title.0 or p.title_len > 70 %}sd-warn{% endif %}">{{ p.title_len|default:"—" }}</td>
+            <td class="{% if p.desc_len < thresholds.desc.0 or p.desc_len > 180 %}sd-warn{% endif %}">{{ p.desc_len|default:"—" }}</td>
+            <td class="{% if p.h1 != 1 %}sd-warn{% endif %}">{{ p.h1|default:"0" }}</td>
+            <td>{{ p.words|default:"—" }}</td>
+            <td class="sd-schema">{{ p.schema_types|join:", "|default:"—" }}</td>
+            <td class="sd-counts">
+              {% if p.counts.critical %}<span class="sd-sev sd-sev--critical">{{ p.counts.critical }}</span>{% endif %}
+              {% if p.counts.warning %}<span class="sd-sev sd-sev--warning">{{ p.counts.warning }}</span>{% endif %}
+              {% if p.counts.notice %}<span class="sd-sev sd-sev--notice">{{ p.counts.notice }}</span>{% endif %}
+              {% if not p.issues %}<span class="sd-ok">✓</span>{% endif %}
+            </td>
+            <td><button type="button" class="sd-expand" aria-expanded="false">Details</button></td>
+          </tr>
+          <tr class="sd-detail" hidden>
+            <td colspan="9">
+              <div class="sd-detail-grid">
+                <div>
+                  <div class="sd-detail-label">Search result preview</div>
+                  <div class="sd-serp">
+                    <div class="sd-serp-url">{{ base }}{{ p.path }}</div>
+                    <div class="sd-serp-title">{{ p.title|default:"(no title)"|truncatechars:62 }}</div>
+                    <div class="sd-serp-desc">{{ p.description|default:"(no meta description — search engines will pick text from the page)"|truncatechars:162 }}</div>
+                  </div>
+                  <div class="sd-meta-list">
+                    <div><span>Canonical</span>{{ p.canonical|default:"—" }}</div>
+                    <div><span>Robots</span>{{ p.robots|default:"—" }}</div>
+                    <div><span>H1</span>{{ p.h1_text|default:"—" }}</div>
+                    <div><span>Images</span>{{ p.images|default:0 }} ({{ p.images_no_alt|default:0 }} without alt)</div>
+                    <div><span>Load (server)</span>{{ p.ms }} ms</div>
+                  </div>
+                  <a class="sd-btn sd-btn--small" href="/admin/core/seodata/add/?path={{ p.path|urlencode }}">Edit SEO override for this URL</a>
+                </div>
+                <div>
+                  <div class="sd-detail-label">Issues &amp; how to fix them</div>
+                  {% if p.issues %}
+                  <ul class="sd-issues">
+                    {% for i in p.issues %}
+                    <li><span class="sd-sev sd-sev--{{ i.severity }}">{{ i.severity }}</span>
+                      <strong>{{ i.check }}:</strong> {{ i.message }}<div class="sd-fix">→ {{ i.fix }}</div></li>
+                    {% endfor %}
+                  </ul>
+                  {% else %}<p class="sd-empty">No issues on this page.</p>{% endif %}
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        {% empty %}
+        <tbody><tr><td colspan="9" class="sd-empty">The sitemap has no URLs to audit.</td></tr></tbody>
+        {% endfor %}
+      </table>
+    </div>
+  </section>
+
+  <div class="sd-grid sd-grid--2">
+    <!-- Redirect health -->
+    <section class="sd-card">
+      <h2>Redirect health <span class="sd-muted">({{ redirect_count }} active)</span></h2>
+      {% if audit.redirect_problems %}
+      <ul class="sd-issues">
+        {% for r in audit.redirect_problems %}
+        <li><span class="sd-sev sd-sev--warning">redirect</span> <code>{{ r.rule }}</code><div class="sd-fix">{{ r.problem }} · <a href="/admin/core/redirect/{{ r.id }}/change/">Edit rule</a></div></li>
+        {% endfor %}
+      </ul>
+      {% else %}<p class="sd-empty">No chains, loops, unsafe destinations or redirected URLs in the sitemap.</p>{% endif %}
+      <a class="sd-btn sd-btn--small" href="/admin/core/redirect/">Manage redirects</a>
+    </section>
+
+    <!-- Overrides -->
+    <section class="sd-card">
+      <h2>SEO overrides <span class="sd-muted">({{ overrides|length }})</span></h2>
+      {% if overrides %}
+      <div class="sd-table-wrap">
+      <table class="sd-table sd-table--compact">
+        <thead><tr><th scope="col">Path</th><th scope="col">Title</th><th scope="col">Desc</th><th scope="col">Index</th><th scope="col">On page?</th></tr></thead>
+        <tbody>
+        {% for o in overrides %}
+          <tr>
+            <td><a href="/admin/core/seodata/{{ o.row.pk }}/change/">{{ o.row.path }}</a></td>
+            <td class="{% if o.title_len < thresholds.title.0 or o.title_len > 70 %}sd-warn{% endif %}">{{ o.title_len }}</td>
+            <td class="{% if o.desc_len < thresholds.desc.0 or o.desc_len > 180 %}sd-warn{% endif %}">{{ o.desc_len }}</td>
+            <td>{% if o.row.is_indexable %}index{% else %}<span class="sd-sev sd-sev--warning">noindex</span>{% endif %}</td>
+            <td>{% if not o.in_sitemap %}<span class="sd-muted">not in sitemap</span>{% elif o.applied %}<span class="sd-ok">✓ shown</span>{% else %}<span class="sd-muted" title="The page template sets its own title, so this override's title isn't what visitors and search engines see.">template wins</span>{% endif %}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      </div>
+      {% else %}<p class="sd-empty">No overrides. Pages use their automatic metadata.</p>{% endif %}
+      <a class="sd-btn sd-btn--small" href="/admin/core/seodata/">Manage overrides</a>
+    </section>
+  </div>
+</div>
+<script src="{% static 'js/seo-dashboard.js' %}?v=1" defer></script>
+{% endblock %}

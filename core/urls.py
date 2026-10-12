@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from . import views, chat_views
 
 urlpatterns = [
     # Health Check
@@ -50,7 +50,16 @@ urlpatterns = [
     path('api/pricing/', views.api_pricing, name='api_pricing'),
     path('api/workshops/', views.api_workshops, name='api_workshops'),
     path('api/blog/', views.api_blog, name='api_blog'),
-    path('api/chatbot/message/', views.api_chatbot_message, name='api_chatbot_message'),
+    # Live chat (real team members + labelled automated fallback)
+    path('api/chat/presence/', chat_views.chat_presence, name='chat_presence'),
+    path('api/chat/session/', chat_views.chat_session, name='chat_session'),
+    path('api/chat/message/', chat_views.chat_message, name='chat_message'),
+    path('api/chat/poll/', chat_views.chat_poll, name='chat_poll'),
+    path('api/chat/typing/', chat_views.chat_typing, name='chat_typing'),
+    path('api/chat/profile/', chat_views.chat_profile, name='chat_profile'),
+    path('api/chat/request-human/', chat_views.chat_request_human, name='chat_request_human'),
+    # Legacy chatbot URLs (kept so cached pages keep working)
+    path('api/chatbot/message/', chat_views.chat_message, name='api_chatbot_message'),
     path('api/chatbot/history/', views.api_chatbot_history, name='api_chatbot_history'),
     path('api/chatbot/lead/', views.api_chatbot_lead, name='api_chatbot_lead'),
 

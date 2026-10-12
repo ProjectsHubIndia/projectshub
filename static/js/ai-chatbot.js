@@ -96,7 +96,7 @@
                     </div>
 
                     <!-- Floating Toggle Button -->
-                    <button class="ai-chatbot-toggle" aria-label="Open AI Assistant" aria-expanded="false" title="Chat with ProjectsHub AI">
+                    <button type="button" class="ai-chatbot-toggle" aria-label="Open AI Assistant" aria-controls="aiChatbotWindow" aria-expanded="false" title="Chat with ProjectsHub AI">
                         <svg class="chatbot-icon chatbot-icon--chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                         </svg>
@@ -107,7 +107,7 @@
                     </button>
 
                     <!-- Main Chat Window -->
-                    <div class="ai-chatbot-window" role="dialog" aria-modal="false" aria-label="ProjectsHub AI Chat">
+                    <div class="ai-chatbot-window" id="aiChatbotWindow" role="dialog" aria-modal="false" aria-label="ProjectsHub AI Chat">
                         <div class="ai-chatbot-header">
                             <div class="ai-chatbot-header-title">
                                 <div class="ai-chatbot-avatar-circle" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#0284c7,#6366f1);display:flex;align-items:center;justify-content:center;color:#ffffff;box-shadow:0 0 12px rgba(56,189,248,0.4);">
@@ -123,13 +123,13 @@
                                     <span class="ai-chatbot-status"><span class="ai-chatbot-status-dot"></span> Senior Engineer Online</span>
                                 </div>
                             </div>
-                            <div style="display:flex;align-items:center;gap:8px;">
-                                <a href="https://wa.me/${WHATSAPP_PHONE}?text=Hi%20ProjectsHub%20Team%2C%20I%20am%20chatting%20from%20the%20website%20and%20want%20to%20connect%20with%20an%20engineer." target="_blank" rel="noopener noreferrer" class="ai-chatbot-wa-btn" title="Chat with Engineer on WhatsApp" aria-label="WhatsApp" style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:rgba(37,211,102,0.12);color:#25d366;border:1px solid rgba(37,211,102,0.25);text-decoration:none;transition:all 0.2s ease;">
+                            <div class="ai-chatbot-header-actions">
+                                <a href="https://wa.me/${WHATSAPP_PHONE}?text=Hi%20ProjectsHub%20Team%2C%20I%20am%20chatting%20from%20the%20website%20and%20want%20to%20connect%20with%20an%20engineer." target="_blank" rel="noopener noreferrer" class="ai-chatbot-wa-btn" title="Chat with Engineer on WhatsApp" aria-label="Chat with an engineer on WhatsApp">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                                         <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.062-2.18-.553-1.616-.669-2.658-2.298-2.738-2.404-.08-.107-.648-.864-.648-1.648 0-.785.412-1.171.558-1.332.146-.16.32-.201.427-.201.107 0 .213.001.306.006.1.005.234-.038.365.277.135.325.462 1.127.502 1.208.04.082.067.178.013.285-.053.107-.08.173-.16.267-.08.093-.167.208-.24.279-.08.08-.163.167-.07.327.093.16.413.682.887 1.103.61.542 1.123.71 1.283.79.16.08.254.067.348-.041.094-.108.4-.467.507-.628.107-.16.213-.134.36-.08.146.053.933.44 1.093.52.16.08.267.12.307.187.04.067.04.387-.104.792z"/>
                                     </svg>
                                 </a>
-                                <button class="ai-chatbot-close" aria-label="Close chat">
+                                <button type="button" class="ai-chatbot-close" aria-label="Close chat">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                         <line x1="18" y1="6" x2="6" y2="18"></line>
                                         <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -191,8 +191,10 @@
 
             if (this.closeBtn) {
                 this.closeBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
                     e.stopPropagation();
                     self.toggleChat(false);
+                    if (self.toggle) self.toggle.focus();
                 });
             }
 
@@ -226,6 +228,7 @@
             document.addEventListener('keydown', function (e) {
                 if (e.key === 'Escape' && self.isOpen) {
                     self.toggleChat(false);
+                    if (self.toggle) self.toggle.focus();
                 }
             });
 
@@ -268,6 +271,7 @@
             if (this.toggle) {
                 this.toggle.classList.toggle('is-active', this.isOpen);
                 this.toggle.setAttribute('aria-expanded', this.isOpen ? 'true' : 'false');
+                this.toggle.setAttribute('aria-label', this.isOpen ? 'Close AI Assistant' : 'Open AI Assistant');
             }
             document.body.classList.toggle('chatbot-open', this.isOpen);
             if (this.isOpen) {

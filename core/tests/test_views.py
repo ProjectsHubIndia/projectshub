@@ -67,7 +67,10 @@ class ViewTests(TestCase):
         self.assertContains(res, "Smart Fraud Detection")
 
     def test_project_detail_by_id(self):
+        # Numeric URLs 301 to the canonical slug URL (one indexable URL per project).
         res = self.client.get(reverse('project_detail', args=[self.project.id]))
+        self.assertRedirects(res, '/projects/smart-fraud-detection/', status_code=301)
+        res = self.client.get(res['Location'])
         self.assertEqual(res.status_code, 200)
         self.assertContains(res, "Smart Fraud Detection")
         self.assertContains(res, '"applicationCategory": "Machine Learning"')
@@ -136,9 +139,9 @@ class ViewTests(TestCase):
         self.assertContains(response, '<title>Production AI API guide | ProjectsHub Blog</title>')
         self.assertContains(response, '<meta name="description"')
         self.assertContains(response, '"@type": "BlogPosting"')
-        self.assertContains(response, '"image": "http://testserver/static/image/ai-project-ideas-students.webp"')
+        self.assertContains(response, '"image": "https://projectshub.co.in/static/image/ai-project-ideas-students.webp"')
         self.assertNotContains(response, 'Unpublished API draft')
-        self.assertEqual(response.context['seo']['canonical_url'], 'http://testserver/blog/production-ai-api-guide/')
+        self.assertEqual(response.context['seo']['canonical_url'], 'https://projectshub.co.in/blog/production-ai-api-guide/')
 
         api_response = self.client.get(reverse('api_blog'))
         api_slugs = {post['slug'] for post in api_response.json()['posts']}
@@ -169,7 +172,7 @@ class ViewTests(TestCase):
         res = self.client.get('/sitemap.xml')
         self.assertEqual(res.status_code, 200)
         self.assertEqual(res['Content-Type'], 'application/xml')
-        self.assertContains(res, 'http://testserver/projects/')
+        self.assertContains(res, 'https://projectshub.co.in/projects/')
 
         # Test custom domain via host header
         res_custom = self.client.get('/sitemap.xml', HTTP_HOST='projectshub.co.in', secure=True)
@@ -219,13 +222,13 @@ class ViewTests(TestCase):
             for element in root.findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}loc')
         }
 
-        self.assertIn('http://testserver/projects/smart-fraud-detection/', locs)
-        self.assertIn('http://testserver/blog/published-ai-guide/', locs)
-        self.assertIn(f'http://testserver{published_page.get_absolute_url()}', locs)
-        self.assertNotIn('http://testserver/blog/draft-ai-guide/', locs)
-        self.assertNotIn('http://testserver/projects/inactive-project/', locs)
-        self.assertNotIn('http://testserver/projects/unpublished-project/', locs)
-        self.assertNotIn('http://testserver/draft-page/', locs)
+        self.assertIn('https://projectshub.co.in/projects/smart-fraud-detection/', locs)
+        self.assertIn('https://projectshub.co.in/blog/published-ai-guide/', locs)
+        self.assertIn(f'https://projectshub.co.in{published_page.get_absolute_url()}', locs)
+        self.assertNotIn('https://projectshub.co.in/blog/draft-ai-guide/', locs)
+        self.assertNotIn('https://projectshub.co.in/projects/inactive-project/', locs)
+        self.assertNotIn('https://projectshub.co.in/projects/unpublished-project/', locs)
+        self.assertNotIn('https://projectshub.co.in/draft-page/', locs)
 
     def test_404_is_noindex_and_has_no_canonical_url(self):
         response = self.client.get('/page-that-does-not-exist/')
@@ -239,8 +242,8 @@ class ViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response['Content-Type'].startswith('text/plain'))
-        self.assertContains(response, 'http://testserver/projects/')
-        self.assertContains(response, 'http://testserver/blog/')
+        self.assertContains(response, 'https://projectshub.co.in/projects/')
+        self.assertContains(response, 'https://projectshub.co.in/blog/')
         self.assertContains(response, 'source of truth for current content and offerings')
 
     def test_robots_txt(self):
@@ -248,7 +251,7 @@ class ViewTests(TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(res['Content-Type'], 'text/plain')
         self.assertContains(res, 'User-agent: *')
-        self.assertContains(res, 'Sitemap: http://testserver/sitemap.xml')
+        self.assertContains(res, 'Sitemap: https://projectshub.co.in/sitemap.xml')
 
         # Test custom domain via host header
         res_custom = self.client.get('/robots.txt', HTTP_HOST='projectshub.co.in', secure=True)

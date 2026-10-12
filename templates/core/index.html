@@ -18,8 +18,7 @@ free AI tools, Django projects, final year AI projects, NLP, RAG, AI automation 
 
 
 
-{% block canonical %}{{ site_url }}/
-{% endblock %}
+{% block canonical %}{{ site_url }}/{% endblock %}
 
 
 
@@ -53,7 +52,7 @@ students and businesses. No signup needed.{% endblock %}
       "@type": "Organization",
       "name": "ProjectsHub",
       "url": "{{ site_url }}/",
-      "logo": "{{ site_url }}/static/image/logo.png",
+      "logo": "{{ site_url }}/static/image/logo/projectshub-logo-dark.png",
       "email": "{{ site_settings.primary_email|default:'support@projectshub.co.in' }}",
       "areaServed": "IN",
       "description": "AI projects, free AI tools, and custom AI development for students and businesses.",
@@ -81,12 +80,14 @@ students and businesses. No signup needed.{% endblock %}
 Hero image preload — only on homepage
 ═══════════════════════════════════════ #}
 {% block extra_preload %}
-<link rel="preload" href="{% static 'css/hero-visual.css' %}?v=6" as="style" />
+<link rel="preload" href="{% static 'css/hero-visual.css' %}?v=13" as="style" />
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js" crossorigin />
+<script src="{% static 'js/aara-robot.js' %}?v=1" defer></script>
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/hero-visual.css' %}?v=6" media="print" onload="this.media='all'" />
-<noscript><link rel="stylesheet" href="{% static 'css/hero-visual.css' %}?v=6" /></noscript>
+<link rel="stylesheet" href="{% static 'css/hero-visual.css' %}?v=13" media="print" onload="this.media='all'" />
+<noscript><link rel="stylesheet" href="{% static 'css/hero-visual.css' %}?v=13" /></noscript>
 {% endblock %}
 
 {# ═══════════════════════════════════════
@@ -157,7 +158,7 @@ CONTENT
                             <div class="hvc-blob hvc-blob--blue" aria-hidden="true"></div>
                             <div class="hvc-blob hvc-blob--purple" aria-hidden="true"></div>
 
-                            <!-- Main iframe window -->
+                            <!-- Main robot preview window -->
                             <div class="hvc-window">
                                 <!-- Fake browser chrome -->
                                 <div class="hvc-chrome">
@@ -166,12 +167,29 @@ CONTENT
                                     <span class="hvc-dot hvc-dot--green"></span>
                                     <span class="hvc-chrome__url">projectshub.co.in</span>
                                 </div>
-                                <!-- Spline robot -->
-                                <div class="hvc-iframe-wrap">
-                                    <iframe id="spline-frame"
-                                        src="https://my.spline.design/nexbotrobotcharacterconcept-8ZQLeb6vV2g0TQt5jHHsLI3O/"
-                                        title="3D Interactive AI Robot" frameborder="0" loading="lazy"
-                                        style="width:100%; height:calc(100% + 60px); border:none; background:transparent; position:relative; z-index:5; margin-bottom:-60px;"></iframe>
+                                <div class="hvc-iframe-wrap hvc-robot-shell">
+                                    <canvas id="robot-canvas" class="hvc-robot-canvas" role="button" tabindex="0" aria-label="Aara 3D robot. Hover to open her eyes or click a body part to move it and explain code."></canvas>
+                                    <aside class="hvc-robot-bubble" aria-label="Code explanation by Aara">
+                                        <div class="hvc-robot-bubble__topline">
+                                            <div class="hvc-robot-bubble__heading">
+                                                <span class="hvc-robot-bubble__status" aria-hidden="true"></span>
+                                                Aara <span class="hvc-robot-bubble__role">AI guide</span>
+                                            </div>
+                                            <span id="robot-lesson-count" class="hvc-robot-bubble__count" aria-label="Lesson 1 of 3">01 / 03</span>
+                                        </div>
+                                        <p id="robot-explanation" class="hvc-robot-bubble__text" data-index="0" aria-live="polite">
+                                            This prepares the neural network to learn using the Adam optimizer.
+                                        </p>
+                                        <pre class="hvc-robot-bubble__code"><code id="robot-code">model.compile(
+    optimizer="adam",
+    metrics=["accuracy"]
+)</code></pre>
+                                        <p id="robot-action-status" class="hvc-robot-bubble__status-text" aria-live="polite">Hover over Aara to open her eyes; click her to explore.</p>
+                                        <button id="robot-next-lesson" class="hvc-robot-bubble__button" type="button">
+                                            <span>Next lesson</span>
+                                            <span aria-hidden="true">&rarr;</span>
+                                        </button>
+                                    </aside>
                                 </div>
                             </div>
 

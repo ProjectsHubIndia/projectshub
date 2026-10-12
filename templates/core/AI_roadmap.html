@@ -2,18 +2,18 @@
 {% load static %}
 
 {# =========================================
-   SEO ? override per page
+   SEO — override per page
 ========================================= #}
-{% block title %}AI Engineer Roadmap ? ProjectsHub{% endblock %}
+{% block title %}AI Engineer Roadmap — ProjectsHub{% endblock %}
 
-{% block meta_description %}Your step-by-step guide to mastering AI Engineering ? LLMs, prompt engineering, RAG, vector databases, AI agents, MCP, safety, evaluation and more.{% endblock %}
+{% block meta_description %}Your step-by-step guide to mastering AI Engineering — LLMs, prompt engineering, RAG, vector databases, AI agents, MCP, safety, evaluation and more.{% endblock %}
 
 {% block meta_keywords %}AI engineer roadmap, learn AI engineering, LLM roadmap, RAG tutorial, AI agents, prompt engineering, vector databases, MCP, ProjectsHub{% endblock %}
 
 {% block canonical %}{{ site_url }}/ai-roadmap/{% endblock %}
 
-{% block og_title %}AI Engineer Roadmap ? ProjectsHub{% endblock %}
-{% block og_description %}Your step-by-step guide to mastering AI Engineering in 2026 ? from LLM fundamentals to agents, RAG and MCP.{% endblock %}
+{% block og_title %}AI Engineer Roadmap — ProjectsHub{% endblock %}
+{% block og_description %}Your step-by-step guide to mastering AI Engineering in 2026 — from LLM fundamentals to agents, RAG and MCP.{% endblock %}
 {% block og_url %}{{ site_url }}/ai-roadmap/{% endblock %}
 
 {% block schema %}
@@ -28,7 +28,13 @@
     "@type": "Organization",
     "name": "ProjectsHub",
     "url": "{{ site_url }}/"
-  }
+  },
+  "hasPart": [{% for chapter in chapters %}{
+    "@type": "LearningResource",
+    "position": {{ chapter.node.number }},
+    "name": "{{ chapter.node.title|escapejs }}",
+    "url": "{{ site_url }}/ai-roadmap/#{{ chapter.node.slug }}"
+  }{% if not forloop.last %},{% endif %}{% endfor %}]
 }
 </script>
 {% endblock %}
@@ -39,9 +45,7 @@
 {% block nav_ai_roadmap %}active{% endblock %}
 
 {# =========================================
-   Per-page CSS (Font Awesome + Outfit font only ?
-   ai-roadmap-style.css / ai-roadmap-responsive.css
-   are already loaded globally in base.html)
+   Per-page CSS
 ========================================= #}
 {% block extra_css %}
 <link
@@ -52,8 +56,8 @@
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
 />
-<link rel="stylesheet" href="{% static 'css/ai_roadmap.css' %}?v=8" />
-<link rel="stylesheet" href="{% static 'css/ai_roadmapresponsive.css' %}?v=8" />
+<link rel="stylesheet" href="{% static 'css/ai_roadmap.css' %}?v=9" />
+<link rel="stylesheet" href="{% static 'css/ai_roadmapresponsive.css' %}?v=9" />
 
 <style>
   html, body {
@@ -73,7 +77,6 @@
     } catch (e) {}
   })();
 </script>
-
 {% endblock %}
 
 {% block content %}
@@ -84,693 +87,127 @@
 <div class="ambient-glow glow-3"></div>
 
 <div class="header-section text-center">
-  <h1>AI Engineer <span>Roadmap</span></h1>
-  <p>Your step-by-step guide to mastering AI Engineering in 2026</p>
+  <h1>{{ roadmap.hero_title_prefix }} <span>{{ roadmap.hero_title_highlight }}</span></h1>
+  <p>{{ roadmap.hero_subtitle }}</p>
+  <div class="header-meta" role="list">
+    <span class="header-meta-item" role="listitem">
+      <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
+      {{ chapters|length }} chapter{{ chapters|length|pluralize }}
+    </span>
+    <span class="header-meta-item" role="listitem">
+      <i class="fa-solid fa-list-check" aria-hidden="true"></i>
+      {{ topic_count }} topic{{ topic_count|pluralize }}
+    </span>
+    <span class="header-meta-item" role="listitem">
+      <i class="fa-solid fa-link" aria-hidden="true"></i>
+      Curated free &amp; premium resources
+    </span>
+  </div>
+
+  {% if chapters %}
+  <div class="roadmap-toolbar">
+    <div class="roadmap-search">
+      <i class="fa-solid fa-magnifying-glass roadmap-search-icon" aria-hidden="true"></i>
+      <input
+        type="search"
+        id="roadmapSearch"
+        class="roadmap-search-input"
+        placeholder="Search {{ topic_count }} topics — RAG, agents, embeddings…"
+        aria-label="Search roadmap topics"
+        autocomplete="off"
+      />
+      <button type="button" class="roadmap-search-clear" id="roadmapSearchClear" aria-label="Clear search" hidden>
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+    </div>
+    <p class="roadmap-search-count" id="roadmapSearchCount" role="status" aria-live="polite"></p>
+
+    <div class="roadmap-progress">
+      <div class="roadmap-progress-head">
+        <span class="roadmap-progress-label">
+          <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+          <strong id="roadmapDoneCount">0</strong> of <span id="roadmapDoneTotal">{{ topic_count }}</span> done
+        </span>
+        <span class="roadmap-progress-pct" id="roadmapDonePct">0%</span>
+      </div>
+      <div
+        class="roadmap-progress-meter"
+        role="progressbar"
+        aria-label="Topics completed"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="0"
+      >
+        <span class="roadmap-progress-bar" id="roadmapDoneBar"></span>
+      </div>
+      <button type="button" class="roadmap-progress-reset" id="roadmapResetProgress">Reset progress</button>
+    </div>
+  </div>
+  {% endif %}
 </div>
 
 <!-- Layout container: Sidebar + Timeline -->
 <div class="roadmap-layout">
-  <!-- Sidebar for Dynamic Stepper -->
+  {% if roadmap.show_stepper %}
+  <!-- Sidebar stepper (populated by JS from the rendered timeline) -->
   <div class="sidebar-wrapper">
-    <div id="stepperContainer" class="sticky-stepper">
+    <nav id="stepperContainer" class="sticky-stepper" aria-label="Roadmap chapters">
       <!-- Javascript will populate this -->
-    </div>
+    </nav>
   </div>
+  {% endif %}
 
   <!-- Main Timeline -->
   <div class="timeline-wrapper">
-    <!-- Progress Percentage Badge -->
+    {% if roadmap.show_progress_badge %}
     <div class="timeline-progress-badge" id="timelineProgressBadge">
       <div class="badge-inner" id="timelineProgressText">0%</div>
     </div>
+    {% endif %}
+
     <div class="timeline">
-      <!-- Node 1 -->
-      <div class="timeline-item">
-        <div class="timeline-icon"><i class="fa-solid fa-play"></i></div>
+      {% for chapter in chapters %}
+      <div class="timeline-item" id="{{ chapter.node.slug }}">
+        <div class="timeline-icon"><i class="{{ chapter.node.icon }}" aria-hidden="true"></i></div>
         <div class="connecting-line"></div>
         <div class="timeline-content">
-          <h2>1. Introduction</h2>
+          <h2>{{ chapter.node.number }}. {{ chapter.node.title }}</h2>
+
+          {% if chapter.direct_topics %}
           <div class="tags-container">
-            <span class="tag" onclick="openDrawer('what_is_ai_eng')"
-              >What is an AI Engineer?</span
-            >
-            <span class="tag" onclick="openDrawer('roles_resps')"
-              >Roles and Responsibilities</span
-            >
-            <span class="tag" onclick="openDrawer('impact_product')"
-              >Impact on Product Development</span
-            >
-            <span class="tag" onclick="openDrawer('ai_vs_ml')"
-              >AI Engineer vs ML Engineer</span
-            >
+            {% for topic in chapter.direct_topics %}
+            <button type="button" class="tag" data-topic="{{ topic.key }}">{{ topic.label }}</button>
+            {% endfor %}
           </div>
+          {% endif %}
+
+          {% for group in chapter.groups %}
+            {% if group.topics %}
+            <div class="sub-category">
+              <h3>{{ group.title }}</h3>
+              <div class="tags-container">
+                {% for topic in group.topics %}
+                <button type="button" class="tag" data-topic="{{ topic.key }}">{{ topic.label }}</button>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+          {% endfor %}
         </div>
       </div>
-
-      <!-- Node 2 -->
-      <div class="timeline-item">
-        <div class="timeline-icon"><i class="fa-solid fa-brain"></i></div>
-        <div class="connecting-line"></div>
-        <div class="timeline-content">
-          <h2>2. Working With LLMs</h2>
-          <div class="tags-container">
-            <span class="tag" onclick="openDrawer('how_llm_work')"
-              >How LLMs Work</span
-            >
-          </div>
-
-          <div class="sub-category">
-            <h3>Core LLM Elements</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('tokens')">Tokens</span>
-              <span class="tag" onclick="openDrawer('context')"
-                >Context</span
-              >
-              <span class="tag" onclick="openDrawer('sampling_params')"
-                >Sampling Parameters</span
-              >
-              <span class="tag" onclick="openDrawer('temperature')"
-                >Temperature</span
-              >
-              <span class="tag" onclick="openDrawer('top_k')">Top-K</span>
-              <span class="tag" onclick="openDrawer('top_p')">Top-P</span>
-              <span class="tag" onclick="openDrawer('repetition_penalties')"
-                >Repetition Penalties</span
-              >
-            </div>
-          </div>
-
-          <div class="sub-category">
-            <h3>Common Terminology</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('ai_vs_agi')"
-                >AI vs AGI</span
-              >
-              <span class="tag" onclick="openDrawer('llm')"
-                >Large Language Model (LLM)</span
-              >
-              <span class="tag" onclick="openDrawer('embeddings_term')"
-                >Embeddings</span
-              >
-              <span class="tag" onclick="openDrawer('training_term')"
-                >Training</span
-              >
-              <span class="tag" onclick="openDrawer('inference_term')"
-                >Inference</span
-              >
-              <span class="tag" onclick="openDrawer('vector_db_term')"
-                >Vector DBs</span
-              >
-              <span class="tag" onclick="openDrawer('ai_agents_term')"
-                >AI Agents</span
-              >
-              <span class="tag" onclick="openDrawer('rag_term')">RAG</span>
-              <span class="tag" onclick="openDrawer('fine_tuning_term')"
-                >Fine-tuning</span
-              >
-            </div>
-          </div>
-        </div>
+      {% empty %}
+      <div class="roadmap-empty">
+        <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+        <h2>The roadmap is being prepared</h2>
+        <p>No chapters are published yet. Add them under <strong>Roadmap Chapters</strong> in the admin.</p>
       </div>
-
-      <!-- Node 3 -->
-      <div class="timeline-item">
-        <div class="timeline-icon">
-          <i class="fa-solid fa-wand-magic-sparkles"></i>
-        </div>
-        <div class="connecting-line"></div>
-        <div class="timeline-content">
-          <h2>3. Prompt vs Context Engineering</h2>
-
-          <div class="sub-category">
-            <h3>Prompt Engineering</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('zero_shot')"
-                >Zero-Shot</span
-              >
-              <span class="tag" onclick="openDrawer('few_shot_adv')"
-                >Few-Shot</span
-              >
-              <span class="tag" onclick="openDrawer('react_prompt')"
-                >ReAct</span
-              >
-              <span class="tag" onclick="openDrawer('cot_adv')">CoT</span>
-              <span class="tag" onclick="openDrawer('input_format')"
-                >Input Format</span
-              >
-              <span class="tag" onclick="openDrawer('func_calling_adv')"
-                >Function Calling</span
-              >
-              <span class="tag" onclick="openDrawer('prompt_caching')"
-                >Prompt Caching</span
-              >
-              <span class="tag" onclick="openDrawer('streaming')"
-                >Streaming Responses</span
-              >
-              <span class="tag" onclick="openDrawer('system_prompting')"
-                >System Prompting</span
-              >
-              <span class="tag" onclick="openDrawer('role_behavior')"
-                >Role & Behavior</span
-              >
-              <span class="tag" onclick="openDrawer('context_constraints')"
-                >Context & Constraints</span
-              >
-              <span class="tag" onclick="openDrawer('struct_output_adv')"
-                >Structured Output</span
-              >
-            </div>
-          </div>
-
-          <div class="sub-category">
-            <h3>Context Engineering</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('ext_memory')"
-                >External Memory</span
-              >
-              <span class="tag" onclick="openDrawer('rag_filters')"
-                >RAG and Dynamic Filters</span
-              >
-              <span class="tag" onclick="openDrawer('context_compaction')"
-                >Context Compaction</span
-              >
-              <span class="tag" onclick="openDrawer('context_isolation')"
-                >Context Isolation</span
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Node 4 -->
-      <div class="timeline-item">
-        <div class="timeline-icon">
-          <i class="fa-solid fa-microchip"></i>
-        </div>
-        <div class="connecting-line"></div>
-        <div class="timeline-content">
-          <h2>4. AI Models</h2>
-
-          <div class="sub-category">
-            <h3>Type of Models</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('pre_trained')"
-                >Pre-trained Models</span
-              >
-              <span class="tag" onclick="openDrawer('closed_vs_open')"
-                >Closed vs Open Source</span
-              >
-              <span class="tag" onclick="openDrawer('self_hosted')"
-                >Self-Hosted Models</span
-              >
-            </div>
-          </div>
-
-          <div class="sub-category">
-            <h3>Choosing the Right Model</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('closed_models')"
-                >Closed Models (Claude, Gemini, OpenAI)</span
-              >
-              <span class="tag" onclick="openDrawer('open_models')"
-                >Open Source (Llama, DeepSeek, Qwen)</span
-              >
-            </div>
-          </div>
-
-          <div class="sub-category">
-            <h3>Hugging Face</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('hf_tasks')"
-                >Hugging Face Tasks</span
-              >
-              <span class="tag" onclick="openDrawer('hf_hub')"
-                >Hugging Face Hub</span
-              >
-              <span class="tag" onclick="openDrawer('transformers_js')"
-                >Transformers.js</span
-              >
-            </div>
-          </div>
-
-          <div class="sub-category">
-            <h3>Local & Platforms</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('ollama')">Ollama</span>
-              <span class="tag" onclick="openDrawer('lm_studio')"
-                >LM Studio</span
-              >
-              <span class="tag" onclick="openDrawer('openrouter')"
-                >OpenRouter</span
-              >
-            </div>
-          </div>
-
-          <div class="sub-category">
-            <h3>APIs & SDKs</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('openai_api')"
-                >OpenAI Response API</span
-              >
-              <span class="tag" onclick="openDrawer('claude_api')"
-                >Claude Messages API</span
-              >
-              <span class="tag" onclick="openDrawer('gemini_api')"
-                >Google Gemini API</span
-              >
-              <span class="tag" onclick="openDrawer('hf_sdk')"
-                >Hugging Face Inference SDK</span
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Node 5 -->
-      <div class="timeline-item">
-        <div class="timeline-icon">
-          <i class="fa-solid fa-project-diagram"></i>
-        </div>
-        <div class="connecting-line"></div>
-        <div class="timeline-content">
-          <h2>5. Embeddings & Vector Databases</h2>
-
-          <div class="sub-category">
-            <h3>What are Embeddings</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('semantic_search')"
-                >Semantic Search</span
-              >
-              <span class="tag" onclick="openDrawer('data_classification')"
-                >Data Classification</span
-              >
-              <span class="tag" onclick="openDrawer('recommendation')"
-                >Recommendation Systems</span
-              >
-              <span class="tag" onclick="openDrawer('anomaly')"
-                >Anomaly Detection</span
-              >
-            </div>
-          </div>
-
-          <div class="sub-category">
-            <h3>Embedding Models</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('prop_embeddings')"
-                >Proprietary (OpenAI, Gemini, Cohere)</span
-              >
-              <span class="tag" onclick="openDrawer('open_embeddings')"
-                >Open Source (Sentence Transformers, Jina)</span
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Node 6 -->
-      <div class="timeline-item">
-        <div class="timeline-icon">
-          <i class="fa-solid fa-database"></i>
-        </div>
-        <div class="connecting-line"></div>
-        <div class="timeline-content">
-          <h2>6. Vector Databases</h2>
-
-          <div class="sub-category">
-            <h3>Popular Vector DBs</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('chroma')">Chroma</span>
-              <span class="tag" onclick="openDrawer('pinecone')"
-                >Pinecone</span
-              >
-              <span class="tag" onclick="openDrawer('weaviate')"
-                >Weaviate</span
-              >
-              <span class="tag" onclick="openDrawer('faiss')">FAISS</span>
-              <span class="tag" onclick="openDrawer('qdrant')">Qdrant</span>
-              <span class="tag" onclick="openDrawer('supabase_pgvector')"
-                >Supabase (pgvector)</span
-              >
-            </div>
-          </div>
-
-          <div class="sub-category">
-            <h3>Implementing Vector Search</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('indexing')"
-                >Indexing Embeddings</span
-              >
-              <span class="tag" onclick="openDrawer('perf_sim_search')"
-                >Performing Similarity Search</span
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Node 7 -->
-      <div class="timeline-item">
-        <div class="timeline-icon">
-          <i class="fa-solid fa-magnifying-glass-chart"></i>
-        </div>
-        <div class="connecting-line"></div>
-        <div class="timeline-content">
-          <h2>7. Retrieval Augmented Generation (RAG)</h2>
-
-          <div class="sub-category">
-            <h3>What are RAGs?</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('rag_usecases')"
-                >RAG Usecases</span
-              >
-              <span class="tag" onclick="openDrawer('rag_vs_fine')"
-                >RAG vs Fine-tuning</span
-              >
-            </div>
-          </div>
-
-          <div class="sub-category">
-            <h3>Implementing RAG</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('chunking')"
-                >Chunking</span
-              >
-              <span class="tag" onclick="openDrawer('embedding_rag')"
-                >Embedding</span
-              >
-              <span class="tag" onclick="openDrawer('vector_db_rag')"
-                >Vector Database</span
-              >
-              <span class="tag" onclick="openDrawer('retrieval_process')"
-                >Retrieval Process</span
-              >
-              <span class="tag" onclick="openDrawer('generation')"
-                >Generation</span
-              >
-            </div>
-          </div>
-
-          <div class="sub-category">
-            <h3>Ways of Implementing</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('sdks_direct')"
-                >Using SDKs Directly</span
-              >
-              <span class="tag" onclick="openDrawer('langchain')"
-                >Langchain</span
-              >
-              <span class="tag" onclick="openDrawer('llama_index')"
-                >Llama Index</span
-              >
-              <span class="tag" onclick="openDrawer('haystack')"
-                >Haystack</span
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Node 8 -->
-      <div class="timeline-item">
-        <div class="timeline-icon"><i class="fa-solid fa-robot"></i></div>
-        <div class="connecting-line"></div>
-        <div class="timeline-content">
-          <h2>8. AI Agents</h2>
-
-          <div class="sub-category">
-            <h3>Concepts</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('agents_usecases')"
-                >Agents Usecases</span
-              >
-              <span class="tag" onclick="openDrawer('react_agents')"
-                >ReAct Prompting</span
-              >
-              <span class="tag" onclick="openDrawer('tools_func')"
-                >Tools & Function Calling</span
-              >
-              <span class="tag" onclick="openDrawer('multi_agents')"
-                >Multi-agents</span
-              >
-            </div>
-          </div>
-
-          <div class="sub-category">
-            <h3>Building AI Agents</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('custom_agents')"
-                >Custom Agents (from scratch)</span
-              >
-              <span class="tag" onclick="openDrawer('crewai')">CrewAI</span>
-              <span class="tag" onclick="openDrawer('langgraph')"
-                >LangGraph</span
-              >
-              <span class="tag" onclick="openDrawer('autogen')"
-                >AutoGen</span
-              >
-              <span class="tag" onclick="openDrawer('openai_swarm')"
-                >OpenAI Swarm</span
-              >
-            </div>
-          </div>
-
-          <div class="sub-category">
-            <h3>Cloud & Frameworks</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('openai_agentkit')"
-                >OpenAI AgentKit</span
-              >
-              <span class="tag" onclick="openDrawer('claude_agent_sdk')"
-                >Claude Agent SDK</span
-              >
-              <span class="tag" onclick="openDrawer('vertex_agent')"
-                >Vertex AI Agent Builder</span
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Node 9 -->
-      <div class="timeline-item">
-        <div class="timeline-icon">
-          <i class="fa-solid fa-network-wired"></i>
-        </div>
-        <div class="connecting-line"></div>
-        <div class="timeline-content">
-          <h2>9. Model Context Protocol (MCP)</h2>
-
-          <div class="sub-category">
-            <h3>Core Components</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('mcp_host')"
-                >MCP Host & Client</span
-              >
-              <span class="tag" onclick="openDrawer('mcp_server')"
-                >MCP Server</span
-              >
-              <span class="tag" onclick="openDrawer('mcp_data')"
-                >Data & Transport Layer</span
-              >
-            </div>
-          </div>
-
-          <div class="sub-category">
-            <h3>Developing with MCP</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('build_mcp_server')"
-                >Building an MCP Server</span
-              >
-              <span class="tag" onclick="openDrawer('build_mcp_client')"
-                >Building an MCP Client</span
-              >
-              <span class="tag" onclick="openDrawer('connect_mcp')"
-                >Connecting (Local & Remote)</span
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Node 10 -->
-      <div class="timeline-item">
-        <div class="timeline-icon">
-          <i class="fa-solid fa-shield-halved"></i>
-        </div>
-        <div class="connecting-line"></div>
-        <div class="timeline-content">
-          <h2>10. AI Safety and Ethics</h2>
-
-          <div class="sub-category">
-            <h3>Safety Issues</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('prompt_injection')"
-                >Prompt Injection Attacks</span
-              >
-              <span class="tag" onclick="openDrawer('sec_privacy')"
-                >Security and Privacy</span
-              >
-              <span class="tag" onclick="openDrawer('bias_fairness')"
-                >Bias and Fairness</span
-              >
-            </div>
-          </div>
-
-          <div class="sub-category">
-            <h3>Best Practices</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('content_mod')"
-                >Content Moderation APIs</span
-              >
-              <span class="tag" onclick="openDrawer('adversarial')"
-                >Adversarial Testing</span
-              >
-              <span class="tag" onclick="openDrawer('robust_prompting')"
-                >Robust Prompting</span
-              >
-              <span class="tag" onclick="openDrawer('constraining')"
-                >Constraining Outputs</span
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Node 11 -->
-      <div class="timeline-item">
-        <div class="timeline-icon">
-          <i class="fa-solid fa-chart-line"></i>
-        </div>
-        <div class="connecting-line"></div>
-        <div class="timeline-content">
-          <h2>11. Evaluation & Observability</h2>
-
-          <div class="sub-category">
-            <h3>Observability Tools</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('tracing')"
-                >Tracing & Logging</span
-              >
-              <span class="tag" onclick="openDrawer('cost_monitor')"
-                >Cost / Latency Monitoring</span
-              >
-              <span class="tag" onclick="openDrawer('prod_monitor')"
-                >Production Monitoring</span
-              >
-            </div>
-          </div>
-
-          <div class="sub-category">
-            <h3>Evaluation (Evals)</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('llm_as_judge')"
-                >LLM-as-a-judge</span
-              >
-              <span class="tag" onclick="openDrawer('eval_metrics')"
-                >Evaluation Metrics</span
-              >
-              <span class="tag" onclick="openDrawer('prompt_versioning')"
-                >Prompt Versioning</span
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Node 12 -->
-      <div class="timeline-item">
-        <div class="timeline-icon"><i class="fa-solid fa-icons"></i></div>
-        <div class="connecting-line"></div>
-        <div class="timeline-content">
-          <h2>12. Multimodal AI</h2>
-          <div class="sub-category">
-            <h3>Multimodal Concepts</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('multi_ai')"
-                >Multimodal AI</span
-              >
-              <span class="tag" onclick="openDrawer('multi_usecases')"
-                >Multimodal AI Use Cases</span
-              >
-              <span class="tag" onclick="openDrawer('image_understanding')"
-                >Image Understanding</span
-              >
-              <span class="tag" onclick="openDrawer('image_generation')"
-                >Image Generation</span
-              >
-              <span class="tag" onclick="openDrawer('video_understanding')"
-                >Video Understanding</span
-              >
-              <span class="tag" onclick="openDrawer('audio_processing')"
-                >Audio Processing</span
-              >
-              <span class="tag" onclick="openDrawer('speech_to_text')"
-                >Speech-to-Text</span
-              >
-              <span class="tag" onclick="openDrawer('text_to_speech')"
-                >Text-to-Speech</span
-              >
-            </div>
-          </div>
-          <div class="sub-category">
-            <h3>APIs and Frameworks</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('vision_api')"
-                >OpenAI Vision API</span
-              >
-              <span class="tag" onclick="openDrawer('dalle_api')"
-                >DALL-E API</span
-              >
-              <span class="tag" onclick="openDrawer('nano_banana')"
-                >Nano Banana API</span
-              >
-              <span class="tag" onclick="openDrawer('whisper_api')"
-                >Whisper API</span
-              >
-              <span class="tag" onclick="openDrawer('langchain_multi')"
-                >LangChain for Multimodal Apps</span
-              >
-              <span class="tag" onclick="openDrawer('llamaindex_multi')"
-                >LlamaIndex for Multimodal Apps</span
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Node 13 -->
-      <div class="timeline-item">
-        <div class="timeline-icon">
-          <i class="fa-solid fa-laptop-code"></i>
-        </div>
-        <div class="connecting-line"></div>
-        <div class="timeline-content">
-          <h2>13. Development Tools</h2>
-          <div class="sub-category">
-            <h3>AI Code Editors</h3>
-            <div class="tags-container">
-              <span class="tag" onclick="openDrawer('dev_tools_intro')"
-                >Development Tools</span
-              >
-              <span class="tag" onclick="openDrawer('cursor')">Cursor</span>
-              <span class="tag" onclick="openDrawer('windsurf')"
-                >Windsurf</span
-              >
-              <span class="tag" onclick="openDrawer('claude_code')"
-                >Claude Code</span
-              >
-              <span class="tag" onclick="openDrawer('codex')">Codex</span>
-              <span class="tag" onclick="openDrawer('replit')">Replit</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      {% endfor %}
     </div>
   </div>
 </div>
 
 <!-- Mobile Screen Border Trace (mobile only) -->
-<div id="mobileBorderTrace" class="mobile-border-trace">
+<div id="mobileBorderTrace" class="mobile-border-trace" aria-hidden="true">
   <div class="border-line border-top" id="borderTop"></div>
   <div class="border-line border-right" id="borderRight"></div>
   <div class="border-line border-bottom" id="borderBottom"></div>
@@ -780,61 +217,71 @@
 {% endblock content %}
 
 {# =========================================
-   Modal rendered outside <main> & <footer>
+   Drawer rendered outside <main> & <footer>
 ========================================= #}
 {% block idea_modal %}
-<!-- Right-Side Roadmap Slide-Over Drawer -->
-<div class="roadmap-modal-overlay" id="roadmapModalOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+<div
+  class="roadmap-modal-overlay roadmap-modal--{{ roadmap.drawer_side }}"
+  id="roadmapModalOverlay"
+  role="dialog"
+  aria-modal="true"
+  aria-hidden="true"
+  aria-labelledby="modalTitle"
+>
   <div class="roadmap-modal-backdrop" id="roadmapModalBackdrop"></div>
   <div class="roadmap-modal-dialog" id="roadmapModalDialog">
     <div class="roadmap-modal-header">
       <div class="roadmap-modal-header-info">
-        <span class="roadmap-modal-badge" id="modalBadge"><i class="fa-solid fa-compass"></i> Topic Deep Dive</span>
-        <h3 class="roadmap-modal-title" id="modalTitle">What is an AI Engineer?</h3>
+        <span class="roadmap-modal-badge" id="modalBadge">
+          <i class="fa-solid fa-compass" aria-hidden="true"></i>
+          <span id="modalBadgeText">{{ roadmap.drawer_badge_label }}</span>
+        </span>
+        <h3 class="roadmap-modal-title" id="modalTitle"></h3>
       </div>
       <button type="button" class="roadmap-modal-close" id="modalCloseBtn" aria-label="Close pop-up">
-        <i class="fa-solid fa-xmark"></i>
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
       </button>
     </div>
-    
-    <div class="roadmap-modal-body">
-      <!-- Topic Description -->
+
+    <div class="roadmap-modal-body" id="roadmapModalBody">
       <div class="roadmap-modal-desc" id="modalDesc"></div>
 
-      <!-- Topic Image Banner -->
-      <div class="roadmap-modal-image-wrap" id="modalImageWrap" style="display: none;">
-        <img id="modalImage" src="" alt="" class="roadmap-modal-image" />
+      <div class="roadmap-modal-image-wrap" id="modalImageWrap" hidden>
+        <img id="modalImage" src="" alt="" class="roadmap-modal-image" loading="lazy" />
         <div class="roadmap-modal-image-overlay">
           <span class="roadmap-modal-image-label" id="modalImageLabel"></span>
         </div>
       </div>
 
-      <!-- Free Resources -->
       <div class="resource-card free" id="freeSection">
-        <h4><i class="fa-solid fa-heart"></i> Free Resources</h4>
+        <h4><i class="fa-solid fa-heart" aria-hidden="true"></i> {{ roadmap.free_section_label }}</h4>
         <div id="freeList"></div>
       </div>
 
-      <!-- AI Tutor -->
       <div class="resource-card tutor" id="tutorSection">
-        <h4><i class="fa-solid fa-bolt"></i> AI Tutor</h4>
+        <h4><i class="fa-solid fa-bolt" aria-hidden="true"></i> {{ roadmap.tutor_section_label }}</h4>
         <div id="tutorList"></div>
       </div>
 
-      <!-- Premium Resources -->
       <div class="resource-card premium" id="premiumSection">
-        <h4>
-          <i class="fa-solid fa-star"></i> Premium Resources
-          <i class="fa-solid fa-circle-info fa-xs text-muted ms-1"></i>
-        </h4>
+        <h4><i class="fa-solid fa-star" aria-hidden="true"></i> {{ roadmap.premium_section_label }}</h4>
         <div id="premiumList"></div>
       </div>
     </div>
 
     <div class="roadmap-modal-footer">
-      <button type="button" class="btn-modal-secondary" id="modalFooterClose">Close</button>
-      <a href="/projects/?category=ml" class="btn-modal-primary">
-        <i class="fa-solid fa-rocket"></i> Explore AI Projects
+      <button type="button" class="btn-modal-done" id="modalDoneToggle" aria-pressed="false">
+        <i class="fa-regular fa-circle-check" aria-hidden="true"></i>
+        <span class="done-label">Mark as done</span>
+      </button>
+      <button type="button" class="btn-modal-secondary" id="modalFooterClose">{{ roadmap.close_label }}</button>
+      <a
+        href="{{ roadmap.cta_url }}"
+        class="btn-modal-primary"
+        id="modalCtaBtn"
+        {% if roadmap.cta_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+      >
+        {% if roadmap.cta_icon %}<i class="{{ roadmap.cta_icon }}" aria-hidden="true"></i> {% endif %}{{ roadmap.cta_label }}
       </a>
     </div>
   </div>
@@ -842,9 +289,10 @@
 {% endblock idea_modal %}
 
 {# =========================================
-   Per-page JS — Bootstrap JS is already
-   loaded globally in base.html
+   Per-page JS
 ========================================= #}
 {% block extra_js %}
-<script src="{% static 'js/ai_roadmap.js' %}?v=8" defer></script>
+{{ roadmap_topics_json|json_script:"roadmapTopicsData" }}
+{{ roadmap_config_json|json_script:"roadmapConfigData" }}
+<script src="{% static 'js/ai_roadmap.js' %}?v=9" defer></script>
 {% endblock %}

@@ -1293,6 +1293,60 @@ class Redirect(models.Model):
     def __str__(self):
         return f"{self.old_path} -> {self.new_path} ({self.status_code})"
 
+    ALLOWED_ABSOLUTE_PREFIXES = (
+        'https://projectshub.co.in', 'http://projectshub.co.in', 'https://www.projectshub.co.in',
+    )
+
+    @staticmethod
+    def _norm(path):
+        path = (path or '').strip()
+        for prefix in Redirect.ALLOWED_ABSOLUTE_PREFIXES:
+            if path.startswith(prefix):
+                path = path[len(prefix):] or '/'
+                break
+        path = path.split('?', 1)[0].split('#', 1)[0]
+        return path if path.endswith('/') else path + '/'
+
+    def clean(self):
+        """Reject open redirects, self-redirects, chains and loops before they go live."""
+        from django.core.exceptions import ValidationError
+        errors = {}
+        old = (self.old_path or '').strip()
+        new = (self.new_path or '').strip()
+        if not old.startswith('/') or old.startswith('//'):
+            errors['old_path'] = 'Old path must be a site-relative path starting with a single "/".'
+        if new.startswith('//') or not (new.startswith('/') or new.startswith(self.ALLOWED_ABSOLUTE_PREFIXES)):
+            errors['new_path'] = 'Destination must be a site-relative path (e.g. /projects/) or a projectshub.co.in URL.'
+        if not errors:
+            if self._norm(old) == self._norm(new):
+                errors['new_path'] = 'A URL cannot redirect to itself.'
+            elif self.is_active:
+                active = Redirect.objects.filter(is_active=True).exclude(pk=self.pk)
+                rules = {self._norm(r.old_path): self._norm(r.new_path) for r in active}
+                rules[self._norm(old)] = self._norm(new)
+                seen = [self._norm(old)]
+                cur = self._norm(new)
+                while cur in rules:
+                    if cur in seen:
+                        errors['new_path'] = 'This rule creates a redirect loop: ' + ' -> '.join(seen + [cur])
+                        break
+                    seen.append(cur)
+                    cur = rules[cur]
+                else:
+                    incoming = [o for o, n in rules.items() if n == self._norm(old) and o != self._norm(old)]
+                    if incoming:
+                        errors['old_path'] = (
+                            'Existing redirect(s) already point to this path (' + ', '.join(incoming) +
+                            '); update them to the final destination first to avoid a chain.'
+                        )
+                    elif len(seen) > 1:
+                        errors['new_path'] = (
+                            'This creates a redirect chain (' + ' -> '.join(seen + [cur]) +
+                            '). Point it directly at the final destination: ' + cur
+                        )
+        if errors:
+            raise ValidationError(errors)
+
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # 12. AI CHATBOT DATA & CONVERSATION TELEMETRY
@@ -1319,6 +1373,28 @@ class ChatbotConversation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    # ── Live (human) chat state ───────────────────────────────────────────────
+    MODE_CHOICES = [
+        ('bot', 'Automated assistant'),
+        ('waiting', 'Waiting for a team member'),
+        ('human', 'Chatting with a team member'),
+    ]
+    visitor_token = models.CharField(max_length=64, blank=True, default='', db_index=True,
+                                     help_text="Secret issued to the visitor's browser; required to read or post")
+    mode = models.CharField(max_length=10, choices=MODE_CHOICES, default='bot', db_index=True)
+    assigned_agent = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL,
+                                       related_name='chat_conversations')
+    waiting_since = models.DateTimeField(null=True, blank=True)
+    followup_prompted = models.BooleanField(default=False)
+    last_message_at = models.DateTimeField(null=True, blank=True, db_index=True)
+    visitor_last_seen = models.DateTimeField(null=True, blank=True)
+    visitor_typing_until = models.DateTimeField(null=True, blank=True)
+    agent_typing_until = models.DateTimeField(null=True, blank=True)
+    visitor_last_read_id = models.PositiveIntegerField(default=0)
+    agent_last_read_id = models.PositiveIntegerField(default=0)
+    team_notified_at = models.DateTimeField(null=True, blank=True)
+    visitor_emailed_at = models.DateTimeField(null=True, blank=True)
+
     class Meta:
         ordering = ['-updated_at']
         verbose_name = 'Chatbot Conversation'
@@ -1334,12 +1410,17 @@ class ChatbotMessage(models.Model):
         ('user', 'Visitor / User'),
         ('bot', 'AI Chatbot Assistant'),
         ('agent', 'Staff Agent'),
+        ('system', 'System notice'),
     ]
 
     conversation = models.ForeignKey(ChatbotConversation, on_delete=models.CASCADE, related_name='messages')
     sender = models.CharField(max_length=10, choices=SENDER_CHOICES, default='user')
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+    agent = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL,
+                              related_name='chat_messages', help_text="Team member who wrote an agent message")
+    client_id = models.CharField(max_length=64, blank=True, default='',
+                                 help_text="Browser-generated id used to de-duplicate retried sends")
 
     class Meta:
         ordering = ['timestamp']
@@ -1348,6 +1429,37 @@ class ChatbotMessage(models.Model):
 
     def __str__(self):
         return f"[{self.sender.upper()}] {self.message[:60]}"
+
+
+class ChatAgentStatus(models.Model):
+    """Real availability of a team member for live chat (driven by the admin Live Chat inbox)."""
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='chat_status')
+    display_name = models.CharField(max_length=60, blank=True, default='',
+                                    help_text="First name shown to visitors, e.g. 'Raj'")
+    is_available = models.BooleanField(default=False, help_text="Agent has switched themselves to Available")
+    last_heartbeat = models.DateTimeField(null=True, blank=True)
+
+    ONLINE_WINDOW_SECONDS = 90
+
+    class Meta:
+        verbose_name = 'Live Chat Agent'
+        verbose_name_plural = 'Live Chat Agents'
+
+    def __str__(self):
+        return f"{self.public_name} ({'available' if self.is_online else 'away'})"
+
+    @property
+    def public_name(self):
+        return (self.display_name or self.user.first_name or self.user.get_username()).strip()
+
+    @property
+    def is_online(self):
+        from django.utils import timezone
+        from datetime import timedelta
+        return bool(
+            self.is_available and self.last_heartbeat and
+            self.last_heartbeat >= timezone.now() - timedelta(seconds=self.ONLINE_WINDOW_SECONDS)
+        )
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -1463,3 +1575,238 @@ class Page(models.Model):
             Page.objects.exclude(pk=self.pk).filter(is_front_page=True).update(is_front_page=False)
         super().save(*args, **kwargs)
 
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 15. AI ENGINEER ROADMAP
+# ═══════════════════════════════════════════════════════════════════════════════
+
+class RoadmapSettings(models.Model):
+    """Editable copy, CTA targets and layout switches for the /ai-roadmap/ page."""
+    DRAWER_SIDE_CHOICES = [
+        ('left', 'Left side'),
+        ('right', 'Right side'),
+    ]
+
+    # Hero
+    hero_title_prefix = models.CharField(max_length=120, default='AI Engineer')
+    hero_title_highlight = models.CharField(
+        max_length=120, default='Roadmap',
+        help_text='Rendered in the accent colour after the prefix.'
+    )
+    hero_subtitle = models.CharField(
+        max_length=255,
+        default='Your step-by-step guide to mastering AI Engineering in 2026'
+    )
+
+    # Topic drawer
+    drawer_side = models.CharField(
+        max_length=10, choices=DRAWER_SIDE_CHOICES, default='left',
+        help_text='Which edge the topic pop-up slides in from.'
+    )
+    drawer_badge_label = models.CharField(
+        max_length=80, default='AI Engineering Deep Dive',
+        help_text='Fallback badge text when a topic has no parent chapter heading.'
+    )
+    free_section_label = models.CharField(max_length=60, default='Free Resources')
+    tutor_section_label = models.CharField(max_length=60, default='AI Tutor')
+    premium_section_label = models.CharField(max_length=60, default='Premium Resources')
+
+    # Drawer footer CTA (the "Explore AI Projects" button)
+    cta_label = models.CharField(max_length=80, default='Explore AI Projects')
+    cta_url = models.CharField(
+        max_length=255, default='/projects/',
+        help_text='Where the drawer footer CTA points.'
+    )
+    cta_icon = models.CharField(max_length=60, default='fa-solid fa-rocket', blank=True)
+    cta_new_tab = models.BooleanField(default=False)
+    close_label = models.CharField(max_length=60, default='Close')
+
+    # Targets used when a topic has no resources of its own
+    projects_url = models.CharField(
+        max_length=255, default='/projects/',
+        help_text='Used by auto-generated "Premium" project resources.'
+    )
+    workshop_url = models.CharField(
+        max_length=255, default='/workshop/',
+        help_text='Used by auto-generated "Premium" mentorship resources.'
+    )
+
+    # Layout switches
+    show_stepper = models.BooleanField(default=True, verbose_name='Show sidebar stepper')
+    show_progress_badge = models.BooleanField(default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'AI Roadmap Settings'
+        verbose_name_plural = 'AI Roadmap Settings'
+
+    def __str__(self):
+        return 'AI Roadmap Settings'
+
+    @classmethod
+    def get_settings(cls):
+        obj, _ = cls.objects.get_or_create(id=1)
+        return obj
+
+
+class RoadmapNode(models.Model):
+    """One numbered chapter on the roadmap timeline."""
+    number = models.PositiveIntegerField(
+        help_text='Shown before the title, e.g. "1." — also drives the sidebar stepper.'
+    )
+    title = models.CharField(max_length=160)
+    slug = models.SlugField(max_length=180, unique=True, blank=True)
+    icon = models.CharField(
+        max_length=60, default='fa-solid fa-circle-dot',
+        help_text='Font Awesome classes, e.g. "fa-solid fa-brain".'
+    )
+    order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['order', 'number', 'id']
+        verbose_name = 'Roadmap Chapter'
+        verbose_name_plural = 'Roadmap Chapters'
+
+    def __str__(self):
+        return '{}. {}'.format(self.number, self.title)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base = slugify(self.title) or 'chapter-{}'.format(self.number)
+            slug, i = base, 2
+            while RoadmapNode.objects.exclude(pk=self.pk).filter(slug=slug).exists():
+                slug, i = '{}-{}'.format(base, i), i + 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
+
+class RoadmapGroup(models.Model):
+    """A sub-heading inside a chapter, e.g. "Core LLM Elements"."""
+    node = models.ForeignKey(
+        RoadmapNode, on_delete=models.CASCADE, related_name='groups',
+        verbose_name='Chapter'
+    )
+    title = models.CharField(max_length=160)
+    order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['order', 'id']
+        verbose_name = 'Roadmap Sub-section'
+        verbose_name_plural = 'Roadmap Sub-sections'
+
+    def __str__(self):
+        return '{}. {} > {}'.format(self.node.number, self.node.title, self.title)
+
+
+class RoadmapTopic(models.Model):
+    """A clickable tag that opens the topic drawer."""
+    node = models.ForeignKey(
+        RoadmapNode, on_delete=models.CASCADE, related_name='topics',
+        verbose_name='Chapter'
+    )
+    group = models.ForeignKey(
+        RoadmapGroup, on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='topics', verbose_name='Sub-section',
+        help_text='Leave empty to show the tag directly under the chapter heading.'
+    )
+    key = models.SlugField(
+        max_length=120, unique=True,
+        help_text='Stable id used in the #hash deep link. Changing it breaks existing links.'
+    )
+    label = models.CharField(max_length=160, help_text='Text shown on the timeline tag.')
+    title = models.CharField(
+        max_length=200, blank=True,
+        help_text='Heading inside the drawer. Defaults to the tag label.'
+    )
+    description = models.TextField(blank=True, help_text='HTML allowed, e.g. <p>...</p>.')
+    image = models.ImageField(upload_to='roadmap/', blank=True, null=True)
+    image_url = models.CharField(
+        max_length=300, blank=True,
+        help_text='Used when no image is uploaded, e.g. /static/image/foo.webp.'
+    )
+    order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['order', 'id']
+        verbose_name = 'Roadmap Topic'
+        verbose_name_plural = 'Roadmap Topics'
+
+    def __str__(self):
+        return self.label
+
+    @property
+    def display_title(self):
+        return self.title or self.label
+
+    @property
+    def image_src(self):
+        if self.image:
+            try:
+                return self.image.url
+            except ValueError:
+                pass
+        return self.image_url or ''
+
+    def save(self, *args, **kwargs):
+        if not self.key:
+            base = slugify(self.label) or 'topic'
+            key, i = base, 2
+            while RoadmapTopic.objects.exclude(pk=self.pk).filter(key=key).exists():
+                key, i = '{}-{}'.format(base, i), i + 1
+            self.key = key
+        if self.group_id and self.group.node_id != self.node_id:
+            self.node_id = self.group.node_id
+        super().save(*args, **kwargs)
+
+
+class RoadmapResource(models.Model):
+    """A link shown in one of the drawer's three resource cards."""
+    TIER_CHOICES = [
+        ('free', 'Free Resources'),
+        ('tutor', 'AI Tutor'),
+        ('premium', 'Premium Resources'),
+    ]
+    TYPE_CHOICES = [
+        ('article', 'Article'),
+        ('video', 'Video'),
+        ('docs', 'Docs'),
+        ('course', 'Course'),
+        ('project', 'Project'),
+        ('tutor', 'AI Tutor'),
+        ('tool', 'Tool'),
+    ]
+
+    topic = models.ForeignKey(
+        RoadmapTopic, on_delete=models.CASCADE, related_name='resources'
+    )
+    tier = models.CharField(max_length=20, choices=TIER_CHOICES, default='free', db_index=True)
+    resource_type = models.CharField(
+        max_length=20, choices=TYPE_CHOICES, default='article',
+        help_text='Drives the colour of the type pill.'
+    )
+    label = models.CharField(
+        max_length=60, blank=True,
+        help_text='Text inside the type pill. Defaults to the resource type.'
+    )
+    title = models.CharField(max_length=300)
+    url = models.CharField(max_length=500, blank=True)
+    order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['tier', 'order', 'id']
+        verbose_name = 'Roadmap Resource'
+        verbose_name_plural = 'Roadmap Resources'
+
+    def __str__(self):
+        return '[{}] {}'.format(self.get_tier_display(), self.title)
+
+    @property
+    def display_label(self):
+        return self.label or self.get_resource_type_display()

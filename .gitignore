@@ -49,3 +49,6 @@ scratch/
 vibe_images/
 *.csv
 
+
+# Admin safety snapshots (contain customer data)
+backups/

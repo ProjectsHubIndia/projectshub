@@ -7,16 +7,16 @@
 
 {% block title %}{{ project.title }} | AI Project — ProjectsHub{% endblock %}
 
-{% block meta_description %}{% if project.subtitle %}{{ project.subtitle }}{% else %}{{ project.description|truncatechars:160 }}{% endif %}{% endblock %}
+{% block meta_description %}{{ seo.meta_description }}{% endblock %}
 
 {% block meta_keywords %}{{ project.tags }}, AI project, machine learning project, ProjectsHub, source code, {{ project.get_category_display }}{% endblock %}
 
-{% block canonical %}{{ site_url }}{% url 'project_detail' project.id %}{% endblock %}
+{% block canonical %}{{ site_url }}{{ project.get_absolute_url }}{% endblock %}
 
-{% block og_title %} {{ project.title }} — ProjectsHub {% endblock %}
-{% block og_description %}{% if project.subtitle %}{{ project.subtitle }}{% else %}{{ project.description|truncatechars:160 }}{% endif %}{% endblock %}
-{% block og_url %}{{ site_url }}{% url 'project_detail' project.id %}{% endblock %}
-{% if project.get_image_src %}{% block og_image %}{{ project.get_image_src }}{% endblock %}{% endif %}
+{% block og_title %}{{ project.title }} — ProjectsHub{% endblock %}
+{% block og_description %}{{ seo.meta_description }}{% endblock %}
+{% block og_url %}{{ site_url }}{{ project.get_absolute_url }}{% endblock %}
+{% block og_image %}{% if project.get_image_src %}{% if project.get_image_src|slice:':4' == 'http' %}{{ project.get_image_src }}{% else %}{{ site_url }}{{ project.get_image_src }}{% endif %}{% else %}{{ block.super }}{% endif %}{% endblock %}
 
 {% block schema %}
 {# BreadcrumbList — shows "ProjectsHub > Projects > <Title>" in Google results #}
@@ -41,7 +41,7 @@
       "@type": "ListItem",
       "position": 3,
       "name": "{{ project.title|escapejs }}",
-      "item": "{{ site_url }}{% url 'project_detail' project.id %}"
+      "item": "{{ site_url }}{{ project.get_absolute_url }}"
     }
   ]
 }
@@ -54,10 +54,10 @@
   "@type": "SoftwareApplication",
   "name": "{{ project.title|escapejs }}",
   "description": "{{ project.description|truncatechars:300|escapejs }}",
-  "url": "{{ site_url }}{% url 'project_detail' project.id %}",
+  "url": "{{ site_url }}{{ project.get_absolute_url }}",
   "applicationCategory": "{{ project.get_category_display|escapejs }}",
   {% if project.get_image_src %}
-  "image": "{{ project.get_image_src }}",
+  "image": "{% if project.get_image_src|slice:':4' == 'http' %}{{ project.get_image_src }}{% else %}{{ site_url }}{{ project.get_image_src }}{% endif %}",
   {% endif %}
   {% if project.project_url %}
   "installUrl": "{{ project.project_url }}",
@@ -71,7 +71,7 @@
     "url": "{{ site_url }}",
     "logo": {
       "@type": "ImageObject",
-      "url": "{{ site_url }}/static/image/favicon_io/logo.png"
+      "url": "{{ site_url }}/static/image/logo/projectshub-logo-dark.png"
     }
   }{% if project.get_youtube_embed_url %},
   "video": {
@@ -91,7 +91,7 @@
 ══════════════════════════════════ #}
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/project-detail.css' %}" />
-<link rel="stylesheet" href="{% static 'css/ai-chatbot.css' %}" />
+<link rel="stylesheet" href="{% static 'css/ai-chatbot.css' %}?v=6" />
 
 <link rel="stylesheet" href="{% static 'css/idea-modal.css' %}" />
 
@@ -580,7 +580,7 @@
       </div>
       <div class="pd-related-grid">
         {% for rel in related_projects %}
-        <a href="{% url 'project_detail' rel.id %}" class="pd-related-card">
+        <a href="{{ rel.get_absolute_url }}" class="pd-related-card">
           {% if rel.get_image_src %}
           <img src="{{ rel.get_image_src }}"
                alt="{{ rel.title }} — AI project by ProjectsHub"

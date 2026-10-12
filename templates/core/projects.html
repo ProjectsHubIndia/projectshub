@@ -30,7 +30,7 @@
   "name": "AI & ML Projects — ProjectsHub",
   "description": "Real-world AI, machine learning, Django, FastAPI and data science projects built by ProjectsHub.",
   "url": "{{ site_url }}/projects/",
-  "publisher": {"@type":"Organization","name":"ProjectsHub","url":"{{ site_url }}","logo":{"@type":"ImageObject","url":"{{ site_url }}/static/image/favicon_io/logo.png"}}
+  "publisher": {"@type":"Organization","name":"ProjectsHub","url":"{{ site_url }}","logo":{"@type":"ImageObject","url":"{{ site_url }}/static/image/logo/projectshub-logo-dark.png"}}
 }
 </script>
 {% if projects %}
@@ -43,7 +43,7 @@
   "numberOfItems": {{ projects|length }},
   "itemListElement": [
     {% for project in projects %}
-    {"@type":"ListItem","position":{{ forloop.counter }},"url":"{{ site_url }}{% url 'project_detail' project.id %}","name":"{{ project.title|escapejs }}","description":"{{ project.description|truncatechars:160|escapejs }}"}{% if not forloop.last %},{% endif %}
+    {"@type":"ListItem","position":{{ forloop.counter }},"url":"{{ site_url }}{{ project.get_absolute_url }}","name":"{{ project.title|escapejs }}","description":"{{ project.description|truncatechars:160|escapejs }}"}{% if not forloop.last %},{% endif %}
     {% endfor %}
   ]
 }

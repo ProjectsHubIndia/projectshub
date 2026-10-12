@@ -60,6 +60,16 @@ class SecurityHeadersMiddleware(MiddlewareMixin):
         response['Referrer-Policy'] = 'strict-origin-when-cross-origin'
         response['Permissions-Policy'] = 'camera=(), microphone=(), geolocation=()'
         response['Cross-Origin-Opener-Policy'] = 'same-origin-allow-popups'
+
+        # Platform/preview domains serve an identical copy of the site; keep them out of
+        # search indexes so they never compete with the canonical domain.
+        try:
+            host = request.get_host().lower().split(':')[0]
+        except Exception:
+            host = ''
+        suffixes = getattr(settings, 'NON_CANONICAL_HOST_SUFFIXES', ())
+        if host and suffixes and host.endswith(tuple(suffixes)):
+            response['X-Robots-Tag'] = 'noindex, nofollow'
         
         # Defense-in-depth Content Security Policy
         if 'Content-Security-Policy' not in response:
@@ -75,3 +85,46 @@ class SecurityHeadersMiddleware(MiddlewareMixin):
             )
         return response
 
+
+
+class AutoMigrateMiddleware:
+    """
+    Applies pending database updates (migrations) once per server process, on the first
+    request, so new features never break because `manage.py migrate` was forgotten.
+    A copy of the SQLite database file is saved to backups/ first.
+    Disable with AUTO_APPLY_MIGRATIONS=False (e.g. when deploys already run migrate).
+    """
+    _checked = False
+
+    def __init__(self, get_response):
+        import threading
+        self.get_response = get_response
+        self._lock = threading.Lock()
+
+    def __call__(self, request):
+        if not AutoMigrateMiddleware._checked and getattr(settings, 'AUTO_APPLY_MIGRATIONS', True):
+            with self._lock:
+                if not AutoMigrateMiddleware._checked:
+                    AutoMigrateMiddleware._checked = True
+                    self._apply()
+        return self.get_response(request)
+
+    @staticmethod
+    def _apply():
+        import logging
+        log = logging.getLogger(__name__)
+        try:
+            from core.backup_tools import apply_migrations, pending_migrations, snapshot_db_file
+            pending = pending_migrations(use_cache=False)
+            if not pending:
+                return
+            try:
+                snap = snapshot_db_file('auto-update')
+            except Exception:
+                snap = None
+                log.exception('Could not snapshot the database before auto-update')
+            apply_migrations()
+            log.warning('Applied pending database updates automatically: %s (snapshot: %s)', ', '.join(pending), snap)
+        except Exception:
+            AutoMigrateMiddleware._checked = False   # try again on a later request
+            log.exception('Automatic database update failed; run `python manage.py migrate`')

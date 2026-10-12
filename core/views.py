@@ -36,7 +36,8 @@ from .models import (
     SEOData, Redirect,
     ChatbotConversation, ChatbotMessage,
     AdminGuideNote,
-    Page
+    Page,
+    RoadmapSettings, RoadmapNode,
 )
 from .seo import get_base_url, get_seo_for_request
 
@@ -84,10 +85,19 @@ def health_check(request):
 
 
 def get_client_ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        return x_forwarded_for.split(',')[0].strip()
-    return request.META.get('REMOTE_ADDR')
+    """
+    Client IP for rate limiting and lead logging.
+    The left-most X-Forwarded-For entry is client-controlled and trivially spoofed, so we
+    take the entry appended by our own outermost trusted proxy (TRUSTED_PROXY_COUNT).
+    """
+    remote = request.META.get('REMOTE_ADDR')
+    proxies = getattr(settings, 'TRUSTED_PROXY_COUNT', 0)
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR', '')
+    if proxies and x_forwarded_for:
+        hops = [h.strip() for h in x_forwarded_for.split(',') if h.strip()]
+        if hops:
+            return hops[-proxies] if len(hops) >= proxies else hops[0]
+    return remote
 
 
 # ── Pages ──────────────────────────────────────────────────────────────────────
@@ -201,6 +211,12 @@ def project_detail(request, project_id=None, slug=None):
             ),
             id=project_id, is_active=True
         )
+        # One URL per project: numeric URLs permanently redirect to the slug URL that is
+        # used in the sitemap and canonical tag (prevents duplicate-content pairs).
+        if project.slug:
+            target = project.get_absolute_url()
+            qs = request.META.get('QUERY_STRING', '')
+            return HttpResponsePermanentRedirect(f"{target}?{qs}" if qs else target)
 
     related_projects = (
         Project.objects
@@ -211,6 +227,7 @@ def project_detail(request, project_id=None, slug=None):
     context = {
         'project': project,
         'related_projects': related_projects,
+        'seo': get_seo_for_request(request, {'project': project}),
     }
     return render(request, 'core/project_detail.html', context)
 
@@ -240,8 +257,71 @@ def case_studies_page(request):
     return render(request, 'core/case_studies.html', context)
 
 
+def _roadmap_resource_payload(resource):
+    return {
+        'type': resource.resource_type,
+        'label': resource.display_label,
+        'title': resource.title,
+        'url': resource.url,
+    }
+
+
 def ai_roadmap(request):
-    return render(request, 'core/AI_roadmap.html')
+    """AI Engineer Roadmap — chapters, topics and drawer content come from the DB."""
+    config = RoadmapSettings.get_settings()
+
+    nodes = (
+        RoadmapNode.objects
+        .filter(is_active=True)
+        .prefetch_related('groups', 'topics', 'topics__resources')
+        .order_by('order', 'number', 'id')
+    )
+
+    chapters = []
+    topic_payload = {}
+
+    for node in nodes:
+        groups = {g.id: {'title': g.title, 'order': g.order, 'topics': []}
+                  for g in node.groups.all() if g.is_active}
+        direct = []
+
+        for topic in node.topics.all():
+            if not topic.is_active:
+                continue
+            bucket = groups.get(topic.group_id)
+            (bucket['topics'] if bucket else direct).append(topic)
+
+            tiers = {'free': [], 'tutor': [], 'premium': []}
+            for resource in topic.resources.all():
+                if resource.is_active and resource.tier in tiers:
+                    tiers[resource.tier].append(_roadmap_resource_payload(resource))
+            topic_payload[topic.key] = {
+                'title': topic.display_title,
+                'chapter': f'{node.number}. {node.title}',
+                'desc': topic.description,
+                'image': topic.image_src,
+                **tiers,
+            }
+
+        chapters.append({
+            'node': node,
+            'direct_topics': direct,
+            'groups': sorted(groups.values(), key=lambda g: g['order']),
+        })
+
+    context = {
+        'roadmap': config,
+        'chapters': chapters,
+        'topic_count': len(topic_payload),
+        'roadmap_topics_json': topic_payload,
+        'roadmap_config_json': {
+            'drawerSide': config.drawer_side,
+            'badgeLabel': config.drawer_badge_label,
+            'projectsUrl': config.projects_url,
+            'workshopUrl': config.workshop_url,
+        },
+    }
+    return render(request, 'core/AI_roadmap.html', context)
 
 
 def ai_development(request):
@@ -820,10 +900,27 @@ def sitemap_xml(request):
         xml.append(f'    <priority>{priority}</priority>')
         xml.append('  </url>')
 
-    for path, priority, freq in static_pages:
-        append_url(path, priority, freq)
+    # Never list URLs that redirect or are marked noindex (sitemap must contain only
+    # canonical, indexable, 200-status URLs).
+    excluded_paths = set()
+    try:
+        for old in Redirect.objects.filter(is_active=True).values_list('old_path', flat=True):
+            old = (old or '').strip()
+            if old:
+                excluded_paths.add(old)
+                excluded_paths.add(old.rstrip('/') + '/')
+        for seo_row in SEOData.objects.all().only('path', 'is_indexable', 'robots'):
+            if not seo_row.is_indexable or 'noindex' in (seo_row.robots or '').lower():
+                excluded_paths.add(seo_row.path)
+                excluded_paths.add(seo_row.path.rstrip('/') + '/')
+    except Exception:
+        logger.exception("Sitemap exclusion lookup failed")
 
-    included_paths = {path for path, _, _ in static_pages}
+    included_paths = set(excluded_paths)
+    for path, priority, freq in static_pages:
+        if path not in included_paths:
+            append_url(path, priority, freq)
+            included_paths.add(path)
 
     for page in Page.objects.filter(status='published', is_front_page=False).order_by('order', 'title'):
         page_path = page.get_absolute_url()
@@ -832,7 +929,7 @@ def sitemap_xml(request):
             included_paths.add(page_path)
 
     for p in Project.objects.filter(is_active=True, is_published=True).order_by('-created_at'):
-        loc = f"/projects/{p.slug}/" if p.slug else f"/projects/{p.id}/"
+        loc = p.get_absolute_url()
         if loc not in included_paths:
             append_url(loc, '0.7', 'monthly', p.updated_at.strftime('%Y-%m-%d'))
             included_paths.add(loc)
@@ -845,6 +942,18 @@ def sitemap_xml(request):
             append_url(post_path, '0.7', 'monthly', b.updated_at.strftime('%Y-%m-%d'))
             included_paths.add(post_path)
 
+    for w in WorkshopCard.objects.filter(is_active=True).prefetch_related('days').order_by('order', '-created_at'):
+        w_path = w.get_absolute_url()
+        w_mod = w.updated_at.strftime('%Y-%m-%d') if getattr(w, 'updated_at', None) else None
+        if w_path not in included_paths:
+            append_url(w_path, '0.6', 'monthly', w_mod)
+            included_paths.add(w_path)
+        for d in w.days.all():
+            d_path = d.get_absolute_url()
+            if d_path not in included_paths:
+                append_url(d_path, '0.5', 'monthly', w_mod)
+                included_paths.add(d_path)
+
     xml.append('</urlset>')
     return HttpResponse('\n'.join(xml), content_type='application/xml')
 
@@ -853,113 +962,7 @@ def sitemap_xml(request):
 # AI CHATBOT DATA & TELEMETRY API
 # ═══════════════════════════════════════════════════════════════════════════════
 
-@csrf_exempt
-@require_POST
-def api_chatbot_message(request):
-    """
-    Ingests messages from the frontend AI Chatbot widget.
-    Saves conversation telemetry, visitor context, messages, and detects leads in real-time.
-    """
-    try:
-        data = _parse_request_data(request)
-        session_id = data.get('session_id', '').strip()
-        if not session_id:
-            return JsonResponse({'success': False, 'error': 'session_id is required'}, status=400)
-
-        sender = data.get('sender', 'user').strip().lower()
-        if sender not in ('user', 'bot', 'agent'):
-            sender = 'user'
-
-        message_text = data.get('message', '').strip()
-        if not message_text:
-            return JsonResponse({'success': False, 'error': 'message cannot be empty'}, status=400)
-
-        # Rate limit: Max 30 messages per minute per IP
-        ip_addr = get_client_ip(request)
-        rate_key = f"chat_rate:{ip_addr}"
-        msg_count = cache.get(rate_key, 0)
-        if msg_count >= 30:
-            return JsonResponse({'success': False, 'error': 'Rate limit exceeded. Please wait a minute.'}, status=429)
-        cache.set(rate_key, msg_count + 1, 60)
-
-        # Message length validation
-        if len(message_text) > 1000:
-            return JsonResponse({'success': False, 'error': 'Message exceeds maximum allowed length of 1000 characters.'}, status=400)
-
-        page_url = data.get('page_url', '').strip() or request.META.get('HTTP_REFERER', '/')
-        user_agent = request.META.get('HTTP_USER_AGENT', '')
-
-        # Get or create conversation
-        conv, created = ChatbotConversation.objects.get_or_create(
-            session_id=session_id,
-            defaults={
-                'page_url': page_url,
-                'ip_address': ip_addr,
-                'user_agent': user_agent,
-                'status': 'active',
-            }
-        )
-
-        # Update metadata if blank
-        if not conv.ip_address and ip_addr:
-            conv.ip_address = ip_addr
-        if page_url and conv.page_url != page_url:
-            conv.page_url = page_url
-
-        # Check for user info in payload
-        user_name = data.get('user_name', '').strip()
-        user_email = data.get('user_email', '').strip()
-        user_phone = data.get('user_phone', '').strip()
-        if user_name and not conv.user_name:
-            conv.user_name = user_name
-        if user_email and not conv.user_email:
-            conv.user_email = user_email
-            conv.status = 'lead'
-        if user_phone and not conv.user_phone:
-            conv.user_phone = user_phone
-            conv.status = 'lead'
-
-        # Lead intelligence: detect email or phone in message
-        if sender == 'user':
-            email_match = re.search(r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+', message_text)
-            if email_match and not conv.user_email:
-                conv.user_email = email_match.group(0)
-                conv.status = 'lead'
-
-            phone_match = re.search(r'(\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}', message_text)
-            if phone_match and not conv.user_phone:
-                conv.user_phone = phone_match.group(0).strip()
-                conv.status = 'lead'
-
-            # Detect service interest keywords
-            lower_msg = message_text.lower()
-            if any(k in lower_msg for k in ['workshop', 'bootcamp', 'course']):
-                conv.service_interest = '3-Day AI Bootcamp / Workshops'
-            elif any(k in lower_msg for k in ['mentorship', '1-on-1', 'career']):
-                conv.service_interest = '1-on-1 AI Mentorship'
-            elif any(k in lower_msg for k in ['hire', 'build', 'custom', 'mvp', 'business']):
-                conv.service_interest = 'Custom AI Development'
-            elif any(k in lower_msg for k in ['project', 'code', 'buy', 'pricing']):
-                conv.service_interest = 'Projects & Source Code'
-
-        conv.save()
-
-        msg = ChatbotMessage.objects.create(
-            conversation=conv,
-            sender=sender,
-            message=message_text,
-        )
-
-        return JsonResponse({
-            'success': True,
-            'conversation_id': conv.id,
-            'message_id': msg.id,
-            'status': conv.status,
-            'is_lead': conv.status == 'lead',
-        })
-    except Exception as e:
-        logger.exception("Error saving chatbot message")
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+# Visitor chat messages are handled by core.chat_views.chat_message (live chat).
 
 
 def api_chatbot_lead(request):
@@ -987,6 +990,14 @@ def api_chatbot_lead(request):
             return JsonResponse({'success': False, 'error': 'Please provide either an email or phone number.'}, status=400)
 
         ip_addr = get_client_ip(request)
+        # Each lead creates a CRM inquiry; cap submissions to stop spam floods.
+        lead_key = f"chat_lead_rate:{ip_addr}"
+        lead_count = cache.get(lead_key, 0)
+        if lead_count >= 5:
+            return JsonResponse({'success': False, 'error': 'Too many submissions. Please try again later.'}, status=429)
+        cache.set(lead_key, lead_count + 1, 3600)
+        if len(name) > 150 or len(email) > 254 or len(phone) > 30 or len(notes) > 2000:
+            return JsonResponse({'success': False, 'error': 'One or more fields are too long.'}, status=400)
         user_agent = request.META.get('HTTP_USER_AGENT', '')
 
         # 1. Update or create ChatbotConversation
@@ -1045,16 +1056,14 @@ def api_chatbot_lead(request):
         })
     except Exception as e:
         logger.exception("Error capturing chatbot lead")
-        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+        return JsonResponse({'success': False, 'error': 'Could not save your details. Please try again.'}, status=500)
 
 
 def api_chatbot_history(request):
     """Returns past message history for a given session token."""
-    session_id = request.GET.get('session_id', '').strip()
-    if not session_id:
-        return JsonResponse({'messages': []})
-
-    conv = ChatbotConversation.objects.filter(session_id=session_id).first()
+    # Transcripts contain personal data: require the visitor's secret token, not just the id.
+    from .live_chat import get_conversation
+    conv = get_conversation(request.GET.get('session_id', ''), request.GET.get('token', ''))
     if not conv:
         return JsonResponse({'messages': []})
 
@@ -1760,10 +1769,12 @@ def admin_backup_download_json(request):
     }
 
     target_apps = scope_map.get(scope, ['core', 'auth.user'])
-    buf = io.StringIO()
+    from .backup_tools import dump_data, pending_migrations
+    if pending_migrations(use_cache=False):
+        return HttpResponse("Your database needs an update before a backup can be made. Open /admin/ and click "
+                            "“Apply database update”, then download again.", status=409, content_type='text/plain; charset=utf-8')
     try:
-        call_command('dumpdata', *target_apps, natural_foreign=True, natural_primary=True, indent=2, stdout=buf)
-        data = buf.getvalue()
+        data, _skipped = dump_data(target_apps)
     except Exception as e:
         logger.exception("Failed to dumpdata for backup")
         return HttpResponse(f"Backup generation error: {str(e)}", status=500, content_type='text/plain')
@@ -1810,10 +1821,12 @@ def admin_backup_sync_initial(request):
     from django.shortcuts import redirect
 
     initial_path = os.path.join(settings.BASE_DIR, 'initial_data.json')
-    buf = io.StringIO()
+    from .backup_tools import dump_data, pending_migrations
+    if pending_migrations(use_cache=False):
+        messages.error(request, "Your database needs an update first. Click “Apply database update” at the top of this page, then sync again.")
+        return redirect('admin_backup')
     try:
-        call_command('dumpdata', 'core', 'auth.user', natural_foreign=True, natural_primary=True, indent=2, stdout=buf)
-        content = buf.getvalue()
+        content, _skipped = dump_data(['core', 'auth.user'])
         with open(initial_path, 'w', encoding='utf-8') as f:
             f.write(content)
         size_kb = round(os.path.getsize(initial_path) / 1024, 1)
@@ -1831,38 +1844,79 @@ def admin_backup_sync_initial(request):
 @superuser_required
 @require_POST
 def admin_backup_restore(request):
-    """Restores database from an uploaded JSON backup file using loaddata."""
-    import os
-    import tempfile
-    from django.core.management import call_command
+    """
+    Restores data from an uploaded JSON backup.
+    Safe for backups taken from another copy of the site (e.g. live → local): records that
+    already exist under a different id are matched by their unique value (slug/path/...).
+    A full snapshot of the current data is saved to backups/ before anything changes.
+    """
     from django.contrib import messages
     from django.shortcuts import redirect
+    from .backup_tools import RestoreError, restore_backup
 
     uploaded_file = request.FILES.get('backup_file')
     if not uploaded_file:
         messages.error(request, "No backup file uploaded.")
         return redirect('admin_backup')
-
-    if not uploaded_file.name.endswith('.json'):
+    if not uploaded_file.name.lower().endswith('.json'):
         messages.error(request, "Invalid file format. Please upload a .json backup file.")
         return redirect('admin_backup')
+    if uploaded_file.size > 50 * 1024 * 1024:
+        messages.error(request, "Backup file is too large (50 MB max).")
+        return redirect('admin_backup')
 
-    fd, tmp_path = tempfile.mkstemp(suffix='.json')
     try:
-        with os.fdopen(fd, 'wb') as dest:
-            for chunk in uploaded_file.chunks():
-                dest.write(chunk)
-        
-        call_command('loaddata', tmp_path)
-        messages.success(request, f"Successfully restored database from '{uploaded_file.name}'!")
+        report = restore_backup(uploaded_file.read())
+    except RestoreError as e:
+        messages.error(request, f"Restore not started: {e}")
+        return redirect('admin_backup')
     except Exception as e:
         logger.exception("Failed to restore data from backup")
-        messages.error(request, f"Restore failed: {str(e)}")
-    finally:
-        if os.path.exists(tmp_path):
-            os.remove(tmp_path)
+        messages.error(request, f"Restore failed and nothing was changed: {e}")
+        return redirect('admin_backup')
 
+    summary = f"Restored {report['total']} records from '{uploaded_file.name}'."
+    if report['remapped']:
+        summary += f" Matched {len(report['remapped'])} existing record(s) by slug/path instead of duplicating them."
+    if report['replaced']:
+        summary += f" Replaced {len(report['replaced'])} conflicting record(s)."
+    if report['skipped_models']:
+        skipped = ', '.join(f"{k} ({v})" for k, v in report['skipped_models'].items())
+        summary += f" Skipped data for models this site doesn't have: {skipped}."
+    summary += f" A safety snapshot of the previous data was saved as backups/{os.path.basename(report['snapshot'])}."
+    messages.success(request, summary)
     return redirect('admin_backup')
+
+
+@superuser_required
+@require_POST
+def admin_apply_migrations(request):
+    """Apply pending database updates (Django migrations) from the admin."""
+    from django.contrib import messages
+    from django.shortcuts import redirect
+    from django.utils.http import url_has_allowed_host_and_scheme
+    from .backup_tools import apply_migrations, pending_migrations, snapshot_db_file
+
+    pending = pending_migrations(use_cache=False)
+    nxt = request.POST.get('next') or '/admin/'
+    if not url_has_allowed_host_and_scheme(nxt, allowed_hosts={request.get_host()}, require_https=request.is_secure()):
+        nxt = '/admin/'
+    if not pending:
+        messages.info(request, "Your database is already up to date.")
+        return redirect(nxt)
+    try:
+        try:
+            snap = snapshot_db_file('pre-update')
+        except Exception:
+            snap = None
+            logger.exception('Pre-update snapshot failed')
+        apply_migrations()
+        messages.success(request, "Database updated (" + ", ".join(pending) + ")." +
+                         (f" A snapshot was saved as backups/{os.path.basename(snap)}." if snap else ""))
+    except Exception as e:
+        logger.exception("Applying migrations failed")
+        messages.error(request, f"Database update failed: {e}. Run `python manage.py migrate` in a terminal to see details.")
+    return redirect(nxt)
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -2101,8 +2155,21 @@ def admin_quick_edit_api(request):
         status_val = request.POST.get('status', 'published')
         category_id = request.POST.get('category_id')
 
-        model_class = apps.get_model(app_label, model_name)
-        obj = model_class.objects.get(pk=object_id)
+        # Only content models of this app, and only with the matching change permission —
+        # otherwise any staff account could deactivate users or edit arbitrary tables.
+        if app_label != 'core':
+            return JsonResponse({'success': False, 'error': 'Quick edit is not available for this model.'}, status=403)
+        try:
+            model_class = apps.get_model(app_label, model_name)
+        except LookupError:
+            return JsonResponse({'success': False, 'error': 'Unknown model.'}, status=400)
+        perm = f"{model_class._meta.app_label}.change_{model_class._meta.model_name}"
+        if not request.user.has_perm(perm):
+            return JsonResponse({'success': False, 'error': 'You do not have permission to edit this item.'}, status=403)
+        try:
+            obj = model_class.objects.get(pk=object_id)
+        except (model_class.DoesNotExist, ValueError, TypeError):
+            return JsonResponse({'success': False, 'error': 'Item not found.'}, status=404)
 
         if hasattr(obj, 'title') and title:
             obj.title = title
@@ -2134,7 +2201,7 @@ def admin_quick_edit_api(request):
         })
     except Exception as e:
         logger.exception("Quick Edit failed")
-        return JsonResponse({'success': False, 'error': str(e)}, status=400)
+        return JsonResponse({'success': False, 'error': 'Update failed. Check the values and try again.'}, status=400)
 
 
 def page_detail_view(request, slug):

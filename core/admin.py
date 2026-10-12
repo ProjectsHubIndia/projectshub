@@ -17,9 +17,10 @@ from .models import (
     IdeaSubmission, WorkshopCard, WorkshopDay, WorkshopEnrollment,
     PricingPlan, PricingFeature,
     SEOData, Redirect,
-    ChatbotConversation, ChatbotMessage,
+    ChatbotConversation, ChatbotMessage, ChatAgentStatus,
     AdminGuideNote,
-    Page
+    Page,
+    RoadmapSettings, RoadmapNode, RoadmapGroup, RoadmapTopic, RoadmapResource,
 )
 
 admin.site.site_header = "ProjectsHub Administration"
@@ -1536,3 +1537,183 @@ class PageAdmin(admin.ModelAdmin):
     duplicate_page.short_description = "Duplicate selected page(s)"
 
 
+
+
+@admin.register(ChatAgentStatus)
+class ChatAgentStatusAdmin(admin.ModelAdmin):
+    """Who can appear as 'online' in the website chat. Availability is set from the Live Chat inbox."""
+    list_display = ('user', 'display_name', 'is_available', 'online_now', 'last_heartbeat')
+    list_editable = ('display_name', 'is_available')
+    readonly_fields = ('last_heartbeat',)
+
+    def online_now(self, obj):
+        return obj.is_online
+    online_now.boolean = True
+    online_now.short_description = 'Online now'
+
+
+# ── AI Engineer Roadmap ───────────────────────────────────────────────────────
+
+@admin.register(RoadmapSettings)
+class RoadmapSettingsAdmin(admin.ModelAdmin):
+    """Everything on /ai-roadmap/ that is copy or a link, without touching code."""
+    list_display = ('__str__', 'drawer_side', 'cta_label', 'cta_url', 'updated_at')
+    fieldsets = (
+        ('Page Header', {
+            'fields': ('hero_title_prefix', 'hero_title_highlight', 'hero_subtitle'),
+            'description': 'The big heading at the top of the roadmap page.'
+        }),
+        ('Topic Pop-up', {
+            'fields': ('drawer_side', 'drawer_badge_label',
+                       'free_section_label', 'tutor_section_label', 'premium_section_label'),
+            'description': 'The slide-over panel that opens when a visitor clicks a topic tag.'
+        }),
+        ('Pop-up Footer Buttons', {
+            'fields': ('close_label', 'cta_label', 'cta_url', 'cta_icon', 'cta_new_tab'),
+            'description': 'The "Explore AI Projects" button and the Close button at the bottom of the pop-up.'
+        }),
+        ('Auto-generated Resource Links', {
+            'fields': ('projects_url', 'workshop_url'),
+            'description': (
+                'Topics with no resources of their own fall back to generated links. '
+                'These two URLs are where those generated Premium links point.'
+            )
+        }),
+        ('Layout', {
+            'fields': ('show_stepper', 'show_progress_badge'),
+        }),
+    )
+
+    def has_add_permission(self, request):
+        return not RoadmapSettings.objects.exists()
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def changelist_view(self, request, extra_context=None):
+        obj = RoadmapSettings.objects.first()
+        if obj:
+            from django.shortcuts import redirect
+            return redirect(f'/admin/core/roadmapsettings/{obj.pk}/change/')
+        return super().changelist_view(request, extra_context=extra_context)
+
+
+class RoadmapGroupInline(admin.TabularInline):
+    model = RoadmapGroup
+    extra = 0
+    fields = ('title', 'order', 'is_active')
+    ordering = ('order', 'id')
+
+
+class RoadmapTopicInline(admin.TabularInline):
+    model = RoadmapTopic
+    extra = 0
+    fields = ('label', 'group', 'key', 'order', 'is_active')
+    ordering = ('order', 'id')
+    show_change_link = True
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        # Only offer sub-sections that belong to the chapter being edited.
+        if db_field.name == 'group':
+            node_id = request.resolver_match.kwargs.get('object_id') if request.resolver_match else None
+            kwargs['queryset'] = (
+                RoadmapGroup.objects.filter(node_id=node_id)
+                if node_id else RoadmapGroup.objects.none()
+            )
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
+@admin.register(RoadmapNode)
+class RoadmapNodeAdmin(admin.ModelAdmin):
+    list_display = ('number', 'title', 'icon_preview', 'group_count', 'topic_count', 'order', 'is_active')
+    list_display_links = ('title',)
+    list_editable = ('number', 'order', 'is_active')
+    list_filter = ('is_active',)
+    search_fields = ('title', 'slug')
+    prepopulated_fields = {'slug': ('title',)}
+    inlines = [RoadmapGroupInline, RoadmapTopicInline]
+    fields = ('number', 'title', 'slug', 'icon', 'order', 'is_active')
+
+    def icon_preview(self, obj):
+        return format_html('<i class="{}"></i> <code>{}</code>', obj.icon, obj.icon)
+    icon_preview.short_description = 'Icon'
+
+    def group_count(self, obj):
+        return obj.groups.count()
+    group_count.short_description = 'Sub-sections'
+
+    def topic_count(self, obj):
+        return obj.topics.count()
+    topic_count.short_description = 'Topics'
+
+
+@admin.register(RoadmapGroup)
+class RoadmapGroupAdmin(admin.ModelAdmin):
+    list_display = ('title', 'node', 'topic_count', 'order', 'is_active')
+    list_display_links = ('title',)
+    list_editable = ('order', 'is_active')
+    list_filter = ('node', 'is_active')
+    search_fields = ('title', 'node__title')
+
+    def topic_count(self, obj):
+        return obj.topics.count()
+    topic_count.short_description = 'Topics'
+
+
+class RoadmapResourceInline(admin.TabularInline):
+    model = RoadmapResource
+    extra = 1
+    fields = ('tier', 'resource_type', 'label', 'title', 'url', 'order', 'is_active')
+    ordering = ('tier', 'order', 'id')
+
+
+@admin.register(RoadmapTopic)
+class RoadmapTopicAdmin(admin.ModelAdmin):
+    list_display = ('label', 'node', 'group', 'resource_count', 'has_image', 'order', 'is_active')
+    list_display_links = ('label',)
+    list_editable = ('order', 'is_active')
+    list_filter = ('node', 'group', 'is_active')
+    search_fields = ('label', 'title', 'key', 'description')
+    inlines = [RoadmapResourceInline]
+    fieldsets = (
+        ('Placement', {
+            'fields': ('node', 'group', 'order', 'is_active'),
+        }),
+        ('Content', {
+            'fields': ('label', 'title', 'key', 'description'),
+            'description': 'The label is the tag on the timeline; the title heads the pop-up.'
+        }),
+        ('Banner Image', {
+            'fields': ('image', 'image_url'),
+            'classes': ('collapse',),
+            'description': 'Optional. Upload a file, or point at an existing static path.'
+        }),
+    )
+
+    def resource_count(self, obj):
+        n = obj.resources.count()
+        return n or format_html('<span style="color:#94a3b8;">auto</span>')
+    resource_count.short_description = 'Resources'
+
+    def has_image(self, obj):
+        return bool(obj.image_src)
+    has_image.boolean = True
+    has_image.short_description = 'Image'
+
+
+@admin.register(RoadmapResource)
+class RoadmapResourceAdmin(admin.ModelAdmin):
+    list_display = ('title', 'topic', 'tier', 'resource_type', 'link', 'order', 'is_active')
+    list_display_links = ('title',)
+    list_editable = ('order', 'is_active')
+    list_filter = ('tier', 'resource_type', 'is_active', 'topic__node')
+    search_fields = ('title', 'url', 'topic__label')
+
+    def link(self, obj):
+        if not obj.url:
+            return '—'
+        return format_html(
+            '<a href="{}" target="_blank" rel="noopener noreferrer" style="color:#2563eb;">open ↗</a>',
+            obj.url
+        )
+    link.short_description = 'Link'
