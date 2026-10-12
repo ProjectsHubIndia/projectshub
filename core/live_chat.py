@@ -11,14 +11,17 @@ Principles
   must be shared across worker processes (typing, presence) lives in the database.
 """
 import logging
+import re
 import secrets
 import threading
 from datetime import timedelta
+from urllib.parse import urlsplit
 
 from django.conf import settings
 from django.core.cache import cache
 from django.core.mail import send_mail
 from django.db.models import Q
+from django.utils.html import strip_tags
 from django.utils import timezone
 
 from .models import (
@@ -155,8 +158,103 @@ def _site_facts():
     return facts
 
 
-def automated_answer(text):
-    """Keyword answers grounded in live database facts. Returns '' when nothing fits."""
+def _project_for_question(text, page_url=''):
+    """Find a published project from the page being viewed or an explicit title mention."""
+    try:
+        path_parts = [part for part in urlsplit(page_url or '').path.split('/') if part]
+    except ValueError:
+        path_parts = []
+    current_project = None
+    if len(path_parts) >= 2 and path_parts[0] == 'projects':
+        project_query = {'pk': path_parts[1]} if path_parts[1].isdigit() else {'slug': path_parts[1]}
+        current_project = (
+            Project.objects.filter(is_active=True, is_published=True, **project_query)
+            .prefetch_related('technologies')
+            .first()
+        )
+
+    msg = (text or '').lower()
+    if current_project and any(phrase in msg for phrase in (
+        'this project', 'this one', 'tell me about this', 'what is this',
+        'what does it', 'how does it', 'what technology', 'which technology',
+        'tech stack', 'features', 'overview', 'details',
+    )):
+        return current_project
+
+    ignored = {
+        'about', 'does', 'have', 'with', 'from', 'your', 'tell', 'show',
+        'what', 'which', 'where', 'when', 'this', 'that', 'project', 'projects',
+        'details', 'overview', 'technology', 'technologies', 'stack', 'feature',
+        'features', 'work', 'works', 'available', 'looking', 'need', 'want',
+    }
+    terms = {word for word in re.findall(r'[a-z0-9]+', msg) if len(word) > 2 and word not in ignored}
+    if not terms:
+        return None
+
+    match = Q()
+    for term in terms:
+        match |= (
+            Q(title__icontains=term) | Q(slug__icontains=term) |
+            Q(tags__icontains=term) | Q(description__icontains=term) |
+            Q(detailed_description__icontains=term) |
+            Q(technologies__name__icontains=term)
+        )
+
+    candidates = (
+        Project.objects.filter(is_active=True, is_published=True)
+        .filter(match)
+        .distinct()
+        .prefetch_related('technologies')
+        .order_by('order', 'title')[:20]
+    )
+    best_project = None
+    best_score = 0
+    for project in candidates:
+        title_terms = set(re.findall(r'[a-z0-9]+', f'{project.title} {project.slug}'.lower()))
+        title_matches = len(title_terms & terms)
+        if title_matches:
+            score = title_matches * 4
+            score += sum(term in (project.tags or '').lower() for term in terms)
+            score += sum(term in project.description.lower() for term in terms)
+            if score > best_score:
+                best_project, best_score = project, score
+    return best_project
+
+
+def _project_answer(project):
+    description = strip_tags(project.subtitle or project.detailed_description or project.description)
+    description = ' '.join(description.split())
+    if len(description) > 320:
+        description = description[:317].rsplit(' ', 1)[0] + '...'
+
+    parts = [f"Sure! {project.title}:"]
+    if description:
+        parts.append(description)
+    technologies = project.get_tags_list()[:5]
+    if technologies:
+        parts.append('It uses ' + ', '.join(technologies) + '.')
+    parts.append(f"Take a look: {project.get_absolute_url()}")
+    parts.append('What would you like to know about it?')
+    return ' '.join(parts)
+
+
+def contact_confirmation(conv):
+    """Confirm saved contact details and set the team's stated follow-up expectation."""
+    channels = []
+    if conv.user_email:
+        channels.append('email')
+    if conv.user_phone:
+        channels.append('phone/WhatsApp')
+    contact_route = ' and '.join(channels) or 'your preferred contact method'
+    greeting = f", {conv.user_name.split()[0]}" if conv.user_name else ''
+    return (
+        f"Thanks{greeting}! We've got your details. A real ProjectsHub team member will reach out "
+        f"within 24 hours via {contact_route}. You can keep chatting with us here too."
+    )
+
+
+def automated_answer(text, page_url='', contact_captured=False):
+    """Give conversational answers using published projects and live database facts."""
     msg = (text or '').lower()
     f = _site_facts()
 
@@ -177,6 +275,9 @@ def automated_answer(text):
     if has('custom', 'hire', 'business', 'company', 'mvp', 'develop', 'build', 'automation', 'integration'):
         return ("We build custom AI solutions — development, automation and API integration. Overview: "
                 "/services/ai-development/ . Tell us a bit about what you want to build and a team member will follow up.")
+    project = _project_for_question(text, page_url)
+    if project:
+        return _project_answer(project)
     if has('project', 'source code', 'code', 'github', 'final year', 'capstone', 'repo'):
         n = f['projects']
         count = f"{n} project{'s' if n != 1 else ''}" if n else 'projects'
@@ -184,12 +285,12 @@ def automated_answer(text):
     if has('tool', 'free'):
         n = f['tools']
         return f"Our free tools directory{' (' + str(n) + ' tools)' if n else ''} is at /tools/ ."
-    if has('contact', 'call', 'phone', 'whatsapp', 'email'):
+    if has('contact', 'call', 'phone', 'whatsapp', 'email') and not contact_captured:
         return "You can reach the team on WhatsApp using the button at the top of this chat, or via /contact/ ."
     return ''
 
 
-def handle_visitor_message(conv, text, first_user_message=False):
+def handle_visitor_message(conv, text, first_user_message=False, contact_captured=False):
     """
     Decide what (if anything) is sent back immediately after a visitor message.
     Returns a list of ChatbotMessage objects created by the system/bot.
@@ -218,15 +319,21 @@ def handle_visitor_message(conv, text, first_user_message=False):
                 conv, 'system',
                 f"You're connected to the ProjectsHub team. {names} {'is' if len(agents) == 1 else 'are'} online and will reply here shortly.",
             ))
+        if contact_captured:
+            replies.append(add_message(conv, 'system', contact_confirmation(conv)))
         notify_team(conv, reason='new' if first_user_message else 'message')
         return replies
 
     # Nobody available: honest automated help + a way to get a human reply later.
-    answer = automated_answer(text)
+    answer = automated_answer(
+        text, page_url=conv.page_url, contact_captured=contact_captured,
+    )
     facts_rt = _site_facts()['response_time']
     if answer:
         replies.append(add_message(conv, 'bot', answer))
-    if first_user_message or not answer:
+    if contact_captured:
+        replies.append(add_message(conv, 'system', contact_confirmation(conv)))
+    elif first_user_message or not answer:
         if conv.user_email or conv.user_phone:
             note = f"Our team is offline right now. Your message is saved and a team member will reply here and by email ({facts_rt.lower()})."
         else:
@@ -246,10 +353,10 @@ def maybe_waiting_followup(conv):
     conv.followup_prompted = True
     conv.save(update_fields=['followup_prompted'])
     if conv.user_email or conv.user_phone:
-        text = "Sorry for the wait — the team is busy. Your message is saved and we'll reply here or by email as soon as possible."
+        text = "Sorry for the wait — the team is busy. Your message is saved, and a real ProjectsHub team member will follow up within 24 hours."
     else:
-        text = ("Sorry for the wait — the team is busy. Leave your email or WhatsApp number below "
-                "so we can get back to you even if you close this page.")
+        text = ("Sorry for the wait — the team is busy. Leave your email or WhatsApp number below, "
+                "and a real ProjectsHub team member will follow up within 24 hours.")
     return add_message(conv, 'system', text)
 
 

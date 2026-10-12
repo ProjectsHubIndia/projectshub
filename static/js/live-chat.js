@@ -91,8 +91,8 @@
           '<div class="phc-log" id="phcLog" role="log" aria-live="polite" aria-relevant="additions"></div>' +
           '<div class="phc-typing" id="phcTyping" hidden><span class="phc-typing-dots"><i></i><i></i><i></i></span><span id="phcTypingText"></span></div>' +
           '<form class="phc-contact" id="phcContact" hidden novalidate>' +
-            '<p class="phc-contact-title">Get our reply even if you leave</p>' +
-            '<p class="phc-contact-sub">We\'ll answer here, and by email or WhatsApp if you\'ve closed the page.</p>' +
+            '<p class="phc-contact-title">Want a person to follow up?</p>' +
+            '<p class="phc-contact-sub">Leave your email or WhatsApp. A real ProjectsHub team member will get back to you within 24 hours, even if you close this chat.</p>' +
             '<label class="phc-field"><span>Name</span><input name="name" type="text" autocomplete="name" maxlength="150" placeholder="Your name"></label>' +
             '<label class="phc-field"><span>Email</span><input name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com"></label>' +
             '<label class="phc-field"><span>WhatsApp / phone <em>(optional)</em></span><input name="phone" type="tel" autocomplete="tel" maxlength="25" placeholder="+91 …"></label>' +
@@ -172,7 +172,7 @@
     var who = names.length ? names.slice(0, 2).join(' & ') : '';
     var text = S.team.online
       ? 'Hi 👋 You\'re chatting with real people at ProjectsHub' + (who ? ', ' + who + (names.length > 1 ? ' are' : ' is') + ' online' : '') + '. Ask us anything about AI projects, custom development or workshops.'
-      : 'Hi 👋 We\'re away right now, but a real person at ProjectsHub reads every message. Ask your question. The automated assistant can help with quick answers until we\'re back.';
+      : 'Hi 👋 Ask me about a project, its tech stack, our workshops or custom AI work. I can share details from ProjectsHub, and a real team member can follow up within 24 hours if you leave your email or WhatsApp.';
     el.phcIntro.innerHTML = '<div class="phc-intro-card">' + teamAvatars() + '<p>' + esc(text) + '</p></div>';
   }
 

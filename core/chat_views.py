@@ -197,11 +197,13 @@ def chat_message(request):
 
     first = not conv.messages.filter(sender='user').exists()
     msg = lc.add_message(conv, 'user', text, client_id=client_id)
-    _capture_contact_from_text(conv, text)
+    contact_captured = _capture_contact_from_text(conv, text)
     _touch_visitor(conv)
     ChatbotConversation.objects.filter(pk=conv.pk).update(visitor_typing_until=None)
 
-    replies = lc.handle_visitor_message(conv, text, first_user_message=first)
+    replies = lc.handle_visitor_message(
+        conv, text, first_user_message=first, contact_captured=contact_captured,
+    )
     payload = {
         'success': True,
         'message': lc.serialize_message(msg),
@@ -239,6 +241,7 @@ def _capture_contact_from_text(conv, text):
             conv.status = 'lead'
             changed.append('status')
         conv.save(update_fields=changed)
+    return bool(changed)
 
 
 @require_GET
@@ -310,9 +313,7 @@ def chat_profile(request):
         conv.status = 'lead'
     conv.save(update_fields=['user_name', 'user_email', 'user_phone', 'status'])
     reply = lc.add_message(
-        conv, 'system',
-        f"Thanks{', ' + name.split()[0] if name else ''}! We'll reply here, and by "
-        f"{'email' if email else 'WhatsApp/phone'} if you've left the page.",
+        conv, 'system', lc.contact_confirmation(conv),
     )
     lc.notify_team(conv, reason='contact')
     return JsonResponse({'success': True, 'replies': [lc.serialize_message(reply)], 'state': lc.conversation_state(conv)})
@@ -336,9 +337,9 @@ def chat_request_human(request):
         if agents:
             text = f"Got it — {agents[0].public_name} from the team will join this chat shortly."
         elif conv.user_email or conv.user_phone:
-            text = "The team is offline right now. A team member will reply here and by email as soon as they're back."
+            text = "The team is offline right now. A real ProjectsHub team member will get back to you within 24 hours."
         else:
-            text = "The team is offline right now. Leave your email or WhatsApp number below and a team member will get back to you."
+            text = "The team is offline right now. Leave your email or WhatsApp number and a real team member will get back to you within 24 hours."
         replies.append(lc.add_message(conv, 'system', text))
         lc.notify_team(conv, reason='new')
     return JsonResponse({'success': True, 'replies': [lc.serialize_message(r) for r in replies],

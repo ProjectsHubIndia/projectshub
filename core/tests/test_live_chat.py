@@ -63,6 +63,50 @@ class LiveChatFlowTests(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertIn('/admin/live-chat/?c=', mail.outbox[0].body)
 
+    def test_project_page_question_gets_grounded_project_details(self):
+        project = Project.objects.create(
+            title='Customer Churn Pipeline',
+            slug='customer-churn-pipeline',
+            description='Predicts which customers are likely to leave.',
+            detailed_description='A machine learning workflow for identifying customer churn risks.',
+            category='ml',
+            tags='Python, XGBoost, Pandas',
+            is_active=True,
+            is_published=True,
+        )
+        data = post(self.client, '/api/chat/message/', {
+            'message': 'What does this project do and what tech stack does it use?',
+            'client_id': 'churn-question',
+            'page_url': project.get_absolute_url(),
+        }).json()
+
+        bot = next(reply for reply in data['replies'] if reply['sender'] == 'bot')
+        self.assertIn(project.title, bot['text'])
+        self.assertIn('A machine learning workflow for identifying customer churn risks.', bot['text'])
+        self.assertIn('Python, XGBoost, Pandas', bot['text'])
+        self.assertIn(project.get_absolute_url(), bot['text'])
+
+    def test_contact_details_get_a_24_hour_human_followup_confirmation(self):
+        data = self.start('Hi, I need help choosing a project')
+        sess = data['session']
+        response = post(self.client, '/api/chat/profile/', {
+            **sess, 'name': 'Asha Patel', 'email': 'asha@example.com',
+        })
+
+        self.assertEqual(response.status_code, 200)
+        confirmation = response.json()['replies'][0]['text']
+        self.assertIn('Thanks, Asha!', confirmation)
+        self.assertIn('real ProjectsHub team member', confirmation)
+        self.assertIn('within 24 hours', confirmation)
+        self.assertIn('via email', confirmation)
+
+    def test_email_shared_in_chat_gets_24_hour_acknowledgment(self):
+        data = self.start('Please contact me at asha@example.com')
+        confirmation = next(reply for reply in data['replies'] if reply['sender'] == 'system')
+        self.assertIn('within 24 hours', confirmation['text'])
+        self.assertIn('via email', confirmation['text'])
+        self.assertFalse(any(reply['sender'] == 'bot' for reply in data['replies']))
+
     # ── online path: real human conversation ──────────────────────────
     def test_full_conversation_with_a_team_member(self):
         self.go_online()

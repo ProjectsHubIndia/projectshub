@@ -81,6 +81,11 @@ class ViewTests(TestCase):
         res = self.client.get(reverse('project_detail_slug', args=[self.project.slug]))
         self.assertEqual(res.status_code, 200)
         self.assertContains(res, "Smart Fraud Detection")
+        self.assertLess(
+            res.content.index(b"</main>"),
+            res.content.index(b'id="lightbox"'),
+            "The image viewer must be outside main's stacking context.",
+        )
 
     def test_model_structured_data_uses_recorded_project_and_article_facts(self):
         request_factory = RequestFactory()

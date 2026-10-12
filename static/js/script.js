@@ -773,15 +773,24 @@
         if (robotCtl) robotCtl.speak(1600);
       });
     }
-    if (window.phAara) {
-      robotCtl = window.phAara.mount(canvas, mountOpts);
-    } else {
-      window.phAaraQueue = {
-        canvas: canvas,
-        opts: mountOpts,
-        onMounted: function (ctl) { robotCtl = ctl; },
-      };
+    // The hero visual is Bootstrap d-none below lg, so below 992px the canvas is never
+    // on screen -- don't pull the 3D engine there. Mount if the window grows past it.
+    var wideEnough = window.matchMedia("(min-width: 992px)");
+    function mountRobot() {
+      if (!wideEnough.matches) return;
+      wideEnough.removeEventListener("change", mountRobot);
+      if (window.phAara) {
+        robotCtl = window.phAara.mount(canvas, mountOpts);
+      } else {
+        window.phAaraQueue = {
+          canvas: canvas,
+          opts: mountOpts,
+          onMounted: function (ctl) { robotCtl = ctl; },
+        };
+      }
     }
+    wideEnough.addEventListener("change", mountRobot);
+    mountRobot();
   }
 
   /* ════════════════════════════════════════
