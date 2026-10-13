@@ -420,11 +420,6 @@
     });
   }
 
-  function toggleTableColumn(colClass) {
-    var cells = document.querySelectorAll('#result_list .' + colClass);
-    cells.forEach(function(c) {
-      c.style.display = c.style.display === 'none' ? '' : 'none';
-    });
-  }
+  // toggleTableColumn is defined in wp-admin.js (available on all admin pages)
 </script>
 {% endblock %}

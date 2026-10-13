@@ -102,4 +102,15 @@
       }
     });
   });
+
+  // 6. toggleTableColumn — used by Screen Options checkboxes on all admin pages.
+  // Guards early-return when #result_list is absent (dashboard, change-form, etc.)
+  window.toggleTableColumn = function(colClass) {
+    var table = document.getElementById('result_list');
+    if (!table) return;
+    var cells = table.querySelectorAll('.' + colClass);
+    cells.forEach(function(c) {
+      c.style.display = c.style.display === 'none' ? '' : 'none';
+    });
+  };
 })();

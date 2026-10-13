@@ -605,24 +605,10 @@
   <!-- Interactive WordPress Script -->
   <script>
     (function() {
-      // 1. Sidebar Fold / Unfold
-      var collapseBtn = document.getElementById('collapse-menu');
-      var wpwrap = document.getElementById('wpwrap');
-      var isFolded = localStorage.getItem('wp-admin-folded') === 'true';
-      if (isFolded && wpwrap) {
-        wpwrap.classList.add('folded');
-        if (collapseBtn) collapseBtn.querySelector('.collapse-icon').textContent = '▶';
-      }
+      // NOTE: Sidebar fold/collapse and notice-dismiss are handled exclusively in wp-admin.js
+      // to avoid double event listeners. Only page-specific logic lives here.
 
-      if (collapseBtn && wpwrap) {
-        collapseBtn.addEventListener('click', function() {
-          var folded = wpwrap.classList.toggle('folded');
-          collapseBtn.querySelector('.collapse-icon').textContent = folded ? '▶' : '◀';
-          localStorage.setItem('wp-admin-folded', folded ? 'true' : 'false');
-        });
-      }
-
-      // 2. Active Menu Sublink Highlighter (Longest Matching Prefix)
+      // 1. Active Menu Sublink Highlighter (Longest Matching Prefix)
       var currentPath = window.location.pathname;
       var bestSublink = null;
       var bestLength = 0;
@@ -638,17 +624,8 @@
         bestSublink.style.color = '#fff';
       }
 
-      // 3. Dismissible Notices
-      document.querySelectorAll('.notice.is-dismissible').forEach(function(notice) {
-        var btn = document.createElement('button');
-        btn.type = 'button';
-        btn.innerHTML = '✕';
-        btn.style.cssText = 'background:none;border:none;color:#787c82;cursor:pointer;margin-left:auto;font-size:12px;padding:2px 6px;';
-        btn.onclick = function() { notice.remove(); };
-        notice.appendChild(btn);
-      });
-
-      // 4. Flyout Submenu Viewport Positioning (Prevents clipping by sidebar scroll boundaries)
+      // 2. Flyout Submenu Viewport Positioning (Prevents clipping by sidebar scroll boundaries)
+      var wpwrap = document.getElementById('wpwrap');
       var menuListItems = document.querySelectorAll('#adminmenu > li.wp-menu-item');
       menuListItems.forEach(function(item) {
         var sub = item.querySelector('.wp-submenu');
