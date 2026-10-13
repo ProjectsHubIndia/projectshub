@@ -38,6 +38,14 @@ if not raw_secret:
         import secrets
         SECRET_KEY = 'django-insecure-dev-' + secrets.token_urlsafe(40)
 else:
+    # Validate SECRET_KEY in production for proper length and complexity
+    if IS_PRODUCTION or not DEBUG:
+        if len(raw_secret) < 50:
+            raise ImproperlyConfigured("SECRET_KEY must be at least 50 characters long in production.")
+        if len(set(raw_secret)) < 5:
+            raise ImproperlyConfigured("SECRET_KEY must contain at least 5 unique characters in production.")
+        if raw_secret.startswith('django-insecure-'):
+            raise ImproperlyConfigured("SECRET_KEY cannot start with 'django-insecure-' in production.")
     SECRET_KEY = raw_secret
 
 # Allowed Hosts: Explicit domains in production, platform wildcards, and local dev
@@ -119,13 +127,42 @@ NON_CANONICAL_HOST_SUFFIXES = ('.railway.app', '.vercel.app')
 # Number of trusted reverse proxies in front of Django that append to X-Forwarded-For.
 TRUSTED_PROXY_COUNT = int(os.environ.get('TRUSTED_PROXY_COUNT', '1' if IS_PRODUCTION else '0'))
 
-if not DEBUG:
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'True' if IS_PRODUCTION else 'False').lower() in ('true', '1', 'yes')
-    SECURE_HSTS_SECONDS = int(os.environ.get('SECURE_HSTS_SECONDS', 31536000))
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
+# Security Headers and SSL Configuration
+# Configure security settings for deployment compliance
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# Override security settings in development mode or during testing
+import sys
+if DEBUG and not IS_PRODUCTION:
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+    SECURE_SSL_REDIRECT = False
+    SECURE_HSTS_SECONDS = 0
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_HSTS_PRELOAD = False
+
+# Disable SSL redirect during testing to prevent test failures
+if 'test' in sys.argv:
+    SECURE_SSL_REDIRECT = False
+
+# Allow environment variable overrides for all security settings
+if 'SESSION_COOKIE_SECURE' in os.environ:
+    SESSION_COOKIE_SECURE = os.environ.get('SESSION_COOKIE_SECURE').lower() in ('true', '1', 'yes')
+if 'CSRF_COOKIE_SECURE' in os.environ:
+    CSRF_COOKIE_SECURE = os.environ.get('CSRF_COOKIE_SECURE').lower() in ('true', '1', 'yes')
+if 'SECURE_SSL_REDIRECT' in os.environ:
+    SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT').lower() in ('true', '1', 'yes')
+if 'SECURE_HSTS_SECONDS' in os.environ:
+    SECURE_HSTS_SECONDS = int(os.environ.get('SECURE_HSTS_SECONDS'))
+if 'SECURE_HSTS_INCLUDE_SUBDOMAINS' in os.environ:
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = os.environ.get('SECURE_HSTS_INCLUDE_SUBDOMAINS').lower() in ('true', '1', 'yes')
+if 'SECURE_HSTS_PRELOAD' in os.environ:
+    SECURE_HSTS_PRELOAD = os.environ.get('SECURE_HSTS_PRELOAD').lower() in ('true', '1', 'yes')
 
 INSTALLED_APPS = [
     'django.contrib.admin',

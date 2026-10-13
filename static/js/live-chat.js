@@ -478,6 +478,13 @@
     el.phcTeaserOpen.addEventListener('click', function () { setOpen(true); });
     el.phcTeaser.querySelector('.phc-teaser-close').addEventListener('click', function () { hideTeaser(true); });
 
+    // Dismiss the proactive teaser on scroll so it never blocks page content
+    // (e.g. footer social buttons) once the user begins interacting with the page.
+    var teaserHiddenOnScroll = false;
+    window.addEventListener('scroll', function () {
+      if (!teaserHiddenOnScroll && !el.phcTeaser.hidden) { teaserHiddenOnScroll = true; hideTeaser(false); }
+    }, { passive: true });
+
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && S.open && el.phChat.contains(document.activeElement)) { setOpen(false); el.phcLauncher.focus(); }
     });

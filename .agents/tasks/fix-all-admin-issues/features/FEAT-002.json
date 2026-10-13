@@ -1,0 +1,30 @@
+{
+  "id": "FEAT-002", 
+  "type": "fix",
+  "description": "Fix Django admin interface field reference errors, search syntax issues, and permission decorator problems in core/admin.py",
+  "status": "pending",
+  "steps": [
+    "Read complete core/admin.py file to identify all list_display field reference errors",
+    "Fix all search_fields syntax by replacing '=' with '__' for Django field lookups", 
+    "Validate all list_display fields exist on their corresponding model classes",
+    "Fix inline model configuration foreign key relationships",
+    "Add proper permission decorators to custom admin views",
+    "Complete any truncated admin class definitions",
+    "Review and fix admin method references to ensure they match actual model fields",
+    "Test admin interface loads without errors for all registered models"
+  ],
+  "acceptance_criteria": [
+    "Django admin interface loads at /admin/ without field reference errors",
+    "All search functionality works correctly with proper field lookup syntax",
+    "List displays show correct data for all model admin classes", 
+    "Inline models display and function properly",
+    "No JavaScript console errors in admin interface"
+  ],
+  "verification": [
+    "python manage.py check",
+    "Navigate to /admin/ and test each model's changelist and change form",
+    "Test search functionality for models with search_fields configured"
+  ],
+  "blocked_reason": null,
+  "findings": "Admin.py file contains field reference errors in list_display, incorrect search_fields syntax using '=' instead of '__', and potentially incomplete class definitions due to file truncation during investigation."
+}

@@ -1,0 +1,33 @@
+{
+  "id": "FEAT-004",
+  "type": "fix",
+  "description": "Fix dependencies, test coverage, build scripts, and deployment configuration for production readiness",
+  "status": "pending", 
+  "steps": [
+    "Update requirements.txt to pin all dependencies to specific versions for reproducible builds",
+    "Fix build_files.sh compatibility issues and add proper error handling for different environments",
+    "Expand test coverage in core/tests/ for critical model methods, views, and business logic",
+    "Add proper test database isolation and cleanup in test files",
+    "Create integration tests for user-facing features like contact forms and chat functionality", 
+    "Review and validate database migration dependencies in core/migrations/",
+    "Optimize static file collection and WhiteNoise configuration in settings.py",
+    "Add database connection pooling and optimization for production deployments"
+  ],
+  "acceptance_criteria": [
+    "All dependencies are pinned to specific versions in requirements.txt",
+    "Build script works correctly on different deployment environments",
+    "Test coverage is comprehensive for all critical functionality", 
+    "Tests run in isolation without interfering with each other",
+    "Static files are collected and served efficiently",
+    "Database migrations apply correctly in sequence"
+  ],
+  "verification": [
+    "pip install -r requirements.txt (fresh install)",
+    "bash build_files.sh (build script execution)",
+    "python manage.py test (full test suite)",
+    "python manage.py migrate (migration validation)",
+    "python manage.py collectstatic --noinput (static file collection)"
+  ],
+  "blocked_reason": null, 
+  "findings": "Requirements.txt uses loose version constraints, build_files.sh has bash-specific syntax that may fail on some systems, test coverage appears limited based on investigation of test files, and static file configuration may need optimization for production."
+}
