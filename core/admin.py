@@ -342,6 +342,12 @@ class ProjectAdmin(admin.ModelAdmin):
         )
     price_badge.short_description = 'Pricing'
 
+    def category_ref(self, obj):
+        if obj.category_ref:
+            return obj.category_ref.name
+        return '—'
+    category_ref.short_description = 'Category'
+
     def live_link(self, obj):
         if obj.slug:
             return format_html(
