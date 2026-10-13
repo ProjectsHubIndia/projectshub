@@ -27,6 +27,91 @@ admin.site.site_header = "ProjectsHub Administration"
 admin.site.site_title = "ProjectsHub Admin"
 admin.site.index_title = "ProjectsHub Control Dashboard"
 
+# Create a custom index view function to add dashboard context
+def admin_index_with_context(request, extra_context=None):
+    """Enhanced admin index view with dashboard context variables."""
+    extra_context = extra_context or {}
+    
+    try:
+        # Admin stats for dashboard widgets
+        extra_context['admin_stats'] = {
+            'service_interest': ContactInquiry.objects.filter(subject__icontains='service').count(),
+            'total_projects': Project.objects.count(),
+            'active_projects': Project.objects.filter(is_active=True).count(),
+            'featured_projects': Project.objects.filter(featured=True).count(),
+            'total_inquiries': ContactInquiry.objects.count(),
+            'new_inquiries': ContactInquiry.objects.filter(status='new').count(),
+            'converted_inquiries': ContactInquiry.objects.filter(status='converted').count(),
+            'total_messages': ContactMessage.objects.count(),
+            'total_leads': ProjectGateLead.objects.count(),
+            'total_ideas': IdeaSubmission.objects.count(),
+            'new_ideas': IdeaSubmission.objects.filter(status='new').count(),
+            'total_tools': AITool.objects.count(),
+            'free_tools': AITool.objects.filter(is_free=True).count(),
+            'total_blogs': BlogPost.objects.count(),
+            'published_blogs': BlogPost.objects.filter(is_published=True).count(),
+            'total_workshops': WorkshopCard.objects.count(),
+            'total_enrollments': WorkshopEnrollment.objects.count(),
+            'pending_enrollments': WorkshopEnrollment.objects.filter(status='pending').count(),
+            'total_chats': ChatbotConversation.objects.count(),
+            'chatbot_leads': ChatbotConversation.objects.filter(status='lead').count(),
+        }
+        
+        # Model counts for navigation badges
+        extra_context['model_counts'] = {
+            'project': Project.objects.count(),
+            'projectcategory': ProjectCategory.objects.count(),
+            'technology': Technology.objects.count(),
+            'aitool': AITool.objects.count(),
+            'service': Service.objects.count(),
+            'casestudy': CaseStudy.objects.count(),
+            'testimonial': Testimonial.objects.count(),
+            'contactinquiry': ContactInquiry.objects.count(),
+            'ideasubmission': IdeaSubmission.objects.count(),
+            'workshopcard': WorkshopCard.objects.count(),
+            'blogpost': BlogPost.objects.count(),
+            'page': Page.objects.count(),
+            'faq': FAQ.objects.count(),
+            'sitesettings': 1,
+            'navigationitem': NavigationItem.objects.count(),
+            'seodata': SEOData.objects.count(),
+            'redirect': Redirect.objects.count(),
+            'chatbotconversation': ChatbotConversation.objects.count(),
+        }
+        
+        # Recent activities for dashboard
+        extra_context['recent_blogs'] = list(BlogPost.objects.order_by('-created_at')[:4])
+        extra_context['recent_projects'] = list(Project.objects.order_by('-created_at')[:4])
+        extra_context['recent_inquiries'] = list(ContactInquiry.objects.order_by('-created_at')[:5])
+        
+        # System info
+        import sys
+        import django
+        from django.conf import settings as django_settings
+        extra_context['system_info'] = {
+            'python_version': sys.version.split()[0],
+            'django_version': django.get_version(),
+            'debug_mode': django_settings.DEBUG,
+            'db_engine': django_settings.DATABASES.get('default', {}).get('ENGINE', 'sqlite3').split('.')[-1],
+        }
+        
+        # Live chat waiting count
+        try:
+            from core.live_chat import inbox_queryset
+            extra_context['live_chat_waiting'] = inbox_queryset('waiting', request.user).count() if request.user.is_staff else 0
+        except Exception:
+            extra_context['live_chat_waiting'] = 0
+            
+    except Exception as e:
+        # Graceful fallback - don't break admin if there are DB issues
+        import logging
+        logging.getLogger(__name__).warning(f"Admin dashboard context error: {e}")
+        
+    return admin.site.index(request, extra_context)
+
+# Override the admin site's index method
+admin.site.index = admin_index_with_context
+
 
 def export_as_csv_action(description="Export selected to CSV", fields=None, exclude=None):
     """Reusable CSV export action generator for any ModelAdmin."""

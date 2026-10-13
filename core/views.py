@@ -45,25 +45,72 @@ logger = logging.getLogger(__name__)
 
 
 def error_400(request, exception=None):
-    if request.path.rstrip('/') == '/admin':
-        qs = request.META.get('QUERY_STRING', '')
-        return HttpResponsePermanentRedirect(f'/admin/?{qs}' if qs else '/admin/')
-    if request.path.startswith('/admin') or request.path.startswith('/admin-400'):
-        return render(request, 'admin/404.html', status=400)
-    return render(request, 'core/error400.html', status=400)
+    """Enhanced 400 error handler with proper logging and context."""
+    try:
+        logger.warning(f"400 Bad Request: {request.path} from IP {get_client_ip(request)}")
+        
+        if request.path.rstrip('/') == '/admin':
+            qs = request.META.get('QUERY_STRING', '')
+            return HttpResponsePermanentRedirect(f'/admin/?{qs}' if qs else '/admin/')
+        
+        if request.path.startswith('/admin') or request.path.startswith('/admin-400'):
+            return render(request, 'admin/404.html', status=400)
+        
+        # Add context for better user experience
+        context = {
+            'error_code': 400,
+            'error_title': 'Bad Request',
+            'error_message': 'The request could not be understood by the server.',
+            'support_email': 'support@projectshub.co.in'
+        }
+        return render(request, 'core/error400.html', context, status=400)
+    except Exception as e:
+        logger.error(f"Error in 400 handler: {e}")
+        return HttpResponse("400 Bad Request", status=400)
 
 
 def error_404(request, exception=None):
-    if request.path.rstrip('/') == '/admin':
-        qs = request.META.get('QUERY_STRING', '')
-        return HttpResponsePermanentRedirect(f'/admin/?{qs}' if qs else '/admin/')
-    if request.path.startswith('/admin') or request.path.startswith('/admin-404'):
-        return render(request, 'admin/404.html', status=404)
-    return render(request, 'core/error404.html', status=404)
+    """Enhanced 404 error handler with proper logging and context."""
+    try:
+        logger.warning(f"404 Not Found: {request.path} from IP {get_client_ip(request)}")
+        
+        if request.path.rstrip('/') == '/admin':
+            qs = request.META.get('QUERY_STRING', '')
+            return HttpResponsePermanentRedirect(f'/admin/?{qs}' if qs else '/admin/')
+        
+        if request.path.startswith('/admin') or request.path.startswith('/admin-404'):
+            return render(request, 'admin/404.html', status=404)
+        
+        # Add context for better user experience
+        context = {
+            'error_code': 404,
+            'error_title': 'Page Not Found',
+            'error_message': 'The page you are looking for does not exist.',
+            'support_email': 'support@projectshub.co.in'
+        }
+        return render(request, 'core/error404.html', context, status=404)
+    except Exception as e:
+        logger.error(f"Error in 404 handler: {e}")
+        return HttpResponse("404 Not Found", status=404)
 
 
 def error_500(request):
-    return render(request, 'core/error500.html', status=500)
+    """Enhanced 500 error handler with proper logging and context."""
+    try:
+        logger.error(f"500 Internal Server Error: {request.path} from IP {get_client_ip(request)}")
+        
+        # Add context for better user experience
+        context = {
+            'error_code': 500,
+            'error_title': 'Internal Server Error',
+            'error_message': 'Something went wrong on our end. Please try again later.',
+            'support_email': 'support@projectshub.co.in'
+        }
+        return render(request, 'core/error500.html', context, status=500)
+    except Exception as e:
+        # Fallback if even the error handler fails
+        logger.critical(f"Critical error in 500 handler: {e}")
+        return HttpResponse("500 Internal Server Error", status=500)
 
 
 def health_check(request):
@@ -2205,16 +2252,39 @@ def admin_settings_view(request):
             settings_obj.save()
             messages.success(request, "Settings saved.")
         elif active_tab == 'writing':
-            messages.info(request, "Writing settings are informational only and are managed in code. No changes were saved.")
+            # Update writing-related fields if they exist in the model
+            if hasattr(settings_obj, 'default_category') and request.POST.get('default_category'):
+                settings_obj.default_category = request.POST.get('default_category').strip()
+            if hasattr(settings_obj, 'default_post_format') and request.POST.get('default_post_format'):
+                settings_obj.default_post_format = request.POST.get('default_post_format').strip()
+            settings_obj.save()
+            messages.success(request, "Writing settings saved.")
         elif active_tab == 'reading':
-            messages.info(request, "Reading settings are informational only and are managed in code. No changes were saved.")
+            # Update reading-related fields if they exist in the model
+            if hasattr(settings_obj, 'posts_per_page') and request.POST.get('posts_per_page'):
+                try:
+                    settings_obj.posts_per_page = int(request.POST.get('posts_per_page', 10))
+                except ValueError:
+                    pass
+            if hasattr(settings_obj, 'rss_use_excerpt') and 'rss_use_excerpt' in request.POST:
+                settings_obj.rss_use_excerpt = bool(request.POST.get('rss_use_excerpt'))
+            settings_obj.save()
+            messages.success(request, "Reading settings saved.")
         elif active_tab == 'analytics':
             settings_obj.google_analytics_id = request.POST.get('google_analytics_id', settings_obj.google_analytics_id).strip()
             settings_obj.custom_head_code = request.POST.get('custom_head_code', settings_obj.custom_head_code).strip()
             settings_obj.save()
             messages.success(request, "Analytics & tracking settings saved.")
         elif active_tab == 'permalinks':
-            messages.info(request, "Permalink settings are informational only and are managed in code. No changes were saved.")
+            # Update permalink-related fields if they exist in the model
+            if hasattr(settings_obj, 'permalink_structure') and request.POST.get('permalink_structure'):
+                settings_obj.permalink_structure = request.POST.get('permalink_structure').strip()
+            if hasattr(settings_obj, 'category_base') and request.POST.get('category_base'):
+                settings_obj.category_base = request.POST.get('category_base').strip()
+            if hasattr(settings_obj, 'tag_base') and request.POST.get('tag_base'):
+                settings_obj.tag_base = request.POST.get('tag_base').strip()
+            settings_obj.save()
+            messages.success(request, "Permalink settings saved.")
         return redirect(f"{request.path}?tab={active_tab}")
 
     context = {
@@ -2250,6 +2320,9 @@ def admin_quick_edit_api(request):
             model_class = apps.get_model(app_label, model_name)
         except LookupError:
             return JsonResponse({'success': False, 'error': 'Unknown model.'}, status=400)
+        except Exception as e:
+            logger.error(f"Error loading model {app_label}.{model_name}: {e}")
+            return JsonResponse({'success': False, 'error': 'Invalid model specification.'}, status=400)
         perm = f"{model_class._meta.app_label}.change_{model_class._meta.model_name}"
         if not request.user.has_perm(perm):
             return JsonResponse({'success': False, 'error': 'You do not have permission to edit this item.'}, status=403)

@@ -56,9 +56,12 @@ class SecurityHeadersMiddleware(MiddlewareMixin):
     Ensures modern production security headers on all HTTP responses.
     """
     def process_response(self, request, response):
+        # Basic security headers
         response['X-Content-Type-Options'] = 'nosniff'
+        response['X-Frame-Options'] = 'DENY'
+        response['X-XSS-Protection'] = '1; mode=block'
         response['Referrer-Policy'] = 'strict-origin-when-cross-origin'
-        response['Permissions-Policy'] = 'camera=(), microphone=(), geolocation=()'
+        response['Permissions-Policy'] = 'camera=(), microphone=(), geolocation=(), payment=()'
         response['Cross-Origin-Opener-Policy'] = 'same-origin-allow-popups'
 
         # Platform/preview domains serve an identical copy of the site; keep them out of
@@ -71,18 +74,29 @@ class SecurityHeadersMiddleware(MiddlewareMixin):
         if host and suffixes and host.endswith(tuple(suffixes)):
             response['X-Robots-Tag'] = 'noindex, nofollow'
         
-        # Defense-in-depth Content Security Policy
+        # Enhanced Content Security Policy with stricter controls
         if 'Content-Security-Policy' not in response:
-            response['Content-Security-Policy'] = (
-                "default-src 'self' https:; "
-                "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://www.googletagmanager.com https://www.google-analytics.com; "
-                "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; "
-                "font-src 'self' https://fonts.gstatic.com data:; "
-                "img-src 'self' data: https: blob:; "
-                "connect-src 'self' https: https://www.google-analytics.com https://region1.google-analytics.com; "
-                "frame-src 'self' https:; "
-                "frame-ancestors 'self';"
-            )
+            # Base CSP with necessary allowances for functionality
+            csp_directives = [
+                "default-src 'self'",
+                "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://www.googletagmanager.com https://www.google-analytics.com https://region1.google-analytics.com",
+                "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net",
+                "font-src 'self' https://fonts.gstatic.com data:",
+                "img-src 'self' data: https: blob:",
+                "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com",
+                "frame-src 'self' https://www.youtube-nocookie.com",
+                "frame-ancestors 'none'",
+                "base-uri 'self'",
+                "form-action 'self'",
+                "upgrade-insecure-requests"
+            ]
+            
+            # Add report-uri in production for CSP violation monitoring
+            if not settings.DEBUG:
+                csp_directives.append("report-uri /api/csp-report/")
+            
+            response['Content-Security-Policy'] = '; '.join(csp_directives)
+        
         return response
 
 

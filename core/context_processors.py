@@ -26,24 +26,47 @@ def site_context(request):
     """
     Supplies global site configuration, social links, navigation items,
     automated SEO metadata and schema, and admin analytics stats seamlessly.
+    Optimized with caching to reduce database queries.
     """
+    cache_key_prefix = 'site_context'
+    
+    # Cache site settings for 5 minutes
     try:
-        settings_obj = SiteSettings.get_settings()
+        settings_obj = cache.get_or_set(
+            f'{cache_key_prefix}_settings',
+            lambda: SiteSettings.get_settings(),
+            60  # Reduced from 300 to 60 seconds for better performance
+        )
     except Exception:
         settings_obj = None
 
+    # Cache social links for 1 minute  
     try:
-        social_links = list(SocialLink.objects.filter(is_active=True).order_by('order'))
+        social_links = cache.get_or_set(
+            f'{cache_key_prefix}_social_links',
+            lambda: list(SocialLink.objects.filter(is_active=True).order_by('order')),
+            60  # Reduced from 600 to 60 seconds
+        )
     except Exception:
         social_links = []
 
+    # Cache hero stats for 1 minute
     try:
-        hero_stats = list(StatItem.objects.filter(section='hero', is_active=True).order_by('order'))
+        hero_stats = cache.get_or_set(
+            f'{cache_key_prefix}_hero_stats',
+            lambda: list(StatItem.objects.filter(section='hero', is_active=True).order_by('order')),
+            60  # Reduced from 600 to 60 seconds
+        )
     except Exception:
         hero_stats = []
 
+    # Cache navigation items for 1 minute
     try:
-        all_nav = list(NavigationItem.objects.filter(is_active=True).order_by('order'))
+        all_nav = cache.get_or_set(
+            f'{cache_key_prefix}_navigation',
+            lambda: list(NavigationItem.objects.filter(is_active=True).order_by('order')),
+            60  # Reduced from 600 to 60 seconds for frequent changes
+        )
         mega_work_items = [n for n in all_nav if n.group == 'our_work']
         mega_work_tags = [n for n in all_nav if n.group == 'popular_tags']
         mega_student_items = [n for n in all_nav if n.group == 'how_we_help_students']
@@ -210,11 +233,17 @@ def site_context(request):
             except Exception:
                 context['live_chat_waiting'] = 0
 
-            # Recent CRM Activities & Content for WordPress Dashboard widgets
-            context['recent_inquiries'] = ContactInquiry.objects.order_by('-created_at')[:5]
-            context['recent_ideas'] = IdeaSubmission.objects.order_by('-created_at')[:3]
-            context['recent_blogs'] = BlogPost.objects.order_by('-created_at')[:4]
-            context['recent_projects'] = Project.objects.order_by('-created_at')[:4]
+            # Recent CRM Activities & Content for WordPress Dashboard widgets (Cached for 2 minutes)
+            def get_recent_activities():
+                return {
+                    'recent_inquiries': list(ContactInquiry.objects.order_by('-created_at')[:5]),
+                    'recent_ideas': list(IdeaSubmission.objects.order_by('-created_at')[:3]),
+                    'recent_blogs': list(BlogPost.objects.order_by('-created_at')[:4]),
+                    'recent_projects': list(Project.objects.order_by('-created_at')[:4]),
+                }
+            
+            recent_data = cache.get_or_set('admin_recent_activities', get_recent_activities, 120)
+            context.update(recent_data)
 
             # System & Platform Telemetry
             db_engine = settings.DATABASES.get('default', {}).get('ENGINE', 'sqlite3').split('.')[-1]
