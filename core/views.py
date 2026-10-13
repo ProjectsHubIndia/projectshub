@@ -2205,14 +2205,16 @@ def admin_settings_view(request):
             settings_obj.save()
             messages.success(request, "Settings saved.")
         elif active_tab == 'writing':
-            messages.success(request, "Writing settings saved.")
+            messages.info(request, "Writing settings are informational only and are managed in code. No changes were saved.")
         elif active_tab == 'reading':
-            messages.success(request, "Reading settings saved.")
+            messages.info(request, "Reading settings are informational only and are managed in code. No changes were saved.")
         elif active_tab == 'analytics':
             settings_obj.google_analytics_id = request.POST.get('google_analytics_id', settings_obj.google_analytics_id).strip()
             settings_obj.custom_head_code = request.POST.get('custom_head_code', settings_obj.custom_head_code).strip()
             settings_obj.save()
             messages.success(request, "Analytics & tracking settings saved.")
+        elif active_tab == 'permalinks':
+            messages.info(request, "Permalink settings are informational only and are managed in code. No changes were saved.")
         return redirect(f"{request.path}?tab={active_tab}")
 
     context = {

@@ -127,6 +127,7 @@ class BlogSectionInline(admin.StackedInline):
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):
     list_display = ('site_name', 'primary_email', 'phone', 'location', 'updated_at')
+    readonly_fields = ('created_at', 'updated_at')
     fieldsets = (
         ('Branding & Titles', {
             'fields': ('site_name', 'tagline', 'hero_headline_prefix', 'hero_headline_highlight', 'hero_subtitle')
@@ -144,6 +145,14 @@ class SiteSettingsAdmin(admin.ModelAdmin):
         ('Analytics & Tracking', {
             'fields': ('google_analytics_id', 'custom_head_code'),
             'description': 'Configure Google Analytics (GA4 / Universal Analytics) Measurement ID and custom tracking code snippets (rendered in <head>).'
+        }),
+        ('Appearance', {
+            'fields': ('active_theme',),
+            'description': 'Select the active frontend theme. Changes take effect immediately for all visitors.',
+        }),
+        ('Record Info', {
+            'classes': ('collapse',),
+            'fields': ('created_at', 'updated_at'),
         }),
     )
 
@@ -673,7 +682,24 @@ class BlogPostAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
     filter_horizontal = ('tags',)
     inlines = [BlogSectionInline]
+    readonly_fields = ('created_at', 'updated_at')
     actions = ['mark_published', 'mark_draft', 'duplicate_post', export_as_csv_action('Export blog posts to CSV')]
+    fieldsets = (
+        ('Content', {
+            'fields': ('title', 'slug', 'category', 'category_ref', 'tags', 'excerpt', 'lead', 'content'),
+        }),
+        ('Visuals', {
+            'fields': ('emoji', 'gradient_from', 'gradient_to', 'accent', 'featured_image', 'image', 'image_url'),
+        }),
+        ('Publishing', {
+            'fields': ('author_name', 'author_role', 'author_initials', 'read_time', 'published_at',
+                       'is_active', 'is_published', 'is_featured', 'order'),
+        }),
+        ('Record Info', {
+            'classes': ('collapse',),
+            'fields': ('created_at', 'updated_at'),
+        }),
+    )
 
     def duplicate_post(self, request, queryset):
         count = 0
@@ -863,6 +889,7 @@ class IdeaSubmissionAdmin(admin.ModelAdmin):
     list_editable = ('status',)
     list_filter = ('status', 'budget', 'timeline', 'created_at')
     search_fields = ('full_name', 'email', 'project_title', 'description')
+    readonly_fields = ('created_at',)
     actions = [
         'mark_reviewing', 'mark_accepted', 'mark_declined', 'mark_completed',
         export_as_csv_action('Export idea submissions to CSV')
@@ -922,7 +949,28 @@ class WorkshopDayInline(admin.TabularInline):
 class WorkshopCardAdmin(admin.ModelAdmin):
     list_display = ('title', 'date', 'price_label', 'seats', 'is_active', 'is_featured', 'order')
     list_editable = ('is_active', 'is_featured', 'order')
+    list_filter = ('is_active', 'is_featured')
+    search_fields = ('title', 'subtitle', 'description')
     inlines = [WorkshopDayInline]
+    readonly_fields = ('created_at',)
+    fieldsets = (
+        ('Workshop Details', {
+            'fields': ('title', 'subtitle', 'description'),
+        }),
+        ('Schedule & Logistics', {
+            'fields': ('date', 'time', 'mode', 'seats'),
+        }),
+        ('Pricing & Enrollment', {
+            'fields': ('price', 'price_label', 'enroll_url'),
+        }),
+        ('Visibility & Ordering', {
+            'fields': ('is_active', 'is_featured', 'order'),
+        }),
+        ('Record Info', {
+            'classes': ('collapse',),
+            'fields': ('created_at',),
+        }),
+    )
 
 
 @admin.register(WorkshopDay)
@@ -940,6 +988,7 @@ class WorkshopEnrollmentAdmin(admin.ModelAdmin):
     list_editable = ('status',)
     list_filter = ('status', 'experience', 'workshop')
     search_fields = ('full_name', 'email', 'phone')
+    readonly_fields = ('created_at',)
     actions = [
         'mark_confirmed', 'mark_attended', 'mark_cancelled',
         export_as_csv_action('Export workshop enrollments to CSV')
@@ -1528,9 +1577,17 @@ class PageAdmin(admin.ModelAdmin):
 
     def duplicate_page(self, request, queryset):
         for p in queryset:
+            orig_title = p.title
+            orig_slug = p.slug or 'page'
             p.pk = None
-            p.title = f"{p.title} (Copy)"
-            p.slug = f"{p.slug}-copy"
+            p.title = f"{orig_title} (Copy)"
+            base_slug = f"{orig_slug}-copy"
+            new_slug = base_slug
+            idx = 1
+            while Page.objects.filter(slug=new_slug).exists():
+                new_slug = f"{base_slug}-{idx}"
+                idx += 1
+            p.slug = new_slug
             p.status = 'draft'
             p.is_front_page = False
             p.save()
