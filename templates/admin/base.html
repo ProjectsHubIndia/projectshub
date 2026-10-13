@@ -1,20 +1,20 @@
-{% load i18n static %}<!DOCTYPE html>
+{% load i18n static %}
+<!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:'en-us' }}" dir="{{ LANGUAGE_BIDI|yesno:'rtl,ltr,auto' }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="NONE,NOARCHIVE">
-  <title>{% block title %}{% endblock %} | ProjectsHub</title>
+  <title>{% block title %}{% endblock %}</title>
   
   <!-- WordPress System Typography & Icon Fonts -->
   <link rel="stylesheet" href="{% static 'admin/css/base.css' %}">
   <link rel="stylesheet" href="{% static 'admin/css/responsive.css' %}">
-  {% block extrastyle %}{% endblock %}
   <link rel="stylesheet" href="{% static 'css/wp-admin.css' %}?v=10">
+  {% block extrastyle %}{% endblock %}
   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'image/Favicon-new/favicon-32x32.png' %}">
   
-  {% block extrahead %}{% endblock %}
   {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE">{% endblock %}
+  {% block extrahead %}{% endblock %}
 </head>
 <body class="wp-admin wp-core-ui js {% block bodyclass %}{% endblock %}" data-admin-utc-offset="{% now 'Z' %}">
 
@@ -379,8 +379,6 @@
 
         <li class="wp-menu-separator"></li>
 
-        <li class="wp-menu-separator"></li>
-
         <!-- 9. Appearance -->
         <li class="wp-menu-item {% if '/admin/appearance/' in request.path or '/admin/core/navigationitem/' in request.path or '/admin/core/megamenutag/' in request.path or '/admin/core/sociallink/' in request.path or '/admin/core/statitem/' in request.path %}current{% endif %}" data-path="/admin/appearance/menus/">
           <a href="/admin/appearance/menus/" class="wp-menu-link">
@@ -693,5 +691,6 @@
   <script src="{% static 'js/wp-admin.js' %}?v=10"></script>
 
   {% block footer %}{% endblock %}
+  {% block extra_js %}{% endblock %}
 </body>
 </html>

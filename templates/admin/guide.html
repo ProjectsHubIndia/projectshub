@@ -1,8 +1,16 @@
 {% extends "admin/base.html" %}
 {% load i18n static %}
 
-{% block title %}Master Project Guide & Operations Manual | ProjectsHub{% endblock %}
+{% block title %}Master Project Guide &amp; Operations Manual | ProjectsHub Admin{% endblock %}
 {% block content_title %}📖 Project Guide & Operations Manual{% endblock %}
+
+{% block breadcrumbs %}
+<div class="wp-breadcrumbs" aria-label="Breadcrumb">
+  <a href="{% url 'admin:index' %}">Dashboard</a>
+  <span class="wp-breadcrumb-sep">›</span>
+  <span>Project Guide</span>
+</div>
+{% endblock %}
 
 {% block extrastyle %}
 {{ block.super }}

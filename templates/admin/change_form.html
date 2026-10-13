@@ -361,7 +361,9 @@
               <div class="inside" style="padding:12px 14px;">
                 <div class="category-tabs" style="margin-bottom:8px;font-size:12px;display:flex;align-items:center;justify-content:space-between;">
                   <strong style="color:#2271b1;border-bottom:2px solid #2271b1;padding-bottom:2px;">Select Category</strong>
-                  {% if adminform.form.category_ref.field.required or adminform.form.category.field.required %}
+                  {% if 'category_ref' in adminform.form.fields and adminform.form.category_ref.field.required %}
+                    <span class="field-req-pill req">* Required</span>
+                  {% elif 'category' in adminform.form.fields and adminform.form.category.field.required %}
                     <span class="field-req-pill req">* Required</span>
                   {% else %}
                     <span class="field-req-pill opt">Optional</span>
@@ -414,7 +416,9 @@
               <div class="inside" style="padding:12px 14px;">
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
                   <span style="font-size:12px;color:#646970;">Main visual asset</span>
-                  {% if adminform.form.image.field.required or adminform.form.thumbnail.field.required %}
+                  {% if 'image' in adminform.form.fields and adminform.form.image.field.required %}
+                    <span class="field-req-pill req">* Required</span>
+                  {% elif 'thumbnail' in adminform.form.fields and adminform.form.thumbnail.field.required %}
                     <span class="field-req-pill req">* Required</span>
                   {% else %}
                     <span class="field-req-pill opt">Optional</span>

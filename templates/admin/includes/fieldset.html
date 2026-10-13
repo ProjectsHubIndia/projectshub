@@ -6,11 +6,13 @@
     {% for line in fieldset %}
         {% for field in line %}
             {# Suppress fields that are already rendered in WordPress header/sidebar widgets #}
-            {% if opts.model_name == 'page' and field.field.name in "title,slug,template,order,is_front_page,acf_blocks" %}
+            {# Use explicit equality checks to avoid substring-match false positives #}
+            {% with fname=field.field.name %}
+            {% if opts.model_name == 'page' and fname == 'title' or opts.model_name == 'page' and fname == 'slug' or opts.model_name == 'page' and fname == 'template' or opts.model_name == 'page' and fname == 'order' or opts.model_name == 'page' and fname == 'is_front_page' or opts.model_name == 'page' and fname == 'acf_blocks' %}
                 {# Suppressed for Page because rendered in #titlediv, #pageparentdiv sidebar, or ACF builder #}
-            {% elif opts.model_name != 'page' and field.field.name in "title,name,slug" %}
+            {% elif opts.model_name != 'page' and fname == 'title' or opts.model_name != 'page' and fname == 'name' or opts.model_name != 'page' and fname == 'slug' %}
                 {# Suppressed because rendered in WordPress #titlediv header #}
-            {% elif field.field.name in "category,category_ref,tags" %}
+            {% elif fname == 'category' or fname == 'category_ref' or fname == 'tags' %}
                 {# Suppressed because rendered in WordPress sidebar category/tags boxes #}
             {% else %}
                 <div class="form-row{% if line.fields|length == 1 and line.errors %} errors{% endif %}{% if not line.has_visible_field %} hidden{% endif %} field-{{ field.field.name }}{% if field.field.field and field.field.field.required %} is-required{% else %} is-optional{% endif %}">
@@ -53,6 +55,7 @@
                     {% endif %}
                 </div>
             {% endif %}
+            {% endwith %}
         {% endfor %}
     {% endfor %}
 </fieldset>

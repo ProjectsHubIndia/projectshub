@@ -1,9 +1,17 @@
 {% extends "admin/base_site.html" %}
 {% load i18n static %}
 
-{% block title %}Plugins | ProjectsHub{% endblock %}
+{% block title %}Plugins | ProjectsHub Admin{% endblock %}
 {% block content_title %}Plugins{% endblock %}
 {% block bodyclass %}{{ block.super }} plugins-php wp-core-ui{% endblock %}
+
+{% block breadcrumbs %}
+<div class="wp-breadcrumbs" aria-label="Breadcrumb">
+  <a href="{% url 'admin:index' %}">Dashboard</a>
+  <span class="wp-breadcrumb-sep">›</span>
+  <span>Plugins</span>
+</div>
+{% endblock %}
 
 {% block extrastyle %}
   {{ block.super }}
