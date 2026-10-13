@@ -271,3 +271,28 @@ class AllowedHostsAndErrorViewsTests(TestCase):
         res = self.client.get('/400/')
         self.assertEqual(res.status_code, 400)
         self.assertIn(b'400 - Bad Request', res.content)
+
+
+class ManagementCommandTests(TestCase):
+    """Test that management commands validate properly."""
+    
+    def test_django_check_passes_with_zero_errors(self):
+        """Smoke test that runs 'manage.py check' and asserts zero errors."""
+        from django.core.management import call_command
+        from django.core.management.base import CommandError
+        from io import StringIO
+        
+        try:
+            # Capture output
+            out = StringIO()
+            call_command('check', stdout=out, stderr=out)
+            
+            # If we get here without exception, the check passed
+            output = out.getvalue()
+            
+            # Ensure no critical errors in output
+            self.assertNotIn('ERROR', output.upper())
+            self.assertNotIn('CRITICAL', output.upper())
+            
+        except CommandError as e:
+            self.fail(f"Django system check failed with errors: {e}")

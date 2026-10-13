@@ -44,6 +44,37 @@ class ModelTests(TestCase):
         self.assertEqual(str(inquiry), "John Doe (john@example.com) — Test Inquiry")
         self.assertEqual(inquiry.status, "new")
 
+    def test_contact_inquiry_has_required_admin_fields(self):
+        """Ensure ContactInquiry has all fields referenced in admin.py."""
+        inquiry = ContactInquiry.objects.create(
+            name="Test User",
+            email="test@example.com",
+            phone="+91 9876543210",
+            subject="Service Inquiry", 
+            message="I need AI services",
+            status="new",
+            source_page="/contact/",
+            admin_notes="Test admin notes"
+        )
+        
+        # Check that all admin.py fields exist and are accessible
+        self.assertTrue(hasattr(inquiry, 'name'))
+        self.assertTrue(hasattr(inquiry, 'email'))
+        self.assertTrue(hasattr(inquiry, 'phone'))
+        self.assertTrue(hasattr(inquiry, 'subject'))
+        self.assertTrue(hasattr(inquiry, 'message'))
+        self.assertTrue(hasattr(inquiry, 'status'))
+        self.assertTrue(hasattr(inquiry, 'admin_notes'))
+        self.assertTrue(hasattr(inquiry, 'ip_address'))
+        self.assertTrue(hasattr(inquiry, 'created_at'))
+        
+        # Verify field values
+        self.assertEqual(inquiry.name, "Test User")
+        self.assertEqual(inquiry.email, "test@example.com")
+        self.assertEqual(inquiry.phone, "+91 9876543210")
+        self.assertEqual(inquiry.subject, "Service Inquiry")
+        self.assertEqual(inquiry.admin_notes, "Test admin notes")
+
     def test_site_settings_singleton(self):
         settings = SiteSettings.get_settings()
         self.assertIsNotNone(settings)

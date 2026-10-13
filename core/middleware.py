@@ -85,7 +85,7 @@ class SecurityHeadersMiddleware(MiddlewareMixin):
                 "img-src 'self' data: https: blob:",
                 "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com",
                 "frame-src 'self' https://www.youtube-nocookie.com",
-                "frame-ancestors 'none'",
+                "frame-ancestors 'self'",
                 "base-uri 'self'",
                 "form-action 'self'",
                 "upgrade-insecure-requests"
