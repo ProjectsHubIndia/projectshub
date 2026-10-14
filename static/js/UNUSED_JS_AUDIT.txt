@@ -1,0 +1,40 @@
+JavaScript Files Audit - Unused Files Report
+==============================================
+Generated as part of FEAT-003 (JavaScript optimization)
+
+UNUSED FILES (Not referenced in any template):
+----------------------------------------------
+
+1. ai-chatbot.js
+   - Reason: CSS file (ai-chatbot.css) is referenced in project_detail.html, workshop.html, and workshop-day.html, but the corresponding JS file is never loaded in any template.
+   - Recommendation: NEEDS REVIEW - If the chatbot requires JavaScript functionality, this should be added to the relevant templates. If it's CSS-only, the JS file can be deleted.
+
+2. modern-platform.js
+   - Reason: No references found in any HTML template across the entire templates/ directory.
+   - Recommendation: SAFE TO DELETE - Unless this file is dynamically loaded by another script or used for future features, it appears completely unused.
+
+
+USED FILES (Referenced and actively loaded):
+--------------------------------------------
+
+✓ aara-robot.js - Used in templates/core/index.html (homepage 3D robot)
+✓ ai_roadmap.js - Used in templates/core/AI_roadmap.html (AI roadmap page)
+✓ cookie-consent.js - Used in templates/core/base.html (global)
+✓ enroll-modal.js - Used in templates/core/workshop.html, workshop-day.html, workshop_detail.html
+✓ idea-modal.js - Used in templates/core/base.html (global)
+✓ interested_model.js - Used in templates/core/project_detail.html
+✓ live-chat.js - Used in templates/core/base.html (global)
+✓ live-chat-admin.js - Used in templates/admin/live_chat.html
+✓ project-details.js - Used in templates/core/project_detail.html, workshop-day.html, workshop_detail.html
+✓ script.js - Used in templates/core/base.html (global core functionality)
+✓ seo-dashboard.js - Used in templates/admin/seo_dashboard.html
+✓ social-share.js - Used in templates/core/workshop.html, workshop-day.html
+✓ wp-acf-blocks.js - Used in templates/admin/change_form.html (admin ACF blocks)
+✓ wp-admin.js - Used in templates/admin/base.html (admin functionality)
+
+
+NOTES:
+------
+- All referenced JS files use the `defer` attribute for performance (good practice).
+- Consider moving page-specific scripts (ai_roadmap.js, social-share.js) from global to template-specific blocks.
+- The ai-chatbot.js file needs investigation - CSS is loaded but JS is missing from templates.
