@@ -86,14 +86,31 @@ for env_key in ('VERCEL_URL', 'VERCEL_BRANCH_URL', 'VERCEL_PROJECT_PRODUCTION_UR
         if clean_val and '*' not in ALLOWED_HOSTS and clean_val not in ALLOWED_HOSTS:
             ALLOWED_HOSTS.append(clean_val)
 
-# CSRF Trusted Origins: Specific domains, platform subdomains, and local dev
+# Reverse proxy headers & forwarding for Railway, Heroku & Vercel
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
+
+# CSRF Trusted Origins: Specific domains, platform subdomains, ports, and local dev
 CSRF_TRUSTED_ORIGINS = [
     'https://projectshub.co.in',
+    'https://projectshub.co.in:443',
+    'http://projectshub.co.in',
     'https://www.projectshub.co.in',
+    'https://www.projectshub.co.in:443',
+    'http://www.projectshub.co.in',
     'https://projectshub-production.up.railway.app',
+    'https://projectshub-production.up.railway.app:443',
+    'http://projectshub-production.up.railway.app',
     'https://*.railway.app',
+    'https://*.railway.app:443',
+    'http://*.railway.app',
     'https://*.up.railway.app',
+    'https://*.up.railway.app:443',
+    'http://*.up.railway.app',
     'https://*.vercel.app',
+    'https://*.vercel.app:443',
+    'http://*.vercel.app',
     'http://127.0.0.1:8000',
     'http://localhost:8000',
     'http://127.0.0.1:8080',
@@ -103,16 +120,24 @@ extra_origins = os.environ.get('CSRF_TRUSTED_ORIGINS', '')
 if extra_origins:
     CSRF_TRUSTED_ORIGINS.extend([o.strip() for o in extra_origins.split(',') if o.strip()])
 
-for env_key in ('VERCEL_URL', 'VERCEL_BRANCH_URL', 'VERCEL_PROJECT_PRODUCTION_URL', 'RAILWAY_PUBLIC_DOMAIN'):
+for env_key in ('VERCEL_URL', 'VERCEL_BRANCH_URL', 'VERCEL_PROJECT_PRODUCTION_URL', 'RAILWAY_PUBLIC_DOMAIN', 'RAILWAY_STATIC_URL', 'RAILWAY_TCP_PROXY_DOMAIN', 'SITE_DOMAIN'):
     val = os.environ.get(env_key, '').strip()
     if val:
         clean_domain = val.replace('https://', '').replace('http://', '').split('/')[0]
-        clean_origin = f'https://{clean_domain}'
-        if clean_origin not in CSRF_TRUSTED_ORIGINS:
-            CSRF_TRUSTED_ORIGINS.append(clean_origin)
+        for scheme in ('https', 'http'):
+            for o in (f'{scheme}://{clean_domain}', f'{scheme}://{clean_domain}:443'):
+                if o not in CSRF_TRUSTED_ORIGINS:
+                    CSRF_TRUSTED_ORIGINS.append(o)
 
-# Reverse proxy SSL header for Vercel & Railway
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+for host in ALLOWED_HOSTS:
+    if host and host not in ('*', 'localhost', '127.0.0.1', '0.0.0.0', 'testserver'):
+        clean = host.lstrip('.')
+        for scheme in ('https', 'http'):
+            for o in (f"{scheme}://{clean}", f"{scheme}://{clean}:443", f"{scheme}://*.{clean}", f"{scheme}://*.{clean}:443"):
+                if o not in CSRF_TRUSTED_ORIGINS:
+                    CSRF_TRUSTED_ORIGINS.append(o)
+
+CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 
 # Base site domain / URL configuration (empty by default to enable full dynamic auto-detection)
 SITE_URL = os.environ.get('SITE_URL', '').rstrip('/')

@@ -25,6 +25,12 @@
     </div>
 
     <!-- Error Notice if any -->
+    {% if request.GET.csrf_retry %}
+    <div id="login_error" class="notice notice-warning" style="background:#fff8e5;border-left:4px solid #dba617;color:#614700;padding:12px;margin-bottom:16px;border-radius:4px;" role="alert">
+      <strong>Session Refreshed:</strong> Your security session was renewed. Please enter your credentials to log in.
+    </div>
+    {% endif %}
+
     {% if form.errors and not form.non_field_errors %}
     <div id="login_error" class="notice notice-error" role="alert">
       <strong>Error:</strong> {% blocktranslate count counter=form.errors.items|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktranslate %}

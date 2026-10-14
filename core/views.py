@@ -7,7 +7,7 @@ import random
 import html
 import re
 from django.shortcuts import render, get_object_or_404
-from django.http import JsonResponse, HttpResponse, HttpResponsePermanentRedirect
+from django.http import JsonResponse, HttpResponse, HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from django.db import models
@@ -111,6 +111,39 @@ def error_500(request):
         # Fallback if even the error handler fails
         logger.critical(f"Critical error in 500 handler: {e}")
         return HttpResponse("500 Internal Server Error", status=500)
+
+
+def csrf_failure(request, reason=""):
+    """
+    Enhanced CSRF failure handler.
+    Logs diagnostics and provides seamless recovery for admin login forms.
+    """
+    origin = request.META.get('HTTP_ORIGIN', '')
+    referer = request.META.get('HTTP_REFERER', '')
+    try:
+        host = request.get_host()
+    except Exception:
+        host = ''
+    logger.warning(
+        f"CSRF verification failed: reason='{reason}', path='{request.path}', "
+        f"origin='{origin}', referer='{referer}', host='{host}', ip='{get_client_ip(request)}'"
+    )
+
+    # If the user was submitting the admin login form, rotate token and redirect
+    # back to /admin/login/?csrf_retry=1 with a refreshed token so they are never stuck
+    if request.path.rstrip('/') in ('/admin/login', '/admin'):
+        from django.middleware.csrf import rotate_token
+        rotate_token(request)
+        return HttpResponseRedirect('/admin/login/?csrf_retry=1')
+
+    context = {
+        'error_code': 403,
+        'error_title': 'Security Verification Required',
+        'error_message': 'Your security session has expired or could not be verified. Please refresh the page and try again.',
+        'support_email': 'support@projectshub.co.in'
+    }
+    return render(request, 'core/error400.html', context, status=403)
+
 
 
 def health_check(request):
