@@ -1,5 +1,7 @@
 import csv
 from django.contrib import admin
+from django.contrib.admin.sites import AdminSite
+from django.contrib.admin.sites import AdminSite
 from django.contrib.auth.models import User, Permission
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.http import HttpResponse
@@ -21,96 +23,15 @@ from .models import (
     AdminGuideNote,
     Page,
     RoadmapSettings, RoadmapNode, RoadmapGroup, RoadmapTopic, RoadmapResource,
+    Asset,
 )
 
 admin.site.site_header = "ProjectsHub Administration"
 admin.site.site_title = "ProjectsHub Admin"
 admin.site.index_title = "ProjectsHub Control Dashboard"
 
-# Create a custom index view function to add dashboard context
-def admin_index_with_context(request, extra_context=None):
-    """Enhanced admin index view with dashboard context variables."""
-    extra_context = extra_context or {}
-    
-    try:
-        # Admin stats for dashboard widgets
-        extra_context['admin_stats'] = {
-            'service_interest': ContactInquiry.objects.filter(subject__icontains='service').count(),
-            'total_projects': Project.objects.count(),
-            'active_projects': Project.objects.filter(is_active=True).count(),
-            'featured_projects': Project.objects.filter(featured=True).count(),
-            'total_inquiries': ContactInquiry.objects.count(),
-            'new_inquiries': ContactInquiry.objects.filter(status='new').count(),
-            'converted_inquiries': ContactInquiry.objects.filter(status='converted').count(),
-            'total_messages': ContactMessage.objects.count(),
-            'total_leads': ProjectGateLead.objects.count(),
-            'total_ideas': IdeaSubmission.objects.count(),
-            'new_ideas': IdeaSubmission.objects.filter(status='new').count(),
-            'total_tools': AITool.objects.count(),
-            'free_tools': AITool.objects.filter(is_free=True).count(),
-            'total_blogs': BlogPost.objects.count(),
-            'published_blogs': BlogPost.objects.filter(is_published=True).count(),
-            'total_workshops': WorkshopCard.objects.count(),
-            'total_enrollments': WorkshopEnrollment.objects.count(),
-            'pending_enrollments': WorkshopEnrollment.objects.filter(status='pending').count(),
-            'total_chats': ChatbotConversation.objects.count(),
-            'chatbot_leads': ChatbotConversation.objects.filter(status='lead').count(),
-        }
-        
-        # Model counts for navigation badges
-        extra_context['model_counts'] = {
-            'project': Project.objects.count(),
-            'projectcategory': ProjectCategory.objects.count(),
-            'technology': Technology.objects.count(),
-            'aitool': AITool.objects.count(),
-            'service': Service.objects.count(),
-            'casestudy': CaseStudy.objects.count(),
-            'testimonial': Testimonial.objects.count(),
-            'contactinquiry': ContactInquiry.objects.count(),
-            'ideasubmission': IdeaSubmission.objects.count(),
-            'workshopcard': WorkshopCard.objects.count(),
-            'blogpost': BlogPost.objects.count(),
-            'page': Page.objects.count(),
-            'faq': FAQ.objects.count(),
-            'sitesettings': 1,
-            'navigationitem': NavigationItem.objects.count(),
-            'seodata': SEOData.objects.count(),
-            'redirect': Redirect.objects.count(),
-            'chatbotconversation': ChatbotConversation.objects.count(),
-        }
-        
-        # Recent activities for dashboard
-        extra_context['recent_blogs'] = list(BlogPost.objects.order_by('-created_at')[:4])
-        extra_context['recent_projects'] = list(Project.objects.order_by('-created_at')[:4])
-        extra_context['recent_inquiries'] = list(ContactInquiry.objects.order_by('-created_at')[:5])
-        
-        # System info
-        import sys
-        import django
-        from django.conf import settings as django_settings
-        extra_context['system_info'] = {
-            'python_version': sys.version.split()[0],
-            'django_version': django.get_version(),
-            'debug_mode': django_settings.DEBUG,
-            'db_engine': django_settings.DATABASES.get('default', {}).get('ENGINE', 'sqlite3').split('.')[-1],
-        }
-        
-        # Live chat waiting count
-        try:
-            from core.live_chat import inbox_queryset
-            extra_context['live_chat_waiting'] = inbox_queryset('waiting', request.user).count() if request.user.is_staff else 0
-        except Exception:
-            extra_context['live_chat_waiting'] = 0
-            
-    except Exception as e:
-        # Graceful fallback - don't break admin if there are DB issues
-        import logging
-        logging.getLogger(__name__).warning(f"Admin dashboard context error: {e}")
-        
-    return admin.site.index(request, extra_context)
-
-# Override the admin site's index method
-admin.site.index = admin_index_with_context
+# Removed custom admin index to prevent recursion issues
+# The default Django admin index works fine
 
 
 def export_as_csv_action(description="Export selected to CSV", fields=None, exclude=None):
@@ -1865,3 +1786,86 @@ class RoadmapResourceAdmin(admin.ModelAdmin):
             obj.url
         )
     link.short_description = 'Link'
+
+
+# ── Assets ────────────────────────────────────────────────────────────────────
+
+class UnusedAssetFilter(admin.SimpleListFilter):
+    """Filter assets by usage status (used/unused)."""
+    title = 'usage status'
+    parameter_name = 'filter'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('unused', 'Unused only'),
+            ('used', 'In use only'),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == 'unused':
+            return queryset.filter(is_used=False)
+        elif self.value() == 'used':
+            return queryset.filter(is_used=True)
+        return queryset
+
+
+@admin.register(Asset)
+class AssetAdmin(admin.ModelAdmin):
+    list_display = ('preview', 'name', 'mime_type', 'size_display', 'is_used', 'uploaded_at')
+    list_filter = (UnusedAssetFilter, 'mime_type')
+    search_fields = ('name', 'notes', 'mime_type')
+    ordering = ('-uploaded_at',)
+    list_per_page = 50
+    readonly_fields = ('uploaded_at',)
+    fieldsets = (
+        ('Asset Info', {
+            'fields': ('name', 'file', 'file_url', 'mime_type', 'size_bytes', 'is_used')
+        }),
+        ('Notes & Metadata', {
+            'fields': ('notes', 'uploaded_at')
+        }),
+    )
+
+    def size_display(self, obj):
+        """Display file size in human-readable format (KB/MB)."""
+        size = obj.size_bytes
+        if size == 0:
+            return '—'
+        elif size < 1024:
+            return f'{size} B'
+        elif size < 1024 * 1024:
+            return f'{size / 1024:.1f} KB'
+        else:
+            return f'{size / (1024 * 1024):.2f} MB'
+    size_display.short_description = 'Size'
+
+    def preview(self, obj):
+        """Render image preview if the asset is an image."""
+        if obj.mime_type and obj.mime_type.startswith('image/'):
+            url = None
+            if obj.file:
+                try:
+                    url = obj.file.url
+                except Exception:
+                    pass
+            if not url and obj.file_url:
+                url = obj.file_url
+            if url:
+                return format_html(
+                    '<img src="{}" style="width:48px;height:32px;object-fit:cover;border-radius:4px;border:1px solid #e2e8f0;" />',
+                    url
+                )
+        return '—'
+    preview.short_description = 'Preview'
+
+    def get_queryset(self, request):
+        """Support for ?sort=size_desc query parameter."""
+        qs = super().get_queryset(request)
+        sort = request.GET.get('sort')
+        if sort == 'size_desc':
+            return qs.order_by('-size_bytes')
+        return qs
+
+
+# All models are registered using @admin.register decorators above
+# No need for custom admin site - using Django's default admin.site

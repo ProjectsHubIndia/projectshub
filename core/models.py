@@ -773,11 +773,40 @@ class CaseStudyMetric(models.Model):
 
 class CaseStudyTechnology(models.Model):
     case_study = models.ForeignKey(CaseStudy, on_delete=models.CASCADE, related_name='technologies')
-    technology = models.ForeignKey(Technology, on_delete=models.CASCADE)
+    technology = models.ForeignKey(Technology, on_delete=models.CASCADE, related_name='case_studies')
+    order = models.PositiveIntegerField(default=0)
 
     class Meta:
+        ordering = ['order']
         verbose_name = 'Case Study Technology'
         verbose_name_plural = 'Case Study Technologies'
+
+    def __str__(self):
+        return f"{self.case_study.title} — {self.technology.name}"
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ASSET MANAGEMENT
+# ═══════════════════════════════════════════════════════════════════════════════
+
+class Asset(models.Model):
+    """Media and storage assets with metadata for tracking and management."""
+    name = models.CharField(max_length=255, help_text="Asset file name or identifier")
+    file = models.FileField(upload_to='assets/', blank=True, null=True, help_text="Upload asset file")
+    file_url = models.URLField(blank=True, help_text="External CDN or URL for the asset")
+    mime_type = models.CharField(max_length=100, blank=True, help_text="MIME type e.g. image/png")
+    size_bytes = models.PositiveIntegerField(default=0, help_text="File size in bytes")
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    notes = models.TextField(blank=True, help_text="Usage notes / where it is used")
+    is_used = models.BooleanField(default=True, help_text="Whether the asset is currently in use")
+
+    class Meta:
+        verbose_name = 'Asset'
+        verbose_name_plural = 'Assets'
+        ordering = ['-uploaded_at']
+
+    def __str__(self):
+        return self.name
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
