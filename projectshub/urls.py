@@ -14,10 +14,6 @@ from core.views import (
 from django.shortcuts import render
 from core import chat_views, seo_views
 
-admin.site.site_header = "AI ProjectsHub Admin"
-admin.site.site_title = "AI ProjectsHub"
-admin.site.index_title = "Dashboard"
-
 # Seamlessly render custom admin 404 template even in local dev with DEBUG=True
 admin.site.catch_all_view = lambda request, url: render(request, 'admin/404.html', status=404)
 

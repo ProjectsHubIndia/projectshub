@@ -33,6 +33,19 @@
             }
         }
 
+        getCSRFToken() {
+            var token = document.querySelector('[name=csrfmiddlewaretoken]');
+            if (token) return token.value;
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.startsWith('csrftoken=')) {
+                    return cookie.substring('csrftoken='.length);
+                }
+            }
+            return '';
+        }
+
         sendToBackend(text, sender, meta) {
             try {
                 var payload = {
@@ -50,7 +63,10 @@
 
                 fetch('/api/chatbot/message/', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': this.getCSRFToken()
+                    },
                     body: JSON.stringify(payload)
                 }).catch(function(err) {
                     console.debug('Chatbot backend telemetry offline:', err);
@@ -494,7 +510,10 @@
             var self = this;
             fetch('/api/chatbot/lead/', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': self.getCSRFToken()
+                },
                 body: JSON.stringify({
                     session_id: self.sessionId,
                     name: name,

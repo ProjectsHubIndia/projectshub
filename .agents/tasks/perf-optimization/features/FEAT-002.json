@@ -1,0 +1,34 @@
+{
+  "id": "FEAT-002",
+  "type": "perf",
+  "description": "Reduce CSS bloat by extracting inline styles from templates into external minified files, removing duplicate CSS, and enabling aggressive minification. This addresses the estimated 60KB unused CSS and 15KB minification savings.",
+  "status": "pending",
+  "steps": [
+    "1. Extract inline <style> blocks from templates/core/case_studies.html into static/css/case_studies.css",
+    "2. Extract inline <style> blocks from templates/core/error404.html into static/css/error404.css",
+    "3. Extract inline <style> blocks from templates/core/page_detail.html into static/css/page_detail.css",
+    "4. Extract inline <style> blocks from templates/core/privacy.html, refund.html, terms.html (they share similar legal page styles) into static/css/legal-pages.css",
+    "5. Extract inline <style> blocks from templates/core/sitemap.html into static/css/sitemap.css",
+    "6. Extract inline <style> blocks from templates/core/AI_roadmap.html (the small override block after the link tag) and append to static/css/ai_roadmap.css",
+    "7. Extract inline <style> block from templates/core/workshop.html (the 5-day journey cards styles) and append to static/css/workshop.css",
+    "8. Extract inline <style> block from templates/core/workshop-day.html (the journey/treasure-map redesign) and append to static/css/workshop-day.css",
+    "9. Update all affected templates to load the new external CSS files in {% block extra_css %} instead of inline styles",
+    "10. Wrap all {% block extra_css %} CSS file references with {% load compress %}{% compress css %} tags",
+    "11. Audit bundle.min.css for duplicate rules with modern-design-system.css and remove duplicates from bundle.min.css (focus on navbar, typography, button styles which appear in both)"
+  ],
+  "acceptance_criteria": [
+    "Zero inline <style> blocks remain in any template (except critical CSS in base.html)",
+    "All extracted CSS files created and referenced correctly",
+    "No visual regressions on affected pages",
+    "CSS compression via django-compressor reduces total CSS size by at least 15%"
+  ],
+  "verification": [
+    "Run 'python manage.py collectstatic --noinput && python manage.py compress' successfully",
+    "Visit affected pages (/case-studies/, /terms/, /privacy/, /refund/, /sitemap/, /ai-roadmap/, /workshop/) and verify styles render correctly",
+    "Check staticfiles/CACHE/ directory for compressed CSS bundles",
+    "Run 'python manage.py test' - all tests pass",
+    "Compare total CSS size before/after in browser DevTools Network tab"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

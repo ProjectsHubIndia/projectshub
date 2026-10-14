@@ -1,0 +1,31 @@
+{
+  "id": "FEAT-003",
+  "type": "perf",
+  "description": "Optimize JavaScript execution by enabling compression, tree-shaking unused code, and deferring non-critical scripts. This addresses 2.0s JS execution time, 950ms Total Blocking Time, estimated 334KB unused JS, and 74KB minification savings.",
+  "status": "pending",
+  "steps": [
+    "1. Wrap all <script src> tags in templates/core/base.html (bootstrap, cookie-consent, live-chat, script.js, idea-modal) with {% compress js %} tags while preserving defer attributes",
+    "2. Identify and remove unused JavaScript: Audit static/js/ files against actual usage in templates. Create list of files that are referenced but never used (candidates: wp-admin.js, wp-acf-blocks.js if WordPress is not used)",
+    "3. For templates that load extra JS via {% block extra_js %}, wrap those script tags with {% compress js %} as well",
+    "4. Move Google Analytics script tag to bottom of base.html (before </body>) since it already has deferred idle loading",
+    "5. Review static/js/script.js (55KB) - it's the main bundle. Check if ai_roadmap.js (23KB), social-share.js (15KB) can be conditionally loaded only on pages that need them instead of globally",
+    "6. Update templates that use ai-chatbot.js to load it conditionally via {% block extra_js %} instead of globally (currently loaded in project_detail.html and workshop.html)",
+    "7. Enable COMPRESS_OFFLINE=True in settings to pre-compress all JS at collectstatic time"
+  ],
+  "acceptance_criteria": [
+    "All JavaScript files wrapped with django-compressor {% compress js %} tags",
+    "Per-page JS loaded conditionally, not globally",
+    "Unused JS files identified and commented/documented (not deleted yet, just documented)",
+    "Compressed JS bundles generated in staticfiles/CACHE/",
+    "No JavaScript errors in browser console on any page"
+  ],
+  "verification": [
+    "Run 'python manage.py collectstatic --noinput && python manage.py compress' successfully",
+    "Start server, visit all major pages (/, /projects/, /workshop/, /blog/, /tools/, /ai-roadmap/) and check browser console for JS errors",
+    "Check Network tab: total JS transfer size should be reduced by at least 20%",
+    "Test interactive features: mobile menu, modals, forms, chatbot widget",
+    "Run 'python manage.py test' - all tests pass"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

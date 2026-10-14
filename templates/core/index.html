@@ -1711,6 +1711,7 @@ CONTENT
                         <circle class="deco-glow" cx="380" cy="320" r="200" fill="currentColor" opacity="0.04" />
                     </svg>
                     <form id="contactForm" class="contact-form">
+                        {% csrf_token %}
                         <div class="contact-form__row">
                             <div class="contact-form__field">
                                 <label for="contactName" class="contact-form__label">Full Name <span

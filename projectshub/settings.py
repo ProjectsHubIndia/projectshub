@@ -172,6 +172,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
+    'compressor',
     'core',
 ]
 
@@ -287,6 +288,28 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # WhiteNoise storage: serves compressed static assets with high-performance caching
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 WHITENOISE_MAX_AGE = 31536000 if not DEBUG else 0
+
+# Django Compressor — CSS/JS bundling and minification
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+]
+
+COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = not DEBUG  # Pre-compress in production, on-the-fly in dev
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.css_default.CssAbsoluteFilter',
+    'compressor.filters.cssmin.rCSSMinFilter',
+]
+COMPRESS_JS_FILTERS = [
+    'compressor.filters.jsmin.rJSMinFilter',
+]
+COMPRESS_OUTPUT_DIR = 'CACHE'
+COMPRESS_CSS_HASHING_METHOD = 'content'
+COMPRESS_OFFLINE_CONTEXT = {
+    'STATIC_URL': STATIC_URL,
+}
 
 # Media Files (User uploads)
 MEDIA_URL = '/media/'
