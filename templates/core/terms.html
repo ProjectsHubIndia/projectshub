@@ -1,776 +1,295 @@
-{% extends "core/base.html" %}
+{% extends 'core/base.html' %}
 {% load static %}
+{% load compress %}
 
-{# ═══════════════════════════════════════
-SEO
-═══════════════════════════════════════ #}
-{% block title %}Terms & Conditions — ProjectsHub{% endblock %}
-
-{% block meta_description %}Read the Terms and Conditions for using ProjectsHub's AI tools, projects, and services.
-Learn about our usage policies, intellectual property rights, and legal information.{% endblock %}
-
-{% block meta_keywords %}ProjectsHub terms, terms and conditions, AI tools policy, usage policy, ProjectsHub legal{% endblock %}
-
-{% block canonical %}{{ site_url }}/terms/{% endblock %}
-
-{% block og_title %}Terms & Conditions — ProjectsHub{% endblock %}
-{% block og_description %}Terms and Conditions governing your use of ProjectsHub's AI tools, projects, and services.{% endblock %}
-{% block og_url %}{{ site_url }}/terms/{% endblock %}
-
-{% block schema %}
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "Terms & Conditions",
-  "url": "{{ site_url }}/terms/",
-  "description": "Terms and Conditions for ProjectsHub AI tools and services.",
-  "publisher": {
-    "@type": "Organization",
-    "name": "ProjectsHub",
-    "url": "{{ site_url }}/"
-  }
-}
-</script>
-{% endblock %}
+{% block seo_title %}Terms of Service | ProjectsHub{% endblock %}
+{% block meta_description %}Read the terms and conditions governing the use of ProjectsHub workshops, resources, and services.{% endblock %}
 
 {% block extra_css %}
-<style>
-    /* ── Page wrapper ── */
-    .legal-page {
-        position: relative;
-        z-index: 1;
-        padding: 120px 0 80px;
-        min-height: 100vh;
-    }
-
-    .legal-container {
-        max-width: 1240px;
-        margin: 0 auto;
-        padding: 0 24px;
-    }
-
-    /* ── Hero header ── */
-    .legal-hero {
-        text-align: center;
-        margin-bottom: 56px;
-    }
-
-    .legal-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        background: rgba(99, 102, 241, 0.1);
-        border: 1px solid rgba(99, 102, 241, 0.25);
-        border-radius: 999px;
-        padding: 6px 16px;
-        font-size: 12px;
-        font-weight: 600;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: #6366f1;
-        margin-bottom: 20px;
-    }
-
-    .legal-badge__dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: #6366f1;
-        animation: pulse-dot 2s infinite;
-    }
-
-    @keyframes pulse-dot {
-
-        0%,
-        100% {
-            opacity: 1;
-        }
-
-        50% {
-            opacity: 0.4;
-        }
-    }
-
-    .legal-title {
-        font-family: 'Lexend Deca', sans-serif;
-        font-size: clamp(2rem, 5vw, 3rem);
-        font-weight: 800;
-        line-height: 1.15;
-        margin-bottom: 16px;
-        color: var(--text-primary, #f0f0ff);
-    }
-
-    body.light .legal-title {
-        color: #1a1a2e;
-    }
-
-    .legal-title__gradient {
-        background: linear-gradient(135deg, #6366f1, #4f8ef7);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .legal-meta {
-        font-size: 13px;
-        color: rgba(255, 255, 255, 0.45);
-        font-family: 'Figtree', sans-serif;
-    }
-
-    body.light .legal-meta {
-        color: rgba(26, 26, 46, 0.5);
-    }
-
-    /* ── TOC (Table of Contents) ── */
-    .legal-toc {
-        background: rgba(99, 102, 241, 0.06);
-        border: 1px solid rgba(99, 102, 241, 0.18);
-        border-radius: 16px;
-        padding: 24px 28px;
-        margin-bottom: 48px;
-    }
-
-    body.light .legal-toc {
-        background: rgba(99, 102, 241, 0.05);
-        border-color: rgba(99, 102, 241, 0.2);
-    }
-
-    .legal-toc__title {
-        font-size: 11px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: #6366f1;
-        margin-bottom: 14px;
-        font-family: 'Lexend Deca', sans-serif;
-    }
-
-    .legal-toc__list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    @media (max-width: 991px) {
-        .legal-toc {
-            padding: 16px 20px;
-        }
-        .legal-toc__list {
-            flex-direction: row;
-            overflow-x: auto;
-            white-space: nowrap;
-            padding-bottom: 4px;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-        }
-        .legal-toc__list::-webkit-scrollbar {
-            display: none;
-        }
-        .legal-toc__item {
-            flex-shrink: 0;
-            padding-right: 16px;
-        }
-    }
-
-    .legal-toc__item a {
-        font-size: 13px;
-        color: rgba(255, 255, 255, 0.6);
-        text-decoration: none;
-        font-family: 'Figtree', sans-serif;
-        transition: color 0.2s;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    body.light .legal-toc__item a {
-        color: rgba(26, 26, 46, 0.6);
-    }
-
-    .legal-toc__item a:hover {
-        color: #6366f1;
-        text-decoration: none;
-    }
-
-    .legal-toc__item a::before {
-        content: '';
-        display: inline-block;
-        width: 4px;
-        height: 4px;
-        border-radius: 50%;
-        background: #6366f1;
-        flex-shrink: 0;
-        opacity: 0.5;
-    }
-
-    .legal-toc__item a:hover::before {
-        opacity: 1;
-    }
-
-    /* ── Content card ── */
-    .legal-card {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.07);
-        border-radius: 20px;
-        padding: 48px 52px;
-        backdrop-filter: blur(8px);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-    }
-
-    body.light .legal-card {
-        background: rgba(255, 255, 255, 0.8);
-        border-color: rgba(0, 0, 0, 0.07);
-        box-shadow: 0 4px 40px rgba(0, 0, 0, 0.06);
-    }
-
-    @media (max-width: 640px) {
-        .legal-card {
-            padding: 32px 24px;
-        }
-    }
-
-    /* Layout updates for sidebar */
-    .legal-content-wrapper {
-        display: grid;
-        gap: 40px;
-        align-items: start;
-    }
-    
-    .legal-sidebar, .legal-main {
-        min-width: 0; /* Prevent grid blowout from horizontal scroll */
-    }
-    
-    @media (min-width: 992px) {
-        .legal-content-wrapper {
-            grid-template-columns: 260px 1fr;
-            gap: 60px;
-        }
-        .legal-sidebar {
-            position: sticky;
-            top: 100px;
-        }
-        .legal-toc {
-            margin-bottom: 0;
-        }
-    }
-
-    /* ── Sections ── */
-    .legal-section {
-        margin-bottom: 44px;
-        padding-bottom: 44px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    body.light .legal-section {
-        border-bottom-color: rgba(0, 0, 0, 0.07);
-    }
-
-    .legal-section:last-child {
-        margin-bottom: 0;
-        padding-bottom: 0;
-        border-bottom: none;
-    }
-
-    .legal-section__number {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 28px;
-        height: 28px;
-        border-radius: 8px;
-        background: rgba(99, 102, 241, 0.15);
-        color: #6366f1;
-        font-size: 11px;
-        font-weight: 800;
-        font-family: 'Lexend Deca', sans-serif;
-        margin-bottom: 10px;
-        flex-shrink: 0;
-    }
-
-    .legal-section__heading {
-        font-family: 'Lexend Deca', sans-serif;
-        font-size: 1.15rem;
-        font-weight: 700;
-        color: var(--text-primary, #f0f0ff);
-        margin-bottom: 14px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        scroll-margin-top: 100px;
-    }
-
-    body.light .legal-section__heading {
-        color: #1a1a2e;
-    }
-
-    .legal-section p,
-    .legal-section li {
-        font-family: 'Figtree', sans-serif;
-        font-size: 14.5px;
-        line-height: 1.8;
-        color: rgba(255, 255, 255, 0.65);
-        margin-bottom: 10px;
-    }
-
-    body.light .legal-section p,
-    body.light .legal-section li {
-        color: rgba(26, 26, 46, 0.7);
-    }
-
-    .legal-section ul,
-    .legal-section ol {
-        padding-left: 20px;
-        margin-bottom: 12px;
-    }
-
-    .legal-section ul li {
-        list-style: disc;
-    }
-
-    .legal-section ol li {
-        list-style: decimal;
-    }
-
-    .legal-section strong {
-        color: rgba(255, 255, 255, 0.9);
-        font-weight: 600;
-    }
-
-    body.light .legal-section strong {
-        color: #1a1a2e;
-    }
-
-    /* ── Warning block ── */
-    .legal-warning {
-        background: rgba(239, 68, 68, 0.08);
-        border: 1px solid rgba(239, 68, 68, 0.25);
-        border-radius: 12px;
-        padding: 18px 20px;
-        margin: 18px 0;
-        display: flex;
-        gap: 12px;
-        align-items: flex-start;
-    }
-
-    .legal-warning__icon {
-        font-size: 18px;
-        flex-shrink: 0;
-        margin-top: 1px;
-    }
-
-    .legal-warning p {
-        color: rgba(239, 68, 68, 0.9) !important;
-        font-size: 13.5px !important;
-        margin: 0 !important;
-        font-weight: 500;
-    }
-
-    /* ── Info block ── */
-    .legal-info {
-        background: rgba(79, 142, 247, 0.07);
-        border: 1px solid rgba(79, 142, 247, 0.2);
-        border-radius: 12px;
-        padding: 18px 20px;
-        margin: 18px 0;
-    }
-
-    .legal-info p {
-        color: rgba(79, 142, 247, 0.9) !important;
-        font-size: 13.5px !important;
-        margin: 0 !important;
-    }
-
-    /* ── Sub-section (laws list) ── */
-    .legal-law-block {
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        border-radius: 12px;
-        padding: 18px 20px;
-        margin: 16px 0;
-    }
-
-    body.light .legal-law-block {
-        background: rgba(0, 0, 0, 0.02);
-        border-color: rgba(0, 0, 0, 0.07);
-    }
-
-    .legal-law-block__title {
-        font-family: 'Lexend Deca', sans-serif;
-        font-size: 12px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: #6366f1;
-        margin-bottom: 10px;
-    }
-
-    /* ── Contact block ── */
-    .legal-contact-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin-top: 16px;
-    }
-
-    @media (max-width: 480px) {
-        .legal-contact-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .legal-contact-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.07);
-        border-radius: 12px;
-        padding: 14px 16px;
-        text-decoration: none;
-        transition: background 0.2s;
-    }
-
-    body.light .legal-contact-item {
-        background: rgba(0, 0, 0, 0.03);
-        border-color: rgba(0, 0, 0, 0.08);
-    }
-
-    .legal-contact-item:hover {
-        background: rgba(99, 102, 241, 0.08);
-        text-decoration: none;
-    }
-
-    .legal-contact-item__icon {
-        width: 36px;
-        height: 36px;
-        border-radius: 10px;
-        background: rgba(99, 102, 241, 0.12);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        font-size: 16px;
-    }
-
-    .legal-contact-item__label {
-        font-size: 11px;
-        color: rgba(255, 255, 255, 0.4);
-        font-family: 'Figtree', sans-serif;
-        display: block;
-        margin-bottom: 2px;
-    }
-
-    body.light .legal-contact-item__label {
-        color: rgba(26, 26, 46, 0.45);
-    }
-
-    .legal-contact-item__value {
-        font-size: 13px;
-        font-weight: 600;
-        color: rgba(255, 255, 255, 0.85);
-        font-family: 'Figtree', sans-serif;
-        display: block;
-    }
-
-    body.light .legal-contact-item__value {
-        color: #1a1a2e;
-    }
-
-    /* ── Back to top ── */
-    .legal-back-top {
-        text-align: center;
-        margin-top: 40px;
-    }
-
-    .legal-back-top a {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 13px;
-        font-weight: 600;
-        color: #6366f1;
-        text-decoration: none;
-        font-family: 'Figtree', sans-serif;
-        transition: gap 0.2s;
-    }
-
-    .legal-back-top a:hover {
-        gap: 10px;
-        text-decoration: none;
-    }
-</style>
+{% compress css %}
+<link rel="stylesheet" href="{% static 'css/legal-pages.css' %}" media="print" onload="this.media='all'; this.onload=null;">
+{% endcompress %}
 {% endblock %}
 
 {% block content %}
-<section class="legal-page">
-    <div class="legal-container">
+<div class="legal-page">
+  <div class="legal-container">
 
-        <!-- Hero -->
-        <div class="legal-hero">
-            <div class="legal-badge">
-                <span class="legal-badge__dot"></span>
-                Legal
+    <!-- Hero -->
+    <div class="legal-hero">
+      <div class="legal-badge">
+        <span class="legal-badge__dot"></span>
+        Terms of Service
+      </div>
+      <h1 class="legal-title">
+        Clear <span class="legal-title__gradient">Guidelines</span>
+      </h1>
+      <p class="legal-meta">Last updated: December 28, 2024 | Effective Date: January 1, 2025</p>
+    </div>
+
+    <!-- Layout with sidebar -->
+    <div class="legal-content-wrapper">
+
+      <!-- Sidebar TOC -->
+      <div class="legal-sidebar">
+        <nav class="legal-toc">
+          <div class="legal-toc__title">Contents</div>
+          <ul class="legal-toc__list">
+            <li class="legal-toc__item"><a href="#acceptance">Acceptance of Terms</a></li>
+            <li class="legal-toc__item"><a href="#services">Our Services</a></li>
+            <li class="legal-toc__item"><a href="#accounts">User Accounts</a></li>
+            <li class="legal-toc__item"><a href="#conduct">User Conduct</a></li>
+            <li class="legal-toc__item"><a href="#ip">Intellectual Property</a></li>
+            <li class="legal-toc__item"><a href="#payment">Payment & Billing</a></li>
+            <li class="legal-toc__item"><a href="#liability">Limitation of Liability</a></li>
+            <li class="legal-toc__item"><a href="#termination">Termination</a></li>
+            <li class="legal-toc__item"><a href="#contact">Contact Us</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <!-- Main content -->
+      <div class="legal-main">
+        <div class="legal-card">
+
+          <!-- Section 1 -->
+          <section id="acceptance" class="legal-section">
+            <h2 class="legal-section__heading">
+              <span class="legal-section__number">1</span>
+              Acceptance of Terms
+            </h2>
+            <p>
+              By accessing or using ProjectsHub ("we," "us," or "our"), you agree to be bound by these Terms of Service. If you do not agree, do not use our platform.
+            </p>
+            <div class="legal-info">
+              <p>📋 These terms constitute a legally binding agreement between you and ProjectsHub.</p>
             </div>
-            <h1 class="legal-title">
-                Terms &amp; <span class="legal-title__gradient">Conditions</span>
-            </h1>
-            <p class="legal-meta">Last Updated: April 1, 2025</p>
+            <p>
+              We reserve the right to modify these terms at any time. Material changes will be communicated via email or site notification. Continued use after changes constitutes acceptance.
+            </p>
+          </section>
+
+          <!-- Section 2 -->
+          <section id="services" class="legal-section">
+            <h2 class="legal-section__heading">
+              <span class="legal-section__number">2</span>
+              Our Services
+            </h2>
+            <p>
+              ProjectsHub provides:
+            </p>
+            <ul class="legal-pill-list">
+              <li>QA workshops and training programs</li>
+              <li>One-on-one consultations and coaching</li>
+              <li>Downloadable resources (templates, guides, tools)</li>
+              <li>Community forums and networking opportunities</li>
+              <li>Premium subscriptions with exclusive content</li>
+            </ul>
+            <p>
+              All services are provided "as is." We strive for quality and accuracy but do not guarantee uninterrupted access or error-free content.
+            </p>
+          </section>
+
+          <!-- Section 3 -->
+          <section id="accounts" class="legal-section">
+            <h2 class="legal-section__heading">
+              <span class="legal-section__number">3</span>
+              User Accounts & Responsibilities
+            </h2>
+            <p>
+              To access certain features, you must create an account. You agree to:
+            </p>
+            <ul>
+              <li>Provide accurate, current, and complete information</li>
+              <li>Maintain the security of your password and account</li>
+              <li>Notify us immediately of any unauthorized access</li>
+              <li>Accept responsibility for all activities under your account</li>
+            </ul>
+            <div class="legal-warning">
+              <span class="legal-warning__icon">⚠️</span>
+              <p><strong>You must be 18+ to create an account.</strong> Accounts found in violation may be suspended or terminated.</p>
+            </div>
+          </section>
+
+          <!-- Section 4 -->
+          <section id="conduct" class="legal-section">
+            <h2 class="legal-section__heading">
+              <span class="legal-section__number">4</span>
+              User Conduct & Prohibited Activities
+            </h2>
+            <p>
+              You agree NOT to:
+            </p>
+            <ul>
+              <li>Use the platform for illegal, harmful, or fraudulent purposes</li>
+              <li>Harass, abuse, or harm other users</li>
+              <li>Upload malicious code, viruses, or spam</li>
+              <li>Scrape, copy, or redistribute our content without permission</li>
+              <li>Impersonate others or misrepresent your affiliation</li>
+              <li>Interfere with platform security or functionality</li>
+            </ul>
+            <p>
+              Violations may result in immediate account suspension and legal action if necessary.
+            </p>
+          </section>
+
+          <!-- Section 5 -->
+          <section id="ip" class="legal-section">
+            <h2 class="legal-section__heading">
+              <span class="legal-section__number">5</span>
+              Intellectual Property Rights
+            </h2>
+            <p>
+              All content on ProjectsHub—including text, graphics, logos, videos, code, and design—is owned by us or our licensors and protected by copyright, trademark, and other intellectual property laws.
+            </p>
+            <p>
+              <strong>You may:</strong> Use our content for personal, non-commercial learning purposes.
+            </p>
+            <p>
+              <strong>You may NOT:</strong> Reproduce, distribute, modify, or create derivative works without written permission.
+            </p>
+            <div class="legal-info">
+              <p>📄 Downloadable resources are licensed for personal or internal business use only, unless otherwise stated.</p>
+            </div>
+          </section>
+
+          <!-- Section 6 -->
+          <section id="payment" class="legal-section">
+            <h2 class="legal-section__heading">
+              <span class="legal-section__number">6</span>
+              Payment, Billing & Refunds
+            </h2>
+            <p>
+              Payment is required for workshops, consultations, and subscriptions. By purchasing, you agree to:
+            </p>
+            <ul>
+              <li>Provide valid payment information</li>
+              <li>Pay all fees and applicable taxes</li>
+              <li>Authorize recurring charges for subscriptions</li>
+            </ul>
+            <p>
+              <strong>Refund Policy:</strong> See our <a href="{% url 'refund' %}">Refund & Cancellation Policy</a> for details. In general, refunds depend on timing and service type.
+            </p>
+            <p>
+              <strong>Price Changes:</strong> We reserve the right to adjust pricing. Active subscriptions are grandfathered at their original rate until renewal.
+            </p>
+          </section>
+
+          <!-- Section 7 -->
+          <section id="liability" class="legal-section">
+            <h2 class="legal-section__heading">
+              <span class="legal-section__number">7</span>
+              Disclaimer & Limitation of Liability
+            </h2>
+            <p>
+              <strong>No Warranty:</strong> Our platform and services are provided "as is" without warranties of any kind, express or implied. We do not guarantee outcomes from workshops or resources.
+            </p>
+            <p>
+              <strong>Limitation of Liability:</strong> To the fullest extent permitted by law, ProjectsHub and its affiliates are not liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of our services, including loss of data, revenue, or business opportunities.
+            </p>
+            <p>
+              Our total liability is limited to the amount you paid us in the 12 months preceding the claim.
+            </p>
+          </section>
+
+          <!-- Section 8 -->
+          <section id="indemnity" class="legal-section">
+            <h2 class="legal-section__heading">
+              <span class="legal-section__number">8</span>
+              Indemnification
+            </h2>
+            <p>
+              You agree to indemnify, defend, and hold harmless ProjectsHub, its officers, employees, and partners from any claims, damages, losses, or expenses (including legal fees) arising from:
+            </p>
+            <ul>
+              <li>Your violation of these Terms</li>
+              <li>Your use or misuse of our services</li>
+              <li>Your infringement of any third-party rights</li>
+            </ul>
+          </section>
+
+          <!-- Section 9 -->
+          <section id="termination" class="legal-section">
+            <h2 class="legal-section__heading">
+              <span class="legal-section__number">9</span>
+              Termination & Suspension
+            </h2>
+            <p>
+              We may suspend or terminate your account at any time, with or without notice, if you:
+            </p>
+            <ul>
+              <li>Violate these Terms</li>
+              <li>Engage in fraudulent or abusive behavior</li>
+              <li>Fail to pay outstanding fees</li>
+            </ul>
+            <p>
+              Upon termination, your right to use the platform ceases immediately. You may lose access to purchased content and data.
+            </p>
+            <p>
+              <strong>You may terminate your account</strong> at any time by contacting support or using account settings. Termination does not entitle you to refunds unless stated in our Refund Policy.
+            </p>
+          </section>
+
+          <!-- Section 10 -->
+          <section id="governing" class="legal-section">
+            <h2 class="legal-section__heading">
+              <span class="legal-section__number">10</span>
+              Governing Law & Dispute Resolution
+            </h2>
+            <p>
+              These Terms are governed by the laws of [Your Jurisdiction], without regard to conflict of law principles.
+            </p>
+            <p>
+              <strong>Dispute Resolution:</strong> Any disputes arising from these Terms or your use of ProjectsHub shall be resolved through binding arbitration in [City, Country], unless prohibited by law. You waive the right to participate in class actions.
+            </p>
+            <p>
+              For disputes under $10,000, arbitration may be conducted remotely via video or written submissions.
+            </p>
+          </section>
+
+          <!-- Section 11 -->
+          <section id="contact" class="legal-section">
+            <h2 class="legal-section__heading">
+              <span class="legal-section__number">11</span>
+              Contact & Questions
+            </h2>
+            <p>
+              If you have questions about these Terms, contact us:
+            </p>
+            <div class="legal-contact-grid">
+              <a href="mailto:legal@projectshub.com" class="legal-contact-item">
+                <div class="legal-contact-item__icon">✉️</div>
+                <div>
+                  <span class="legal-contact-item__label">Email</span>
+                  <span class="legal-contact-item__value">legal@projectshub.com</span>
+                </div>
+              </a>
+              <a href="{% url 'contact' %}" class="legal-contact-item">
+                <div class="legal-contact-item__icon">💬</div>
+                <div>
+                  <span class="legal-contact-item__label">Contact Form</span>
+                  <span class="legal-contact-item__value">Get in Touch</span>
+                </div>
+              </a>
+            </div>
+            <p style="margin-top: 16px;">
+              <strong>Company Information:</strong><br>
+              ProjectsHub<br>
+              [Your Business Address]<br>
+              [City, State, ZIP]
+            </p>
+          </section>
+
         </div>
 
-        <div class="legal-content-wrapper">
-            <!-- TOC Sidebar -->
-            <div class="legal-sidebar">
-                <div class="legal-toc">
-                    <p class="legal-toc__title">On this page</p>
-                    <ol class="legal-toc__list">
-                        <li class="legal-toc__item"><a href="#acceptance">Acceptance of Terms</a></li>
-                        <li class="legal-toc__item"><a href="#services">Services Provided</a></li>
-                        <li class="legal-toc__item"><a href="#payment">Payment Terms</a></li>
-                        <li class="legal-toc__item"><a href="#refund">No Refund Policy</a></li>
-                        <li class="legal-toc__item"><a href="#ip">Intellectual Property</a></li>
-                        <li class="legal-toc__item"><a href="#legal">Legal Consequences</a></li>
-                        <li class="legal-toc__item"><a href="#disclaimer">Disclaimer</a></li>
-                        <li class="legal-toc__item"><a href="#conduct">User Conduct</a></li>
-                        <li class="legal-toc__item"><a href="#modifications">Modifications</a></li>
-                        <li class="legal-toc__item"><a href="#termination">Account Termination</a></li>
-                        <li class="legal-toc__item"><a href="#governing">Governing Law</a></li>
-                        <li class="legal-toc__item"><a href="#contact">Contact Us</a></li>
-                    </ol>
-                </div>
-            </div>
-
-            <!-- Content Card -->
-            <div class="legal-main">
-                <div class="legal-card">
-
-            <!-- 1. Acceptance -->
-            <div class="legal-section" id="acceptance">
-                <h2 class="legal-section__heading">
-                    <span class="legal-section__number">1</span>
-                    Acceptance of Terms
-                </h2>
-                <p>By accessing or using our website, purchasing courses, or accessing free resources, you agree to
-                    these Terms and Conditions. These terms govern your use of services provided by ProjectsHub. If you
-                    do not agree, please do not use our services.</p>
-            </div>
-
-            <!-- 2. Services -->
-            <div class="legal-section" id="services">
-                <h2 class="legal-section__heading">
-                    <span class="legal-section__number">2</span>
-                    Services Provided
-                </h2>
-                <p>We offer paid projects and AI solutions on various coding and development topics. In addition, we
-                    provide free AI tools and video content to help you explore and learn. Service details, including
-                    content and pricing, are subject to change at our discretion.</p>
-            </div>
-
-            <!-- 3. Payment -->
-            <div class="legal-section" id="payment">
-                <h2 class="legal-section__heading">
-                    <span class="legal-section__number">3</span>
-                    Payment Terms
-                </h2>
-                <p>All payments for paid services must be made in full before accessing the deliverable. Payments are
-                    securely processed through our trusted payment gateways.</p>
-            </div>
-
-            <!-- 4. Refund -->
-            <div class="legal-section" id="refund">
-                <h2 class="legal-section__heading">
-                    <span class="legal-section__number">4</span>
-                    No Refund Policy
-                </h2>
-                <p>All sales are final. Refunds are generally not provided. However, if you never received access to the
-                    agreed deliverable or experienced a payment issue, please contact us for resolution.</p>
-                <div class="legal-info">
-                    <p>💡 We recommend reviewing the project or service details thoroughly before making a purchase.
-                        Feel free to book a free consultation call first.</p>
-                </div>
-            </div>
-
-            <!-- 5. Intellectual Property -->
-            <div class="legal-section" id="ip">
-                <h2 class="legal-section__heading">
-                    <span class="legal-section__number">5</span>
-                    Intellectual Property
-                </h2>
-                <p>All project deliverables, code, documentation, tools, videos, and resources are the intellectual
-                    property of ProjectsHub. Upon purchase, you are granted a limited, non-exclusive, non-transferable
-                    license to use the content for your personal or agreed business use only.</p>
-                <p>Any reproduction, redistribution, or resale without written consent is strictly prohibited.
-                    Unauthorized sharing may result in legal action under applicable Indian and international laws.</p>
-                <div class="legal-warning">
-                    <span class="legal-warning__icon">⚠️</span>
-                    <p>Violators will have their account access immediately terminated without any refund, and may face
-                        civil and criminal penalties including imprisonment and monetary damages.</p>
-                </div>
-            </div>
-
-            <!-- 6. Legal Consequences -->
-            <div class="legal-section" id="legal">
-                <h2 class="legal-section__heading">
-                    <span class="legal-section__number">6</span>
-                    Legal Consequences of Unauthorized Distribution
-                </h2>
-                <p>Unauthorized downloading, sharing, screen recording, distributing, or reselling of any ProjectsHub
-                    content is a serious offense. We actively monitor user access and take strict legal action against
-                    any breach.</p>
-
-                <div class="legal-law-block">
-                    <p class="legal-law-block__title">The Copyright Act, 1957 (India)</p>
-                    <ul>
-                        <li><strong>Section 51</strong> — Defines infringement including unauthorized reproduction and
-                            distribution.</li>
-                        <li><strong>Section 63</strong> — Punishment: up to 3 years imprisonment and a fine up to
-                            ₹2,00,000.</li>
-                        <li><strong>Section 65A &amp; 65B</strong> — Protection of digital rights management; penalty
-                            for unauthorized recording or distributing copyrighted digital work.</li>
-                    </ul>
-                </div>
-
-                <div class="legal-law-block">
-                    <p class="legal-law-block__title">Information Technology Act, 2000 (India)</p>
-                    <ul>
-                        <li><strong>Section 66</strong> — Hacking and unauthorized access to a protected system.</li>
-                        <li><strong>Section 66E</strong> — Violation of privacy through digital means.</li>
-                        <li><strong>Section 72</strong> — Breach of confidentiality; misuse of login credentials.</li>
-                        <li>Penalties: imprisonment up to 3 years or fine up to ₹5,00,000, or both.</li>
-                    </ul>
-                </div>
-
-                <div class="legal-law-block">
-                    <p class="legal-law-block__title">Indian Penal Code (IPC)</p>
-                    <ul>
-                        <li><strong>Section 406</strong> — Criminal breach of trust.</li>
-                        <li><strong>Section 420</strong> — Cheating and dishonestly inducing delivery of property.</li>
-                        <li><strong>Section 463 &amp; 464</strong> — Forgery of electronic records.</li>
-                        <li><strong>Section 120B</strong> — Criminal conspiracy in cases of organized piracy.</li>
-                    </ul>
-                </div>
-
-                <div class="legal-law-block">
-                    <p class="legal-law-block__title">Other Applicable Laws</p>
-                    <ul>
-                        <li><strong>Trademarks Act, 1999</strong> — Unauthorized use of ProjectsHub brand name or logo.
-                        </li>
-                        <li><strong>Consumer Protection Act, 2019</strong> — Selling unauthorized versions is an unfair
-                            trade practice.</li>
-                        <li><strong>DMCA (USA)</strong> — Strict copyright enforcement for international users.</li>
-                        <li><strong>Berne Convention</strong> — Recognizes our copyright globally and allows
-                            international legal remedies.</li>
-                    </ul>
-                </div>
-
-                <div class="legal-warning">
-                    <span class="legal-warning__icon">🚨</span>
-                    <p>Our systems log IP addresses, device fingerprints, and user behavior patterns to detect
-                        violations. Legal notices, copyright takedown requests (DMCA), and criminal complaints will be
-                        filed without warning.</p>
-                </div>
-            </div>
-
-            <!-- 7. Disclaimer -->
-            <div class="legal-section" id="disclaimer">
-                <h2 class="legal-section__heading">
-                    <span class="legal-section__number">7</span>
-                    Disclaimer
-                </h2>
-                <p>Free tools and educational content are provided "as is" for informational and educational purposes.
-                    While we strive to ensure accuracy, we make no guarantees about specific outcomes or results from
-                    applying the information provided.</p>
-            </div>
-
-            <!-- 8. User Conduct -->
-            <div class="legal-section" id="conduct">
-                <h2 class="legal-section__heading">
-                    <span class="legal-section__number">8</span>
-                    User Conduct
-                </h2>
-                <p>You agree not to misuse the website or its content, including:</p>
-                <ul>
-                    <li>Sharing login credentials with others — account sharing is strictly prohibited.</li>
-                    <li>Attempting to hack or disrupt our services or infrastructure.</li>
-                    <li>Uploading or sharing inappropriate content on our platform.</li>
-                    <li>Recording or capturing any paid content in any form.</li>
-                    <li>Using our free tools for automated bulk abuse or scraping at scale.</li>
-                </ul>
-            </div>
-
-            <!-- 9. Modifications -->
-            <div class="legal-section" id="modifications">
-                <h2 class="legal-section__heading">
-                    <span class="legal-section__number">9</span>
-                    Modifications to Terms
-                </h2>
-                <p>ProjectsHub reserves the right to update or modify these Terms and Conditions at any time without
-                    prior notice. Continued use of the website after any changes constitutes your acceptance of the
-                    updated terms.</p>
-            </div>
-
-            <!-- 10. Account Termination -->
-            <div class="legal-section" id="termination">
-                <h2 class="legal-section__heading">
-                    <span class="legal-section__number">10</span>
-                    Account Termination
-                </h2>
-                <p>We reserve the right to suspend or terminate your access to our services at any time, without prior
-                    notice, if you violate these Terms or engage in any behavior deemed harmful to our platform,
-                    community, or reputation. In such cases, no refunds will be issued.</p>
-            </div>
-
-            <!-- 11. Governing Law -->
-            <div class="legal-section" id="governing">
-                <h2 class="legal-section__heading">
-                    <span class="legal-section__number">11</span>
-                    Governing Law &amp; Jurisdiction
-                </h2>
-                <p>These Terms and Conditions shall be governed by and construed in accordance with the laws of India.
-                    Any disputes arising under or in connection with these Terms shall be subject to the exclusive
-                    jurisdiction of the competent courts located in India.</p>
-            </div>
-
-            <!-- 12. Contact -->
-            <div class="legal-section" id="contact">
-                <h2 class="legal-section__heading">
-                    <span class="legal-section__number">12</span>
-                    Contact Us
-                </h2>
-                <p>If you have any questions or concerns about these Terms and Conditions, feel free to reach out:</p>
-                <div class="legal-contact-grid">
-                    <a href="mailto:support@projectshub.co.in" class="legal-contact-item">
-                        <div class="legal-contact-item__icon">📧</div>
-                        <div>
-                            <span class="legal-contact-item__label">Email</span>
-                            <span class="legal-contact-item__value">support@projectshub.co.in</span>
-                        </div>
-                    </a>
-                    <a href="https://wa.me/919213472954" target="_blank" rel="noopener noreferrer"
-                        class="legal-contact-item">
-                        <div class="legal-contact-item__icon">💬</div>
-                        <div>
-                            <span class="legal-contact-item__label">WhatsApp</span>
-                            <span class="legal-contact-item__value">+91 9213472154</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-
-        </div><!-- /.legal-card -->
-        </div><!-- /.legal-main -->
-        </div><!-- /.legal-content-wrapper -->
-
-        <!-- Back to top -->
+        <!-- Back to Top -->
         <div class="legal-back-top">
-            <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
-                ↑ Back to top
-            </a>
+          <a href="#top">↑ Back to Top</a>
         </div>
 
-    </div><!-- /.legal-container -->
-</section>
+      </div> <!-- end legal-main -->
+    </div> <!-- end legal-content-wrapper -->
+
+  </div> <!-- end legal-container -->
+</div>
 {% endblock %}

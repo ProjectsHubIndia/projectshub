@@ -286,16 +286,50 @@ All 55 core tests run in isolated temporary databases with full coverage across 
 
 ## 🌐 Deployment & Production Readiness
 
+### 🚨 CRITICAL: Production Setup Required
+
+**Your production deployment needs immediate configuration!**
+
+See **[PRODUCTION_SETUP.md](PRODUCTION_SETUP.md)** for complete deployment instructions.
+
+#### Quick Start:
+
+1. **Generate SECRET_KEY:**
+   ```bash
+   python generate_secret_key.py
+   ```
+
+2. **Set environment variables in your platform:**
+   - Railway: Dashboard → Variables
+   - Vercel: Settings → Environment Variables
+   - Heroku: `heroku config:set SECRET_KEY="..."`
+
+3. **Required variables:**
+   ```
+   SECRET_KEY=<your-generated-key>
+   DEBUG=False
+   DATABASE_URL=<postgres-url>  # Optional but recommended
+   ```
+
+4. **Deploy and verify**
+
 ### Production Environment Variables
 
-For production deployment (e.g., Docker, AWS, Render, DigitalOcean, or cPanel), configure the following environment variables:
+For production deployment (e.g., Railway, Vercel, Render, Heroku, or cPanel), configure the following environment variables:
 
 ```bash
-DATABASE_URL=postgres://user:password@hostname:5432/dbname
-DJANGO_SECRET_KEY=your-strong-production-secret-key
-DJANGO_DEBUG=False
+SECRET_KEY=your-strong-production-secret-key-minimum-50-chars
+DEBUG=False
+DATABASE_URL=postgres://user:password@hostname:5432/dbname  # Recommended
 ALLOWED_HOSTS=yourdomain.com,www.yourdomain.com
+CSRF_TRUSTED_ORIGINS=https://yourdomain.com,https://www.yourdomain.com
 ```
+
+**⚠️ Important Security Notes:**
+- Never use `django-insecure-` prefixed keys in production
+- SECRET_KEY must be at least 50 characters long
+- Use PostgreSQL for production (SQLite doesn't persist on serverless platforms)
+- Always set DEBUG=False in production
 
 ### Static & Media Handling
 In production, collect static assets:
@@ -303,8 +337,50 @@ In production, collect static assets:
 python manage.py collectstatic --noinput
 ```
 
+### Platform-Specific Deployment Guides
+
+#### Railway
+```bash
+# After setting environment variables in dashboard
+railway up
+```
+
+#### Vercel
+```bash
+# Install Vercel CLI and deploy
+npm i -g vercel
+vercel --prod
+```
+
+#### Heroku
+```bash
+# Deploy via Git
+git push heroku main
+heroku run python manage.py migrate
+```
+
 ### cPanel / Shared Hosting (Passenger WSGI)
 The repository includes `passenger_wsgi.py` pre-configured to bind with `projectshub.wsgi`. The `projectshub/urls.py` router also includes fallback serving for `/media/` and `/static/` to ensure uploaded project diagrams and images render properly under Passenger WSGI without extra web server rewrites.
+
+---
+
+## 🐛 Troubleshooting
+
+### CSS Not Loading Locally?
+- Hard refresh: `Ctrl + Shift + R` (Windows) or `Cmd + Shift + R` (Mac)
+- Clear browser cache completely
+- Check browser console (F12) for errors
+
+### Production Deployment Failing?
+- Verify SECRET_KEY is set and doesn't start with `django-insecure-`
+- Check DEBUG=False is set
+- Review platform logs for specific errors
+- See [PRODUCTION_SETUP.md](PRODUCTION_SETUP.md) for detailed troubleshooting
+
+### Database Errors?
+- Use PostgreSQL for production (not SQLite)
+- Verify DATABASE_URL format
+- Run migrations: `python manage.py migrate`
 
 ---
 
