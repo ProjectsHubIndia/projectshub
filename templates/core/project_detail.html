@@ -134,52 +134,82 @@
       {% endif %}
     </div>
 
-    {# ── HERO MEDIA BANNER (Project Thumbnail + Optional Red YouTube Button) ── #}
+    {# ── HERO MEDIA BANNER (Browser Mockup Showcase) ── #}
     <div class="pd-hero pd-reveal" data-delay="1">
-      {% with video_id=project.get_youtube_video_id embed_url=project.get_youtube_embed_url %}
-      {% if embed_url %}
-      {# Project thumbnail with interactive Red YouTube Play Facade #}
-      <div class="pd-hero__media-wrapper pd-yt-facade"
-           data-embed-url="{{ embed_url }}"
-           role="button"
-           tabindex="0"
-           aria-label="Play {{ project.title }} demo video on YouTube">
-        
-        {# Always display project's thumbnail #}
-        <img class="pd-hero__media-img"
-             src="{{ project.get_image_src }}"
-             alt="{{ project.title }} — ProjectsHub"
-             width="1440"
-             height="600"
-             onerror="this.onerror=null; this.src='https://img.youtube.com/vi/{{ video_id }}/hqdefault.jpg';" />
-        
-        <div class="pd-hero__media-overlay"></div>
-
-        {# Iconic Red YouTube Play Icon & Label #}
-        <div class="pd-yt-badge">
-          <button class="pd-yt-play-btn" aria-label="Play video on YouTube" tabindex="-1">
-            <svg class="pd-yt-svg" viewBox="0 0 68 48" width="76" height="54" aria-hidden="true">
-              <path class="pd-yt-shape" d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z" fill="#FF0000"></path>
-              <path d="M 45,24 27,14 27,34" fill="#FFFFFF"></path>
+      <div class="pd-mockup-window">
+        <div class="pd-mockup-header">
+          <div class="pd-mockup-dots" aria-hidden="true">
+            <span class="pd-mockup-dot pd-dot-close"></span>
+            <span class="pd-mockup-dot pd-dot-min"></span>
+            <span class="pd-mockup-dot pd-dot-expand"></span>
+          </div>
+          <div class="pd-mockup-address">
+            <svg class="pd-mockup-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0110 0v4"></path>
             </svg>
-          </button>
-          <span class="pd-yt-label">Watch Demo Video</span>
+            <span class="pd-mockup-url">https://{{ project.slug }}.projectshub.ai</span>
+          </div>
+          <div class="pd-mockup-actions">
+            {% if project.demo_url %}
+            <a href="{{ project.demo_url }}" target="_blank" rel="noopener noreferrer" class="pd-mockup-badge pd-mockup-badge--link">
+              <span>Open App</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+            {% else %}
+            <span class="pd-mockup-badge">
+              <span class="pd-mockup-badge__pulse"></span> Live System Preview
+            </span>
+            {% endif %}
+          </div>
         </div>
 
+        {% with video_id=project.get_youtube_video_id embed_url=project.get_youtube_embed_url %}
+        {% if embed_url %}
+        {# Project thumbnail with interactive Red YouTube Play Facade #}
+        <div class="pd-hero__media-wrapper pd-yt-facade"
+             data-embed-url="{{ embed_url }}"
+             role="button"
+             tabindex="0"
+             aria-label="Play {{ project.title }} demo video on YouTube">
+          
+          {# Always display project's thumbnail #}
+          <img class="pd-hero__media-img"
+               src="{{ project.get_image_src }}"
+               alt="{{ project.title }} — ProjectsHub"
+               width="1440"
+               height="810"
+               onerror="this.onerror=null; this.src='https://img.youtube.com/vi/{{ video_id }}/hqdefault.jpg';" />
+          
+          <div class="pd-hero__media-overlay pd-hero__media-overlay--video"></div>
+
+          {# Iconic Red YouTube Play Icon & Label #}
+          <div class="pd-yt-badge">
+            <button class="pd-yt-play-btn" aria-label="Play video on YouTube" tabindex="-1">
+              <svg class="pd-yt-svg" viewBox="0 0 68 48" width="76" height="54" aria-hidden="true">
+                <path class="pd-yt-shape" d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z" fill="#FF0000"></path>
+                <path d="M 45,24 27,14 27,34" fill="#FFFFFF"></path>
+              </svg>
+            </button>
+            <span class="pd-yt-label">Watch Demo Video</span>
+          </div>
+
+        </div>
+        {% elif project.get_image_src %}
+        {# Project thumbnail without video (Crisp UI presentation without muddy dark overlay) #}
+        <div class="pd-hero__media-wrapper">
+          <img class="pd-hero__media-img"
+               src="{{ project.get_image_src }}"
+               alt="{{ project.title }} — ProjectsHub"
+               width="1440"
+               height="810"
+               onerror="this.onerror=null; this.style.opacity='0.4';" />
+        </div>
+        {% endif %}
+        {% endwith %}
       </div>
-      {% elif project.get_image_src %}
-      {# Project thumbnail without video #}
-      <div class="pd-hero__media-wrapper">
-        <img class="pd-hero__media-img"
-             src="{{ project.get_image_src }}"
-             alt="{{ project.title }} — ProjectsHub"
-             width="1440"
-             height="600"
-             onerror="this.onerror=null; this.style.opacity='0.3';" />
-        <div class="pd-hero__media-overlay"></div>
-      </div>
-      {% endif %}
-      {% endwith %}
     </div>
 
     {# ── KEY HIGHLIGHTS SCORECARD (Full Width) ── #}
