@@ -298,12 +298,23 @@ def project_detail(request, project_id=None, slug=None):
             qs = request.META.get('QUERY_STRING', '')
             return HttpResponsePermanentRedirect(f"{target}?{qs}" if qs else target)
 
-    related_projects = (
+    related_projects = list(
         Project.objects
         .filter(is_active=True, category=project.category)
         .exclude(id=project.id)
         .order_by('order', '-created_at')[:3]
     )
+    if len(related_projects) < 3:
+        needed = 3 - len(related_projects)
+        exclude_ids = [project.id] + [p.id for p in related_projects]
+        fillers = list(
+            Project.objects
+            .filter(is_active=True)
+            .exclude(id__in=exclude_ids)
+            .order_by('-featured', 'order', '-created_at')[:needed]
+        )
+        related_projects.extend(fillers)
+
     context = {
         'project': project,
         'related_projects': related_projects,
