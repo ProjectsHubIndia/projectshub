@@ -40,6 +40,9 @@ class ViewTests(TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertContains(res, "ProjectsHub")
         self.assertContains(res, "Smart Fraud Detection")
+        self.assertContains(res, 'href="/static/css/hero-visual.css?v=14" as="style"')
+        self.assertNotContains(res, 'rel="modulepreload"')
+        self.assertNotContains(res, 'rel="preload" href="https://fonts.gstatic.com')
 
     def test_admin_navigation_items_render_in_mobile_menu_with_icons(self):
         NavigationItem.objects.create(
@@ -552,5 +555,4 @@ class PageDetailViewTests(TestCase):
         # Verify old dark inline styles and muddy backgrounds are completely gone
         self.assertNotContains(response, "background:rgba(15,23,42,0.3)")
         self.assertNotContains(response, "color:#f8fafc")
-
 

@@ -81,9 +81,7 @@
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 
 
-  <!-- Preload Key Web Fonts (Eliminate FOUT & Layout Shift) -->
-  <link rel="preload" href="https://fonts.gstatic.com/s/lexenddeca/v25/K2F1fZFYk-dHSE0UPPuwQ5qnJy_YZ2ON.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="https://fonts.gstatic.com/s/outfit/v15/QGYvz_MVcBeNP4NJtEtqUYLknw.woff2" as="font" type="font/woff2" crossorigin />
+  <!-- Preload shared Bootstrap CSS -->
   <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" as="style" />
   {% block extra_preload %}{% endblock %}
 
@@ -128,7 +126,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
 
   <!-- Core Bundled & Design System Stylesheets -->
-  <link rel="stylesheet" href="{% static 'css/bundle.min.css' %}?v=30" />
+  <link rel="stylesheet" href="{% static 'css/bundle.min.css' %}?v=31" />
   <link rel="stylesheet" href="{% static 'css/modern-design-system.css' %}?v=33" />
 
   <!-- Secondary Component Stylesheets (Live Chat, Modals, Cookie Consent) -->
