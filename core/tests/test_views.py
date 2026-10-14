@@ -481,3 +481,76 @@ class AdminSettingsViewTests(TestCase):
         settings_obj = SiteSettings.get_settings()
         self.assertIsNotNone(settings_obj)  # Settings object exists
         self.assertTrue(hasattr(settings_obj, 'mega_browse_all_text'))  # Field exists
+
+
+class PageDetailViewTests(TestCase):
+    """Test dynamic WordPress/ACF Pages rendering with modern UI/UX and cohesive styling."""
+
+    def setUp(self):
+        cache.clear()
+        self.client = Client()
+
+    def test_page_detail_renders_acf_blocks_with_modern_styling(self):
+        """Verify that dynamic WordPress/ACF Pages render with modern light styling without dark inline styles."""
+        blocks = [
+            {
+                'type': 'acf/hero-section',
+                'data': {
+                    'badge': 'Next-Gen AI',
+                    'headline': 'Production AI Systems',
+                    'subheadline': 'Full-stack solutions.',
+                    'primary_cta_text': 'Explore',
+                    'primary_cta_url': '/projects/'
+                },
+                'visible': True
+            },
+            {
+                'type': 'acf/workshop-teaser',
+                'data': {
+                    'section_title': '30-Day GenAI Bootcamp',
+                    'subtitle': 'Build real-world multi-agent pipelines.',
+                    'cta_text': 'Claim Spot',
+                    'cta_url': '/workshop/'
+                },
+                'visible': True
+            },
+            {
+                'type': 'acf/stats-counter',
+                'data': {
+                    'items': [{'number': '50+', 'label': 'Production AI Projects', 'accent': '#0284c7'}]
+                },
+                'visible': True
+            },
+            {
+                'type': 'acf/faq-accordion',
+                'data': {'section_title': 'Common Questions'},
+                'visible': True
+            },
+            {
+                'type': 'acf/contact-form',
+                'data': {'heading': 'Contact Engineering'},
+                'visible': True
+            }
+        ]
+        page = Page.objects.create(
+            title="Custom AI Engineering",
+            slug="custom-ai",
+            status="published",
+            acf_blocks=blocks
+        )
+
+        response = self.client.get(f"/pages/{page.slug}/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Production AI Systems")
+        self.assertContains(response, "acf-hero-title")
+        self.assertContains(response, "acf-workshop-container")
+        self.assertContains(response, "30-Day GenAI Bootcamp")
+        self.assertContains(response, "acf-stats-grid")
+        self.assertContains(response, "acf-accordion-item")
+        self.assertContains(response, "acf-contact-box")
+
+        # Verify old dark inline styles and muddy backgrounds are completely gone
+        self.assertNotContains(response, "background:rgba(15,23,42,0.3)")
+        self.assertNotContains(response, "color:#f8fafc")
+
+

@@ -35,10 +35,10 @@
             <div class="acf-field-row">
               <label class="acf-field-label">Background Style</label>
               <select class="acf-input" onchange="window.AcfBuilder.updateField(${idx}, 'style', this.value)">
-                <option value="glow-dark" ${d.style === 'glow-dark' ? 'selected' : ''}>Cyber Glow Dark (Recommended)</option>
+                <option value="glow-dark" ${d.style === 'glow-dark' ? 'selected' : ''}>Cyber Cyan Ambient Glow (Recommended)</option>
                 <option value="violet-glow" ${d.style === 'violet-glow' ? 'selected' : ''}>Violet Nebula Glow</option>
                 <option value="amber-glow" ${d.style === 'amber-glow' ? 'selected' : ''}>Warm Amber Glow</option>
-                <option value="clean-dark" ${d.style === 'clean-dark' ? 'selected' : ''}>Clean Minimal Dark</option>
+                <option value="clean-dark" ${d.style === 'clean-dark' ? 'selected' : ''}>Clean Minimal Light</option>
               </select>
             </div>
             <div class="acf-field-row full-width">
