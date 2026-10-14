@@ -134,6 +134,16 @@ class NavigationItem(models.Model):
     def get_absolute_url(self):
         return self.url or "/"
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        from django.core.cache import cache
+        cache.delete('site_context_navigation')
+
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+        from django.core.cache import cache
+        cache.delete('site_context_navigation')
+
 
 class MegaMenuTag(NavigationItem):
     """

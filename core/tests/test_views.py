@@ -11,11 +11,13 @@ from core.models import (
     Technology,
     NavigationItem,
 )
+from django.core.cache import cache
 from core.seo import get_seo_for_request
 
 
 class ViewTests(TestCase):
     def setUp(self):
+        cache.clear()
         self.client = Client()
         self.category = ProjectCategory.objects.create(
             name="Machine Learning",
@@ -137,7 +139,7 @@ class ViewTests(TestCase):
 
         response = self.client.get(reverse('blog_detail', args=[published_post.slug]))
 
-        self.assertEqual(response.status_code, 302)  # Expect redirect after POST
+        self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Browse AI and machine-learning projects')
         self.assertContains(response, 'Explore developer tools')
         self.assertContains(response, 'Follow the AI engineering roadmap')
@@ -245,7 +247,7 @@ class ViewTests(TestCase):
     def test_llms_txt_lists_verified_public_sections(self):
         response = self.client.get(reverse('llms_txt'))
 
-        self.assertEqual(response.status_code, 302)  # Expect redirect after POST
+        self.assertEqual(response.status_code, 200)
         self.assertTrue(response['Content-Type'].startswith('text/plain'))
         self.assertContains(response, 'https://projectshub.co.in/projects/')
         self.assertContains(response, 'https://projectshub.co.in/blog/')
@@ -343,7 +345,7 @@ class ChatbotLeadEndpointTests(TestCase):
             content_type='application/json',
         )
 
-        self.assertEqual(response.status_code, 302)  # Expect redirect after POST
+        self.assertEqual(response.status_code, 200)
         self.assertTrue(response.json()['success'])
         self.assertEqual(
             ChatbotConversation.objects.get(session_id='lead-endpoint-test').status,
@@ -371,7 +373,7 @@ class NavigationItemAdminTests(TestCase):
     def test_admin_form_exposes_mobile_menu_groups_and_icon_field(self):
         response = self.client.get(reverse('admin:core_navigationitem_add'))
 
-        self.assertEqual(response.status_code, 302)  # Expect redirect after POST
+        self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Icon / Emoji")
         self.assertContains(response, "Mega Menu — Our Work")
         self.assertContains(response, "How We Help (Students)")

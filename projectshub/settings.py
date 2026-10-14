@@ -286,7 +286,11 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # WhiteNoise storage: serves compressed static assets with high-performance caching
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+# Use Brotli+Gzip compressed static files in production
+if not DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+else:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 WHITENOISE_MAX_AGE = 31536000 if not DEBUG else 0
 
 # Django Compressor — CSS/JS bundling and minification
@@ -296,8 +300,8 @@ STATICFILES_FINDERS = [
     'compressor.finders.CompressorFinder',
 ]
 
-COMPRESS_ENABLED = True
-COMPRESS_OFFLINE = not DEBUG  # Pre-compress in production, on-the-fly in dev
+COMPRESS_ENABLED = not any('test' in arg for arg in sys.argv)
+COMPRESS_OFFLINE = not DEBUG and COMPRESS_ENABLED  # Pre-compress in production, on-the-fly in dev
 COMPRESS_CSS_FILTERS = [
     'compressor.filters.css_default.CssAbsoluteFilter',
     'compressor.filters.cssmin.rCSSMinFilter',

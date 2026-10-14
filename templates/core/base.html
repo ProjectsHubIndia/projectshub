@@ -26,7 +26,7 @@
     content="{% block og_title %}{% firstof seo.og_title seo.meta_title 'ProjectsHub — Free AI Tools & Real-World Projects' %}{% endblock %}" />
   <meta property="og:description"
     content="{% block og_description %}{% firstof seo.og_description seo.meta_description 'Explore 50+ AI & ML projects and free tools built for students and businesses.' %}{% endblock %}" />
-  <meta property="og:image" content="{% block og_image %}{{ seo.og_image|default:site_url|add:'/static/image/favicon_io/og-image.png' }}{% endblock %}" />
+  <meta property="og:image" content="{% block og_image %}{% firstof seo.og_image site_url|add:'/static/image/favicon_io/og-image.png' %}{% endblock %}" />
   <meta property="og:url" content="{% block og_url %}{{ seo.canonical_url|default:site_url }}{% endblock %}" />
   <meta property="og:site_name" content="ProjectsHub" />
 
@@ -37,7 +37,7 @@
   <meta name="twitter:description"
     content="{% block twitter_description %}{% firstof seo.og_description seo.meta_description 'Explore 50+ AI & ML projects and free tools built for students and businesses.' %}{% endblock %}" />
   <meta name="twitter:image"
-    content="{% block twitter_image %}{{ seo.og_image|default:site_url|add:'/static/image/favicon_io/og-image.png' }}{% endblock %}" />
+    content="{% block twitter_image %}{% firstof seo.twitter_image seo.og_image site_url|add:'/static/image/favicon_io/og-image.png' %}{% endblock %}" />
 
   <!-- Favicons -->
   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'image/Favicon-new/favicon-32x32.png' %}?v=7" />
@@ -78,10 +78,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-  {% if not DEBUG %}
-  <link rel="preconnect" href="https://projectshub-production.up.railway.app" />
-  <link rel="dns-prefetch" href="https://projectshub-production.up.railway.app" />
-  {% endif %}
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+
 
   <!-- Preload Key Web Fonts (Eliminate FOUT & Layout Shift) -->
   <link rel="preload" href="https://fonts.gstatic.com/s/lexenddeca/v25/K2F1fZFYk-dHSE0UPPuwQ5qnJy_YZ2ON.woff2" as="font" type="font/woff2" crossorigin />
