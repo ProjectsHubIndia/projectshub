@@ -455,23 +455,6 @@ body.light .hero-section .hero-title {
   margin-bottom: 12px;
 }
 
-.hvc-robot-bubble__heading {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  color: #0f172a;
-  font-size: 0.82rem;
-  font-weight: 800;
-  min-width: 0;
-}
-
-.hvc-robot-bubble__role {
-  color: #64748b;
-  font-size: 0.67rem;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
 .hvc-robot-bubble__count {
   flex: 0 0 auto;
   padding: 4px 7px;
@@ -483,15 +466,6 @@ body.light .hero-section .hero-title {
   font-size: 0.61rem;
   font-weight: 700;
   letter-spacing: 0.04em;
-}
-
-.hvc-robot-bubble__status {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #22c55e;
-  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12);
-  flex: 0 0 auto;
 }
 
 .hvc-robot-bubble__text {
@@ -557,7 +531,6 @@ body.light .hero-section .hero-title {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hvc-robot-bubble__status { box-shadow: none; }
   .hvc-robot-bubble__button { transition: none; }
 }
 

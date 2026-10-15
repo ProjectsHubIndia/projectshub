@@ -130,7 +130,7 @@
   <link rel="stylesheet" href="{% static 'css/modern-design-system.css' %}?v=33" />
 
   <!-- Secondary Component Stylesheets (Live Chat, Modals, Cookie Consent) -->
-  <link rel="stylesheet" href="{% static 'css/live-chat.css' %}?v=3" />
+  <link rel="stylesheet" href="{% static 'css/live-chat.css' %}?v=4" />
   <link rel="stylesheet" href="{% static 'css/idea-modal.css' %}?v=11" />
   <link rel="stylesheet" href="{% static 'css/cookie-consent.css' %}?v=2" />
 
@@ -151,6 +151,7 @@
   {% if request.user.is_authenticated and request.user.is_staff %}
     <link rel="stylesheet" href="{% static 'css/admin-toolbar.css' %}?v=2" />
   {% endif %}
+  <link rel="stylesheet" href="{% static 'css/brand-colors.css' %}?v=1" />
 
   <!-- Without JS the scroll-reveal observers never run; keep all content visible -->
   <noscript>

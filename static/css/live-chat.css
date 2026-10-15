@@ -16,12 +16,12 @@
   --phc-radius: 18px;
   --phc-shadow: 0 24px 60px -12px rgba(15, 23, 42, .28), 0 8px 20px -8px rgba(15, 23, 42, .18);
   position: fixed;
-  left: max(20px, env(safe-area-inset-left));
+  right: max(20px, env(safe-area-inset-right));
   bottom: max(20px, env(safe-area-inset-bottom));
   z-index: 9999;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: flex-end;
   gap: 12px;
   font-family: var(--ph-font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
   font-size: 14px;
@@ -58,13 +58,13 @@
 .phc.is-open .phc-launcher-icon--chat { opacity: 0; transform: rotate(90deg) scale(.6); }
 .phc.is-open .phc-launcher-icon--close { opacity: 1; transform: none; }
 .phc-launcher-online {
-  position: absolute; left: 3px; bottom: 3px;
+  position: absolute; right: 3px; bottom: 3px;
   width: 14px; height: 14px; border-radius: 50%;
   background: var(--phc-green); border: 2.5px solid #fff;
 }
 .phc.is-open .phc-launcher-online { display: none; }
 .phc-badge {
-  position: absolute; top: -3px; left: -3px;
+  position: absolute; top: -3px; right: -3px;
   min-width: 22px; height: 22px; padding: 0 6px;
   border-radius: 99px; background: var(--phc-red); color: #fff;
   font-size: 12px; font-weight: 700; line-height: 22px; text-align: center;
@@ -79,7 +79,7 @@
   max-width: 290px;
   background: var(--phc-surface);
   border: 1px solid var(--phc-line);
-  border-radius: 16px 16px 16px 4px;
+  border-radius: 16px 16px 4px 16px;
   box-shadow: 0 14px 34px -10px rgba(15, 23, 42, .25);
   opacity: 0; transform: translateY(8px);
   transition: opacity .25s ease, transform .25s ease;
@@ -118,7 +118,7 @@
   border: 1px solid rgba(15, 23, 42, .06);
   display: flex; flex-direction: column;
   overflow: hidden;
-  transform-origin: bottom left;
+  transform-origin: bottom right;
   animation: phcIn .22s cubic-bezier(.2, .9, .3, 1.2);
 }
 @keyframes phcIn { from { opacity: 0; transform: translateY(12px) scale(.97); } to { opacity: 1; transform: none; } }
@@ -288,7 +288,7 @@
 
 /* ── Responsive ───────────────────────────────────────────────────────── */
 @media (max-width: 520px) {
-  .phc { left: 14px; bottom: max(14px, env(safe-area-inset-bottom)); }
+  .phc { right: 14px; bottom: max(14px, env(safe-area-inset-bottom)); }
   .phc.is-open { inset: 0; left: 0; bottom: 0; gap: 0; }
   .phc.is-open .phc-launcher { display: none; }
   .phc .phc-panel { width: 100vw; height: 100vh; height: 100dvh; border-radius: 0; border: 0; animation: phcUp .25s ease; }
@@ -309,19 +309,3 @@
 }
 
 @media print { .phc { display: none !important; } }
-
-/* ── Back-to-top reclaims the bottom-right corner ─────────────────────────
-   The chat launcher used to sit bottom-right, so the back-to-top button was
-   pushed ~5.5rem up to clear it. The launcher is docked bottom-left now, so
-   the button can sit in the corner it belongs in. */
-.back-to-top {
-  bottom: 1.5rem;
-  right: 1.5rem;
-}
-
-@media (max-width: 520px) {
-  .back-to-top {
-    bottom: max(1rem, env(safe-area-inset-bottom));
-    right: 1rem;
-  }
-}
