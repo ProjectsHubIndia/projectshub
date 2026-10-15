@@ -349,10 +349,13 @@ LOGIN_REDIRECT_URL = '/admin/'
 LOGOUT_REDIRECT_URL = '/'
 
 # Cache
+# DatabaseCache (not per-process LocMemCache) so rate limits, captcha-reuse flags and
+# chat presence are shared across gunicorn workers. The table is created by
+# `manage.py createcachetable` (run on deploy; the test runner creates it automatically).
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'projectshub-cache',
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'projectshub_cache',
     }
 }
 
@@ -377,5 +380,9 @@ CHAT_NOTIFY_EMAILS = [e.strip() for e in os.environ.get('CHAT_NOTIFY_EMAILS', DE
 CHAT_EMAIL_ASYNC = 'test' not in sys.argv
 EMAIL_TIMEOUT = int(os.environ.get('EMAIL_TIMEOUT', 10))
 
-# Apply pending database migrations automatically on the first request after a restart.
-AUTO_APPLY_MIGRATIONS = os.environ.get('AUTO_APPLY_MIGRATIONS', 'True').lower() in ('true', '1', 'yes') and 'test' not in sys.argv
+# Apply pending migrations automatically on the first request after a restart.
+# Off in production: the deploy command runs `migrate`, so running DDL from a request
+# path (uncoordinated across workers) would be redundant and risky. On for local dev.
+AUTO_APPLY_MIGRATIONS = os.environ.get(
+    'AUTO_APPLY_MIGRATIONS', 'False' if IS_PRODUCTION else 'True'
+).lower() in ('true', '1', 'yes') and 'test' not in sys.argv

@@ -183,12 +183,14 @@
   }
   @media (max-width: 768px) {
     .guide-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 
   /* Individual Guide Card */
   .guide-card {
+    box-sizing: border-box;
+    min-width: 0;
     background: #ffffff;
     border: 1px solid var(--guide-border);
     border-radius: var(--guide-radius);
@@ -480,6 +482,7 @@
       <button type="button" class="guide-tab-btn active" data-category="all">🌟 All Modules</button>
       <button type="button" class="guide-tab-btn" data-category="branding">⚙️ Branding &amp; Hero</button>
       <button type="button" class="guide-tab-btn" data-category="navigation">🎨 Navigation &amp; Menus</button>
+      <button type="button" class="guide-tab-btn" data-category="content">📄 Pages &amp; FAQs</button>
       <button type="button" class="guide-tab-btn" data-category="projects">🚀 Projects Showcase</button>
       <button type="button" class="guide-tab-btn" data-category="tools">🛠️ AI Tools Directory</button>
       <button type="button" class="guide-tab-btn" data-category="services">💼 Services &amp; Case Studies</button>
@@ -567,7 +570,44 @@
       </div>
     </div>
 
-    <!-- Card 3: Projects Showcase -->
+    <!-- Card 3: Pages & FAQ Management -->
+    <div class="guide-card" data-category="content" data-keywords="pages faq faqs landing pages custom content homepage support help question answers manual updates publishing categories">
+      <div>
+        <div class="guide-card-header">
+          <div class="guide-card-title-group">
+            <div class="guide-card-icon">📄</div>
+            <div>
+              <h3 class="guide-card-title">3. Pages, Content Updates &amp; Manual FAQs</h3>
+            </div>
+          </div>
+          <span class="guide-card-badge">{{ guide_stats.published_faqs }} Live FAQs</span>
+        </div>
+        <div class="guide-card-target">
+          <span>Live Location:</span>
+          <a href="/faq/" target="_blank">Homepage FAQ, landing pages, and utility pages ↗</a>
+        </div>
+        <p class="guide-card-desc">
+          Add and manage standalone pages, update support content, and create manual FAQ entries that appear in the website help sections. This is the go-to area for public content updates that do not belong to blog posts or product listings.
+        </p>
+        <div class="guide-steps">
+          <div class="guide-steps-title">How to change:</div>
+          <ol class="guide-steps-list">
+            <li>Open <strong>Pages</strong> to create or edit standalone content pages, each with its own slug and publish status.</li>
+            <li>Open <strong>FAQs</strong> to add a new question and answer. Only published items appear on the live homepage help blocks.</li>
+            <li>Use <strong>FAQ Categories</strong> to group support questions by topic and keep content easy to scan.</li>
+            <li>Update the page title, meta description, and draft/publish state before going live.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="guide-actions">
+        <a href="/admin/core/page/" class="guide-action-btn primary">📄 Manage Pages</a>
+        <a href="/admin/core/page/add/" class="guide-action-btn secondary">➕ Add Page</a>
+        <a href="/admin/core/faq/" class="guide-action-btn secondary">❓ Manage FAQs</a>
+        <a href="/admin/core/faqcategory/" class="guide-action-btn secondary">🏷️ FAQ Categories</a>
+      </div>
+    </div>
+
+    <!-- Card 4: Projects Showcase -->
     <div class="guide-card" data-category="projects" data-keywords="projects showcase portfolio github code demo gallery tech category duplicate">
       <div>
         <div class="guide-card-header">

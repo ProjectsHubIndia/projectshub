@@ -186,7 +186,9 @@
       t.classList.remove("active");
     });
     lastTrigger = trigger || document.querySelector('.tag[data-topic="' + key + '"]');
-    if (lastTrigger) lastTrigger.classList.add("active");
+    if (lastTrigger && lastTrigger.classList.contains("tag")) {
+      lastTrigger.classList.add("active");
+    }
 
     setText("modalBadgeText", raw.chapter || BADGE_LABEL);
     setText("modalTitle", raw.title || key.replace(/_/g, " "));
@@ -573,6 +575,12 @@
     // Open a topic from any tag, anywhere on the page.
     document.addEventListener("click", function (e) {
       if (!e.target || typeof e.target.closest !== "function") return;
+      var infoButton = e.target.closest(".topic-info-button[data-topic-info]");
+      if (infoButton) {
+        e.preventDefault();
+        openRoadmapModal(infoButton.dataset.topicInfo, infoButton);
+        return;
+      }
       var tag = e.target.closest(".tag[data-topic]");
       if (!tag) return;
       e.preventDefault();

@@ -5,9 +5,9 @@
 SEO — Workshop day detail page
 ═══════════════════════════════════════ #}
 
-{% block title %}Day {{ day.day_number }}: {{ day.title }} | {{ workshop.title }} — ProjectsHub{% endblock %}
+{% block title %}Day {{ day.day_number }}: {{ day.title|truncatechars:36 }} | ProjectsHub{% endblock %}
 
-{% block meta_description %}Day {{ day.day_number }} of the {{ workshop.title }}: {{ day.description|truncatechars:150 }} {% if day.outcome %}Outcome: {{ day.outcome|truncatechars:80 }}{% endif %}{% endblock %}
+{% block meta_description %}Day {{ day.day_number }} of {{ workshop.title|truncatechars:45 }}: {{ day.description|truncatechars:95 }}{% endblock %}
 
 {% block meta_keywords %}{{ day.title }}, {{ workshop.title }}, AI workshop day {{ day.day_number }}, machine learning training, ProjectsHub workshop, hands-on AI{% endblock %}
 

@@ -148,6 +148,9 @@
 
   <!-- Per-page extra CSS -->
   {% block extra_css %}{% endblock %}
+  {% if request.user.is_authenticated and request.user.is_staff %}
+    <link rel="stylesheet" href="{% static 'css/admin-toolbar.css' %}?v=2" />
+  {% endif %}
 
   <!-- Without JS the scroll-reveal observers never run; keep all content visible -->
   <noscript>
@@ -187,7 +190,11 @@
   {% endif %}
 </head>
 
-<body class="light overflow-x-hidden bg-purple-left">
+<body class="light overflow-x-hidden bg-purple-left{% if request.user.is_authenticated and request.user.is_staff %} has-admin-toolbar{% endif %}">
+  {% if request.user.is_authenticated and request.user.is_staff %}
+    {% include "components/admin_toolbar.html" %}
+  {% endif %}
+
   <!-- Skip to main content (accessibility) -->
   <a href="#main-content-wrapper" class="skip-to-content">Skip to main content</a>
 

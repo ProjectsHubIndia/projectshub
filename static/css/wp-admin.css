@@ -4,6 +4,9 @@
    ══════════════════════════════════════════════════════════════════════════════ */
 
 :root {
+  /* The admin is a light theme. Pin the color scheme so form fields, checkboxes,
+     date pickers and scrollbars don't render in the OS dark palette on dark machines. */
+  color-scheme: light;
   --wp-admin-bar-bg: #1d2327;
   --wp-admin-bar-text: #f0f0f1;
   --wp-admin-bar-hover: #2271b1;
@@ -1666,32 +1669,16 @@ body.login #wpbody-content {
   align-items: center;
   text-decoration: none !important;
 }
-.login-brand-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, #2271b1 0%, #135e96 100%);
-  border-radius: 16px;
-  box-shadow: 0 8px 18px rgba(34, 113, 177, 0.28);
-  margin-bottom: 10px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.login-brand-logo {
+  width: 220px;
+  max-width: 72%;
+  height: auto;
+  margin-bottom: 12px;
+  transition: transform 0.2s ease, filter 0.2s ease;
 }
-.login-brand-badge:hover {
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 12px 22px rgba(34, 113, 177, 0.35);
-}
-.login-bolt {
-  font-size: 30px;
-  color: #ffffff;
-}
-.login-brand-title {
-  font-size: 24px !important;
-  font-weight: 700 !important;
-  color: #1d2327 !important;
-  margin: 0 !important;
-  letter-spacing: -0.02em;
+.login-logo-link:hover .login-brand-logo {
+  transform: translateY(-2px) scale(1.02);
+  filter: drop-shadow(0 8px 16px rgba(34, 113, 177, 0.25));
 }
 .login-brand-subtitle {
   font-size: 13px;
@@ -1903,10 +1890,54 @@ body.login #wpbody-content {
   z-index: 1 !important;
 }
 
+/* Keep shared admin chrome usable on narrow viewports and long-content screens. */
+body.wp-admin #wpcontent,
+body.wp-admin #wpbody,
+body.wp-admin #wpbody-content,
+body.wp-admin #content-main {
+  min-width: 0;
+  max-width: 100%;
+}
+
+body.wp-admin .wp-screen-header {
+  flex-wrap: wrap;
+  gap: 10px 16px;
+}
+
+body.wp-admin .wp-screen-header > div:first-child {
+  min-width: 0;
+}
+
+body.wp-admin #changelist .results,
+body.wp-admin #changelist .changelist-form-container,
+body.wp-admin .module,
+body.wp-admin .inline-group {
+  min-width: 0;
+  max-width: 100%;
+}
+
+body.wp-admin #changelist .results {
+  overflow-x: auto;
+}
+
+body.wp-admin #changelist table {
+  max-width: none;
+}
+
+body.wp-admin input,
+body.wp-admin select,
+body.wp-admin textarea {
+  max-width: 100%;
+}
+
 /* ── Responsive Overrides ── */
 @media (min-width: 783px) and (max-width: 1080px) {
   :root {
     --wp-sidebar-width: 220px;
+  }
+
+  body.wp-admin #wpwrap:not(.folded) #wpcontent {
+    margin-left: var(--wp-sidebar-width) !important;
   }
 }
 
@@ -1947,6 +1978,106 @@ body.login #wpbody-content {
   }
   .wp-dashboard-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  body.wp-admin #wpadminbar {
+    gap: 0;
+    padding-right: 4px;
+  }
+
+  body.wp-admin .wpab-left {
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  body.wp-admin .wpab-left::-webkit-scrollbar {
+    display: none;
+  }
+
+  body.wp-admin .wpab-right {
+    flex: 0 0 auto;
+  }
+
+  body.wp-admin .wpab-right .wpab-item > .wpab-link > span:first-child {
+    display: none;
+  }
+
+  body.wp-admin .wp-screen-header {
+    align-items: flex-start !important;
+  }
+
+  body.wp-admin .wp-screen-header > div:first-child {
+    flex: 1 1 100%;
+  }
+
+  body.wp-admin .screen-meta-toggle {
+    margin-left: auto;
+  }
+
+  body.wp-admin .screen-meta-toggle {
+    flex-wrap: wrap;
+  }
+
+  body.wp-admin #changelist-search {
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  body.wp-admin #changelist-search > div {
+    box-sizing: border-box;
+    flex: 1 1 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  body.wp-admin #changelist-search input[type="text"] {
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  body.wp-admin .tablenav {
+    height: auto;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  body.wp-admin .tablenav .actions {
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  body.wp-admin .tablenav .actions.bulkactions {
+    width: 100%;
+  }
+
+  body.wp-admin .tablenav .actions.bulkactions > label {
+    box-sizing: border-box;
+    flex: 1 1 100%;
+    flex-wrap: wrap;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  body.wp-admin .tablenav .actions select {
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  body.wp-admin #wpfooter {
+    align-items: flex-start !important;
+    flex-direction: column;
+    gap: 6px;
   }
 }
 
@@ -3111,6 +3242,22 @@ label.required::after,
   gap: 6px !important;
   width: 100% !important;
   max-width: 100% !important;
+  overflow: visible !important;
+}
+.related-widget-wrapper:has(.selector) {
+  display: block !important;
+  float: left !important;
+  overflow: visible !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+.related-widget-wrapper .selector {
+  display: flex !important;
+  flex: 1 1 100% !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-top: 6px !important;
+  overflow: visible !important;
 }
 .related-widget-wrapper select {
   flex: 1 1 auto !important;
@@ -3161,15 +3308,19 @@ label.required::after,
 /* Categorydiv specific clean layout */
 .categorydiv-field .related-widget-wrapper {
   display: flex !important;
-  flex-direction: column !important;
-  align-items: stretch !important;
-  gap: 8px !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
 }
 .categorydiv-field .related-widget-wrapper > select {
-  width: 100% !important;
+  flex: 1 1 160px !important;
+  width: auto !important;
+  min-width: 160px !important;
 }
 .categorydiv-field .related-widget-wrapper-link {
-  align-self: flex-start !important;
+  align-self: center !important;
+  margin-top: 0 !important;
 }
 
 /* ── Filter Horizontal Selector Widget (Django ManyToMany) ── */
@@ -3305,4 +3456,3 @@ label.required::after,
   background: #2271b1 !important;
   color: #ffffff !important;
 }
-

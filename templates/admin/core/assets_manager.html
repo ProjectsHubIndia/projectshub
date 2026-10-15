@@ -565,7 +565,23 @@
   }
   @media (max-width: 768px) {
     .am-table th:nth-child(7), .am-table td:nth-child(7) { display: none; }
-    .am-search-input { width: 100%; }
+    .am-filter-group {
+      box-sizing: border-box;
+      flex: 1 1 100%;
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+    }
+    .am-search-input {
+      box-sizing: border-box;
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+    }
+    .am-select {
+      box-sizing: border-box;
+      max-width: 100%;
+    }
   }
 </style>
 {% endblock %}

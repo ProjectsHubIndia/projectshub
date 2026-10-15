@@ -1,80 +1,55 @@
 """
-Management command to seed or update admin superuser credentials.
+Management command to ensure an admin superuser exists.
 Run with: python manage.py seed_admin
+
+The password is read from --password or the ADMIN_PASSWORD environment variable.
+An existing account's password is NEVER changed unless a password is given
+explicitly, so a password set in the admin is not reverted on the next deploy.
+If a brand-new account must be created and no password was provided, a random
+one is generated and printed once (set a real one via the admin or ADMIN_PASSWORD).
 """
+import os
+import secrets
+
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 
 
 class Command(BaseCommand):
-    help = 'Seed or update the admin superuser credentials'
+    help = 'Ensure the admin superuser exists (without resetting its password)'
 
     def add_arguments(self, parser):
-        parser.add_argument(
-            '--username',
-            type=str,
-            default='Harsh@123',
-            help='Admin username (default: Harsh@123)'
-        )
-        parser.add_argument(
-            '--password',
-            type=str,
-            default='Admin@123',
-            help='Admin password (default: Admin@123)'
-        )
-        parser.add_argument(
-            '--email',
-            type=str,
-            default='harsh@projectshub.co.in',
-            help='Admin email (default: harsh@projectshub.co.in)'
-        )
+        parser.add_argument('--username', type=str, default=os.environ.get('ADMIN_USERNAME', 'Harsh@123'))
+        parser.add_argument('--email', type=str, default=os.environ.get('ADMIN_EMAIL', 'harsh@projectshub.co.in'))
+        parser.add_argument('--password', type=str, default=None,
+                            help='Admin password. Falls back to ADMIN_PASSWORD env var.')
 
     def handle(self, *args, **options):
         username = options['username']
-        password = options['password']
         email = options['email']
+        password = options['password'] or os.environ.get('ADMIN_PASSWORD') or None
 
-        self.stdout.write(f'Seeding admin superuser credentials for "{username}"...')
-
-        # Primary admin user
         user, created = User.objects.get_or_create(
             username=username,
-            defaults={'email': email, 'is_staff': True, 'is_superuser': True, 'is_active': True}
+            defaults={'email': email, 'is_staff': True, 'is_superuser': True, 'is_active': True},
         )
-        user.set_password(password)
+        # Keep the account usable as an admin, but leave an existing password alone.
         user.is_staff = True
         user.is_superuser = True
         user.is_active = True
         if not user.email:
             user.email = email
+
+        if created and not password:
+            password = secrets.token_urlsafe(16)
+            self.stdout.write(self.style.WARNING(
+                f'  [!] Generated a temporary password for new admin "{username}": {password}\n'
+                f'      Change it in the admin or set ADMIN_PASSWORD, then rerun.'
+            ))
+        if password and (created or options['password'] or os.environ.get('ADMIN_PASSWORD')):
+            user.set_password(password)
+
         user.save()
-
-        action = 'created' if created else 'updated'
-        self.stdout.write(self.style.SUCCESS(f'  [OK] Superuser "{username}" successfully {action}.'))
-
-        # Ensure auxiliary superuser accounts and emails are always created and kept in sync
-        auxiliary_accounts = {
-            'admin': 'admin@projectshub.co.in',
-            'QA123': 'Harsh@cmsminds.com',
-            'harsh': 'Harsh@gmail.com',
-            'harsh@123': 'harshsharmaqa@gmail.com',
-        }
-        if username.lower() != username and username.lower() not in auxiliary_accounts:
-            auxiliary_accounts[username.lower()] = email
-
-        for var_username, var_email in auxiliary_accounts.items():
-            var_user, var_created = User.objects.get_or_create(
-                username=var_username,
-                defaults={'email': var_email, 'is_staff': True, 'is_superuser': True, 'is_active': True}
-            )
-            var_user.set_password(password)
-            var_user.is_staff = True
-            var_user.is_superuser = True
-            var_user.is_active = True
-            if not var_user.email and var_email:
-                var_user.email = var_email
-            var_user.save()
-            action_label = 'created' if var_created else 'synced'
-            self.stdout.write(self.style.SUCCESS(f'  [OK] {action_label.capitalize()} auxiliary account "{var_username}" ({var_user.email}).'))
-
-        self.stdout.write(self.style.SUCCESS('OK Admin login details seeded successfully!'))
+        self.stdout.write(self.style.SUCCESS(
+            f'  [OK] Superuser "{username}" {"created" if created else "verified (password unchanged)"}.'
+        ))

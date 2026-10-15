@@ -1,6 +1,6 @@
 {% load i18n static %}
 <!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE|default:'en-us' }}" dir="{{ LANGUAGE_BIDI|yesno:'rtl,ltr,auto' }}">
+<html lang="{{ LANGUAGE_CODE|default:'en-us' }}" dir="{{ LANGUAGE_BIDI|yesno:'rtl,ltr,auto' }}" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,8 @@
   <!-- WordPress System Typography & Icon Fonts -->
   <link rel="stylesheet" href="{% static 'admin/css/base.css' %}">
   <link rel="stylesheet" href="{% static 'admin/css/responsive.css' %}">
-  <link rel="stylesheet" href="{% static 'css/wp-admin.css' %}?v=10">
+  <link rel="stylesheet" href="{% static 'css/wp-admin.css' %}?v=12">
+  <link rel="stylesheet" href="{% static 'css/django-admin-navigation.css' %}?v=3">
   {% block extrastyle %}{% endblock %}
   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'image/Favicon-new/favicon-32x32.png' %}">
   
@@ -25,6 +26,11 @@
   <div id="wpadminbar" role="navigation" aria-label="Toolbar">
 
     <div class="wpab-left">
+      <button type="button" id="admin-menu-toggle" class="wpab-link" aria-controls="adminmenumain" aria-expanded="false">
+        <span class="wpab-icon" aria-hidden="true">☰</span>
+        <span>Menu</span>
+      </button>
+
       <!-- WordPress / ProjectsHub Site Icon & Menu -->
       <div class="wpab-item">
         <a href="{% url 'admin:index' %}" class="wpab-link" title="About ProjectsHub">
@@ -144,320 +150,71 @@
     <div id="adminmenumain" role="navigation" aria-label="Main menu">
       <ul id="adminmenu">
 
-        <!-- 1. Dashboard -->
-        <li class="wp-menu-item {% if request.path == '/admin/' or request.path == '/admin' %}current{% endif %}" data-path="/admin/">
+        <li class="admin-nav-home{% if request.path == '/admin/' or request.path == '/admin' %} current{% endif %}">
           <a href="{% url 'admin:index' %}" class="wp-menu-link">
-            <span class="wp-menu-icon">📊</span>
+            <span class="wp-menu-icon" aria-hidden="true">⌂</span>
             <span class="wp-menu-name">Dashboard</span>
           </a>
-          <ul class="wp-submenu">
-            <li class="wp-submenu-head">Dashboard</li>
-            <li><a href="{% url 'admin:index' %}">Home</a></li>
-            <li><a href="/admin/core/sitesettings/">Site Telemetry</a></li>
-          </ul>
         </li>
 
-        <!-- SEO dashboard (technical audit of every sitemap URL) -->
-        <li class="wp-menu-item {% if '/admin/seo/' in request.path %}current{% endif %}" data-path="/admin/seo/">
-          <a href="/admin/seo/" class="wp-menu-link">
-            <span class="wp-menu-icon">📈</span>
-            <span class="wp-menu-name">SEO Dashboard</span>
-          </a>
-          <ul class="wp-submenu">
-            <li class="wp-submenu-head">SEO</li>
-            <li><a href="/admin/seo/">Audit overview</a></li>
-            <li><a href="/admin/core/seodata/">SEO overrides</a></li>
-            <li><a href="/admin/core/redirect/">Redirects</a></li>
-          </ul>
+        <li class="admin-nav-search">
+          <label for="admin-nav-search">Find a section</label>
+          <input type="search" id="admin-nav-search" placeholder="Search admin..." autocomplete="off">
         </li>
 
-        <!-- Live Chat inbox (real-time replies to website visitors) -->
-        <li class="wp-menu-item {% if '/admin/live-chat/' in request.path %}current{% endif %}" data-path="/admin/live-chat/">
-          <a href="/admin/live-chat/" class="wp-menu-link">
-            <span class="wp-menu-icon">💬</span>
-            <span class="wp-menu-name">Live Chat</span>
-            <span class="wp-menu-count {% if live_chat_waiting %}red{% else %}blue{% endif %}" id="wpLiveChatCount">{{ live_chat_waiting|default:'0' }}</span>
+        <li class="admin-nav-caption">Your data</li>
+        {% for app in available_apps %}
+          <li class="admin-nav-app">
+            <details data-app-url="{{ app.app_url }}">
+              <summary title="{{ app.name }}" aria-label="{{ app.name }}">
+                <span class="admin-nav-app-icon" aria-hidden="true">▦</span>
+                <span class="admin-nav-app-label">{{ app.name }}</span>
+                <span class="admin-nav-chevron" aria-hidden="true">›</span>
+              </summary>
+              <ul class="admin-nav-models">
+                {% for model in app.models %}
+                  <li class="admin-nav-model">
+                    {% if model.admin_url %}
+                      <a class="admin-nav-link" href="{{ model.admin_url }}">{{ model.name }}</a>
+                    {% else %}
+                      <span class="admin-nav-link disabled">{{ model.name }}</span>
+                    {% endif %}
+                    {% if model.add_url %}
+                      <a class="admin-nav-add" href="{{ model.add_url }}" aria-label="Add {{ model.name }}" title="Add {{ model.name }}">+</a>
+                    {% endif %}
+                  </li>
+                {% endfor %}
+              </ul>
+            </details>
+          </li>
+        {% endfor %}
+
+        <li class="admin-nav-caption">Workspace tools</li>
+        <li class="admin-nav-app{% if '/admin/live-chat/' in request.path %} current{% endif %}">
+          <a class="admin-nav-utility-link wp-menu-link" href="/admin/live-chat/" title="Live chat">
+            <span class="wp-menu-icon" aria-hidden="true">◉</span><span class="wp-menu-name">Live chat</span>
+            {% if live_chat_waiting %}<span class="wp-menu-count red">{{ live_chat_waiting }}</span>{% endif %}
           </a>
-          <ul class="wp-submenu">
-            <li class="wp-submenu-head">Live Chat</li>
-            <li><a href="/admin/live-chat/">Inbox</a></li>
-            <li><a href="/admin/core/chatbotconversation/">All conversations</a></li>
-            <li><a href="/admin/core/chatagentstatus/">Chat agents</a></li>
-          </ul>
         </li>
-
-        <!-- Project Guide & Operations Manual -->
-        <li class="wp-menu-item {% if '/admin/guide/' in request.path or '/admin/core/adminguidenote/' in request.path %}current{% endif %}" data-path="/admin/guide/">
-          <a href="/admin/guide/" class="wp-menu-link">
-            <span class="wp-menu-icon">📖</span>
-            <span class="wp-menu-name">Project Guide</span>
-            <span class="wp-menu-count blue" style="background:#6366f1;">Guide</span>
+        <li class="admin-nav-app{% if '/admin/assets/' in request.path %} current{% endif %}">
+          <a class="admin-nav-utility-link wp-menu-link" href="/admin/assets/" title="Media &amp; assets">
+            <span class="wp-menu-icon" aria-hidden="true">▧</span><span class="wp-menu-name">Media &amp; assets</span>
           </a>
-          <ul class="wp-submenu">
-            <li class="wp-submenu-head">Project Guide</li>
-            <li><a href="/admin/guide/">Operations Manual</a></li>
-            <li><a href="/admin/core/adminguidenote/">Custom Notes &amp; SOPs</a></li>
-            <li><a href="/admin/core/adminguidenote/add/">➕ Add Guide Note</a></li>
-          </ul>
         </li>
-
-        <!-- Media & Storage Assets Manager -->
-        <li class="wp-menu-item {% if '/admin/assets/' in request.path %}current{% endif %}" data-path="/admin/assets/">
-          <a href="/admin/assets/" class="wp-menu-link">
-            <span class="wp-menu-icon">📁</span>
-            <span class="wp-menu-name">Media &amp; Assets</span>
-            {% if admin_stats.unused_assets_count %}
-              <span class="wp-menu-count red">{{ admin_stats.unused_assets_count }}</span>
-            {% endif %}
+        <li class="admin-nav-app{% if '/admin/seo/' in request.path %} current{% endif %}">
+          <a class="admin-nav-utility-link wp-menu-link" href="/admin/seo/" title="SEO overview">
+            <span class="wp-menu-icon" aria-hidden="true">↗</span><span class="wp-menu-name">SEO overview</span>
           </a>
-          <ul class="wp-submenu">
-            <li class="wp-submenu-head">Media &amp; Storage</li>
-            <li><a href="/admin/assets/">All Assets</a></li>
-            <li><a href="/admin/assets/?filter=unused">Unused Cleanup</a></li>
-            <li><a href="/admin/assets/?sort=size_desc">Largest Assets (MB)</a></li>
-          </ul>
         </li>
-
-        <li class="wp-menu-separator"></li>
-
-        <!-- 2. AI Projects -->
-        <li class="wp-menu-item {% if '/admin/core/project' in request.path or '/admin/core/technology/' in request.path or '/admin/core/megamenutag/' in request.path %}current{% endif %}" data-path="/admin/core/project/">
-          <a href="/admin/core/project/" class="wp-menu-link">
-            <span class="wp-menu-icon">🚀</span>
-            <span class="wp-menu-name">Projects</span>
-            <span class="wp-menu-count blue">{{ model_counts.project|default:'0' }}</span>
+        <li class="admin-nav-app{% if '/admin/backup/' in request.path %} current{% endif %}">
+          <a class="admin-nav-utility-link wp-menu-link" href="/admin/backup/" title="Backup &amp; restore">
+            <span class="wp-menu-icon" aria-hidden="true">⇧</span><span class="wp-menu-name">Backup &amp; restore</span>
           </a>
-          <ul class="wp-submenu">
-            <li class="wp-submenu-head">Projects</li>
-            <li><a href="/admin/core/project/">All Projects ({{ model_counts.project|default:'0' }})</a></li>
-            <li><a href="/admin/core/project/add/">➕ Add New Project</a></li>
-            <li><a href="/admin/core/projectfeature/">Project Features ({{ model_counts.projectfeature|default:'0' }})</a></li>
-            <li><a href="/admin/core/projecthighlight/">Highlights &amp; KPIs ({{ model_counts.projecthighlight|default:'0' }})</a></li>
-            <li><a href="/admin/core/projecttimelinephase/">Timeline Phases ({{ model_counts.projecttimelinephase|default:'0' }})</a></li>
-            <li><a href="/admin/core/projectdiagram/">Diagrams ({{ model_counts.projectdiagram|default:'0' }})</a></li>
-            <li><a href="/admin/core/projectimage/">Gallery Images ({{ model_counts.projectimage|default:'0' }})</a></li>
-            <li><a href="/admin/core/projectcategory/">Categories ({{ model_counts.projectcategory|default:'0' }})</a></li>
-            <li><a href="/admin/core/technology/">Technologies ({{ model_counts.technology|default:'0' }})</a></li>
-            <li><a href="/admin/core/megamenutag/">🏷️ Popular Tags (Mega Menu)</a></li>
-          </ul>
         </li>
-
-        <!-- 3. Posts (Blog) -->
-        <li class="wp-menu-item {% if '/admin/core/blog' in request.path or '/admin/core/tag/' in request.path %}current{% endif %}" data-path="/admin/core/blogpost/">
-          <a href="/admin/core/blogpost/" class="wp-menu-link">
-            <span class="wp-menu-icon">📝</span>
-            <span class="wp-menu-name">Posts</span>
-            <span class="wp-menu-count blue">{{ model_counts.blogpost|default:'0' }}</span>
+        <li class="admin-nav-app{% if '/admin/guide/' in request.path %} current{% endif %}">
+          <a class="admin-nav-utility-link wp-menu-link" href="/admin/guide/" title="Admin guide">
+            <span class="wp-menu-icon" aria-hidden="true">?</span><span class="wp-menu-name">Admin guide</span>
           </a>
-          <ul class="wp-submenu">
-            <li class="wp-submenu-head">Posts</li>
-            <li><a href="/admin/core/blogpost/">All Posts ({{ model_counts.blogpost|default:'0' }})</a></li>
-            <li><a href="/admin/core/blogpost/add/">➕ Write New Post</a></li>
-            <li><a href="/admin/core/blogsection/">Article Sections ({{ model_counts.blogsection|default:'0' }})</a></li>
-            <li><a href="/admin/core/blogcategory/">Categories ({{ model_counts.blogcategory|default:'0' }})</a></li>
-            <li><a href="/admin/core/tag/">Tags ({{ model_counts.tag|default:'0' }})</a></li>
-          </ul>
-        </li>
-
-        <!-- Pages (WordPress Pages with ACF Blocks) -->
-        <li class="wp-menu-item {% if '/admin/core/page/' in request.path or '/admin/pages/' in request.path %}current{% endif %}" data-path="/admin/core/page/">
-          <a href="/admin/core/page/" class="wp-menu-link">
-            <span class="wp-menu-icon">📄</span>
-            <span class="wp-menu-name">Pages</span>
-            <span class="wp-menu-count blue">{{ model_counts.page|default:'8' }}</span>
-          </a>
-          <ul class="wp-submenu">
-            <li class="wp-submenu-head">Pages</li>
-            <li><a href="/admin/core/page/">All Pages ({{ model_counts.page|default:'8' }})</a></li>
-            <li><a href="/admin/core/page/add/">➕ Add New Page</a></li>
-          </ul>
-        </li>
-
-        <!-- 4. AI Tools -->
-        <li class="wp-menu-item {% if '/admin/core/aitool/' in request.path or '/admin/core/toolcategory/' in request.path %}current{% endif %}" data-path="/admin/core/aitool/">
-          <a href="/admin/core/aitool/" class="wp-menu-link">
-            <span class="wp-menu-icon">🛠️</span>
-            <span class="wp-menu-name">AI Tools</span>
-            <span class="wp-menu-count blue">{{ model_counts.aitool|default:'0' }}</span>
-          </a>
-          <ul class="wp-submenu">
-            <li class="wp-submenu-head">AI Tools</li>
-            <li><a href="/admin/core/aitool/">All Tools ({{ model_counts.aitool|default:'0' }})</a></li>
-            <li><a href="/admin/core/aitool/add/">➕ Add New Tool</a></li>
-            <li><a href="/admin/core/toolcategory/">Categories ({{ model_counts.toolcategory|default:'0' }})</a></li>
-          </ul>
-        </li>
-
-        <!-- 5. Workshops -->
-        <li class="wp-menu-item {% if '/admin/core/workshop' in request.path %}current{% endif %}" data-path="/admin/core/workshop">
-          <a href="/admin/core/workshopcard/" class="wp-menu-link">
-            <span class="wp-menu-icon">🎓</span>
-            <span class="wp-menu-name">Workshops</span>
-            {% if admin_stats.pending_enrollments %}
-              <span class="wp-menu-count red">{{ admin_stats.pending_enrollments }}</span>
-            {% endif %}
-          </a>
-          <ul class="wp-submenu">
-            <li class="wp-submenu-head">Workshops</li>
-            <li><a href="/admin/core/workshopcard/">All Workshops ({{ model_counts.workshopcard|default:'0' }})</a></li>
-            <li><a href="/admin/core/workshopday/">Curriculum Days ({{ model_counts.workshopday|default:'0' }})</a></li>
-            <li><a href="/admin/core/workshopenrollment/">Enrollments ({{ model_counts.workshopenrollment|default:'0' }})</a></li>
-          </ul>
-        </li>
-
-        <!-- 5b. AI Roadmap -->
-        <li class="wp-menu-item {% if '/admin/core/roadmap' in request.path %}current{% endif %}" data-path="/admin/core/roadmap">
-          <a href="/admin/core/roadmapnode/" class="wp-menu-link">
-            <span class="wp-menu-icon">🗺️</span>
-            <span class="wp-menu-name">AI Roadmap</span>
-          </a>
-          <ul class="wp-submenu">
-            <li class="wp-submenu-head">AI Roadmap</li>
-            <li><a href="/admin/core/roadmapnode/">Chapters ({{ model_counts.roadmapnode|default:'0' }})</a></li>
-            <li><a href="/admin/core/roadmapgroup/">Sub-sections ({{ model_counts.roadmapgroup|default:'0' }})</a></li>
-            <li><a href="/admin/core/roadmaptopic/">Topics ({{ model_counts.roadmaptopic|default:'0' }})</a></li>
-            <li><a href="/admin/core/roadmapresource/">Resources ({{ model_counts.roadmapresource|default:'0' }})</a></li>
-            <li><a href="/admin/core/roadmapsettings/">⚙️ Page &amp; Pop-up Settings</a></li>
-            <li><a href="/admin/core/roadmapnode/add/">➕ Add Chapter</a></li>
-          </ul>
-        </li>
-
-        <!-- 6. Services & Work -->
-        <li class="wp-menu-item {% if '/admin/core/service' in request.path or '/admin/core/casestudy' in request.path or '/admin/core/pricing' in request.path %}current{% endif %}" data-path="/admin/core/service/">
-          <a href="/admin/core/service/" class="wp-menu-link">
-            <span class="wp-menu-icon">💼</span>
-            <span class="wp-menu-name">Services</span>
-          </a>
-          <ul class="wp-submenu">
-            <li class="wp-submenu-head">Services &amp; Work</li>
-            <li><a href="/admin/core/service/">All Services ({{ model_counts.service|default:'0' }})</a></li>
-            <li><a href="/admin/core/servicefeature/">Service Features ({{ model_counts.servicefeature|default:'0' }})</a></li>
-            <li><a href="/admin/core/casestudy/">Case Studies ({{ model_counts.casestudy|default:'0' }})</a></li>
-            <li><a href="/admin/core/casestudymetric/">Case Study Metrics ({{ model_counts.casestudymetric|default:'0' }})</a></li>
-            <li><a href="/admin/core/casestudytechnology/">Case Study Tech ({{ model_counts.casestudytechnology|default:'0' }})</a></li>
-            <li><a href="/admin/core/pricingplan/">Pricing Plans ({{ model_counts.pricingplan|default:'0' }})</a></li>
-            <li><a href="/admin/core/pricingfeature/">Pricing Features ({{ model_counts.pricingfeature|default:'0' }})</a></li>
-          </ul>
-        </li>
-
-        <!-- 7. Testimonials & FAQ -->
-        <li class="wp-menu-item {% if '/admin/core/testimonial/' in request.path or '/admin/core/faq' in request.path %}current{% endif %}" data-path="/admin/core/testimonial/">
-          <a href="/admin/core/testimonial/" class="wp-menu-link">
-            <span class="wp-menu-icon">💬</span>
-            <span class="wp-menu-name">Feedback</span>
-          </a>
-          <ul class="wp-submenu">
-            <li class="wp-submenu-head">Feedback &amp; FAQ</li>
-            <li><a href="/admin/core/testimonial/">Testimonials ({{ model_counts.testimonial|default:'0' }})</a></li>
-            <li><a href="/admin/core/faq/">FAQs ({{ model_counts.faq|default:'0' }})</a></li>
-            <li><a href="/admin/core/faqcategory/">FAQ Categories ({{ model_counts.faqcategory|default:'0' }})</a></li>
-          </ul>
-        </li>
-
-        <!-- 8. CRM & Inquiries -->
-        <li class="wp-menu-item {% if '/admin/core/contact' in request.path or '/admin/core/idea' in request.path or '/admin/core/projectgatelead' in request.path or '/admin/core/chatbot' in request.path %}current{% endif %}" data-path="/admin/core/contactinquiry/">
-          <a href="/admin/core/contactinquiry/" class="wp-menu-link">
-            <span class="wp-menu-icon">📬</span>
-            <span class="wp-menu-name">Inquiries</span>
-            {% if admin_stats.new_inquiries %}
-              <span class="wp-menu-count red">{{ admin_stats.new_inquiries }}</span>
-            {% else %}
-              <span class="wp-menu-count">{{ model_counts.contactinquiry|default:'0' }}</span>
-            {% endif %}
-          </a>
-          <ul class="wp-submenu">
-            <li class="wp-submenu-head">CRM &amp; Leads</li>
-            <li><a href="/admin/core/contactinquiry/">Contact Inquiries ({{ model_counts.contactinquiry|default:'0' }})</a></li>
-            <li><a href="/admin/core/ideasubmission/">Idea Proposals ({{ model_counts.ideasubmission|default:'0' }})</a></li>
-            <li><a href="/admin/core/projectgatelead/">Gate Leads ({{ model_counts.projectgatelead|default:'0' }})</a></li>
-            <li><a href="/admin/core/contactmessage/">Direct Messages ({{ model_counts.contactmessage|default:'0' }})</a></li>
-            <li><a href="/admin/live-chat/">💬 Live Chat Inbox</a></li>
-            <li><a href="/admin/core/chatbotconversation/">Chatbot Conversations ({{ model_counts.chatbotconversation|default:'0' }})</a></li>
-            <li><a href="/admin/core/chatbotmessage/">All Chat Messages ({{ model_counts.chatbotmessage|default:'0' }})</a></li>
-          </ul>
-        </li>
-
-        <li class="wp-menu-separator"></li>
-
-        <!-- 9. Appearance -->
-        <li class="wp-menu-item {% if '/admin/appearance/' in request.path or '/admin/core/navigationitem/' in request.path or '/admin/core/megamenutag/' in request.path or '/admin/core/sociallink/' in request.path or '/admin/core/statitem/' in request.path %}current{% endif %}" data-path="/admin/appearance/menus/">
-          <a href="/admin/appearance/menus/" class="wp-menu-link">
-            <span class="wp-menu-icon">🎨</span>
-            <span class="wp-menu-name">Appearance</span>
-          </a>
-          <ul class="wp-submenu">
-            <li class="wp-submenu-head">Appearance</li>
-            <li><a href="/admin/appearance/menus/" style="font-weight:600;color:#72aee6;">Menus</a></li>
-            <li><a href="/admin/core/navigationitem/">Navigation Items ({{ model_counts.navigationitem|default:'0' }})</a></li>
-            <li><a href="/admin/core/megamenutag/">🏷️ Popular Tags (Mega Menu)</a></li>
-            <li><a href="/admin/core/sociallink/">Social Links ({{ model_counts.sociallink|default:'0' }})</a></li>
-            <li><a href="/admin/core/statitem/">Hero &amp; Trust Stats</a></li>
-          </ul>
-        </li>
-
-        <!-- 10. Plugins -->
-        <li class="wp-menu-item {% if '/admin/plugins/' in request.path %}current{% endif %}" data-path="/admin/plugins/">
-          <a href="/admin/plugins/" class="wp-menu-link">
-            <span class="wp-menu-icon">🔌</span>
-            <span class="wp-menu-name">Plugins</span>
-            <span class="wp-menu-count blue">6</span>
-          </a>
-          <ul class="wp-submenu">
-            <li class="wp-submenu-head">Plugins</li>
-            <li><a href="/admin/plugins/">Installed Plugins</a></li>
-            <li><a href="/admin/plugins/?tab=featured">Add New Plugin</a></li>
-          </ul>
-        </li>
-
-        <!-- 11. Users -->
-        <li class="wp-menu-item {% if '/admin/auth/' in request.path %}current{% endif %}" data-path="/admin/auth/">
-          <a href="/admin/auth/user/" class="wp-menu-link">
-            <span class="wp-menu-icon">👥</span>
-            <span class="wp-menu-name">Users</span>
-            <span class="wp-menu-count">{{ model_counts.user|default:'1' }}</span>
-          </a>
-          <ul class="wp-submenu">
-            <li class="wp-submenu-head">Users</li>
-            <li><a href="/admin/auth/user/">All Users</a></li>
-            <li><a href="/admin/auth/user/add/">Add New User</a></li>
-            <li><a href="/admin/password_change/">Profile</a></li>
-            <li><a href="/admin/auth/group/">User Groups</a></li>
-            <li><a href="/admin/auth/permission/">Permissions &amp; Capabilities</a></li>
-          </ul>
-        </li>
-
-        <!-- 12. Tools -->
-        <li class="wp-menu-item {% if '/admin/backup/' in request.path or '/admin/guide/' in request.path or '/admin/core/seodata/' in request.path or '/admin/core/redirect/' in request.path %}current{% endif %}" data-path="/admin/backup/">
-          <a href="/admin/backup/" class="wp-menu-link">
-            <span class="wp-menu-icon">🧰</span>
-            <span class="wp-menu-name">Tools</span>
-          </a>
-          <ul class="wp-submenu">
-            <li class="wp-submenu-head">Tools</li>
-            <li><a href="/admin/backup/">Export &amp; Backup</a></li>
-            <li><a href="/admin/guide/">Project Guide &amp; SOPs</a></li>
-            <li><a href="/admin/seo/">📈 SEO Dashboard</a></li>
-            <li><a href="/admin/core/seodata/">SEO Overrides</a></li>
-            <li><a href="/admin/core/redirect/">URL Redirects</a></li>
-            <li><a href="/sitemap.xml" target="_blank">XML Sitemap ↗</a></li>
-          </ul>
-        </li>
-
-        <!-- 13. Settings -->
-        <li class="wp-menu-item {% if '/admin/settings/' in request.path or '/admin/core/sitesettings' in request.path %}current{% endif %}" data-path="/admin/settings/">
-          <a href="/admin/settings/" class="wp-menu-link">
-            <span class="wp-menu-icon">⚙️</span>
-            <span class="wp-menu-name">Settings</span>
-          </a>
-          <ul class="wp-submenu">
-            <li class="wp-submenu-head">Settings</li>
-            <li><a href="/admin/settings/?tab=general">General</a></li>
-            <li><a href="/admin/settings/?tab=writing">Writing</a></li>
-            <li><a href="/admin/settings/?tab=reading">Reading</a></li>
-            <li><a href="/admin/settings/?tab=permalinks">Permalinks</a></li>
-            <li><a href="/admin/settings/?tab=analytics">Analytics &amp; GA4</a></li>
-            <li><a href="/admin/core/sitesettings/">Legacy Site Settings</a></li>
-          </ul>
         </li>
 
       </ul>
@@ -468,6 +225,7 @@
         <span>Collapse menu</span>
       </button>
     </div>
+    <button type="button" id="admin-menu-backdrop" aria-label="Close navigation menu" tabindex="-1"></button>
     {% endif %}
 
     <!-- ── WordPress Main Content Area (#wpcontent) ── -->
@@ -624,48 +382,100 @@
         bestSublink.style.color = '#fff';
       }
 
-      // 2. Flyout Submenu Viewport Positioning (Prevents clipping by sidebar scroll boundaries)
-      var wpwrap = document.getElementById('wpwrap');
-      var menuListItems = document.querySelectorAll('#adminmenu > li.wp-menu-item');
-      menuListItems.forEach(function(item) {
-        var sub = item.querySelector('.wp-submenu');
-        if (!sub) return;
-
-        item.addEventListener('mouseenter', function() {
-          var isCurrent = item.classList.contains('current');
-          var folded = wpwrap && wpwrap.classList.contains('folded');
-
-          if (folded || !isCurrent) {
-            var rect = item.getBoundingClientRect();
-            var left = folded ? 44 : 240;
-            var top = rect.top;
-            var subHeight = sub.offsetHeight || 220;
-            if (top + subHeight > window.innerHeight - 10) {
-              top = Math.max(36, window.innerHeight - subHeight - 10);
-            }
-            sub.style.position = 'fixed';
-            sub.style.top = top + 'px';
-            sub.style.left = left + 'px';
-            sub.style.zIndex = '999999';
-            sub.style.display = 'block';
-          }
+      document.querySelectorAll('#adminmenu .admin-nav-app details').forEach(function(section) {
+        var links = Array.prototype.slice.call(section.querySelectorAll('.admin-nav-link'));
+        var activeLinks = links.filter(function(link) {
+          var href = link.getAttribute('href');
+          return href && currentPath.indexOf(href) === 0;
         });
+        activeLinks.sort(function(a, b) {
+          return b.getAttribute('href').length - a.getAttribute('href').length;
+        });
+        if (activeLinks.length) {
+          var activeLink = activeLinks[0];
+          activeLink.classList.add('is-current');
+          activeLink.setAttribute('aria-current', 'page');
+          section.parentElement.classList.add('current');
+          section.open = true;
+        }
 
-        item.addEventListener('mouseleave', function() {
-          var isCurrent = item.classList.contains('current');
-          var folded = wpwrap && wpwrap.classList.contains('folded');
-          if (folded || !isCurrent) {
-            sub.style.display = '';
-            sub.style.position = '';
-            sub.style.top = '';
-            sub.style.left = '';
-            sub.style.zIndex = '';
+        section.addEventListener('toggle', function() {
+          if (!section.open) return;
+          var folded = document.getElementById('wpwrap').classList.contains('folded');
+          if (folded) {
+            var flyout = section.querySelector('.admin-nav-models');
+            var summaryRect = section.querySelector('summary').getBoundingClientRect();
+            flyout.style.top = Math.max(46, Math.min(summaryRect.top, window.innerHeight - flyout.offsetHeight - 10)) + 'px';
+            flyout.style.left = document.getElementById('adminmenumain').getBoundingClientRect().right + 'px';
           }
+          document.querySelectorAll('#adminmenu .admin-nav-app details[open]').forEach(function(otherSection) {
+            if (otherSection !== section) otherSection.open = false;
+          });
         });
       });
+
+      var navSearch = document.getElementById('admin-nav-search');
+      var mobileMenuToggle = document.getElementById('admin-menu-toggle');
+      var mobileMenuBackdrop = document.getElementById('admin-menu-backdrop');
+      function closeMobileMenu() {
+        document.body.classList.remove('mobile-admin-menu-open');
+        if (mobileMenuToggle) {
+          mobileMenuToggle.setAttribute('aria-expanded', 'false');
+          mobileMenuToggle.focus();
+        }
+      }
+      if (mobileMenuToggle) {
+        mobileMenuToggle.addEventListener('click', function() {
+          var isOpen = document.body.classList.toggle('mobile-admin-menu-open');
+          mobileMenuToggle.setAttribute('aria-expanded', String(isOpen));
+        });
+        if (mobileMenuBackdrop) {
+          mobileMenuBackdrop.addEventListener('click', closeMobileMenu);
+        }
+
+        document.addEventListener('keydown', function(event) {
+          if (event.key === 'Escape' && document.body.classList.contains('mobile-admin-menu-open')) {
+            closeMobileMenu();
+          }
+        });
+
+        document.querySelectorAll('#adminmenu a').forEach(function(link) {
+          link.addEventListener('click', function() {
+            document.body.classList.remove('mobile-admin-menu-open');
+            mobileMenuToggle.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+
+      if (navSearch) {
+        navSearch.addEventListener('input', function() {
+          var query = navSearch.value.trim().toLowerCase();
+          document.querySelectorAll('#adminmenu .admin-nav-app').forEach(function(appItem) {
+            var details = appItem.querySelector('details');
+            var matchingLinks = Array.prototype.slice.call(
+              appItem.querySelectorAll('.admin-nav-link, .admin-nav-utility-link')
+            );
+            var hasMatch = matchingLinks.some(function(link) {
+              return link.textContent.toLowerCase().indexOf(query) !== -1;
+            });
+            appItem.hidden = Boolean(query) && !hasMatch;
+            if (details && query && hasMatch) details.open = true;
+            if (details && !query) {
+              var sectionIsActive = Array.prototype.slice.call(details.querySelectorAll('.admin-nav-link')).some(function(link) {
+                var href = link.getAttribute('href');
+                return href && currentPath.indexOf(href) === 0;
+              });
+              details.open = sectionIsActive;
+            }
+          });
+          document.querySelectorAll('#adminmenu .admin-nav-caption').forEach(function(caption) {
+            caption.hidden = Boolean(query);
+          });
+        });
+      }
     })();
   </script>
-  <script src="{% static 'js/wp-admin.js' %}?v=10"></script>
+  <script src="{% static 'js/wp-admin.js' %}?v=12"></script>
 
   {% block footer %}{% endblock %}
   {% block extra_js %}{% endblock %}

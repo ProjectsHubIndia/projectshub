@@ -137,6 +137,11 @@ class RoadmapViewTests(TestCase):
         self.assertEqual(
             html.count('class="tag" data-topic='), RoadmapTopic.objects.count()
         )
+        self.assertEqual(
+            html.count('class="topic-info-button" data-topic-info='),
+            RoadmapTopic.objects.count(),
+        )
+        self.assertContains(response, 'aria-label="About What is an AI Engineer?"')
 
     def test_topics_are_published_as_json_for_the_drawer(self):
         html = self.client.get(self.url).content.decode()

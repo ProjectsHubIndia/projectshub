@@ -36,6 +36,28 @@
   <div class="wp-list-header-bar">
     <!-- Filter status views -->
     <ul class="subsubsub">
+      {% if opts.model_name == 'page' %}
+      <li class="all">
+        <a href="?" class="{% if not request.GET.status__exact %}current{% endif %}">
+          All <span class="count">({{ page_status_counts.total }})</span>
+        </a> |
+      </li>
+      <li class="publish">
+        <a href="?status__exact=published" class="{% if request.GET.status__exact == 'published' %}current{% endif %}">
+          Published <span class="count">({{ page_status_counts.published }})</span>
+        </a> |
+      </li>
+      <li class="draft">
+        <a href="?status__exact=draft" class="{% if request.GET.status__exact == 'draft' %}current{% endif %}">
+          Drafts <span class="count">({{ page_status_counts.draft }})</span>
+        </a> |
+      </li>
+      <li class="trash">
+        <a href="?status__exact=trash" class="{% if request.GET.status__exact == 'trash' %}current{% endif %}">
+          Archived / Trash <span class="count">({{ page_status_counts.trash }})</span>
+        </a>
+      </li>
+      {% else %}
       <li class="all">
         <a href="?" class="{% if not request.GET.is_published and not request.GET.is_active and not request.GET.featured %}current{% endif %}">
           All <span class="count">({{ cl.result_count }})</span>
@@ -56,6 +78,7 @@
           Archived / Trash
         </a>
       </li>
+      {% endif %}
     </ul>
 
     <!-- WordPress Top Right Search Box -->
@@ -149,7 +172,7 @@
   <!-- ═══════════════════════════════════════════════════════════
        3. INLINE QUICK EDIT DRAWER TEMPLATE (WORDPRESS STYLE)
        ═══════════════════════════════════════════════════════════ -->
-  <div id="wp-quick-edit-template" style="display:none;">
+  <template id="wp-quick-edit-template">
     <tr class="inline-edit-row quick-edit-row" id="edit-row-placeholder">
       <td colspan="15" class="colspanchange">
         <fieldset class="inline-edit-col-left">
@@ -177,6 +200,7 @@
               <select name="_status" class="qe-input-status">
                 <option value="published">Published</option>
                 <option value="draft">Draft</option>
+                {% if opts.model_name == 'page' %}<option value="trash">Trash</option>{% endif %}
               </select>
             </label>
             <div class="inline-edit-group wp-clearfix" style="margin-top:10px;">
@@ -196,7 +220,7 @@
         </div>
       </td>
     </tr>
-  </div>
+  </template>
 
 </div>
 
@@ -218,7 +242,7 @@
     }
 
     // 2. Check for slug cell in table row
-    var slugCell = row.querySelector('td.field-slug, td.nowrap-slug');
+    var slugCell = row.querySelector('td.field-slug_display, td.field-slug, td.nowrap-slug');
     var slug = slugCell ? slugCell.textContent.trim() : '';
     if (!slug && titleText) {
       slug = titleText.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
@@ -301,7 +325,7 @@
 
     var rows = resultTable.querySelectorAll('tbody tr');
     rows.forEach(function(row) {
-      var firstThOrTd = row.querySelector('th, td.field-title, td.field-name, td:nth-child(2), td:nth-child(3)');
+      var firstThOrTd = row.querySelector('th, td.field-title_display, td.field-title, td.field-name, td:nth-child(2), td:nth-child(3)');
       if (!firstThOrTd) return;
 
       var link = firstThOrTd.querySelector('a');
@@ -309,7 +333,8 @@
 
       var href = link.getAttribute('href');
       var rowId = href ? href.replace(/\/change\/?$/, '').split('/').pop() : '';
-      var titleText = link.textContent.trim();
+      var titleNode = firstThOrTd.querySelector('strong');
+      var titleText = (titleNode ? titleNode.textContent : link.textContent).trim();
 
       // Check if row-actions already exists
       if (firstThOrTd.querySelector('.row-actions')) return;
@@ -319,13 +344,14 @@
       if (publicUrl) {
         viewHtml = ` | <span class="view"><a href="${publicUrl}" target="_blank" title="View live on website">View</a></span>`;
       }
+      var deleteLabel = model === 'page' ? 'Delete permanently' : 'Trash';
 
       var rowActions = document.createElement('div');
       rowActions.className = 'row-actions';
       rowActions.innerHTML = `
         <span class="edit"><a href="${href}">Edit</a> | </span>
-        <span class="inline hide-if-no-js"><button type="button" class="button-link editinline" onclick="openQuickEditRow(this, '${rowId}', '${titleText.replace(/'/g, "\\'")}')">Quick Edit</button> | </span>
-        <span class="trash"><a href="${href.replace(/\/change\/?$/, '/delete/')}" class="submitdelete">Trash</a></span>
+        <span class="inline hide-if-no-js"><button type="button" class="button-link editinline" onclick="openQuickEditRow(this, '${rowId}')">Quick Edit</button> | </span>
+        <span class="trash"><a href="${href.replace(/\/change\/?$/, '/delete/')}" class="submitdelete">${deleteLabel}</a></span>
         ${viewHtml}
       `;
       firstThOrTd.appendChild(rowActions);
@@ -334,7 +360,7 @@
 
   var activeQuickEditRow = null;
 
-  function openQuickEditRow(btn, id, title) {
+  function openQuickEditRow(btn, id) {
     cancelQuickEdit();
     var tr = btn.closest('tr');
     if (!tr) return;
@@ -342,16 +368,37 @@
     var template = document.getElementById('wp-quick-edit-template');
     if (!template) return;
 
-    var clone = template.firstElementChild.cloneNode(true);
+    var clone = template.content.firstElementChild.cloneNode(true);
     clone.id = 'edit-' + id;
     clone.setAttribute('data-id', id);
 
-    clone.querySelector('.qe-input-title').value = title || '';
+    var titleCell = tr.querySelector('td.field-title_display, td.field-title, td.field-name');
+    var titleNode = titleCell ? titleCell.querySelector('strong') : null;
+    var titleLink = titleCell ? titleCell.querySelector('a') : null;
+    var title = titleNode ? titleNode.textContent.trim() : titleLink ? titleLink.textContent.trim() : '';
+    clone.querySelector('.qe-input-title').value = title;
     
-    // Guess slug
+    var bodyClass = document.body.className;
+    var modelMatch = bodyClass.match(/model-([a-zA-Z0-9_]+)/);
+    var isPage = modelMatch && modelMatch[1].toLowerCase() === 'page';
+
     var slugInput = clone.querySelector('.qe-input-slug');
     if (slugInput) {
-      slugInput.value = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+      var slugCell = tr.querySelector('td.field-slug_display, td.field-slug');
+      slugInput.value = isPage && slugCell
+        ? slugCell.textContent.trim()
+        : title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    }
+
+    if (isPage) {
+      var statusCell = tr.querySelector('td.field-status_badge');
+      var statusText = statusCell ? statusCell.textContent.toLowerCase() : '';
+      var statusInput = clone.querySelector('.qe-input-status');
+      if (statusInput) {
+        statusInput.value = statusText.indexOf('trash') !== -1
+          ? 'trash'
+          : statusText.indexOf('draft') !== -1 ? 'draft' : 'published';
+      }
     }
 
     tr.parentNode.insertBefore(clone, tr.nextSibling);
@@ -403,6 +450,11 @@
     .then(r => r.json())
     .then(data => {
       if (data.success) {
+        var bodyClass = document.body.className;
+        if (/model-page(?:\s|$)/.test(bodyClass)) {
+          window.location.reload();
+          return;
+        }
         // Update original row text
         var link = activeQuickEditRow.originalTr.querySelector('th a, td.field-title a, td.field-name a');
         if (link) link.textContent = data.title;

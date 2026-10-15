@@ -146,6 +146,8 @@ class SeoDashboardTests(TestCase):
         self.assertIn('/blog/hi/', paths)
         self.assertContains(res, 'not a Google ranking metric')
         self.assertContains(res, 'Google Search Console')
+        self.assertContains(res, 'sd-integrations-card')
+        self.assertContains(res, 'Google Analytics')
         for p in audit['pages']:
             self.assertGreaterEqual(p['score'], 0)
             self.assertLessEqual(p['score'], 100)

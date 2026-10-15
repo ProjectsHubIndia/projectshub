@@ -44,6 +44,19 @@ def clean_description(text, limit=155):
     return plain
 
 
+def clean_title(text, limit=70):
+    """Plain-text search title, trimmed at a word boundary when it exceeds the limit."""
+    import re
+    plain = strip_tags(text or '')
+    plain = re.sub(r'\s+', ' ', plain).strip()
+    if len(plain) <= limit:
+        return plain
+    prefix = plain[:max(1, limit - 1)]
+    if ' ' in prefix:
+        prefix = prefix.rsplit(' ', 1)[0]
+    return prefix.rstrip(' ,.;:|—-') + '…'
+
+
 def build_organization_schema(base_url):
     return {
         "@context": "https://schema.org",
@@ -156,8 +169,12 @@ def get_seo_for_request(request, view_context=None):
     # C. PROJECT DETAIL
     elif path.startswith('/projects/') and view_context and 'project' in view_context:
         prj = view_context['project']
-        meta_title = f"{prj.title} — AI Project Showcase | ProjectsHub"
-        clean_desc = clean_description(getattr(prj, 'subtitle', '') or prj.description or prj.title)
+        meta_title = clean_title(f"{prj.title} | AI ProjectsHub", limit=60)
+        if len(meta_title) < 30:
+            meta_title = f"AI Project: {meta_title}"
+        clean_desc = clean_description(prj.description or getattr(prj, 'subtitle', '') or prj.title)
+        if len(clean_desc) < 70 and getattr(prj, 'subtitle', '') and prj.description:
+            clean_desc = clean_description(f"{prj.subtitle}. {prj.description}")
         meta_description = clean_desc if clean_desc else f"Explore {prj.title} with code, architecture, and live deployment."
         og_type = "product"
         try:
@@ -192,7 +209,7 @@ def get_seo_for_request(request, view_context=None):
     # E. BLOG POST DETAIL
     elif path.startswith('/blog/') and view_context and 'post' in view_context:
         post = view_context['post']
-        meta_title = f"{post.title} | ProjectsHub Blog"
+        meta_title = clean_title(f"{post.title} | ProjectsHub Blog")
         clean_desc = clean_description(post.excerpt or post.get_lead() or post.content or post.title)
         meta_description = clean_desc
         og_type = "article"

@@ -1,0 +1,23 @@
+{% extends "admin/change_list.html" %}
+{% load i18n %}
+
+{% block content %}
+<section class="postbox" aria-labelledby="faq-admin-heading" style="margin-bottom:18px;border-left:4px solid #6366f1;">
+  <div class="postbox-header" style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <h2 id="faq-admin-heading">Manage homepage FAQs</h2>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      {% if has_add_permission %}
+        <a href="{% url 'admin:core_faq_add' %}" class="button button-primary">Add FAQ</a>
+      {% endif %}
+      <a href="/" target="_blank" rel="noopener" class="button">Preview homepage</a>
+    </div>
+  </div>
+  <div class="inside" style="padding:12px 18px;">
+    <p style="margin:0;">
+      Add each question and answer separately. Only published FAQs appear on the homepage.
+      Edit order and publish status directly in the list, or search and filter to find an FAQ.
+    </p>
+  </div>
+</section>
+{{ block.super }}
+{% endblock %}

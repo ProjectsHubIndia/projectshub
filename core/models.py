@@ -946,7 +946,12 @@ class BlogPost(models.Model):
 
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=220, unique=True, blank=True)
-    category = models.CharField(max_length=30, choices=CATEGORY_CHOICES, default='ai-tutorials')
+    category = models.CharField(
+        max_length=30,
+        choices=CATEGORY_CHOICES,
+        default='ai-tutorials',
+        blank=True,
+    )
     category_ref = models.ForeignKey(BlogCategory, on_delete=models.SET_NULL, null=True, blank=True, related_name='posts')
     tags = models.ManyToManyField(Tag, blank=True, related_name='posts')
     excerpt = models.TextField(blank=True, default='')

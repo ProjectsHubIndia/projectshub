@@ -2,9 +2,9 @@
 {% load static %}
 
 {# ═══════════════════════════════════════ SEO — Workshop listing page ═══════════════════════════════════════ #}
-{% block title %} Python to AI Workshop — ProjectsHub | 5-Day Intensive Hands-On Training {% endblock %}
+{% block title %}{{ seo.meta_title }}{% endblock %}
 
-{% block meta_description %} Join ProjectsHub's Python to AI Workshop — 5 days from Python basics to AI deployment. 4 days of hands-on building + 1 day of live Q&A and career guidance. Limited seats. {% endblock %}
+{% block meta_description %}{{ seo.meta_description }}{% endblock %}
 
 {% block meta_keywords %} Python to AI workshop, AI workshop India, machine learning workshop, Python AI training, deep learning course, ProjectsHub workshop, data science bootcamp, ML hands-on training, 5 day AI workshop {% endblock %}
 

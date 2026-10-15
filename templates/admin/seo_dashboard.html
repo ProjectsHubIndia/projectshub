@@ -14,7 +14,7 @@
 
 {% block extrastyle %}
 {{ block.super }}
-<link rel="stylesheet" href="{% static 'css/seo-dashboard.css' %}?v=1">
+<link rel="stylesheet" href="{% static 'css/seo-dashboard.css' %}?v=3">
 {% endblock %}
 
 {% block content %}
@@ -101,7 +101,7 @@
     </section>
 
     <!-- Integrations -->
-    <section class="sd-card">
+    <section class="sd-card sd-integrations-card">
       <h2>Search data integrations</h2>
       <ul class="sd-integrations">
         <li><span class="sd-pill sd-pill--off">Not connected</span><strong>Google Search Console</strong>

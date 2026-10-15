@@ -5,9 +5,11 @@ from core.models import (
     ChatbotConversation,
     ContactInquiry,
     BlogPost,
+    FAQ,
     Page,
     Project,
     ProjectCategory,
+    SiteSettings,
     Technology,
     NavigationItem,
 )
@@ -43,6 +45,137 @@ class ViewTests(TestCase):
         self.assertContains(res, 'href="/static/css/hero-visual.css?v=14" as="style"')
         self.assertNotContains(res, 'rel="modulepreload"')
         self.assertNotContains(res, 'rel="preload" href="https://fonts.gstatic.com')
+
+    def test_public_admin_toolbar_is_hidden_from_visitors_and_regular_users(self):
+        response = self.client.get(reverse('index'))
+        self.assertNotContains(response, 'site-admin-toolbar')
+
+        user = get_user_model().objects.create_user(
+            username='regularvisitor',
+            password='testpass123',
+        )
+        self.client.force_login(user)
+        response = self.client.get(reverse('index'))
+        self.assertNotContains(response, 'site-admin-toolbar')
+
+    def test_staff_can_edit_homepage_settings_and_home_hero_uses_saved_values(self):
+        settings = SiteSettings.objects.create(
+            hero_headline_prefix='Editor headline',
+            hero_headline_highlight='Editable highlight',
+            hero_subtitle='Updated homepage description',
+        )
+        staff_user = get_user_model().objects.create_superuser(
+            username='homepageeditor',
+            email='homepageeditor@example.com',
+            password='testpass123',
+        )
+        self.client.force_login(staff_user)
+
+        response = self.client.get(reverse('index'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Edit homepage')
+        self.assertContains(response, f'href="/admin/core/sitesettings/{settings.pk}/change/"')
+        self.assertContains(response, 'Editor headline')
+        self.assertContains(response, 'Editable highlight')
+        self.assertContains(response, 'Updated homepage description')
+        self.assertContains(response, 'Pages and page builder')
+        self.assertContains(response, 'Site and homepage settings')
+
+        cache.set('site_context_settings', settings, 60)
+        settings_form = {
+            'site_name': settings.site_name,
+            'tagline': settings.tagline,
+            'primary_email': settings.primary_email,
+            'phone': settings.phone,
+            'whatsapp_number': settings.whatsapp_number,
+            'location': settings.location,
+            'response_time': settings.response_time,
+            'hero_headline_prefix': 'Saved directly from admin',
+            'hero_headline_highlight': 'Fresh homepage copy',
+            'hero_subtitle': 'The updated copy appears immediately.',
+            'mega_popular_label': settings.mega_popular_label,
+            'mega_browse_all_text': settings.mega_browse_all_text,
+            'mega_browse_all_url': settings.mega_browse_all_url,
+            'google_analytics_id': settings.google_analytics_id,
+            'custom_head_code': settings.custom_head_code,
+            'active_theme': settings.active_theme,
+            '_save': 'Save',
+        }
+        save_response = self.client.post(
+            reverse('admin:core_sitesettings_change', args=[settings.pk]),
+            settings_form,
+        )
+        self.assertEqual(save_response.status_code, 302)
+
+        response = self.client.get(reverse('index'))
+        self.assertContains(response, 'Saved directly from admin')
+        self.assertContains(response, 'Fresh homepage copy')
+        self.assertContains(response, 'The updated copy appears immediately.')
+
+    def test_staff_can_add_homepage_faq_from_admin_and_it_appears_on_homepage(self):
+        staff_user = get_user_model().objects.create_superuser(
+            username='faqeditor',
+            email='faqeditor@example.com',
+            password='testpass123',
+        )
+        self.client.force_login(staff_user)
+
+        response = self.client.get(reverse('index'))
+        add_faq_url = reverse('admin:core_faq_add')
+        faq_list_url = reverse('admin:core_faq_changelist')
+        self.assertContains(response, 'class="faq-admin-add"')
+        self.assertContains(response, f'href="{add_faq_url}"')
+        self.assertContains(response, f'href="{faq_list_url}"')
+
+        response = self.client.get(add_faq_url)
+        self.assertEqual(response.status_code, 200)
+        response = self.client.post(add_faq_url, {
+            'question': 'Can I add homepage FAQs myself?',
+            'answer': 'Yes. Add and publish FAQs from the Django admin.',
+            'sort_order': '0',
+            'is_published': 'on',
+            '_save': 'Save',
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(FAQ.objects.filter(question='Can I add homepage FAQs myself?').exists())
+
+        response = self.client.get(reverse('index'))
+        self.assertContains(response, 'Can I add homepage FAQs myself?')
+        self.assertContains(response, 'Add FAQ')
+        self.assertContains(response, '"name":"Can I add homepage FAQs myself?"')
+
+    def test_unpublished_homepage_faq_is_not_public_or_in_structured_data(self):
+        FAQ.objects.create(
+            question='Internal draft question',
+            answer='This answer is not public yet.',
+            is_published=False,
+        )
+
+        response = self.client.get(reverse('index'))
+
+        self.assertNotContains(response, 'Internal draft question')
+        self.assertNotContains(response, 'This answer is not public yet.')
+
+    def test_staff_admin_toolbar_links_to_dashboard_and_current_content(self):
+        staff_user = get_user_model().objects.create_superuser(
+            username='siteadmin',
+            email='siteadmin@example.com',
+            password='testpass123',
+        )
+        self.client.force_login(staff_user)
+
+        response = self.client.get(reverse('project_detail_slug', args=[self.project.slug]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'aria-label="Site administration"')
+        self.assertContains(response, 'href="/admin/"')
+        self.assertContains(response, 'Edit this project')
+        self.assertContains(response, f'href="/admin/core/project/{self.project.pk}/change/"')
+        self.assertContains(response, 'Pages')
+        self.assertContains(response, 'Posts')
+        self.assertContains(response, 'Projects')
+        self.assertContains(response, 'action="/admin/logout/"')
 
     def test_admin_navigation_items_render_in_mobile_menu_with_icons(self):
         NavigationItem.objects.create(
@@ -123,6 +256,37 @@ class ViewTests(TestCase):
         )
         self.assertEqual(article_schema['author']['name'], 'ProjectsHub Editorial Team')
         self.assertEqual(article_schema['datePublished'], post.published_at.isoformat())
+
+    def test_dynamic_seo_metadata_uses_descriptive_project_text_and_bounded_titles(self):
+        request_factory = RequestFactory()
+        project = Project.objects.create(
+            title='AI Gmail Sender',
+            slug='ai-gmail-sender',
+            subtitle='Describe the email in a sentence',
+            description=(
+                'An email composer that drafts a complete message from a short prompt '
+                'and sends it through a connected Gmail account, with a mock mode for testing.'
+            ),
+        )
+        project_seo = get_seo_for_request(
+            request_factory.get('/projects/ai-gmail-sender/'),
+            {'project': project},
+        )
+        self.assertGreaterEqual(len(project_seo['meta_title']), 30)
+        self.assertLessEqual(len(project_seo['meta_title']), 60)
+        self.assertGreaterEqual(len(project_seo['meta_description']), 70)
+        self.assertIn('complete message', project_seo['meta_description'])
+
+        post = BlogPost.objects.create(
+            title="AI Agents vs Chatbots: What's the Difference? A Complete Guide for 2026",
+            slug='ai-agents-vs-chatbots-guide',
+        )
+        post_seo = get_seo_for_request(
+            request_factory.get('/blog/ai-agents-vs-chatbots-guide/'),
+            {'post': post},
+        )
+        self.assertGreaterEqual(len(post_seo['meta_title']), 30)
+        self.assertLessEqual(len(post_seo['meta_title']), 70)
 
     def test_blog_detail_only_exposes_published_posts_and_links_related_resources(self):
         published_post = BlogPost.objects.create(
@@ -556,3 +720,28 @@ class PageDetailViewTests(TestCase):
         self.assertNotContains(response, "background:rgba(15,23,42,0.3)")
         self.assertNotContains(response, "color:#f8fafc")
 
+
+class LeadRateLimitTests(TestCase):
+    """Public lead forms must drop a client that floods them (fix: bot spam)."""
+
+    def setUp(self):
+        cache.clear()
+        self.client = Client()
+
+    def test_idea_submit_rate_limited_after_five(self):
+        payload = {'name': 'Bot', 'email': 'b@e.com', 'title': 'x', 'description': 'y'}
+        for _ in range(5):
+            self.assertEqual(self.client.post('/idea/', payload).status_code, 200)
+        self.assertEqual(self.client.post('/idea/', payload).status_code, 429)
+
+
+class SeedAdminTests(TestCase):
+    """seed_admin must not overwrite an existing admin's password (fix: deploy reset)."""
+
+    def test_existing_password_preserved(self):
+        from django.core.management import call_command
+        User = get_user_model()
+        u = User.objects.create_user('Harsh@123', password='MyRealSecret1!', is_superuser=True, is_staff=True)
+        call_command('seed_admin')  # no password given
+        u.refresh_from_db()
+        self.assertTrue(u.check_password('MyRealSecret1!'))

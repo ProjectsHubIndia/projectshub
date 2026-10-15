@@ -1,0 +1,73 @@
+<nav class="site-admin-toolbar" aria-label="Site administration">
+  <a class="site-admin-toolbar__brand" href="{% url 'admin:index' %}" title="Open Django admin">
+    <span aria-hidden="true">⚡</span>
+    <span>ProjectsHub</span>
+  </a>
+
+  <div class="site-admin-toolbar__links">
+    <a href="{% url 'admin:index' %}">Dashboard</a>
+
+    {% if request.path == '/' and site_settings and perms.core.change_sitesettings %}
+      <a href="{% url 'admin:core_sitesettings_change' site_settings.pk %}">Edit homepage</a>
+    {% elif page and perms.core.change_page %}
+      <a href="{% url 'admin:core_page_change' page.pk %}">Edit this page</a>
+    {% elif project and perms.core.change_project %}
+      <a href="{% url 'admin:core_project_change' project.pk %}">Edit this project</a>
+    {% elif post and perms.core.change_blogpost %}
+      <a href="{% url 'admin:core_blogpost_change' post.pk %}">Edit this post</a>
+    {% elif workshop and perms.core.change_workshopcard %}
+      <a href="{% url 'admin:core_workshopcard_change' workshop.pk %}">Edit this workshop</a>
+    {% endif %}
+
+    {% if perms.core.view_page %}
+      <a href="{% url 'admin:core_page_changelist' %}">Pages</a>
+    {% endif %}
+    {% if perms.core.view_blogpost %}
+      <a href="{% url 'admin:core_blogpost_changelist' %}">Posts</a>
+    {% endif %}
+    {% if perms.core.view_project %}
+      <a href="{% url 'admin:core_project_changelist' %}">Projects</a>
+    {% endif %}
+
+    <details class="site-admin-toolbar__manage">
+      <summary>Manage</summary>
+      <div class="site-admin-toolbar__menu">
+        {% if perms.core.view_page %}
+          <a href="{% url 'admin:core_page_changelist' %}">Pages and page builder</a>
+        {% endif %}
+        {% if perms.core.view_sitesettings %}
+          <a href="{% url 'admin:core_sitesettings_changelist' %}">Site and homepage settings</a>
+        {% endif %}
+        {% if perms.core.view_service %}
+          <a href="{% url 'admin:core_service_changelist' %}">Services</a>
+        {% endif %}
+        {% if perms.core.view_aitool %}
+          <a href="{% url 'admin:core_aitool_changelist' %}">AI tools</a>
+        {% endif %}
+        {% if perms.core.view_workshopcard %}
+          <a href="{% url 'admin:core_workshopcard_changelist' %}">Workshops</a>
+        {% endif %}
+        {% if perms.core.view_navigationitem %}
+          <a href="{% url 'admin:core_navigationitem_changelist' %}">Navigation</a>
+        {% endif %}
+        {% if perms.core.view_testimonial %}
+          <a href="{% url 'admin:core_testimonial_changelist' %}">Testimonials</a>
+        {% endif %}
+        {% if perms.core.view_faq %}
+          <a href="{% url 'admin:core_faq_changelist' %}">FAQs</a>
+        {% endif %}
+        {% if perms.core.add_faq %}
+          <a href="{% url 'admin:core_faq_add' %}">Add FAQ</a>
+        {% endif %}
+      </div>
+    </details>
+  </div>
+
+  <div class="site-admin-toolbar__user">
+    <span>Hi, {{ request.user.get_short_name|default:request.user.username }}</span>
+    <form method="post" action="{% url 'admin:logout' %}">
+      {% csrf_token %}
+      <button type="submit">Log out</button>
+    </form>
+  </div>
+</nav>

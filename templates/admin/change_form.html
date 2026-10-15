@@ -4,6 +4,9 @@
 {% block extrastyle %}
   {{ block.super }}
   <link rel="stylesheet" href="{% static "admin/css/forms.css" %}">
+  {% if opts.model_name == 'page' %}
+    <link rel="stylesheet" href="{% static 'css/page-editor-layout.css' %}?v=1">
+  {% endif %}
   {{ media.css }}
 {% endblock %}
 
@@ -37,10 +40,19 @@
     {% csrf_token %}
     {% block form_top %}{% endblock %}
 
-    {% if errors %}
+    {% if adminform.form.errors or errors %}
       <div class="notice notice-error">
         <p>{% if errors|length == 1 %}{% translate "Please correct the error below." %}{% else %}{% translate "Please correct the errors below." %}{% endif %}</p>
-        {{ adminform.form.non_field_errors }}
+        <ul class="errorlist form-error-summary">
+          {% for field in adminform.form %}
+            {% for error in field.errors %}
+              <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+            {% endfor %}
+          {% endfor %}
+          {% for error in adminform.form.non_field_errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
       </div>
     {% endif %}
 
@@ -104,6 +116,8 @@
                 <span id="sample-permalink">
                   {% if original and original.get_absolute_url %}
                     https://projectshub.co.in{{ original.get_absolute_url }}
+                  {% elif opts.model_name == 'page' %}
+                    https://projectshub.co.in/<span id="editable-post-name">{{ adminform.form.slug.value|default:'new-page' }}</span>/
                   {% elif opts.model_name == 'project' %}
                     https://projectshub.co.in/projects/<span id="editable-post-name">{{ adminform.form.slug.value|default:'new-project' }}</span>/
                   {% elif opts.model_name == 'blogpost' %}
@@ -113,7 +127,9 @@
                   {% endif %}
                 </span>
                 <button type="button" class="button button-small" onclick="toggleSlugEdit()">Edit</button>
-                {% if original and original.get_absolute_url %}
+                {% if opts.model_name == 'page' and original and original.get_absolute_url %}
+                  <a href="{{ original.get_absolute_url }}{% if original.status != 'published' %}?preview=true{% endif %}" target="_blank" class="button button-small">View {{ opts.verbose_name }} ↗</a>
+                {% elif original and original.get_absolute_url %}
                   <a href="{{ original.get_absolute_url }}" target="_blank" class="button button-small">View {{ opts.verbose_name }} ↗</a>
                 {% elif original and original.slug %}
                   <a href="/{{ opts.model_name }}s/{{ original.slug }}/" target="_blank" class="button button-small">View {{ opts.verbose_name }} ↗</a>
@@ -251,10 +267,18 @@
                     <!-- Minor publishing actions: Save Draft & Preview -->
                     <div id="minor-publishing-actions">
                       <div id="save-action">
-                        <input type="submit" name="_continue" id="save-post" value="Save Draft" class="button" formnovalidate>
+                        {% if opts.model_name == 'page' %}
+                          <input type="submit" name="_save" id="save-post" value="Save as Draft" class="button" onclick="document.getElementById('id_status').value='draft'">
+                        {% else %}
+                          <input type="submit" name="_continue" id="save-post" value="Save Draft" class="button" formnovalidate>
+                        {% endif %}
                       </div>
                       <div id="preview-action">
-                        {% if original and original.get_absolute_url %}
+                        {% if opts.model_name == 'page' and original and original.get_absolute_url %}
+                          <a href="{{ original.get_absolute_url }}{% if original.status != 'published' %}?preview=true{% endif %}" target="_blank" class="button preview">Preview ↗</a>
+                        {% elif opts.model_name == 'page' %}
+                          <button type="button" class="button preview" disabled title="Save the page before previewing it">Preview after saving</button>
+                        {% elif original and original.get_absolute_url %}
                           <a href="{{ original.get_absolute_url }}" target="_blank" class="button preview">Preview ↗</a>
                         {% elif original and original.slug %}
                           <a href="/{{ opts.model_name }}s/{{ original.slug }}/" target="_blank" class="button preview">Preview ↗</a>
@@ -272,7 +296,9 @@
                       <div class="misc-pub-section misc-pub-post-status">
                         <span class="dashicons dashicons-post-status">📌</span> Status:
                         <span id="post-status-display" style="font-weight:700;">
-                          {% if original.is_published or original.is_active %}Published{% else %}Draft{% endif %}
+                          {% if opts.model_name == 'page' %}
+                            {{ adminform.form.status.value|default:'published'|title }}
+                          {% elif original.is_published or original.is_active %}Published{% else %}Draft{% endif %}
                         </span>
                       </div>
 
@@ -294,13 +320,15 @@
 
                   <!-- Major Publishing Actions: Delete & Publish / Update -->
                   <div id="major-publishing-actions">
-                    {% if change and not is_popup %}
+                    {% if opts.model_name == 'page' and not original or opts.model_name == 'page' and original.status != 'trash' %}
+                      <button type="submit" name="_save" id="trash-page" class="button" onclick="document.getElementById('id_status').value='trash'">Move to Trash</button>
+                    {% elif change and not is_popup and opts.model_name != 'page' %}
                       <div id="delete-action">
-                        <a class="submitdelete deletion" href="{% url opts|admin_urlname:'delete' original.pk|admin_urlquote %}">Move to Trash</a>
+                        <a class="submitdelete deletion" href="{% url opts|admin_urlname:'delete' original.pk|admin_urlquote %}">Delete</a>
                       </div>
                     {% endif %}
                     <div id="publishing-action">
-                      <input type="submit" name="_save" id="publish" class="button button-primary button-large" value="{% if add %}Publish{% else %}Update{% endif %}">
+                      <input type="submit" name="_save" id="publish" class="button button-primary button-large" value="{% if add or opts.model_name == 'page' and adminform.form.status.value == 'draft' %}Publish{% else %}Update{% endif %}">
                     </div>
                     <div class="clear"></div>
                   </div>
@@ -319,6 +347,13 @@
                 </button>
               </div>
               <div class="inside" style="padding:12px 14px;">
+                {% if 'status' in adminform.form.fields %}
+                  <div style="margin-bottom:12px;">
+                    <label for="id_status" style="display:block;font-weight:600;font-size:12px;margin-bottom:4px;">Page status</label>
+                    {{ adminform.form.status }}
+                    {{ adminform.form.status.errors }}
+                  </div>
+                {% endif %}
                 <p style="margin:0 0 4px 0;">
                   <label for="id_template" style="font-weight:600;font-size:12px;">Template</label>
                 </p>
@@ -502,6 +537,16 @@
       if (slugDisplay) slugDisplay.textContent = s || 'new-item';
     }
   }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var statusInput = document.getElementById('id_status');
+    var statusDisplay = document.getElementById('post-status-display');
+    if (statusInput && statusDisplay && document.body.classList.contains('model-page')) {
+      statusInput.addEventListener('change', function() {
+        statusDisplay.textContent = statusInput.options[statusInput.selectedIndex].text;
+      });
+    }
+  });
 
   function toggleSlugEdit() {
     var wrap = document.getElementById('slug-edit-input-wrap');

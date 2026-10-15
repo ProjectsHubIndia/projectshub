@@ -1,7 +1,8 @@
 from django.test import TestCase
 from core.models import (
     Project, ProjectCategory, Technology, AITool, ToolCategory,
-    Service, CaseStudy, Testimonial, FAQ, ContactInquiry, SiteSettings, Redirect
+    Service, CaseStudy, Testimonial, FAQ, ContactInquiry, SiteSettings, Redirect,
+    BlogCategory, BlogPost
 )
 
 
@@ -102,4 +103,17 @@ class ModelTests(TestCase):
         self.assertEqual(cs.client_name, "LexAI — Startup")
         self.assertEqual(cs.slug, "ai-document-summarizer-for-law-firms")
         self.assertTrue(bool(cs.featured_image))
+
+    def test_blog_post_category_is_optional(self):
+        category = BlogCategory.objects.create(name='AI Tutorials', slug='ai-tutorials')
+        post = BlogPost.objects.create(
+            title='Optional category article',
+            slug='optional-category-article',
+            category='',
+            category_ref=category,
+            is_published=True,
+            is_active=True,
+        )
+        self.assertEqual(post.category, '')
+        self.assertEqual(post.category_ref, category)
 

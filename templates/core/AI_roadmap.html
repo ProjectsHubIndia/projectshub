@@ -56,7 +56,7 @@
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
 />
-<link rel="stylesheet" href="{% static 'css/ai_roadmap.css' %}?v=9" />
+<link rel="stylesheet" href="{% static 'css/ai_roadmap.css' %}?v=10" />
 <link rel="stylesheet" href="{% static 'css/ai_roadmapresponsive.css' %}?v=9" />
 
 <style>
@@ -176,7 +176,12 @@
           {% if chapter.direct_topics %}
           <div class="tags-container">
             {% for topic in chapter.direct_topics %}
-            <button type="button" class="tag" data-topic="{{ topic.key }}">{{ topic.label }}</button>
+            <span class="topic-tag-item">
+              <button type="button" class="tag" data-topic="{{ topic.key }}">{{ topic.label }}</button>
+              <button type="button" class="topic-info-button" data-topic-info="{{ topic.key }}" aria-label="About {{ topic.label }}" title="About {{ topic.label }}">
+                <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+              </button>
+            </span>
             {% endfor %}
           </div>
           {% endif %}
@@ -187,7 +192,12 @@
               <h3>{{ group.title }}</h3>
               <div class="tags-container">
                 {% for topic in group.topics %}
-                <button type="button" class="tag" data-topic="{{ topic.key }}">{{ topic.label }}</button>
+                <span class="topic-tag-item">
+                  <button type="button" class="tag" data-topic="{{ topic.key }}">{{ topic.label }}</button>
+                  <button type="button" class="topic-info-button" data-topic-info="{{ topic.key }}" aria-label="About {{ topic.label }}" title="About {{ topic.label }}">
+                    <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+                  </button>
+                </span>
                 {% endfor %}
               </div>
             </div>
@@ -294,5 +304,5 @@
 {% block extra_js %}
 {{ roadmap_topics_json|json_script:"roadmapTopicsData" }}
 {{ roadmap_config_json|json_script:"roadmapConfigData" }}
-<script src="{% static 'js/ai_roadmap.js' %}?v=9" defer></script>
+<script src="{% static 'js/ai_roadmap.js' %}?v=10" defer></script>
 {% endblock %}

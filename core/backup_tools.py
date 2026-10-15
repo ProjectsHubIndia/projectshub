@@ -74,11 +74,23 @@ def _models_for_labels(labels):
     return result
 
 
-def dump_data(labels):
-    """dumpdata for the given labels, skipping models whose tables are missing.
-    Returns (json_text, skipped_model_labels)."""
+# Models that must never be written into the shipped seed (initial_data.json):
+# login credentials/hashes and personal data left by visitors. A fresh deploy
+# creates its admin via `seed_admin`; these belong only in private backups.
+SEED_EXCLUDE_MODELS = [
+    'auth.User',
+    'core.ChatbotConversation', 'core.ChatbotMessage', 'core.ChatAgentStatus',
+    'core.ContactInquiry', 'core.ContactMessage',
+    'core.IdeaSubmission', 'core.WorkshopEnrollment', 'core.ProjectGateLead',
+]
+
+
+def dump_data(labels, exclude=None):
+    """dumpdata for the given labels, skipping models whose tables are missing
+    (and any in `exclude`). Returns (json_text, skipped_model_labels)."""
     tables = _existing_tables()
     skipped = [m._meta.label for m in _models_for_labels(labels) if m._meta.db_table not in tables]
+    skipped += list(exclude or [])
     buf = io.StringIO()
     call_command('dumpdata', *labels, exclude=skipped, natural_foreign=True, natural_primary=True,
                  indent=2, stdout=buf)

@@ -180,6 +180,17 @@ def get_client_ip(request):
     return remote
 
 
+def _rate_limited(request, bucket, limit=5, window=3600):
+    """True once this client IP has posted `limit` times to `bucket` within `window` seconds.
+    Backs the public lead forms so bots can't flood the database."""
+    key = f"{bucket}:{get_client_ip(request)}"
+    count = cache.get(key, 0)
+    if count >= limit:
+        return True
+    cache.set(key, count + 1, window)
+    return False
+
+
 # ── Pages ──────────────────────────────────────────────────────────────────────
 
 @ensure_csrf_cookie
@@ -718,6 +729,8 @@ def contact_submit(request):
 
 @require_POST
 def gate_submit(request):
+    if _rate_limited(request, 'gate_rate'):
+        return JsonResponse({'success': False, 'message': 'Too many submissions. Please try again later.'}, status=429)
     try:
         data = _parse_request_data(request)
         full_name = data.get('full_name', '').strip()
@@ -750,6 +763,8 @@ def gate_submit(request):
 
 @require_POST
 def idea_submit(request):
+    if _rate_limited(request, 'idea_rate'):
+        return JsonResponse({'success': False, 'message': 'Too many submissions. Please try again later.'}, status=429)
     try:
         data = _parse_request_data(request)
         full_name = data.get('name', '').strip()
@@ -795,6 +810,8 @@ def idea_submit(request):
 
 @require_POST
 def enroll_submit(request):
+    if _rate_limited(request, 'enroll_rate'):
+        return JsonResponse({'success': False, 'message': 'Too many submissions. Please try again later.'}, status=429)
     try:
         data = _parse_request_data(request)
         full_name = data.get('fullName', '').strip()
@@ -1189,6 +1206,10 @@ def admin_guide_view(request):
         'active_projects': Project.objects.filter(is_active=True).count(),
         'featured_projects': Project.objects.filter(is_active=True, show_on_index=True).count(),
         'project_categories': ProjectCategory.objects.count(),
+        'total_pages': Page.objects.count(),
+        'published_pages': Page.objects.filter(status='published').count(),
+        'total_faqs': FAQ.objects.count(),
+        'published_faqs': FAQ.objects.filter(is_published=True).count(),
         'total_tools': AITool.objects.count(),
         'published_tools': AITool.objects.filter(is_published=True).count(),
         'featured_tools': AITool.objects.filter(featured=True).count(),
@@ -1912,12 +1933,13 @@ def admin_backup_sync_initial(request):
     from django.shortcuts import redirect
 
     initial_path = os.path.join(settings.BASE_DIR, 'initial_data.json')
-    from .backup_tools import dump_data, pending_migrations
+    from .backup_tools import dump_data, pending_migrations, SEED_EXCLUDE_MODELS
     if pending_migrations(use_cache=False):
         messages.error(request, "Your database needs an update first. Click “Apply database update” at the top of this page, then sync again.")
         return redirect('admin_backup')
     try:
-        content, _skipped = dump_data(['core', 'auth.user'])
+        # Seed ships content only — never credentials or visitor personal data.
+        content, _skipped = dump_data(['core'], exclude=SEED_EXCLUDE_MODELS)
         with open(initial_path, 'w', encoding='utf-8') as f:
             f.write(content)
         size_kb = round(os.path.getsize(initial_path) / 1024, 1)
@@ -2367,6 +2389,8 @@ def admin_quick_edit_api(request):
         except Exception as e:
             logger.error(f"Error loading model {app_label}.{model_name}: {e}")
             return JsonResponse({'success': False, 'error': 'Invalid model specification.'}, status=400)
+        if model_name == 'page' and status_val not in dict(model_class.STATUS_CHOICES):
+            return JsonResponse({'success': False, 'error': 'Choose a valid page status.'}, status=400)
         perm = f"{model_class._meta.app_label}.change_{model_class._meta.model_name}"
         if not request.user.has_perm(perm):
             return JsonResponse({'success': False, 'error': 'You do not have permission to edit this item.'}, status=403)

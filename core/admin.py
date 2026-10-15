@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.contrib.admin.sites import AdminSite
 from django.contrib.auth.models import User, Permission
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.db.models import Count
 from django.http import HttpResponse
 from django.utils.html import format_html
 from .models import (
@@ -163,6 +164,11 @@ class SiteSettingsAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return not SiteSettings.objects.exists()
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        from django.core.cache import cache
+        cache.delete('site_context_settings')
 
     def changelist_view(self, request, extra_context=None):
         obj = SiteSettings.objects.first()
@@ -661,10 +667,29 @@ class FAQCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(FAQ)
 class FAQAdmin(admin.ModelAdmin):
-    list_display = ('question', 'category', 'sort_order', 'is_published')
+    change_list_template = 'admin/core/faq/change_list.html'
+    list_display = ('question', 'answer_preview', 'category', 'sort_order', 'is_published')
     list_editable = ('sort_order', 'is_published')
     list_filter = ('category', 'is_published')
-    search_fields = ('question', 'answer')
+    search_fields = ('question', 'answer', 'category__name')
+    list_select_related = ('category',)
+    list_per_page = 25
+    fieldsets = (
+        ('FAQ content', {
+            'fields': ('question', 'answer', 'category'),
+        }),
+        ('Homepage display', {
+            'fields': ('sort_order', 'is_published'),
+            'description': 'Published FAQs appear on the homepage. Lower sort order values appear first.',
+        }),
+    )
+
+    @admin.display(description='Answer preview')
+    def answer_preview(self, obj):
+        answer = obj.answer.strip()
+        if not answer:
+            return 'No answer added'
+        return answer[:120] + ('...' if len(answer) > 120 else '')
 
 
 # ── Blog ──────────────────────────────────────────────────────────────────────
@@ -1494,12 +1519,12 @@ class AdminGuideNoteAdmin(admin.ModelAdmin):
 
 @admin.register(Page)
 class PageAdmin(admin.ModelAdmin):
-    list_display = ('title_display', 'author_name', 'blocks_badge', 'template_badge', 'status_badge', 'date_display')
+    list_display = ('title_display', 'slug_display', 'author_name', 'blocks_badge', 'template_badge', 'status_badge', 'date_display')
     list_filter = ('status', 'template', 'is_front_page')
     search_fields = ('title', 'slug', 'meta_title', 'content')
     prepopulated_fields = {'slug': ('title',)}
     list_per_page = 20
-    actions = ['make_published', 'make_draft', 'duplicate_page', export_as_csv_action()]
+    actions = ['make_published', 'make_draft', 'move_to_trash', 'duplicate_page', export_as_csv_action()]
     fieldsets = (
         (None, {
             'fields': ('title', 'slug')
@@ -1523,6 +1548,21 @@ class PageAdmin(admin.ModelAdmin):
         }),
     )
 
+    def changelist_view(self, request, extra_context=None):
+        status_counts = dict(
+            Page.objects.values_list('status').annotate(count=Count('pk'))
+        )
+        page_status_counts = {
+            status: status_counts.get(status, 0)
+            for status, _ in Page.STATUS_CHOICES
+        }
+        page_status_counts['total'] = sum(status_counts.values())
+        extra_context = {
+            **(extra_context or {}),
+            'page_status_counts': page_status_counts,
+        }
+        return super().changelist_view(request, extra_context=extra_context)
+
     def title_display(self, obj):
         front_badge = ''
         if obj.is_front_page:
@@ -1533,6 +1573,10 @@ class PageAdmin(admin.ModelAdmin):
         return format_html('<strong>{}</strong>{}{}', obj.title, format_html(front_badge), format_html(status_suffix))
     title_display.short_description = 'Title'
     title_display.admin_order_field = 'title'
+
+    def slug_display(self, obj):
+        return obj.slug
+    slug_display.short_description = 'URL Slug'
 
     def author_name(self, obj):
         return obj.author.username if obj.author else 'Admin'
@@ -1585,6 +1629,10 @@ class PageAdmin(admin.ModelAdmin):
     def make_draft(self, request, queryset):
         queryset.update(status='draft')
     make_draft.short_description = "Mark selected pages as Draft"
+
+    def move_to_trash(self, request, queryset):
+        queryset.update(status='trash')
+    move_to_trash.short_description = "Move selected pages to Trash"
 
     def duplicate_page(self, request, queryset):
         for p in queryset:

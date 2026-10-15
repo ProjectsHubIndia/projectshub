@@ -10,9 +10,21 @@
   var wpwrap = document.getElementById('wpwrap');
   var isFolded = localStorage.getItem('wp-admin-folded') === 'true';
 
+  function syncSidebarSections(folded) {
+    document.querySelectorAll('#adminmenu .admin-nav-app details').forEach(function(section) {
+      var flyout = section.querySelector('.admin-nav-models');
+      if (flyout) {
+        flyout.style.top = '';
+        flyout.style.left = '';
+      }
+      section.open = !folded && section.parentElement.classList.contains('current');
+    });
+  }
+
   if (isFolded && wpwrap) {
     wpwrap.classList.add('folded');
     if (collapseBtn) collapseBtn.querySelector('.collapse-icon').textContent = '▶';
+    syncSidebarSections(true);
   }
 
   if (collapseBtn && wpwrap) {
@@ -20,8 +32,20 @@
       var folded = wpwrap.classList.toggle('folded');
       collapseBtn.querySelector('.collapse-icon').textContent = folded ? '▶' : '◀';
       localStorage.setItem('wp-admin-folded', folded ? 'true' : 'false');
+      syncSidebarSections(folded);
     });
   }
+
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 782) {
+      document.body.classList.remove('mobile-admin-menu-open');
+      var menuToggle = document.getElementById('admin-menu-toggle');
+      if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
+      syncSidebarSections(wpwrap && wpwrap.classList.contains('folded'));
+    }
+  });
+
+  // Model help toggles removed to keep the admin sidebar cleaner and easier to scan.
 
   // 2. Screen Options Slide-Down Drawer
   window.toggleScreenOptions = function() {

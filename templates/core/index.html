@@ -61,12 +61,11 @@ students and businesses. No signup needed.{% endblock %}
     {
       "@type": "FAQPage",
       "mainEntity": [
-        {"@type":"Question","name":"Are the AI tools completely free to use?","acceptedAnswer":{"@type":"Answer","text":"Yes. All AI tools on the platform — including the resume builder, text utilities, and image generators — are completely free, with no signup required."}},
-        {"@type":"Question","name":"What kind of projects are showcased here?","acceptedAnswer":{"@type":"Answer","text":"Production-ready projects across Machine Learning, Django and FastAPI backends, Data Science analytics, and full-stack applications."}},
-        {"@type":"Question","name":"Can I request a custom software solution?","acceptedAnswer":{"@type":"Answer","text":"Yes. We build custom AI and software solutions tailored to students, startups, and growing businesses. Use the contact form to get in touch."}},
-        {"@type":"Question","name":"Do I need to create an account to use the tools?","acceptedAnswer":{"@type":"Answer","text":"No account is required. You can start generating resumes, analyzing text, or using any free tool instantly."}},
-        {"@type":"Question","name":"How fast is your support response time?","acceptedAnswer":{"@type":"Answer","text":"You will typically receive a personalized response in under 24 hours."}},
-        {"@type":"Question","name":"Are the ML projects suitable for beginners?","acceptedAnswer":{"@type":"Answer","text":"Yes. Projects are structured with clean code and documentation so developers of all skill levels can learn from them."}}
+        {% for faq in faqs %}
+        {"@type":"Question","name":"{{ faq.question|escapejs }}","acceptedAnswer":{"@type":"Answer","text":"{{ faq.answer|escapejs }}"}}{% if not forloop.last %},{% endif %}
+        {% empty %}
+        {"@type":"Question","name":"Are the AI tools completely free to use?","acceptedAnswer":{"@type":"Answer","text":"Yes. All our free AI tools are completely free to use with no signup required."}}
+        {% endfor %}
       ]
     }
   ]
@@ -107,20 +106,19 @@ CONTENT
                             <!-- Eyebrow badge -->
                             <p class="hero-tag">
                                 <span class="hero-tag__dot"></span>
-                                AI-Powered Platform
+                                {{ site_settings.tagline|default:"AI-Powered Platform" }}
                             </p>
 
                             <!-- Headline -->
                             <h1 class="hero-title">
-                                AI Projects &amp;<br>
-                                <span class="hero-title__underline">Free Tools</span> for<br>
+                                {{ site_settings.hero_headline_prefix|default:"AI Projects &" }}<br>
+                                <span class="hero-title__underline">{{ site_settings.hero_headline_highlight|default:"Free Tools" }}</span> for<br>
                                 <span class="hero-title__gradient" id="heroWordRotator">Students</span>
                             </h1>
 
                             <!-- Description -->
                             <p class="hero-desc">
-                                Build with hands-on AI projects, source code and mentor support. Try free AI tools,
-                                or work with us on custom AI development and automation.
+                                {{ site_settings.hero_subtitle|default:"Build with hands-on AI projects, source code and mentor support. Try free AI tools, or work with us on custom AI development and automation." }}
                             </p>
 
                             <!-- CTAs -->
@@ -1564,6 +1562,9 @@ CONTENT
                 <h2 class="faq-title">Frequently Asked Questions</h2>
                 <p class="faq-desc">Everything you need to know about ProjectsHub, our free AI tools, and custom
                     solutions.</p>
+                {% if request.user.is_staff and perms.core.add_faq %}
+                <a class="faq-admin-add" href="{% url 'admin:core_faq_add' %}">+ Add FAQ</a>
+                {% endif %}
             </div>
 
             <div class="faq-list">
@@ -1581,23 +1582,6 @@ CONTENT
                     <div class="faq-answer">
                         <div class="faq-answer-inner">
                             {{ faq.answer }}
-                        </div>
-                    </div>
-                </div>
-                {% empty %}
-                <div class="faq-item">
-                    <button class="faq-question">
-                        <span>Are the AI tools completely free to use?</span>
-                        <div class="faq-icon-wrapper">
-                            <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2">
-                                <path d="m6 9 6 6 6-6" />
-                            </svg>
-                        </div>
-                    </button>
-                    <div class="faq-answer">
-                        <div class="faq-answer-inner">
-                            Yes! All our free AI tools are completely free to use with no signup required.
                         </div>
                     </div>
                 </div>
