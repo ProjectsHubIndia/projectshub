@@ -17,6 +17,9 @@ python3 manage.py migrate --noinput || true
 # Collect static files into staticfiles directory
 python3 manage.py collectstatic --noinput --clear
 
+# Refresh the offline-compression manifest after template or asset changes.
+python3 manage.py compress --force
+
 # Copy media assets into staticfiles for direct CDN serving
 if [ -d "media" ]; then
     mkdir -p staticfiles/media
