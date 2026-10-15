@@ -195,9 +195,9 @@ body.light .pd-mockup-address {
   font-weight: 600;
   padding: 0.3rem 0.75rem;
   border-radius: 9999px;
-  background: rgba(59, 130, 246, 0.12);
-  color: #3b82f6;
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  background: rgba(99, 102, 241, 0.12);
+  color: #6366f1;
+  border: 1px solid rgba(99, 102, 241, 0.2);
   white-space: nowrap;
 }
 
@@ -229,9 +229,9 @@ body.light .pd-mockup-badge {
 
 .pd-mockup-badge--link {
   text-decoration: none;
-  background: #2563eb;
+  background: #4f46e5;
   color: #ffffff;
-  border-color: #2563eb;
+  border-color: #4f46e5;
   transition: all 0.2s ease;
 }
 
@@ -243,7 +243,7 @@ body.light .pd-mockup-badge {
 .pd-mockup-badge--link:hover {
   background: #1d4ed8;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
 }
 
 .pd-hero__media-wrapper,
@@ -620,7 +620,7 @@ body.light .pd-description p {
   align-items: center;
   justify-content: center;
   margin: 0 auto 0.875rem;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(168, 85, 247, 0.12));
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(168, 85, 247, 0.12));
   color: var(--blue-400);
   border: 1px solid rgba(255, 255, 255, 0.08);
   transition: transform 0.3s;
@@ -632,8 +632,8 @@ body.light .pd-description p {
 
 body.light .pd-highlight__icon {
   border-color: rgba(0, 0, 0, 0.05);
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
-  color: #2563eb;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(147, 51, 234, 0.1));
+  color: #4f46e5;
 }
 
 .pd-highlight__icon svg {
@@ -924,7 +924,7 @@ body.light .pd-diagram-card__title {
 }
 
 body.light .pd-diagram-card__action {
-  color: #2563eb;
+  color: #4f46e5;
 }
 
 @media (max-width: 640px) {
@@ -1137,9 +1137,9 @@ body.light .pd-btn-outline:hover {
 
 .pd-difficulty--intermediate,
 .pd-difficulty--medium {
-  background: rgba(59, 130, 246, 0.15);
-  color: #60a5fa;
-  border: 1px solid rgba(59, 130, 246, 0.25);
+  background: rgba(99, 102, 241, 0.15);
+  color: #818cf8;
+  border: 1px solid rgba(99, 102, 241, 0.25);
 }
 
 .pd-difficulty--advanced,
@@ -1160,7 +1160,7 @@ body.light .pd-difficulty--easy {
 body.light .pd-difficulty--intermediate,
 body.light .pd-difficulty--medium {
   background: #eff6ff;
-  color: #2563eb;
+  color: #4f46e5;
   border-color: #bfdbfe;
 }
 
@@ -1191,7 +1191,7 @@ body.light .pd-difficulty--hard {
   font-size: 2.25rem;
   font-weight: 800;
   letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #a78bfa, #60a5fa);
+  background: linear-gradient(135deg, #a78bfa, #818cf8);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1199,7 +1199,7 @@ body.light .pd-difficulty--hard {
 }
 
 body.light .pd-pricing-box__price {
-  background: linear-gradient(135deg, #7c3aed, #2563eb);
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1437,7 +1437,7 @@ body.light .pd-related-card {
 }
 
 body.light .pd-related-card:hover {
-  border-color: rgba(37, 99, 235, 0.3);
+  border-color: rgba(79, 70, 229, 0.3);
   box-shadow: 0 16px 36px -8px rgba(15, 23, 42, 0.1);
 }
 
@@ -1466,7 +1466,7 @@ body.light .pd-related-card:hover {
   font-size: 0.6875rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #2563eb;
+  color: #4f46e5;
   font-weight: 600;
   margin-bottom: 0.45rem;
 }
@@ -1559,7 +1559,7 @@ body.light .pd-related-card__desc {
 }
 
 body.light .pd-timeline-list::before {
-  background: linear-gradient(180deg, #3b82f6, #8b5cf6, rgba(99, 102, 241, 0.15));
+  background: linear-gradient(180deg, #6366f1, #8b5cf6, rgba(99, 102, 241, 0.15));
 }
 
 .pd-timeline-item {
@@ -1588,8 +1588,8 @@ body.light .pd-timeline-list::before {
 
 body.light .pd-timeline-item::before {
   background: #ffffff;
-  border-color: #2563eb;
-  box-shadow: 0 0 8px rgba(37, 99, 235, 0.35);
+  border-color: #4f46e5;
+  box-shadow: 0 0 8px rgba(79, 70, 229, 0.35);
 }
 
 body.light .pd-timeline-item:hover::before {
@@ -1612,14 +1612,14 @@ body.light .pd-timeline-item:hover::before {
   letter-spacing: 0.08em;
   padding: 2px 9px;
   border-radius: var(--radius-pill);
-  background: rgba(59, 130, 246, 0.12);
+  background: rgba(99, 102, 241, 0.12);
   color: var(--blue-400);
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  border: 1px solid rgba(99, 102, 241, 0.2);
 }
 
 body.light .pd-timeline-phase-pill {
   background: #eff6ff;
-  color: #2563eb;
+  color: #4f46e5;
   border-color: #dbeafe;
 }
 

@@ -36,7 +36,7 @@
 }
 
 .pcard2--tools::before {
-  background: linear-gradient(90deg, #3b82f6 0%, #818cf8 50%, #3b82f6 100%);
+  background: linear-gradient(90deg, #6366f1 0%, #818cf8 50%, #6366f1 100%);
   background-size: 200% 100%;
   animation: pcard2-bar-slide 3.5s linear infinite;
 }
@@ -86,7 +86,7 @@
 
 .pcard2--tools .laptop-screen {
   box-shadow:
-    inset 0 0 60px rgba(59, 130, 246, 0.18),
+    inset 0 0 60px rgba(99, 102, 241, 0.18),
     inset 0 0 4px rgba(0, 0, 0, 0.8) !important;
   border-color: rgba(60, 90, 140, 0.85) !important;
   transition: box-shadow 0.4s ease;
@@ -94,9 +94,9 @@
 
 .pcard2--tools:hover .laptop-screen {
   box-shadow:
-    inset 0 0 90px rgba(59, 130, 246, 0.32),
+    inset 0 0 90px rgba(99, 102, 241, 0.32),
     inset 0 0 4px rgba(0, 0, 0, 0.8),
-    0 0 36px rgba(59, 130, 246, 0.18) !important;
+    0 0 36px rgba(99, 102, 241, 0.18) !important;
 }
 
 /* ── Card body — coloured top divider line + dot-grid bg ── */
@@ -120,8 +120,8 @@
 
 .pcard2--tools .project-card__body {
   background-image:
-    radial-gradient(circle, rgba(59, 130, 246, 0.18) 1px, transparent 1px),
-    linear-gradient(175deg, rgba(59, 130, 246, 0.03) 0%, transparent 55%);
+    radial-gradient(circle, rgba(99, 102, 241, 0.18) 1px, transparent 1px),
+    linear-gradient(175deg, rgba(99, 102, 241, 0.03) 0%, transparent 55%);
   background-size:
     18px 18px,
     100% 100%;
@@ -152,7 +152,7 @@
 }
 
 .pcard2--tools .pcard2__deco-svg {
-  color: #3b82f6;
+  color: #6366f1;
 }
 
 .pcard2--case-study .pcard2__deco-svg {
@@ -175,7 +175,7 @@
 }
 
 .pcard2--tools .project-card__body::before {
-  background: linear-gradient(90deg, #3b82f6, #818cf8, transparent);
+  background: linear-gradient(90deg, #6366f1, #818cf8, transparent);
 }
 
 .pcard2--case-study .project-card__body::before {
@@ -203,9 +203,9 @@
 }
 
 .pcard2--tools .project-tag {
-  background: rgba(59, 130, 246, 0.08) !important;
-  color: #3b82f6 !important;
-  border-color: rgba(59, 130, 246, 0.22) !important;
+  background: rgba(99, 102, 241, 0.08) !important;
+  color: #6366f1 !important;
+  border-color: rgba(99, 102, 241, 0.22) !important;
 }
 
 .pcard2--case-study .project-tag {
@@ -235,7 +235,7 @@
 }
 
 .pcard2__accent--blue {
-  background-image: linear-gradient(135deg, #60a5fa 0%, #818cf8 100%);
+  background-image: linear-gradient(135deg, #818cf8 0%, #818cf8 100%);
 }
 
 /* ── Description ── */
@@ -259,7 +259,7 @@
 }
 
 .pcard2--tools .pcard2__readmore {
-  color: #60a5fa !important;
+  color: #818cf8 !important;
 }
 
 .pcard2__readmore:hover {
@@ -330,13 +330,13 @@
 }
 
 .pcard2__cta--blue {
-  background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #6366f1 100%);
   color: #ffffff;
-  box-shadow: 0 4px 18px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 4px 18px rgba(99, 102, 241, 0.4);
 }
 
 .pcard2__cta--blue:hover {
-  box-shadow: 0 8px 28px rgba(59, 130, 246, 0.58);
+  box-shadow: 0 8px 28px rgba(99, 102, 241, 0.58);
   transform: translateY(-2px);
   color: #ffffff;
 }
@@ -407,7 +407,7 @@ body:not(.light) .pcard2--projects {
 body:not(.light) .pcard2--tools {
   background: linear-gradient(148deg,
       rgba(20, 18, 50, 0.92) 60%,
-      rgba(59, 130, 246, 0.12) 100%) !important;
+      rgba(99, 102, 241, 0.12) 100%) !important;
 }
 
 body:not(.light) .pcard2--case-study {

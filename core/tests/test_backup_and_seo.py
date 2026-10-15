@@ -48,6 +48,30 @@ class BackupRestoreTests(TestCase):
         self.assertEqual(Redirect.objects.get(old_path='/admin').notes, 'from live')
         self.assertTrue(os.listdir(os.path.join(self.tmp, 'backups')), 'safety snapshot must be written')
 
+    def upload_zip(self, members, name='full_backup.zip'):
+        buf = io.BytesIO()
+        with zipfile.ZipFile(buf, 'w') as zf:
+            for arc, data in members.items():
+                zf.writestr(arc, data)
+        f = SimpleUploadedFile(name, buf.getvalue(), content_type='application/zip')
+        return self.client.post('/admin/backup/restore/', {'backup_file': f}, follow=True)
+
+    def test_zip_backup_restores_data_and_media(self):
+        backup = [{'model': 'core.redirect', 'pk': 1, 'fields': {'old_path': '/old/', 'new_path': '/new/', 'status_code': 301, 'is_active': True, 'notes': ''}}]
+        res = self.upload_zip({'database.json': json.dumps(backup), 'media/pages/logo.png': b'PNGDATA'})
+        msgs = [str(m) for m in res.context['messages']]
+        self.assertTrue(any('Restored 1 records' in m and '1 media file' in m for m in msgs), msgs)
+        self.assertTrue(Redirect.objects.filter(old_path='/old/').exists())
+        restored = os.path.join(self.tmp, 'media', 'pages', 'logo.png')
+        self.assertTrue(os.path.isfile(restored))
+        self.assertEqual(open(restored, 'rb').read(), b'PNGDATA')
+
+    def test_zip_restore_blocks_path_traversal(self):
+        backup = [{'model': 'core.redirect', 'pk': 1, 'fields': {'old_path': '/x/', 'new_path': '/y/', 'status_code': 301, 'is_active': True, 'notes': ''}}]
+        self.upload_zip({'database.json': json.dumps(backup), 'media/../../evil.txt': b'pwned'})
+        self.assertFalse(os.path.exists(os.path.join(self.tmp, 'evil.txt')))
+        self.assertFalse(os.path.exists(os.path.join(os.path.dirname(self.tmp), 'evil.txt')))
+
     def test_foreign_keys_follow_remapped_ids(self):
         BlogPost.objects.create(pk=5, title='Local', slug='same-slug', is_active=True, is_published=True)
         backup = [

@@ -76,7 +76,7 @@
 }
 
 .ai-chatbot-toggle:focus-visible {
-  outline: 2px solid #38bdf8 !important;
+  outline: 2px solid #a78bfa !important;
   outline-offset: 4px !important;
 }
 
@@ -677,12 +677,12 @@ body.has-teaser .back-to-top {
   right: 0;
   width: 290px;
   background: rgba(15, 23, 42, 0.95);
-  border: 1px solid rgba(56, 189, 248, 0.4);
+  border: 1px solid rgba(167, 139, 250, 0.4);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-radius: 16px;
   padding: 14px 16px;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 20px rgba(56, 189, 248, 0.2);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 20px rgba(167, 139, 250, 0.2);
   pointer-events: none !important;
   cursor: pointer;
   display: flex;
@@ -718,7 +718,7 @@ body.has-teaser .back-to-top {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #0284c7, #6366f1);
+  background: linear-gradient(135deg, #6366f1, #6366f1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -759,7 +759,7 @@ body.has-teaser .back-to-top {
   gap: 6px;
   font-size: 12px;
   font-weight: 700;
-  color: #38bdf8;
+  color: #a78bfa;
   margin-top: 2px;
 }
 
@@ -821,7 +821,7 @@ body.light .ai-chatbot-close:hover {
 /* In-Chat Interactive Lead Capture Card */
 .ai-chatbot-lead-card {
   background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%) !important;
-  border: 1px solid rgba(56, 189, 248, 0.35) !important;
+  border: 1px solid rgba(167, 139, 250, 0.35) !important;
   border-radius: 14px !important;
   padding: 14px 15px !important;
   margin: 8px 0 4px 0 !important;
@@ -877,8 +877,8 @@ body.light .ai-chatbot-close:hover {
 }
 
 .ai-chatbot-lead-input:focus {
-  border-color: #38bdf8;
-  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+  border-color: #a78bfa;
+  box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.2);
 }
 
 .ai-chatbot-lead-input::placeholder {
@@ -898,7 +898,7 @@ body.light .ai-chatbot-close:hover {
 .ai-chatbot-lead-submit {
   padding: 9px 16px;
   border-radius: 8px;
-  background: linear-gradient(135deg, #0284c7 0%, #6366f1 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #6366f1 100%);
   color: #ffffff;
   border: none;
   font-size: 12.5px;
@@ -910,13 +910,13 @@ body.light .ai-chatbot-close:hover {
   justify-content: center;
   gap: 6px;
   margin-top: 4px;
-  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
 }
 
 .ai-chatbot-lead-submit:hover:not(:disabled) {
   opacity: 0.95;
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(2, 132, 199, 0.5);
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.5);
 }
 
 .ai-chatbot-lead-submit:disabled {

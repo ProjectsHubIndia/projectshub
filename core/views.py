@@ -2030,21 +2030,26 @@ def admin_backup_restore(request):
     """
     from django.contrib import messages
     from django.shortcuts import redirect
-    from .backup_tools import RestoreError, restore_backup
+    from .backup_tools import RestoreError, restore_backup, restore_bundle
 
     uploaded_file = request.FILES.get('backup_file')
     if not uploaded_file:
         messages.error(request, "No backup file uploaded.")
         return redirect('admin_backup')
-    if not uploaded_file.name.lower().endswith('.json'):
-        messages.error(request, "Invalid file format. Please upload a .json backup file.")
+    name = uploaded_file.name.lower()
+    is_zip = name.endswith('.zip')
+    if not (is_zip or name.endswith('.json')):
+        messages.error(request, "Invalid file format. Please upload a .json or full .zip backup.")
         return redirect('admin_backup')
-    if uploaded_file.size > 50 * 1024 * 1024:
-        messages.error(request, "Backup file is too large (50 MB max).")
+    # A .zip carries media too, so it is allowed to be much larger than a data-only .json.
+    max_bytes = 500 * 1024 * 1024 if is_zip else 50 * 1024 * 1024
+    if uploaded_file.size > max_bytes:
+        messages.error(request, f"Backup file is too large ({max_bytes // (1024 * 1024)} MB max).")
         return redirect('admin_backup')
 
     try:
-        report = restore_backup(uploaded_file.read())
+        raw = uploaded_file.read()
+        report = restore_bundle(raw) if is_zip else restore_backup(raw)
     except RestoreError as e:
         messages.error(request, f"Restore not started: {e}")
         return redirect('admin_backup')
@@ -2067,6 +2072,8 @@ def _restore_summary(report, source_label):
     if report['skipped_models']:
         skipped = ', '.join(f"{k} ({v})" for k, v in report['skipped_models'].items())
         summary += f" Skipped data for models this site doesn't have: {skipped}."
+    if report.get('media_restored'):
+        summary += f" Restored {report['media_restored']} media file(s)."
     summary += f" A safety snapshot of the previous data was saved as backups/{os.path.basename(report['snapshot'])}."
     return summary
 

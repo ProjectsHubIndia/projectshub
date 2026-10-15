@@ -457,9 +457,9 @@
         <div class="bk-card__head">
           <div class="bk-card__icon">📥</div>
           <div>
-            <h3 class="bk-card__title">Restore from Backup (.json)</h3>
+            <h3 class="bk-card__title">Restore from Backup (.zip or .json)</h3>
             <p class="bk-card__desc">
-              Upload a <code>.json</code> backup (from this site or your live site). Matching records are updated in place by slug/path, and a safety snapshot of your current data is saved to <code>backups/</code> first.
+              Upload a full <code>.zip</code> backup (data <strong>and images</strong>, from “Download Complete Backup”) or a data-only <code>.json</code>. Matching records are updated in place by slug/path, media files are written back to the site, and a safety snapshot of your current data is saved to <code>backups/</code> first.
             </p>
           </div>
         </div>
@@ -467,7 +467,7 @@
       <div class="bk-card__actions">
         <form method="post" action="{% url 'admin_backup_restore' %}" enctype="multipart/form-data" class="bk-upload-form" onsubmit="return confirm('Are you sure you want to restore this backup? Existing matching records will be updated.');">
           {% csrf_token %}
-          <input type="file" name="backup_file" accept=".json" required>
+          <input type="file" name="backup_file" accept=".zip,.json" required>
           <button type="submit" class="bk-btn bk-btn--secondary" style="font-weight:600;">
             <span>⬆️</span> Upload &amp; Restore
           </button>

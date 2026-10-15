@@ -88,6 +88,7 @@
         '</div>' +
         '<div class="phc-body" id="phcBody">' +
           '<div class="phc-intro" id="phcIntro"></div>' +
+          '<div class="phc-session-notice" id="phcSessionNotice" role="status" aria-live="polite" hidden></div>' +
           '<div class="phc-log" id="phcLog" role="log" aria-live="polite" aria-relevant="additions"></div>' +
           '<div class="phc-typing" id="phcTyping" hidden><span class="phc-typing-dots"><i></i><i></i><i></i></span><span id="phcTypingText"></span></div>' +
           '<form class="phc-contact" id="phcContact" hidden novalidate>' +
@@ -126,6 +127,7 @@
   var el = {};
   function cache() {
     ['phChat', 'phcTeaser', 'phcTeaserOpen', 'phcTeaserAvatars', 'phcTeaserText', 'phcPanel', 'phcHeadAvatars', 'phcTitle',
+     'phcSessionNotice',
      'phcStatus', 'phcStatusText', 'phcMinimize', 'phcBody', 'phcIntro', 'phcLog', 'phcTyping', 'phcTypingText', 'phcContact',
      'phcContactError', 'phcContactSkip', 'phcQuick', 'phcComposer', 'phcInput', 'phcSend', 'phcCounter', 'phcLauncher',
      'phcLauncherOnline', 'phcBadge'].forEach(function (id) { el[id] = document.getElementById(id); });
@@ -135,11 +137,14 @@
   function avatar(a, size) {
     return '<span class="phc-av' + (size ? ' phc-av--' + size : '') + '" style="background:' + esc(a.color || '#4f46e5') + '" aria-hidden="true">' + esc(a.initials || 'PH') + '</span>';
   }
-  function teamAvatars() {
+  function teamAvatars(showWordmark) {
     var agent = S.state && S.state.mode === 'human' && S.state.agent;
     if (agent) return avatar(agent);
     if (S.team.agents && S.team.agents.length) return S.team.agents.map(function (a) { return avatar(a); }).join('');
-    return '<span class="phc-av phc-av--brand" aria-hidden="true">PH</span>';
+    if (showWordmark) {
+      return '<span class="phc-brand-wordmark"><img src="/static/image/logo/projectshub-logo-dark.png" alt="ProjectsHub — Connect, Collaborate, Achieve"></span>';
+    }
+    return '<span class="phc-av phc-av--brand" aria-hidden="true"><img src="/static/image/Favicon-new/android-chrome-192x192.png" alt=""></span>';
   }
 
   function renderHeader() {
@@ -162,7 +167,7 @@
     el.phcTitle.textContent = title;
     el.phcStatusText.textContent = text;
     el.phcStatus.classList.toggle('is-online', online);
-    el.phcHeadAvatars.innerHTML = teamAvatars();
+    el.phcHeadAvatars.innerHTML = teamAvatars(true);
     el.phcLauncherOnline.hidden = !S.team.online;
     el.phcLauncher.setAttribute('aria-label', 'Chat with the ProjectsHub team' + (S.team.online ? ' (online now)' : ''));
   }
@@ -283,10 +288,39 @@
   }
 
   // ── network ──────────────────────────────────────────────────────────────
-  function resetSession() {
+  function resetSession(notice) {
     S.session = null; saveSession(null);
     S.messages = S.messages.filter(function (m) { return m._pending || m._failed; });
     S.state = null; S.lastId = 0;
+    S.lastSeenId = 0; S.unread = 0; S.contactDismissed = false;
+    ssSet('phc_seen', '0');
+    ssSet('phc_contact_skip', '');
+    if (el.phcContact) el.phcContact.reset();
+    if (el.phcInput) {
+      el.phcInput.value = '';
+      autosize();
+      updateComposer();
+    }
+    if (el.phcSessionNotice) {
+      el.phcSessionNotice.textContent = notice || 'Your previous chat session is no longer available. Choose a topic below or send a message to start a new conversation.';
+      el.phcSessionNotice.hidden = false;
+    }
+    renderBadge();
+  }
+
+  function handleExpiredSession(data) {
+    if (!data || data._status !== 403 || !data.reset) return false;
+    resetSession();
+    renderIntro();
+    renderLog(true);
+    schedule();
+    return true;
+  }
+
+  function clearSessionNotice() {
+    if (!el.phcSessionNotice) return;
+    el.phcSessionNotice.textContent = '';
+    el.phcSessionNotice.hidden = true;
   }
 
   function fetchPresence() {
@@ -299,7 +333,9 @@
     if (!S.session) { S.loaded = true; return Promise.resolve(); }
     return request('POST', '/api/chat/session/', creds()).then(function (d) {
       if (d.team) S.team = d.team;
-      if (!d.success || !d.session) { resetSession(); }
+      if (!d.success || !d.session) {
+        resetSession('Your previous chat session timed out or could not be restored. Choose a topic below or send a message to start again.');
+      }
       else {
         S.messages = [];
         mergeMessages(d.messages);
@@ -317,7 +353,7 @@
     if (!S.session) { schedule(); return; }
     var q = qs(creds({ after: S.lastId, read: S.open && !document.hidden ? 1 : 0 }));
     request('GET', '/api/chat/poll/?' + q).then(function (d) {
-      if (d._status === 403 && d.reset) { resetSession(); renderLog(); schedule(); return; }
+      if (handleExpiredSession(d)) return;
       if (!d.success) throw new Error(d.error || 'poll failed');
       S.failures = 0;
       if (d.team) S.team = d.team;
@@ -362,7 +398,10 @@
     var body = { message: m.text, client_id: m.client_id, page_url: location.pathname + location.search };
     if (S.session) { body.session_id = S.session.session_id; body.token = S.session.token; }
     return request('POST', '/api/chat/message/', body).then(function (d) {
-      if (d._status === 403 && d.reset && !isRetry) { resetSession(); return postMessage(m, true); }
+      if (d._status === 403 && d.reset && !isRetry) {
+        resetSession();
+        return postMessage(m, true);
+      }
       if (!d.success) {
         m._pending = false; m._failed = true; m._error = d.error;
         renderLog();
@@ -370,6 +409,7 @@
         return false;
       }
       if (d.session && d.session.token) { S.session = d.session; saveSession(d.session); }
+      clearSessionNotice();
       var idx = S.messages.indexOf(m);
       if (idx > -1) S.messages.splice(idx, 1);
       mergeMessages([d.message].concat(d.replies || []));
@@ -387,6 +427,7 @@
   function requestHuman() {
     if (!S.session) return Promise.resolve();
     return request('POST', '/api/chat/request-human/', creds()).then(function (d) {
+      if (handleExpiredSession(d)) return;
       if (d.success) { mergeMessages(d.replies); applyState(d.state); markSeen(); renderLog(true); }
     }).catch(function () {});
   }
@@ -407,7 +448,7 @@
     var now = Date.now();
     if (now - S.typingSentAt < 3000) return;
     S.typingSentAt = now;
-    request('POST', '/api/chat/typing/', creds({ typing: 1 })).catch(function () {});
+    request('POST', '/api/chat/typing/', creds({ typing: 1 })).then(handleExpiredSession).catch(function () {});
   }
 
   // ── open / close / teaser ────────────────────────────────────────────────
@@ -415,6 +456,7 @@
     S.open = open;
     el.phcPanel.hidden = !open;
     el.phChat.classList.toggle('is-open', open);
+    document.body.classList.toggle('live-chat-open', open);
     el.phcLauncher.setAttribute('aria-expanded', open ? 'true' : 'false');
     document.documentElement.classList.toggle('phc-lock', open && window.matchMedia('(max-width: 520px)').matches);
     if (open) {
@@ -445,11 +487,15 @@
     el.phcTeaserAvatars.innerHTML = teamAvatars();
     el.phcTeaserText.textContent = teaserText();
     el.phcTeaser.hidden = false;
-    requestAnimationFrame(function () { el.phcTeaser.classList.add('is-visible'); });
+    requestAnimationFrame(function () {
+      el.phcTeaser.classList.add('is-visible');
+      document.body.classList.add('live-chat-teaser-visible');
+    });
   }
   function hideTeaser(remember) {
     el.phcTeaser.classList.remove('is-visible');
     el.phcTeaser.hidden = true;
+    document.body.classList.remove('live-chat-teaser-visible');
     if (remember) ssSet('phc_teaser', '1');
   }
   var nudgeTimer;
@@ -526,6 +572,7 @@
       btn.disabled = true; btn.textContent = 'Saving…';
       request('POST', '/api/chat/profile/', creds(data)).then(function (d) {
         btn.disabled = false; btn.textContent = 'Save details';
+        if (handleExpiredSession(d)) return;
         if (!d.success) { el.phcContactError.textContent = d.error || 'Could not save. Please try again.'; return; }
         mergeMessages(d.replies); applyState(d.state); markSeen(); renderLog(true);
       }).catch(function () { btn.disabled = false; btn.textContent = 'Save details'; el.phcContactError.textContent = 'Network error. Please try again.'; });

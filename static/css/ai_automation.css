@@ -692,7 +692,8 @@ body:not(.light) .aia-faq-ans        { color: #94a3b8; }
 }
 @media (max-width: 900px) {
   .aia-hero-inner { grid-template-columns: 1fr; text-align: center; }
-  .aia-hero-right { display: none; }
+  .aia-hero-right { display: flex; min-height: 280px; margin-top: -0.5rem; }
+  .aia-hero-right img { height: 300px; object-fit: contain; }
   .aia-hero-btns  { justify-content: center; }
   .aia-offer-grid { grid-template-columns: 1fr; }
   .aia-apps-layout{ grid-template-columns: 1fr; }

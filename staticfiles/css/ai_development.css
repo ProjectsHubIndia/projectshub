@@ -60,7 +60,9 @@
 }
 @media (max-width: 900px) {
   .aip-hero-inner { grid-template-columns: 1fr; text-align: center; }
-  .aip-hero-right { display: none; }
+  .aip-hero-right { display: flex; min-height: 280px; margin-top: -0.5rem; }
+  .aip-hero-img { max-width: 440px; }
+  .aip-hero-img img { height: 300px; object-fit: contain; }
   .aip-hero-btns  { justify-content: center; }
 }
 

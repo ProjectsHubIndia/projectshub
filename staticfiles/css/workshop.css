@@ -625,16 +625,16 @@
 }
 
 body.light .workshop-cta__btn {
-  background: linear-gradient(135deg, #0242cd, #096dfc);
-  box-shadow: 0 4px 24px rgba(2, 66, 205, 0.25);
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  box-shadow: 0 4px 24px rgba(79, 70, 229, 0.25);
 }
 
 body.light .workshop-cta__btn:hover {
-  box-shadow: 0 8px 32px rgba(2, 66, 205, 0.45);
+  box-shadow: 0 8px 32px rgba(79, 70, 229, 0.45);
 }
 
 body.light .workshop-cta__price-main {
-  background: linear-gradient(135deg, #0242cd, #096dfc);
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -698,8 +698,8 @@ body.light .day-card {
 
 body.light .day-card:hover {
   background: rgba(255, 255, 255, 0.55);
-  border-color: rgba(59, 130, 246, 0.4);
-  box-shadow: 0 15px 40px rgba(59, 130, 246, 0.12);
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 15px 40px rgba(99, 102, 241, 0.12);
 }
 
 body.light .day-card--featured {
@@ -716,7 +716,7 @@ body.light .day-card__header {
 }
 
 body.light .day-card--featured .day-card__header {
-  background: rgba(59, 130, 246, 0.04);
+  background: rgba(99, 102, 241, 0.04);
 }
 
 body.light .day-card__glass {
@@ -757,8 +757,8 @@ body.light .day-card--featured .day-card__topics .check-icon {
 }
 
 body.light .day-card__outcome {
-  background: rgba(59, 130, 246, 0.05);
-  border-color: rgba(59, 130, 246, 0.12);
+  background: rgba(99, 102, 241, 0.05);
+  border-color: rgba(99, 102, 241, 0.12);
   color: var(--blue-500);
 }
 
@@ -773,28 +773,28 @@ body.light .feature-item::after {
     135deg,
     rgba(255, 255, 255, 0.6) 0%,
     transparent 50%,
-    rgba(59, 130, 246, 0.3) 100%
+    rgba(99, 102, 241, 0.3) 100%
   );
 }
 
 body.light .feature-item:hover {
   background: rgba(255, 255, 255, 0.65);
-  box-shadow: 0 15px 40px rgba(59, 130, 246, 0.12);
+  box-shadow: 0 15px 40px rgba(99, 102, 241, 0.12);
 }
 
 body.light .feature-item__icon {
   background: linear-gradient(
     135deg,
-    rgba(59, 130, 246, 0.1) 0%,
+    rgba(99, 102, 241, 0.1) 0%,
     rgba(139, 92, 246, 0.05) 100%
   );
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.1);
   color: var(--blue-600);
 }
 
 body.light .feature-item:hover .feature-item__icon {
-  box-shadow: 0 12px 25px rgba(59, 130, 246, 0.2);
+  box-shadow: 0 12px 25px rgba(99, 102, 241, 0.2);
   color: var(--blue-500);
 }
 
@@ -1120,7 +1120,7 @@ body.light .share-card {
 body.light .share-card__preview {
   background: linear-gradient(
     135deg,
-    rgba(59, 130, 246, 0.06) 0%,
+    rgba(99, 102, 241, 0.06) 0%,
     rgba(168, 85, 247, 0.04) 100%
   );
 }
@@ -1157,8 +1157,8 @@ body.light .day-card__share-btn {
 }
 
 body.light .day-card__share-btn:hover {
-  background: rgba(59, 130, 246, 0.08);
-  border-color: rgba(59, 130, 246, 0.25);
+  background: rgba(99, 102, 241, 0.08);
+  border-color: rgba(99, 102, 241, 0.25);
   color: var(--blue-500);
 }
 
@@ -1219,7 +1219,7 @@ body.light .enroll-modal__backdrop {
   transform: scale(0.95) translateY(12px);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
   scrollbar-width: thin;
-  scrollbar-color: var(--blue-400, #60a5fa) transparent;
+  scrollbar-color: var(--blue-400, #818cf8) transparent;
 }
 
 .enroll-modal.is-active .enroll-modal__content {
@@ -1231,7 +1231,7 @@ body.light .enroll-modal__backdrop {
 }
 
 .enroll-modal__content::-webkit-scrollbar-thumb {
-  background: var(--blue-400, #60a5fa);
+  background: var(--blue-400, #818cf8);
   border-radius: 4px;
 }
 
@@ -1299,7 +1299,7 @@ body.light .enroll-modal__close:hover {
   background: rgba(255, 255, 255, 0.04);
   font-size: 0.6875rem;
   font-weight: 600;
-  color: var(--blue-400, #60a5fa);
+  color: var(--blue-400, #818cf8);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin-bottom: 0.5rem;
@@ -1309,7 +1309,7 @@ body.light .enroll-modal__close:hover {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--blue-400, #60a5fa);
+  background: var(--blue-400, #818cf8);
   box-shadow: 0 0 8px rgba(96, 165, 250, 0.5);
   animation: pulse-dot 2s ease-in-out infinite;
 }
@@ -1337,7 +1337,7 @@ body.light .enroll-modal__title {
 }
 
 .enroll-modal__title .gradient-word {
-  background: linear-gradient(135deg, #3b82f6, #ec4899);
+  background: linear-gradient(135deg, #6366f1, #ec4899);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -1425,7 +1425,7 @@ body.light .enroll-field__label {
 }
 
 .enroll-field__input:focus {
-  border-color: var(--blue-400, #60a5fa);
+  border-color: var(--blue-400, #818cf8);
   background: rgba(255, 255, 255, 0.07);
   box-shadow:
     0 0 0 3px rgba(96, 165, 250, 0.15),
@@ -1441,9 +1441,9 @@ body.light .enroll-field__input {
 
 body.light .enroll-field__input:focus {
   background: #ffffff;
-  border-color: var(--blue-500, #3b82f6);
+  border-color: var(--blue-500, #6366f1);
   box-shadow:
-    0 0 0 4px rgba(59, 130, 246, 0.15),
+    0 0 0 4px rgba(99, 102, 241, 0.15),
     0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
@@ -1513,7 +1513,7 @@ body.light .enroll-field__input::placeholder {
 .enroll-checkbox input:checked + .enroll-checkbox__check {
   background: linear-gradient(
     135deg,
-    var(--blue-500, #3b82f6),
+    var(--blue-500, #6366f1),
     var(--purple, #8b5cf6)
   );
   border-color: transparent;
@@ -1564,7 +1564,7 @@ body.light .enroll-checkbox__check {
   border: none;
   background: linear-gradient(
     135deg,
-    var(--blue-500, #3b82f6),
+    var(--blue-500, #6366f1),
     var(--purple, #8b5cf6)
   );
   color: #fff;
@@ -1585,7 +1585,7 @@ body.light .enroll-checkbox__check {
   box-shadow:
     0 12px 35px rgba(99, 102, 241, 0.5),
     inset 0 2px 2px rgba(255, 255, 255, 0.3);
-  background: linear-gradient(135deg, var(--blue-400, #60a5fa), #ec4899);
+  background: linear-gradient(135deg, var(--blue-400, #818cf8), #ec4899);
 }
 
 .enroll-submit:active {
@@ -1705,7 +1705,7 @@ body.light .enroll-success__message {
 }
 
 .enroll-success__message span {
-  color: var(--blue-400, #60a5fa);
+  color: var(--blue-400, #818cf8);
   font-weight: 600;
 }
 

@@ -73,7 +73,7 @@
 
 .acf-hero-glow-dark,
 .acf-hero-glow-cyan {
-  background: radial-gradient(ellipse 80% 55% at 50% -15%, rgba(2, 132, 199, 0.12) 0%, rgba(248, 250, 252, 0) 70%),
+  background: radial-gradient(ellipse 80% 55% at 50% -15%, rgba(99, 102, 241, 0.12) 0%, rgba(248, 250, 252, 0) 70%),
               linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
 }
 
@@ -103,9 +103,9 @@
   border-radius: 9999px;
   font-size: 13px;
   font-weight: 700;
-  color: #0284c7;
+  color: #6366f1;
   margin-bottom: 24px;
-  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.08);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.08);
 }
 
 .acf-hero-title {
@@ -152,14 +152,14 @@
 }
 
 .acf-btn-primary {
-  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #0369a1 100%);
   color: #ffffff !important;
-  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
 }
 
 .acf-btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(2, 132, 199, 0.45);
+  box-shadow: 0 8px 22px rgba(99, 102, 241, 0.45);
   color: #ffffff !important;
 }
 
@@ -194,14 +194,14 @@
 
 .acf-card:hover {
   transform: translateY(-4px);
-  border-color: #38bdf8;
-  box-shadow: 0 16px 32px -4px rgba(2, 132, 199, 0.12), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+  border-color: #a78bfa;
+  box-shadow: 0 16px 32px -4px rgba(99, 102, 241, 0.12), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
 }
 
 .acf-card-badge {
   font-size: 11.5px;
   font-weight: 700;
-  color: #0284c7;
+  color: #6366f1;
   background: #e0f2fe;
   border: 1px solid #bae6fd;
   text-transform: uppercase;
@@ -240,7 +240,7 @@
 }
 
 .acf-card-title a:hover {
-  color: #0284c7;
+  color: #6366f1;
 }
 
 .acf-card-desc {
@@ -254,7 +254,7 @@
 .acf-card-link {
   font-size: 13.5px;
   font-weight: 700;
-  color: #0284c7;
+  color: #6366f1;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -280,7 +280,7 @@
   justify-content: center;
   font-size: 26px;
   margin-bottom: 18px;
-  color: #0284c7;
+  color: #6366f1;
 }
 
 /* ── 3. Tools Showcase & Search ── */
@@ -315,8 +315,8 @@
 
 .acf-tools-search-input:focus {
   background: #ffffff;
-  border-color: #0284c7;
-  box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.12);
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
   outline: none;
 }
 
@@ -445,7 +445,7 @@
   font-weight: 800;
   line-height: 1.1;
   margin-bottom: 8px;
-  color: #0284c7;
+  color: #6366f1;
 }
 
 .acf-stat-label {
@@ -500,7 +500,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #0284c7 0%, #6366f1 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #6366f1 100%);
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -544,8 +544,8 @@
 }
 
 .acf-accordion-item.active {
-  border-color: #0284c7;
-  box-shadow: 0 4px 16px rgba(2, 132, 199, 0.08);
+  border-color: #6366f1;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.08);
 }
 
 .acf-accordion-trigger {
@@ -565,11 +565,11 @@
 }
 
 .acf-accordion-trigger:hover {
-  color: #0284c7;
+  color: #6366f1;
 }
 
 .acf-accordion-item.active .acf-accordion-trigger {
-  color: #0284c7;
+  color: #6366f1;
 }
 
 .acf-accordion-icon {
@@ -582,7 +582,7 @@
 
 .acf-accordion-item.active .acf-accordion-icon {
   transform: rotate(180deg);
-  color: #0284c7;
+  color: #6366f1;
 }
 
 .acf-accordion-body {
@@ -609,8 +609,8 @@
 }
 
 .acf-cta-cyan-glow {
-  background: linear-gradient(135deg, #0284c7 0%, #0369a1 40%, #4f46e5 100%);
-  box-shadow: 0 16px 36px -6px rgba(2, 132, 199, 0.35);
+  background: linear-gradient(135deg, #6366f1 0%, #0369a1 40%, #4f46e5 100%);
+  box-shadow: 0 16px 36px -6px rgba(99, 102, 241, 0.35);
 }
 
 .acf-cta-purple-glow {
@@ -619,7 +619,7 @@
 }
 
 .acf-cta-emerald-glow {
-  background: linear-gradient(135deg, #059669 0%, #0d9488 40%, #0284c7 100%);
+  background: linear-gradient(135deg, #059669 0%, #0d9488 40%, #6366f1 100%);
   box-shadow: 0 16px 36px -6px rgba(5, 150, 105, 0.35);
 }
 
@@ -733,8 +733,8 @@
 .acf-form-input:focus,
 .acf-form-textarea:focus {
   background: #ffffff;
-  border-color: #0284c7;
-  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
   outline: none;
 }
 
@@ -743,12 +743,12 @@
   border-radius: 10px;
   font-weight: 800;
   font-size: 15.5px;
-  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #0369a1 100%);
   color: #ffffff !important;
   border: none;
   cursor: pointer;
   margin-top: 6px;
-  box-shadow: 0 4px 16px rgba(2, 132, 199, 0.35);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
@@ -759,7 +759,7 @@
 
 .acf-form-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.45);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.45);
   color: #ffffff !important;
 }
 
@@ -809,6 +809,6 @@
 }
 
 .acf-prose a {
-  color: #0284c7;
+  color: #6366f1;
   text-decoration: underline;
 }

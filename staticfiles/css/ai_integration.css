@@ -1199,7 +1199,13 @@ body:not(.light) .aic-faq-ans {
     text-align: center;
   }
   .aic-hero-right {
-    display: none;
+    display: flex;
+    min-height: 280px;
+    margin-top: -0.5rem;
+  }
+  .aic-hero-right img {
+    height: 300px;
+    object-fit: contain;
   }
   .aic-hero-btns {
     justify-content: center;

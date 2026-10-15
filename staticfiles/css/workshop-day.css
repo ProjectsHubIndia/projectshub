@@ -68,7 +68,7 @@ body.light .wd-breadcrumb__current {
   background: linear-gradient(
     135deg,
     rgba(109, 40, 217, 0.12) 0%,
-    rgba(59, 130, 246, 0.07) 60%,
+    rgba(99, 102, 241, 0.07) 60%,
     transparent 100%
   );
   pointer-events: none;
@@ -80,7 +80,7 @@ body.light .wd-breadcrumb__current {
   left: 0;
   right: 0;
   height: 3px;
-  background: var(--wd-accent, linear-gradient(90deg, #8b5cf6, #3b82f6));
+  background: var(--wd-accent, linear-gradient(90deg, #8b5cf6, #6366f1));
 }
 
 .wd-hero__num {
@@ -181,13 +181,13 @@ body.light .wd-hero__sub {
   background: linear-gradient(90deg, #8b5cf6, #6366f1);
 }
 [data-day="2"] .wd-hero__accent {
-  background: linear-gradient(90deg, #3b82f6, #06b6d4);
+  background: linear-gradient(90deg, #6366f1, #06b6d4);
 }
 [data-day="3"] .wd-hero__accent {
   background: linear-gradient(90deg, #f59e0b, #ef4444);
 }
 [data-day="4"] .wd-hero__accent {
-  background: linear-gradient(90deg, #10b981, #3b82f6);
+  background: linear-gradient(90deg, #10b981, #6366f1);
 }
 [data-day="5"] .wd-hero__accent {
   background: linear-gradient(90deg, #10b981, #22c55e);
@@ -366,7 +366,7 @@ body.light .wd-topic-card:hover {
   font-family: "Lexend Deca", sans-serif;
   font-size: 1rem;
   font-weight: 900;
-  background: linear-gradient(135deg, #a78bfa, #60a5fa);
+  background: linear-gradient(135deg, #a78bfa, #818cf8);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -723,7 +723,7 @@ body.light .wd-progress-item__title {
 .wd-sidebar-price__amount {
   font-size: 1.6rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #a78bfa, #60a5fa);
+  background: linear-gradient(135deg, #a78bfa, #818cf8);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;

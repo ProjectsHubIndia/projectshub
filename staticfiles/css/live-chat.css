@@ -16,12 +16,13 @@
   --phc-radius: 18px;
   --phc-shadow: 0 24px 60px -12px rgba(15, 23, 42, .28), 0 8px 20px -8px rgba(15, 23, 42, .18);
   position: fixed;
-  left: max(20px, env(safe-area-inset-left));
+  left: auto;
+  right: max(12px, env(safe-area-inset-right));
   bottom: max(20px, env(safe-area-inset-bottom));
   z-index: 9999;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: flex-end;
   gap: 12px;
   font-family: var(--ph-font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
   font-size: 14px;
@@ -38,6 +39,15 @@
 .phc [hidden] { display: none !important; }
 .phc-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .phc :focus-visible { outline: 2px solid var(--phc-accent); outline-offset: 2px; }
+
+/* Keep the floating back-to-top control out of the live chat panel and teaser. */
+body.live-chat-open .back-to-top,
+body.live-chat-teaser-visible .back-to-top {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  transform: translateY(12px) scale(0.9) !important;
+}
 
 /* ── Launcher ─────────────────────────────────────────────────────────── */
 .phc-launcher {
@@ -58,13 +68,13 @@
 .phc.is-open .phc-launcher-icon--chat { opacity: 0; transform: rotate(90deg) scale(.6); }
 .phc.is-open .phc-launcher-icon--close { opacity: 1; transform: none; }
 .phc-launcher-online {
-  position: absolute; left: 3px; bottom: 3px;
+  position: absolute; right: 3px; bottom: 3px;
   width: 14px; height: 14px; border-radius: 50%;
   background: var(--phc-green); border: 2.5px solid #fff;
 }
 .phc.is-open .phc-launcher-online { display: none; }
 .phc-badge {
-  position: absolute; top: -3px; left: -3px;
+  position: absolute; top: -3px; right: -3px;
   min-width: 22px; height: 22px; padding: 0 6px;
   border-radius: 99px; background: var(--phc-red); color: #fff;
   font-size: 12px; font-weight: 700; line-height: 22px; text-align: center;
@@ -79,7 +89,7 @@
   max-width: 290px;
   background: var(--phc-surface);
   border: 1px solid var(--phc-line);
-  border-radius: 16px 16px 16px 4px;
+  border-radius: 16px 16px 4px 16px;
   box-shadow: 0 14px 34px -10px rgba(15, 23, 42, .25);
   opacity: 0; transform: translateY(8px);
   transition: opacity .25s ease, transform .25s ease;
@@ -101,7 +111,10 @@
   border: 2px solid #fff;
   background: var(--phc-accent);
 }
-.phc-av--brand { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
+.phc-av--brand { background: #fff; overflow: hidden; }
+.phc-av--brand img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.phc-brand-wordmark { display: block; flex: 0 0 126px; width: 126px; }
+.phc-brand-wordmark img { display: block; width: 100%; height: auto; }
 .phc-av--bot { background: #e0e7ff; color: #4338ca; padding: 6px; }
 .phc-msg-av .phc-av { width: 28px; height: 28px; font-size: 11px; border-width: 0; }
 .phc-msg-av .phc-av--bot { padding: 5px; }
@@ -118,7 +131,7 @@
   border: 1px solid rgba(15, 23, 42, .06);
   display: flex; flex-direction: column;
   overflow: hidden;
-  transform-origin: bottom left;
+  transform-origin: bottom right;
   animation: phcIn .22s cubic-bezier(.2, .9, .3, 1.2);
 }
 @keyframes phcIn { from { opacity: 0; transform: translateY(12px) scale(.97); } to { opacity: 1; transform: none; } }
@@ -129,6 +142,30 @@
   background: var(--phc-ink);
   color: #fff;
 }
+.phc-head:has(.phc-brand-wordmark) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-areas: "brand whatsapp minimize" "status status status";
+  column-gap: 8px;
+  row-gap: 2px;
+  padding: 10px 12px 10px 16px;
+}
+.phc-head:has(.phc-brand-wordmark) #phcHeadAvatars { grid-area: brand; display: block; }
+.phc-head:has(.phc-brand-wordmark) .phc-brand-wordmark { width: 170px; max-width: 100%; }
+.phc-head:has(.phc-brand-wordmark) .phc-head-text { grid-area: status; }
+.phc-head:has(.phc-brand-wordmark) .phc-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.phc-head:has(.phc-brand-wordmark) .phc-wa { grid-area: whatsapp; }
+.phc-head:has(.phc-brand-wordmark) #phcMinimize { grid-area: minimize; }
 .phc-head .phc-av { border-color: var(--phc-ink); }
 .phc-head-text { flex: 1; min-width: 0; }
 .phc .phc-title { margin: 0; font-size: 15.5px; font-weight: 700; color: #fff; letter-spacing: -.01em; line-height: 1.25; font-family: inherit; }
@@ -188,6 +225,19 @@
 .phc-msg.is-failed .phc-bubble { background: #fee2e2; color: #991b1b; }
 .phc-meta { font-size: 11px; color: var(--phc-muted); margin: 4px 6px 0; }
 .phc .phc-retry { font-size: 11.5px; color: var(--phc-red) !important; font-weight: 600; margin: 4px 6px 0; text-decoration: underline; }
+
+.phc-session-notice {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border: 1px solid #fcd34d;
+  border-radius: 12px;
+  background: #fffbeb;
+  color: #78350f;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.phc-session-notice[hidden] { display: none !important; }
 
 .phc-sys {
   align-self: center; text-align: center;
@@ -288,7 +338,7 @@
 
 /* ── Responsive ───────────────────────────────────────────────────────── */
 @media (max-width: 520px) {
-  .phc { left: 14px; bottom: max(14px, env(safe-area-inset-bottom)); }
+  .phc { left: auto; right: max(12px, env(safe-area-inset-right)); bottom: max(14px, env(safe-area-inset-bottom)); }
   .phc.is-open { inset: 0; left: 0; bottom: 0; gap: 0; }
   .phc.is-open .phc-launcher { display: none; }
   .phc .phc-panel { width: 100vw; height: 100vh; height: 100dvh; border-radius: 0; border: 0; animation: phcUp .25s ease; }
@@ -309,19 +359,3 @@
 }
 
 @media print { .phc { display: none !important; } }
-
-/* ── Back-to-top reclaims the bottom-right corner ─────────────────────────
-   The chat launcher used to sit bottom-right, so the back-to-top button was
-   pushed ~5.5rem up to clear it. The launcher is docked bottom-left now, so
-   the button can sit in the corner it belongs in. */
-.back-to-top {
-  bottom: 1.5rem;
-  right: 1.5rem;
-}
-
-@media (max-width: 520px) {
-  .back-to-top {
-    bottom: max(1rem, env(safe-area-inset-bottom));
-    right: 1rem;
-  }
-}

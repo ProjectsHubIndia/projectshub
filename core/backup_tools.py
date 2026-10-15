@@ -272,3 +272,39 @@ def restore_backup(raw_bytes):
     cache.clear()
     report['snapshot'] = snapshot_path
     return report
+
+
+def restore_bundle(raw_bytes):
+    """Restore a full .zip backup (database.json + media/) made by the download-bundle view.
+    Loads the data through restore_backup (snapshot + one transaction), then writes the media
+    files back into MEDIA_ROOT. Returns the restore report with a 'media_restored' count."""
+    import shutil
+    import zipfile
+    try:
+        zf = zipfile.ZipFile(io.BytesIO(raw_bytes))
+    except zipfile.BadZipFile:
+        raise RestoreError('The uploaded file is not a valid .zip archive.')
+    names = set(zf.namelist())
+    data_name = next((n for n in ('database.json', 'initial_data.json') if n in names), None)
+    if not data_name:
+        raise RestoreError('The .zip has no database.json — is it a full ProjectsHub backup?')
+
+    report = restore_backup(zf.read(data_name))
+
+    media_root = os.path.abspath(settings.MEDIA_ROOT)
+    os.makedirs(media_root, exist_ok=True)
+    count = 0
+    for info in zf.infolist():
+        if info.is_dir() or not info.filename.startswith('media/'):
+            continue
+        rel = info.filename[len('media/'):]
+        dest = os.path.abspath(os.path.join(media_root, rel))
+        # zip-slip guard: never write outside MEDIA_ROOT
+        if not rel or os.path.commonpath([dest, media_root]) != media_root:
+            continue
+        os.makedirs(os.path.dirname(dest), exist_ok=True)
+        with zf.open(info) as src, open(dest, 'wb') as out:
+            shutil.copyfileobj(src, out)
+        count += 1
+    report['media_restored'] = count
+    return report
