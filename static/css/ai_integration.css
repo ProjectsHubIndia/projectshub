@@ -37,7 +37,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #0242cd, #096dfc);
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
   display: inline-block;
 }
 
@@ -100,9 +100,9 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  background: rgba(2, 66, 205, 0.15);
-  border: 1px solid rgba(2, 66, 205, 0.3);
-  color: #096dfc;
+  background: rgba(79, 70, 229, 0.15);
+  border: 1px solid rgba(79, 70, 229, 0.3);
+  color: #6366f1;
   padding: 0.35rem 0.9rem;
   border-radius: 99px;
   margin-bottom: 1.2rem;
@@ -116,11 +116,11 @@
   margin-bottom: 1.2rem;
 }
 .aic-hero h1 .g1 {
-  color: #096dfc;
+  color: #6366f1;
   display: block;
 }
 .aic-hero h1 .g2 {
-  color: #60a5fa;
+  color: #818cf8;
   display: block;
 }
 .aic-hero h1 .g3 {
@@ -140,7 +140,7 @@
   flex-wrap: wrap;
 }
 .aic-btn-primary {
-  background: linear-gradient(135deg, #0242cd, #096dfc);
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
   color: #fff !important;
   border: none;
   border-radius: 8px;
@@ -178,8 +178,8 @@
     transform 0.2s;
 }
 .aic-btn-outline:hover {
-  border-color: #0242cd;
-  color: #096dfc;
+  border-color: #4f46e5;
+  color: #6366f1;
   transform: translateY(-2px);
 }
 
@@ -483,7 +483,7 @@
   font-size: 0.65rem;
   font-weight: 800;
   color: #fff;
-  background: linear-gradient(135deg, #7c3aed, #5b8af5);
+  background: linear-gradient(135deg, #7c3aed, #818cf8);
   width: 28px;
   height: 28px;
   border-radius: 8px;
@@ -947,7 +947,7 @@ body:not(.light) .aic-inditem {
   inset: 0;
   background: radial-gradient(
     ellipse at 80% 50%,
-    rgba(91, 138, 245, 0.15) 0%,
+    rgba(129, 140, 248, 0.15) 0%,
     transparent 65%
   );
   pointer-events: none;

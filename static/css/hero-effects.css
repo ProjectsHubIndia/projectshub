@@ -127,7 +127,7 @@ body.light .navbar--scrolled {
   width: 100%;
   height: 2px;
   transform: translateY(-50%);
-  background: linear-gradient(90deg, transparent 0%, #22d3ee 25%, #38bdf8 50%, #22d3ee 75%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, #22d3ee 25%, #a78bfa 50%, #22d3ee 75%, transparent 100%);
   box-shadow:
     0 0 8px rgba(34, 211, 238, 0.9),
     0 0 24px rgba(34, 211, 238, 0.5),
@@ -291,7 +291,7 @@ body.light .navbar--scrolled {
 
 /* ── "Students" gradient — logo blue in light mode ── */
 body.light .hero-title__gradient {
-  background: linear-gradient(135deg, #0242cd, #096dfc) !important;
+  background: linear-gradient(135deg, #4f46e5, #6366f1) !important;
   background-size: 100% !important;
   animation: none !important;
   -webkit-background-clip: text !important;

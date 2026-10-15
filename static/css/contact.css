@@ -118,7 +118,7 @@ body.light .contact-status-pill {
 }
 
 .contact-hero-title__gradient {
-  background: linear-gradient(135deg, #38bdf8 0%, #6366f1 50%, #a855f7 100%);
+  background: linear-gradient(135deg, #a78bfa 0%, #6366f1 50%, #a855f7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
@@ -195,8 +195,8 @@ body.light .contact-status-pill {
 }
 
 .channel-card--phone .channel-card__icon-wrap {
-  background: rgba(59, 130, 246, 0.12);
-  color: #3b82f6;
+  background: rgba(99, 102, 241, 0.12);
+  color: #6366f1;
 }
 
 .channel-card--whatsapp .channel-card__icon-wrap {
@@ -230,8 +230,8 @@ body.light .contact-status-pill {
 }
 
 .channel-card__badge--blue {
-  background: rgba(59, 130, 246, 0.12);
-  color: #3b82f6;
+  background: rgba(99, 102, 241, 0.12);
+  color: #6366f1;
 }
 
 .channel-card__badge--purple {
@@ -860,7 +860,7 @@ body.light .contact-status-pill {
   right: -20%;
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(167, 139, 250, 0.25) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
 }

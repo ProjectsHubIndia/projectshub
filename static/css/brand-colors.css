@@ -1,14 +1,16 @@
+/* Accent is indigo/violet site-wide. The var names below are historical (navy/blue);
+   their values are now the indigo/violet ramp that every component references. */
 :root {
-  --ph-brand-navy: #07079c;
-  --ph-brand-deep: #004cdc;
-  --ph-brand-blue: #096dfc;
-  --ph-brand-cyan: #38bdf8;
+  --ph-brand-navy: #3730a3;
+  --ph-brand-deep: #4f46e5;
+  --ph-brand-blue: #6366f1;
+  --ph-brand-cyan: #a78bfa;
   --ph-primary: var(--ph-brand-blue);
   --ph-primary-hover: var(--ph-brand-deep);
-  --ph-primary-glow: rgba(9, 109, 252, 0.35);
-  --ph-border-glow: rgba(9, 109, 252, 0.2);
+  --ph-primary-glow: rgba(99, 102, 241, 0.35);
+  --ph-border-glow: rgba(99, 102, 241, 0.2);
   --ph-border-focus: var(--ph-brand-blue);
-  --ph-shadow-glow: 0 0 30px -4px rgba(9, 109, 252, 0.18);
+  --ph-shadow-glow: 0 0 30px -4px rgba(99, 102, 241, 0.18);
   --blue-500: var(--ph-brand-blue);
   --blue-400: var(--ph-brand-blue);
   --indigo-300: var(--ph-brand-blue);
@@ -40,30 +42,30 @@ body.light .hero-title__gradient {
 .btn-hero-primary,
 body.light .btn-hero-primary {
   background: linear-gradient(110deg, var(--ph-brand-deep), var(--ph-brand-blue)) !important;
-  box-shadow: 0 6px 20px rgba(9, 109, 252, 0.32) !important;
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.32) !important;
 }
 
 .btn-hero-primary:hover,
 body.light .btn-hero-primary:hover {
-  box-shadow: 0 10px 28px rgba(9, 109, 252, 0.42) !important;
+  box-shadow: 0 10px 28px rgba(99, 102, 241, 0.42) !important;
 }
 
 .hero-tag,
 body.light .hero-tag {
-  border-color: rgba(9, 109, 252, 0.28) !important;
-  background: rgba(9, 109, 252, 0.08) !important;
+  border-color: rgba(99, 102, 241, 0.28) !important;
+  background: rgba(99, 102, 241, 0.08) !important;
   color: var(--ph-brand-deep) !important;
 }
 
 .phc {
   --phc-accent: var(--ph-brand-blue);
   --phc-accent-hover: var(--ph-brand-deep);
-  --phc-accent-soft: #eaf3ff;
+  --phc-accent-soft: #eef2ff;
 }
 
 .phc-launcher {
   background: linear-gradient(135deg, var(--ph-brand-deep), var(--ph-brand-blue)) !important;
-  box-shadow: 0 10px 24px -6px rgba(9, 109, 252, 0.5), 0 2px 6px rgba(15, 23, 42, 0.15);
+  box-shadow: 0 10px 24px -6px rgba(99, 102, 241, 0.5), 0 2px 6px rgba(15, 23, 42, 0.15);
 }
 
 .phc-launcher:hover {
@@ -71,11 +73,11 @@ body.light .hero-tag {
 }
 
 .hvc-robot-bubble__button {
-  border-color: rgba(9, 109, 252, 0.28);
+  border-color: rgba(99, 102, 241, 0.28);
   background: linear-gradient(110deg, var(--ph-brand-deep), var(--ph-brand-blue));
-  box-shadow: 0 5px 12px rgba(9, 109, 252, 0.2);
+  box-shadow: 0 5px 12px rgba(99, 102, 241, 0.2);
 }
 
 .hvc-robot-bubble__button:hover {
-  box-shadow: 0 7px 16px rgba(9, 109, 252, 0.3);
+  box-shadow: 0 7px 16px rgba(99, 102, 241, 0.3);
 }

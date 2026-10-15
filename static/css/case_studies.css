@@ -123,12 +123,12 @@ body.light .cs-card {
 }
 .cs-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 25px rgba(59, 130, 246, 0.2);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 25px rgba(99, 102, 241, 0.2);
   border-color: rgba(99, 102, 241, 0.4);
 }
 body.light .cs-card:hover {
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.12), 0 0 20px rgba(59, 130, 246, 0.15);
-  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.12), 0 0 20px rgba(99, 102, 241, 0.15);
+  border-color: rgba(99, 102, 241, 0.3);
 }
 
 /* Media Container with Real Images */
@@ -175,7 +175,7 @@ body.light .cs-card__media-overlay {
   background: rgba(15, 23, 42, 0.82);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  color: #93c5fd;
+  color: #a5b4fc;
   padding: 0.32rem 0.85rem;
   border-radius: 99px;
   font-size: 0.74rem;
@@ -238,10 +238,10 @@ body.light .cs-card__title {
   color: #0f172a;
 }
 .cs-card:hover .cs-card__title {
-  color: #60a5fa;
+  color: #818cf8;
 }
 body.light .cs-card:hover .cs-card__title {
-  color: #2563eb;
+  color: #4f46e5;
 }
 .cs-card__desc {
   color: #94a3b8;
@@ -303,21 +303,21 @@ body.light .cs-card__stat-label {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  color: #38bdf8;
+  color: #a78bfa;
   font-weight: 700;
   font-size: 0.92rem;
   text-decoration: none;
   transition: gap 0.2s ease, color 0.2s ease;
 }
 body.light .cs-card__cta {
-  color: #0284c7;
+  color: #6366f1;
 }
 .cs-card:hover .cs-card__cta {
   gap: 0.75rem;
-  color: #60a5fa;
+  color: #818cf8;
 }
 body.light .cs-card:hover .cs-card__cta {
-  color: #2563eb;
+  color: #4f46e5;
 }
 
 /* BOTTOM CTA SECTION */
@@ -343,7 +343,7 @@ body.light .cs-card:hover .cs-card__cta {
   left: 20%;
   width: 60%;
   height: 100%;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, rgba(59, 130, 246, 0.1) 50%, transparent 75%);
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, rgba(99, 102, 241, 0.1) 50%, transparent 75%);
   pointer-events: none;
 }
 .cs-cta__eyebrow {
@@ -352,7 +352,7 @@ body.light .cs-card:hover .cs-card__cta {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: #38bdf8;
+  color: #a78bfa;
   margin-bottom: 0.75rem;
   position: relative;
   z-index: 1;
@@ -384,14 +384,14 @@ body.light .cs-card:hover .cs-card__cta {
   z-index: 1;
 }
 .cs-cta-primary {
-  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  background: linear-gradient(135deg, #6366f1, #6366f1);
   color: #ffffff !important;
   font-weight: 700;
   font-size: 0.95rem;
   padding: 0.85rem 2.2rem;
   border-radius: 99px;
   text-decoration: none;
-  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: inline-flex;
   align-items: center;
@@ -399,7 +399,7 @@ body.light .cs-card:hover .cs-card__cta {
 }
 .cs-cta-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(59, 130, 246, 0.55);
+  box-shadow: 0 8px 30px rgba(99, 102, 241, 0.55);
   color: #ffffff !important;
 }
 .cs-cta-ghost {

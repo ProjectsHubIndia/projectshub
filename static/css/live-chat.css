@@ -39,6 +39,15 @@
 .phc-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .phc :focus-visible { outline: 2px solid var(--phc-accent); outline-offset: 2px; }
 
+/* Keep the floating back-to-top control out of the live chat panel and teaser. */
+body.live-chat-open .back-to-top,
+body.live-chat-teaser-visible .back-to-top {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  transform: translateY(12px) scale(0.9) !important;
+}
+
 /* ── Launcher ─────────────────────────────────────────────────────────── */
 .phc-launcher {
   position: relative;
@@ -101,7 +110,10 @@
   border: 2px solid #fff;
   background: var(--phc-accent);
 }
-.phc-av--brand { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
+.phc-av--brand { background: #fff; overflow: hidden; }
+.phc-av--brand img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.phc-brand-wordmark { display: block; flex: 0 0 126px; width: 126px; }
+.phc-brand-wordmark img { display: block; width: 100%; height: auto; }
 .phc-av--bot { background: #e0e7ff; color: #4338ca; padding: 6px; }
 .phc-msg-av .phc-av { width: 28px; height: 28px; font-size: 11px; border-width: 0; }
 .phc-msg-av .phc-av--bot { padding: 5px; }
@@ -129,6 +141,30 @@
   background: var(--phc-ink);
   color: #fff;
 }
+.phc-head:has(.phc-brand-wordmark) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-areas: "brand whatsapp minimize" "status status status";
+  column-gap: 8px;
+  row-gap: 2px;
+  padding: 10px 12px 10px 16px;
+}
+.phc-head:has(.phc-brand-wordmark) #phcHeadAvatars { grid-area: brand; display: block; }
+.phc-head:has(.phc-brand-wordmark) .phc-brand-wordmark { width: 170px; max-width: 100%; }
+.phc-head:has(.phc-brand-wordmark) .phc-head-text { grid-area: status; }
+.phc-head:has(.phc-brand-wordmark) .phc-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.phc-head:has(.phc-brand-wordmark) .phc-wa { grid-area: whatsapp; }
+.phc-head:has(.phc-brand-wordmark) #phcMinimize { grid-area: minimize; }
 .phc-head .phc-av { border-color: var(--phc-ink); }
 .phc-head-text { flex: 1; min-width: 0; }
 .phc .phc-title { margin: 0; font-size: 15.5px; font-weight: 700; color: #fff; letter-spacing: -.01em; line-height: 1.25; font-family: inherit; }
@@ -188,6 +224,19 @@
 .phc-msg.is-failed .phc-bubble { background: #fee2e2; color: #991b1b; }
 .phc-meta { font-size: 11px; color: var(--phc-muted); margin: 4px 6px 0; }
 .phc .phc-retry { font-size: 11.5px; color: var(--phc-red) !important; font-weight: 600; margin: 4px 6px 0; text-decoration: underline; }
+
+.phc-session-notice {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border: 1px solid #fcd34d;
+  border-radius: 12px;
+  background: #fffbeb;
+  color: #78350f;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.phc-session-notice[hidden] { display: none !important; }
 
 .phc-sys {
   align-self: center; text-align: center;

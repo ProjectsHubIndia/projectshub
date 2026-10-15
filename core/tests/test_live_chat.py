@@ -198,6 +198,26 @@ class LiveChatFlowTests(TestCase):
             post(self.client, '/api/chat/message/', {'message': 'dup?', 'client_id': 'same', **sess})
         self.assertEqual(ChatbotMessage.objects.filter(client_id='same').count(), 1)
 
+    def test_expired_chat_session_can_be_restarted(self):
+        data = self.start()
+        session = data['session']
+
+        resumed = post(self.client, '/api/chat/session/', {
+            'session_id': session['session_id'],
+            'token': 'invalid-token-value-that-is-long-enough',
+        })
+
+        self.assertEqual(resumed.status_code, 200)
+        self.assertTrue(resumed.json()['success'])
+        self.assertIsNone(resumed.json()['session'])
+
+        restarted = post(self.client, '/api/chat/message/', {
+            'message': 'Starting over after timeout',
+            'page_url': '/projects/',
+        })
+        self.assertEqual(restarted.status_code, 200)
+        self.assertNotEqual(restarted.json()['session']['session_id'], session['session_id'])
+
 
 class LiveChatSecurityTests(TestCase):
     def setUp(self):

@@ -156,7 +156,7 @@ body.light .sm-card:hover {
 }
 
 .sm-card--blue::before {
-  background: #3b82f6;
+  background: #6366f1;
 }
 
 .sm-card--purple::before {
@@ -184,7 +184,7 @@ body.light .sm-card:hover {
 }
 
 .sm-card--blue .sm-card__bar {
-  background: linear-gradient(90deg, #3b82f6, #6366f1);
+  background: linear-gradient(90deg, #6366f1, #6366f1);
 }
 
 .sm-card--purple .sm-card__bar {
@@ -223,7 +223,7 @@ body.light .sm-card:hover {
 }
 
 .sm-card--blue .sm-card__icon {
-  background: rgba(59, 130, 246, 0.15);
+  background: rgba(99, 102, 241, 0.15);
 }
 
 .sm-card--purple .sm-card__icon {
@@ -243,7 +243,7 @@ body.light .sm-card:hover {
 }
 
 body.light .sm-card--blue .sm-card__icon {
-  background: rgba(59, 130, 246, 0.1);
+  background: rgba(99, 102, 241, 0.1);
 }
 
 body.light .sm-card--purple .sm-card__icon {
@@ -281,7 +281,7 @@ body.light .sm-card__name {
 }
 
 .sm-card--blue .sm-card__count {
-  color: #60a5fa;
+  color: #818cf8;
 }
 
 .sm-card--purple .sm-card__count {
@@ -349,7 +349,7 @@ body.light .sm-links a:hover {
 }
 
 .sm-card--blue .sm-links a:hover {
-  color: #60a5fa;
+  color: #818cf8;
 }
 
 .sm-card--purple .sm-links a:hover {

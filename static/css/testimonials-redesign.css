@@ -137,7 +137,7 @@
 }
 
 .trs-card--blue::after {
-  background: rgba(59, 130, 246, 0.10);
+  background: rgba(99, 102, 241, 0.10);
 }
 
 .trs-card--green::after {
@@ -160,7 +160,7 @@
 }
 
 .trs-card-quote--blue {
-  color: #3b82f6;
+  color: #6366f1;
 }
 
 .trs-card-quote--green {
@@ -227,7 +227,7 @@
 }
 
 .trs-avatar--blue {
-  background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
+  background: linear-gradient(135deg, #6366f1, #6366f1) !important;
   color: #fff !important;
 }
 
@@ -242,7 +242,7 @@
 }
 
 .trs-avatar--cyan {
-  background: linear-gradient(135deg, #06b6d4, #3b82f6) !important;
+  background: linear-gradient(135deg, #06b6d4, #6366f1) !important;
   color: #fff !important;
 }
 

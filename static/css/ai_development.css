@@ -4,7 +4,7 @@
 .aip-eyebrow {
   font-size: 0.72rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.15em;
-  color: #5b8af5; text-align: center; margin-bottom: 0.5rem;
+  color: #818cf8; text-align: center; margin-bottom: 0.5rem;
 }
 .aip-h2 {
   font-size: clamp(1.6rem, 3vw, 2.2rem);
@@ -50,7 +50,7 @@
   content: '';
   position: absolute; top: 0; left: 0;
   width: 55%; height: 100%;
-  background: radial-gradient(ellipse at 25% 55%, rgba(91,138,245,0.14) 0%, transparent 65%);
+  background: radial-gradient(ellipse at 25% 55%, rgba(129, 140, 248,0.14) 0%, transparent 65%);
   pointer-events: none;
 }
 .aip-hero-inner {
@@ -67,7 +67,7 @@
 .aip-hero-label {
   font-size: 0.72rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.15em;
-  color: #5b8af5; margin-bottom: 1rem; display: block;
+  color: #818cf8; margin-bottom: 1rem; display: block;
 }
 .aip-hero h1 {
   font-size: clamp(2rem, 4.2vw, 3.1rem);
@@ -76,7 +76,7 @@
   margin-bottom: 1.2rem;
 }
 .aip-hero h1 .grad-text {
-  background: linear-gradient(90deg, #0242cd, #096dfc);
+  background: linear-gradient(90deg, #4f46e5, #6366f1);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -86,12 +86,12 @@
 
 /* Buttons */
 .aip-btn-primary {
-  background: linear-gradient(135deg, #0242cd, #096dfc);
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
   color: #fff !important; border: none; border-radius: 8px;
   padding: 0.62rem 1.3rem; font-size: 0.82rem; font-weight: 700;
   white-space: nowrap;
   text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;
-  box-shadow: 0 4px 18px rgba(2,66,205,0.4);
+  box-shadow: 0 4px 18px rgba(79, 70, 229,0.4);
   transition: opacity 0.2s, transform 0.2s;
 }
 .aip-btn-primary:hover { opacity: 0.9; transform: translateY(-2px); }
@@ -103,7 +103,7 @@
   text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;
   transition: border-color 0.2s, color 0.2s, transform 0.2s;
 }
-.aip-btn-outline:hover { border-color: #5b8af5; color: #5b8af5; transform: translateY(-2px); }
+.aip-btn-outline:hover { border-color: #818cf8; color: #818cf8; transform: translateY(-2px); }
 
 /* Hero right image */
 .aip-hero-right {
@@ -113,7 +113,7 @@
 .aip-hero-glow-ring {
   position: absolute;
   width: 380px; height: 380px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(91,138,245,0.18) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(129, 140, 248,0.18) 0%, transparent 70%);
 }
 .aip-hero-img {
   position: relative; z-index: 1; width: 100%; max-width: 560px;
@@ -136,7 +136,7 @@
 .aip-fi {
   position: absolute; z-index: 2;
   background: rgba(13,21,53,0.85);
-  border: 1px solid rgba(91,138,245,0.35);
+  border: 1px solid rgba(129, 140, 248,0.35);
   border-radius: 12px;
   width: 46px; height: 46px;
   display: flex; align-items: center; justify-content: center;
@@ -168,7 +168,7 @@
   text-align: center;
   transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
 }
-.aip-svc-card:hover { transform: translateY(-6px); box-shadow: 0 14px 36px rgba(91,138,245,0.12); border-color: #bed0ff; }
+.aip-svc-card:hover { transform: translateY(-6px); box-shadow: 0 14px 36px rgba(129, 140, 248,0.12); border-color: #bed0ff; }
 .aip-svc-ico {
   width: 62px; height: 62px;
   background: linear-gradient(135deg,#eef2ff,#e0e8ff);
@@ -176,7 +176,7 @@
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 1.2rem;
 }
-.aip-svc-ico svg { width: 30px; height: 30px; color: #5b8af5; }
+.aip-svc-ico svg { width: 30px; height: 30px; color: #818cf8; }
 .aip-svc-card h3 { font-size: 0.9rem; font-weight: 700; color: #0f172a; margin-bottom: 0.55rem; }
 .aip-svc-card p  { font-size: 0.8rem;  color: #64748b; line-height: 1.6; margin: 0; }
 
@@ -202,11 +202,11 @@
   transition: border-color 0.2s, background 0.2s, transform 0.2s;
   cursor: default;
 }
-.aip-app-card:hover { border-color: rgba(91,138,245,0.45); background: rgba(91,138,245,0.07); transform: translateY(-4px); }
+.aip-app-card:hover { border-color: rgba(129, 140, 248,0.45); background: rgba(129, 140, 248,0.07); transform: translateY(-4px); }
 .aip-app-ico {
   width: 52px; height: 52px;
-  background: rgba(91,138,245,0.13);
-  border: 1px solid rgba(91,138,245,0.25);
+  background: rgba(129, 140, 248,0.13);
+  border: 1px solid rgba(129, 140, 248,0.25);
   border-radius: 14px;
   display: flex; align-items: center; justify-content: center;
 }
@@ -236,7 +236,7 @@
   transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
   cursor: default;
 }
-.aip-tech-card:hover { border-color: #bed0ff; box-shadow: 0 4px 16px rgba(91,138,245,0.1); transform: translateY(-4px); }
+.aip-tech-card:hover { border-color: #bed0ff; box-shadow: 0 4px 16px rgba(129, 140, 248,0.1); transform: translateY(-4px); }
 .aip-tech-logo-box {
   width: 52px; height: 52px; border-radius: 14px;
   display: flex; align-items: center; justify-content: center;
@@ -264,7 +264,7 @@
   left: calc(100%/12);
   right: calc(100%/12);
   height: 0;
-  border-top: 2px dashed rgba(91,138,245,0.3);
+  border-top: 2px dashed rgba(129, 140, 248,0.3);
   z-index: 0;
 }
 @media(max-width:768px){
@@ -280,13 +280,13 @@
   width: 52px; height: 52px;
   border-radius: 50%;
   background: #0d1535;
-  border: 2px solid rgba(91,138,245,0.35);
+  border: 2px solid rgba(129, 140, 248,0.35);
   display: flex; align-items: center; justify-content: center;
   margin-bottom: 1rem;
 }
 .aip-proc-inner {
   width: 36px; height: 36px; border-radius: 50%;
-  background: linear-gradient(135deg,#5b8af5,#8b5cf6);
+  background: linear-gradient(135deg,#818cf8,#8b5cf6);
   display: flex; align-items: center; justify-content: center;
   font-size: 0.75rem; font-weight: 800; color: #fff;
 }
@@ -329,7 +329,7 @@
   transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s, color 0.2s;
   cursor: default;
 }
-.aip-ind-card:hover { border-color: #bed0ff; box-shadow: 0 4px 14px rgba(91,138,245,0.1); transform: translateY(-3px); color: #4f8ef7; }
+.aip-ind-card:hover { border-color: #bed0ff; box-shadow: 0 4px 14px rgba(129, 140, 248,0.1); transform: translateY(-3px); color: #4f8ef7; }
 .aip-ind-icon { font-size: 1.5rem; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; }
 
 /* Why Us */
@@ -344,7 +344,7 @@
   background: #eef2ff; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
 }
-.aip-why-tick svg { width: 12px; height: 12px; color: #5b8af5; }
+.aip-why-tick svg { width: 12px; height: 12px; color: #818cf8; }
 .aip-why-side { display: none; }
 @media(max-width:640px){ .aip-why-list { grid-template-columns: 1fr; } }
 
@@ -379,7 +379,7 @@
   display: flex; justify-content: space-between; align-items: center; gap: 0.8rem;
   transition: color 0.2s;
 }
-.aip-faq-item.open .aip-faq-btn { color: #5b8af5; }
+.aip-faq-item.open .aip-faq-btn { color: #818cf8; }
 .aip-faq-plus {
   width: 24px; height: 24px; flex-shrink: 0;
   background: #eef2ff; border-radius: 50%;
@@ -387,7 +387,7 @@
   transition: background 0.2s, transform 0.3s;
 }
 .aip-faq-item.open .aip-faq-plus { transform: rotate(45deg); background: #dde6ff; }
-.aip-faq-plus svg { width: 12px; height: 12px; color: #5b8af5; }
+.aip-faq-plus svg { width: 12px; height: 12px; color: #818cf8; }
 .aip-faq-ans {
   max-height: 0; overflow: hidden;
   transition: max-height 0.35s ease, padding 0.35s;
@@ -506,7 +506,7 @@ body.light .aip-cta-title {
   text-align: left !important;
 }
 .aip-cta-accent {
-  background: linear-gradient(135deg, #38bdf8 0%, #818cf8 60%, #c084fc 100%) !important;
+  background: linear-gradient(135deg, #a78bfa 0%, #818cf8 60%, #c084fc 100%) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;
@@ -538,12 +538,12 @@ body.light .aip-cta-trust-item {
   gap: 0.45rem !important;
   font-size: 0.84rem !important;
   font-weight: 600 !important;
-  color: #93c5fd !important;
+  color: #a5b4fc !important;
 }
 .aip-cta-trust-icon {
   width: 16px;
   height: 16px;
-  color: #38bdf8;
+  color: #a78bfa;
   flex-shrink: 0;
 }
 
@@ -617,7 +617,7 @@ body.light .aip-hero {
   border-bottom: 1px solid rgba(226, 232, 240, 0.8);
 }
 body.light .aip-hero::before {
-  background: radial-gradient(ellipse at 25% 55%, rgba(91, 138, 245, 0.08) 0%, transparent 65%);
+  background: radial-gradient(ellipse at 25% 55%, rgba(129, 140, 248, 0.08) 0%, transparent 65%);
 }
 body.light .aip-hero h1 {
   color: #0f172a;
@@ -631,13 +631,13 @@ body.light .aip-btn-outline {
   background: #ffffff;
 }
 body.light .aip-btn-outline:hover {
-  border-color: #2563eb;
-  color: #2563eb;
+  border-color: #4f46e5;
+  color: #4f46e5;
   background: #eff6ff;
 }
 body.light .aip-fi {
   background: rgba(255, 255, 255, 0.92);
-  border-color: rgba(91, 138, 245, 0.25);
+  border-color: rgba(129, 140, 248, 0.25);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
 }
 body.light .aip-dark {
@@ -658,15 +658,15 @@ body.light .aip-app-card {
 }
 body.light .aip-app-card:hover {
   background: #ffffff;
-  border-color: #93c5fd;
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.08);
+  border-color: #a5b4fc;
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.08);
 }
 body.light .aip-app-ico {
   background: #eff6ff;
   border-color: #dbeafe;
 }
 body.light .aip-app-ico svg {
-  color: #2563eb;
+  color: #4f46e5;
 }
 body.light .aip-app-card span {
   color: #1e293b;
@@ -701,9 +701,9 @@ body:not(.light) .aip-light .aip-sub { color: #94a3b8; }
 body:not(.light) .aip-svc-card {
   background: #161b27; border-color: rgba(255,255,255,0.07);
 }
-body:not(.light) .aip-svc-card:hover { border-color: rgba(91,138,245,0.5); }
+body:not(.light) .aip-svc-card:hover { border-color: rgba(129, 140, 248,0.5); }
 body:not(.light) .aip-svc-ico {
-  background: linear-gradient(135deg, rgba(91,138,245,0.15), rgba(139,92,246,0.15));
+  background: linear-gradient(135deg, rgba(129, 140, 248,0.15), rgba(139,92,246,0.15));
 }
 body:not(.light) .aip-svc-card h3 { color: #e2e8f0; }
 body:not(.light) .aip-svc-card p  { color: #64748b; }
@@ -712,7 +712,7 @@ body:not(.light) .aip-svc-card p  { color: #64748b; }
 body:not(.light) .aip-tech-card {
   background: #161b27; border-color: rgba(255,255,255,0.07);
 }
-body:not(.light) .aip-tech-card:hover { border-color: rgba(91,138,245,0.45); }
+body:not(.light) .aip-tech-card:hover { border-color: rgba(129, 140, 248,0.45); }
 body:not(.light) .aip-tech-card span { color: #cbd5e1; }
 body:not(.light) .aip-tech-note    { color: #64748b; }
 
@@ -720,23 +720,23 @@ body:not(.light) .aip-tech-note    { color: #64748b; }
 body:not(.light) .aip-ind-card {
   background: #161b27; border-color: rgba(255,255,255,0.07); color: #cbd5e1;
 }
-body:not(.light) .aip-ind-card:hover { border-color: rgba(91,138,245,0.45); color: #7aa6f8; }
+body:not(.light) .aip-ind-card:hover { border-color: rgba(129, 140, 248,0.45); color: #7aa6f8; }
 
 /* Why Us section */
 body:not(.light) .aip-col-title { color: #f1f5f9; }
 body:not(.light) .aip-col-sub   { color: #94a3b8; }
 body:not(.light) .aip-why-row   { color: #cbd5e1; }
-body:not(.light) .aip-why-tick  { background: rgba(91,138,245,0.15); }
+body:not(.light) .aip-why-tick  { background: rgba(129, 140, 248,0.15); }
 
 /* FAQ section */
 body:not(.light) .aip-faq-item {
   background: #161b27; border-color: rgba(255,255,255,0.07);
 }
-body:not(.light) .aip-faq-item.open { border-color: rgba(91,138,245,0.5); }
+body:not(.light) .aip-faq-item.open { border-color: rgba(129, 140, 248,0.5); }
 body:not(.light) .aip-faq-btn  { color: #e2e8f0; }
 body:not(.light) .aip-faq-item.open .aip-faq-btn { color: #7aa6f8; }
-body:not(.light) .aip-faq-plus { background: rgba(91,138,245,0.15); }
-body:not(.light) .aip-faq-item.open .aip-faq-plus { background: rgba(91,138,245,0.25); }
+body:not(.light) .aip-faq-plus { background: rgba(129, 140, 248,0.15); }
+body:not(.light) .aip-faq-item.open .aip-faq-plus { background: rgba(129, 140, 248,0.25); }
 body:not(.light) .aip-faq-ans  { color: #94a3b8; }
 
 

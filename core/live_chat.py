@@ -25,7 +25,8 @@ from django.utils.html import strip_tags
 from django.utils import timezone
 
 from .models import (
-    AITool, ChatAgentStatus, ChatbotConversation, ChatbotMessage, Project, SiteSettings, WorkshopCard,
+    AITool, BlogPost, ChatAgentStatus, ChatbotConversation, ChatbotMessage, FAQ, PricingPlan, Project,
+    Service, SiteSettings, WorkshopCard,
 )
 
 logger = logging.getLogger(__name__)
@@ -177,7 +178,7 @@ def _project_for_question(text, page_url=''):
     if current_project and any(phrase in msg for phrase in (
         'this project', 'this one', 'tell me about this', 'what is this',
         'what does it', 'how does it', 'what technology', 'which technology',
-        'tech stack', 'features', 'overview', 'details',
+        'tech stack', 'features', 'overview', 'details', 'how much', 'price', 'pricing', 'cost',
     )):
         return current_project
 
@@ -233,6 +234,8 @@ def _project_answer(project):
     technologies = project.get_tags_list()[:5]
     if technologies:
         parts.append('It uses ' + ', '.join(technologies) + '.')
+    if project.price_label or project.price:
+        parts.append(f"Listed price: {project.price_label or project.price}.")
     parts.append(f"Take a look: {project.get_absolute_url()}")
     parts.append('What would you like to know about it?')
     return ' '.join(parts)
@@ -261,18 +264,62 @@ def automated_answer(text, page_url='', contact_captured=False):
     def has(*words):
         return any(w in msg for w in words)
 
+    faq = _faq_for_question(text)
+    if faq:
+        answer = strip_tags(faq.answer or '').strip()
+        if answer:
+            return f"{answer} More details: {faq.get_absolute_url()}"
+
     if has('workshop', 'bootcamp', 'course', 'training', 'class'):
         w = f['workshop']
         if w:
             parts = [f"Our current workshop is \"{w.title}\""]
             if w.date:
                 parts.append(f"({w.date}{', ' + w.time if w.time else ''}, {w.mode})")
+            price = w.price_label or ('Free' if not w.price else w.price)
+            parts.append(f"Price: {price}.")
             return ' '.join(parts) + f". Full details and the day-by-day plan: /workshop/{w.pk}/"
         return "Workshop details are listed at /workshop/ — a team member can tell you about upcoming batches."
     if has('price', 'pricing', 'cost', 'fee', 'quote', 'budget', 'charges'):
+        project = _project_for_question(text, page_url)
+        if project:
+            return _project_answer(project)
+        plans = list(PricingPlan.objects.filter(is_active=True).prefetch_related('features').order_by('order')[:10])
+        if plans:
+            details = []
+            for plan in plans:
+                if plan.is_free:
+                    price = 'Free'
+                else:
+                    price = f"monthly {plan.monthly_price}, yearly {plan.yearly_price}"
+                details.append(f"{plan.name}: {price}")
+            return (
+                "Current listed pricing: " + '; '.join(details) +
+                ". The site does not specify a currency here. Project prices appear on their individual pages; "
+                "custom work is quoted after the team understands your requirements."
+            )
         return ("Pricing depends on the project or service. Each project page lists its price, and for custom "
                 "work the team will give you a quote once they understand what you need.")
+    service = _service_for_question(text)
+    if service:
+        description = strip_tags(service.short_description or service.full_description or '').strip()
+        answer = f"{service.title}: {description}" if description else service.title
+        return f"{answer} Details: {service.get_absolute_url()}"
+    if has('blog', 'article', 'tutorial', 'post'):
+        article = _blog_for_question(text)
+        if article:
+            summary = strip_tags(article.get_lead() or '').strip()
+            answer = f"{article.title}: {summary}" if summary else article.title
+            return f"{answer} Read: {article.get_absolute_url()}"
+        return "Browse published articles and tutorials at /blog/."
     if has('custom', 'hire', 'business', 'company', 'mvp', 'develop', 'build', 'automation', 'integration'):
+        services = list(Service.objects.filter(is_published=True).order_by('sort_order', 'title')[:10])
+        if services:
+            offerings = '; '.join(
+                f"{item.title}: {strip_tags(item.short_description or item.full_description or '').strip()}"
+                for item in services
+            )
+            return f"Our services include {offerings} Details: /services/ . Tell us what you want to build and the team can follow up."
         return ("We build custom AI solutions — development, automation and API integration. Overview: "
                 "/services/ai-development/ . Tell us a bit about what you want to build and a team member will follow up.")
     project = _project_for_question(text, page_url)
@@ -288,6 +335,63 @@ def automated_answer(text, page_url='', contact_captured=False):
     if has('contact', 'call', 'phone', 'whatsapp', 'email') and not contact_captured:
         return "You can reach the team on WhatsApp using the button at the top of this chat, or via /contact/ ."
     return ''
+
+
+def _question_terms(text):
+    ignored = {
+        'about', 'after', 'also', 'and', 'are', 'article', 'blog', 'can', 'could', 'does', 'for', 'from', 'have',
+        'help', 'how', 'into', 'please', 'project', 'projects', 'tell', 'that', 'the', 'their',
+        'there', 'this', 'what', 'when', 'where', 'which', 'who', 'with', 'would', 'your',
+        'post', 'tutorial',
+        'bootcamp', 'class', 'code', 'contact', 'cost', 'course', 'fee', 'free', 'price',
+        'pricing', 'service', 'services', 'source', 'tool', 'tools', 'training', 'workshop',
+    }
+    terms = set()
+    for term in re.findall(r'[a-z0-9]+', (text or '').lower()):
+        if len(term) > 2 and term not in ignored:
+            if len(term) > 5 and term.endswith('ies'):
+                term = term[:-3] + 'y'
+            elif len(term) > 4 and term.endswith('s'):
+                term = term[:-1]
+            terms.add(term)
+    return terms
+
+
+def _best_text_match(text, records, fields):
+    terms = _question_terms(text)
+    if not terms:
+        return None
+
+    best_record = None
+    best_score = 0
+    best_matches = set()
+    for record in records:
+        record_terms = set()
+        for field in fields:
+            record_terms.update(_question_terms(getattr(record, field, '')))
+        matches = terms & record_terms
+        score = len(matches)
+        if score > best_score:
+            best_record, best_score, best_matches = record, score, matches
+
+    if best_score >= 2 or any(len(term) >= 6 for term in best_matches):
+        return best_record
+    return None
+
+
+def _faq_for_question(text):
+    faqs = FAQ.objects.filter(is_published=True).order_by('sort_order', 'id')
+    return _best_text_match(text, faqs, ('question',))
+
+
+def _service_for_question(text):
+    services = Service.objects.filter(is_published=True).order_by('sort_order', 'title')[:30]
+    return _best_text_match(text, services, ('title', 'short_description', 'full_description'))
+
+
+def _blog_for_question(text):
+    posts = BlogPost.objects.filter(is_active=True, is_published=True).order_by('order', '-published_at')[:50]
+    return _best_text_match(text, posts, ('title', 'lead', 'excerpt'))
 
 
 def handle_visitor_message(conv, text, first_user_message=False, contact_captured=False):
