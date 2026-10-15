@@ -1,4 +1,4 @@
-{% load i18n static %}
+{% load i18n static admin_menu %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:'en-us' }}" dir="{{ LANGUAGE_BIDI|yesno:'rtl,ltr,auto' }}" data-theme="light">
 <head>
@@ -162,17 +162,18 @@
           <input type="search" id="admin-nav-search" placeholder="Search admin..." autocomplete="off">
         </li>
 
-        <li class="admin-nav-caption">Your data</li>
-        {% for app in available_apps %}
+        <li class="admin-nav-caption">Content</li>
+        {% admin_nav_groups as nav_groups %}
+        {% for group in nav_groups %}
           <li class="admin-nav-app">
-            <details data-app-url="{{ app.app_url }}">
-              <summary title="{{ app.name }}" aria-label="{{ app.name }}">
-                <span class="admin-nav-app-icon" aria-hidden="true">▦</span>
-                <span class="admin-nav-app-label">{{ app.name }}</span>
+            <details>
+              <summary title="{{ group.label }}" aria-label="{{ group.label }}">
+                <span class="admin-nav-app-icon" aria-hidden="true">{{ group.icon }}</span>
+                <span class="admin-nav-app-label">{{ group.label }}</span>
                 <span class="admin-nav-chevron" aria-hidden="true">›</span>
               </summary>
               <ul class="admin-nav-models">
-                {% for model in app.models %}
+                {% for model in group.items %}
                   <li class="admin-nav-model">
                     {% if model.admin_url %}
                       <a class="admin-nav-link" href="{{ model.admin_url }}">{{ model.name }}</a>

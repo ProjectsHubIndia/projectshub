@@ -89,13 +89,15 @@ class AdminURLSmokeTests(TestCase):
         self.assertContains(response, 'href="/admin/core/page/"')
         self.assertContains(response, 'aria-label="Add Pages"')
         self.assertContains(response, 'Close navigation menu')
-        self.assertContains(response, 'title="Core"')
+        # Models are grouped into WordPress-style sections, not one flat "Core" list.
+        self.assertContains(response, 'title="Pages"')
+        self.assertContains(response, 'title="Appearance"')
         self.assertContains(response, 'Workspace tools')
         self.assertNotContains(response, 'class="admin-nav-info"')
         self.assertNotContains(response, 'aria-label="About Pages"')
         self.assertNotContains(response, 'Manage Pages records here.')
+        # The legacy hardcoded (non-permission-aware) "Plugins" menu must stay gone.
         self.assertNotContains(response, 'Plugins')
-        self.assertNotContains(response, 'Appearance')
 
     def test_faq_admin_has_a_clear_add_and_homepage_management_workflow(self):
         FAQ.objects.create(question='Can I add FAQs?', answer='Add answers directly in the admin.')
