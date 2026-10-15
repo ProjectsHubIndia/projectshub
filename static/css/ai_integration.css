@@ -1029,6 +1029,16 @@ body:not(.light) .aic-inditem {
   transform: translateY(-2px);
 }
 
+.aic-btn-primary:focus-visible,
+.aic-btn-outline:focus-visible,
+.aic-btn-white:focus-visible,
+.aic-btn-ghost:focus-visible,
+.aic-tech-toggle-btn:focus-visible,
+.aic-faq-btn:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 3px;
+}
+
 /* ══════════════════════════════════════════
    LIGHT MODE OVERRIDES (body.light)
 ══════════════════════════════════════════ */
@@ -1199,7 +1209,13 @@ body:not(.light) .aic-faq-ans {
     text-align: center;
   }
   .aic-hero-right {
-    display: none;
+    display: flex;
+    min-height: clamp(220px, 38vw, 300px);
+    margin-top: -0.5rem;
+  }
+  .aic-hero-right img {
+    height: clamp(220px, 38vw, 300px);
+    object-fit: contain;
   }
   .aic-hero-btns {
     justify-content: center;
@@ -1228,7 +1244,7 @@ body:not(.light) .aic-faq-ans {
     padding: 52px 0;
   }
   .aic-hero {
-    padding: 80px 0 0;
+    padding: 68px 0 0;
   }
   .aic-svc-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -1276,8 +1292,33 @@ body:not(.light) .aic-faq-ans {
   .aic-cta-btns {
     flex-direction: column;
   }
+  .aic-hero-inner {
+    gap: 0.5rem;
+  }
+  .aic-hero-btns {
+    gap: 0.7rem;
+  }
 }
 @media (max-width: 480px) {
+  .aic-hero {
+    padding-top: 56px;
+  }
+  .aic-hero h1 {
+    font-size: clamp(1.8rem, 8vw, 2.25rem);
+  }
+  .aic-hero-right {
+    min-height: 190px;
+  }
+  .aic-hero-right img {
+    height: 220px;
+  }
+  .aic-hero-btns > a {
+    min-height: 46px;
+    justify-content: center;
+  }
+  .aic-faq-btn {
+    min-height: 48px;
+  }
   .aic-bi2-grid {
     grid-template-columns: 1fr;
   }

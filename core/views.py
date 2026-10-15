@@ -1919,6 +1919,71 @@ def admin_backup_download_db(request):
 
 
 @superuser_required
+def admin_backup_download_bundle(request):
+    """Download a portable database export and all uploaded media as one ZIP."""
+    import os
+    import tempfile
+    import zipfile
+    from django.http import FileResponse
+    from django.utils import timezone
+    from .backup_tools import dump_data, pending_migrations
+
+    if pending_migrations(use_cache=False):
+        return HttpResponse(
+            "Your database needs an update before a backup can be made. Open /admin/ and click "
+            "“Apply database update”, then download again.",
+            status=409,
+            content_type='text/plain; charset=utf-8',
+        )
+
+    archive = tempfile.TemporaryFile(mode='w+b')
+    try:
+        data, skipped = dump_data(['core', 'auth.user'])
+        media_root = os.path.abspath(settings.MEDIA_ROOT)
+        media_count = 0
+        with zipfile.ZipFile(archive, mode='w', compression=zipfile.ZIP_DEFLATED) as bundle:
+            bundle.writestr('database.json', data)
+            if os.path.isdir(media_root):
+                for root, directories, filenames in os.walk(media_root, followlinks=False):
+                    directories[:] = [
+                        name for name in directories
+                        if not os.path.islink(os.path.join(root, name))
+                    ]
+                    for name in filenames:
+                        path = os.path.join(root, name)
+                        if os.path.islink(path) or not os.path.isfile(path):
+                            continue
+                        relative_path = os.path.relpath(path, media_root)
+                        archive_name = 'media/' + relative_path.replace(os.sep, '/')
+                        bundle.write(path, archive_name)
+                        media_count += 1
+
+            readme = (
+                "ProjectsHub backup\n"
+                "==================\n"
+                "database.json: portable Django data export.\n"
+                "media/: uploaded images and files; paths match the database export.\n"
+                f"Media files included: {media_count}\n"
+            )
+            if skipped:
+                readme += "Models skipped because their database tables are unavailable: "
+                readme += ', '.join(skipped) + '\n'
+            bundle.writestr('README.txt', readme)
+        archive.seek(0)
+    except Exception:
+        archive.close()
+        logger.exception("Failed to generate database and media backup")
+        return HttpResponse(
+            "Backup generation failed. Check the server logs for details.",
+            status=500,
+            content_type='text/plain; charset=utf-8',
+        )
+
+    filename = f"projectshub_full_backup_{timezone.now().strftime('%Y-%m-%d_%H-%M')}.zip"
+    return FileResponse(archive, as_attachment=True, filename=filename, content_type='application/zip')
+
+
+@superuser_required
 @require_POST
 def admin_backup_sync_initial(request):
     """

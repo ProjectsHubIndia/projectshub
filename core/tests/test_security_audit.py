@@ -41,6 +41,7 @@ class SuperuserAdminGuardTests(TestCase):
         self.backup_endpoints = [
             reverse('admin_backup_download_db'),
             reverse('admin_backup_download_json'),
+            reverse('admin_backup_download_bundle'),
             reverse('admin_backup_sync_initial'),
             reverse('admin_backup_restore'),
             reverse('admin_backup_fetch'),
@@ -65,6 +66,12 @@ class SuperuserAdminGuardTests(TestCase):
         res = self.client.get(reverse('admin_backup_download_json'))
         self.assertEqual(res.status_code, 200)
         self.assertIn('application/json', res['Content-Type'])
+
+    def test_superuser_allowed_to_download_complete_backup(self):
+        self.client.force_login(self.superuser)
+        res = self.client.get(reverse('admin_backup_download_bundle'))
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res['Content-Type'], 'application/zip')
 
 
 class ChatbotSecurityTests(TestCase):

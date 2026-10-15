@@ -2437,7 +2437,7 @@ body.light .footer-social-btn--instagram:hover {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  min-height: 36px;
+  min-height: 44px;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   line-height: 1.45;
 }
@@ -2491,6 +2491,7 @@ body.light .footer-nav-link:hover {
   text-decoration: none;
   transition: all 0.2s ease;
   line-height: 1.4;
+  min-height: 44px;
   padding: 0.35rem 0;
 }
 
@@ -2714,6 +2715,17 @@ body.light .footer-whatsapp-cta:hover {
   color: var(--ph-text-primary);
   border-color: var(--ph-primary);
   transform: translateY(-2px);
+}
+
+.footer-nav-link:focus-visible,
+.footer-contact-item:focus-visible,
+.footer-whatsapp-cta:focus-visible,
+.footer-social-btn:focus-visible,
+.footer-top-btn:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 3px;
+  position: relative;
+  z-index: 1;
 }
 
 /* ==========================================================================

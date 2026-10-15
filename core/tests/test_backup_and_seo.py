@@ -1,8 +1,10 @@
 """Backup restore robustness, admin database updates, and the SEO dashboard."""
 import json
+import io
 import os
 import shutil
 import tempfile
+import zipfile
 from unittest import mock
 
 from django.contrib.auth import get_user_model
@@ -16,7 +18,10 @@ from core.models import BlogPost, Redirect, SEOData
 class BackupRestoreTests(TestCase):
     def setUp(self):
         self.tmp = tempfile.mkdtemp()
-        self.override = override_settings(BASE_DIR=self.tmp)
+        self.override = override_settings(
+            BASE_DIR=self.tmp,
+            MEDIA_ROOT=os.path.join(self.tmp, 'media'),
+        )
         self.override.enable()
         self.su = get_user_model().objects.create_superuser('su', 'su@example.com', 'pw-Strong-123!')
         self.client.force_login(self.su)
@@ -77,6 +82,23 @@ class BackupRestoreTests(TestCase):
         self.upload(backup)
         self.upload(backup)
         self.assertEqual(SEOData.objects.filter(path='/x/').count(), 1)
+
+    def test_download_bundle_includes_database_export_and_uploaded_media(self):
+        image_path = os.path.join(self.tmp, 'media', 'blog', 'cover.png')
+        os.makedirs(os.path.dirname(image_path))
+        with open(image_path, 'wb') as image:
+            image.write(b'test image bytes')
+
+        response = self.client.get('/admin/backup/download-bundle/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'application/zip')
+        with zipfile.ZipFile(io.BytesIO(b''.join(response.streaming_content))) as bundle:
+            self.assertIn('database.json', bundle.namelist())
+            self.assertIn('media/blog/cover.png', bundle.namelist())
+            self.assertIn('README.txt', bundle.namelist())
+            self.assertEqual(bundle.read('media/blog/cover.png'), b'test image bytes')
+            self.assertIsInstance(json.loads(bundle.read('database.json')), list)
 
     def test_invalid_files_are_rejected_without_changes(self):
         res = self.client.post('/admin/backup/restore/', {'backup_file': SimpleUploadedFile('b.json', b'not json')}, follow=True)

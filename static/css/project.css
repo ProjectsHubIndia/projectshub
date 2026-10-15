@@ -42,8 +42,8 @@ body.light .back-link:hover {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 1.25rem;
-    padding: 3rem 1.5rem 2.5rem;
+    gap: clamp(0.8rem, 1.5vw, 1.15rem);
+    padding: 2.5rem 1.5rem 2rem;
     max-width: 1440px;
     margin: 0 auto;
 }
@@ -277,7 +277,8 @@ body.light .projects-count-badge__num {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 7px 18px;
+    min-height: 44px;
+    padding: 8px 18px;
     border-radius: var(--radius-pill, 9999px);
     border: 1px solid rgba(226, 232, 240, 0.95);
     background: #ffffff;
@@ -315,6 +316,14 @@ body.light .projects-count-badge__num {
     color: #ffffff !important;
     box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
     transform: translateY(-2px);
+}
+
+.filter-tab:focus-visible,
+.ph-search-clear:focus-visible {
+    outline: 3px solid #f59e0b;
+    outline-offset: 3px;
+    position: relative;
+    z-index: 1;
 }
 
 .filter-tab .tab-count {
@@ -806,6 +815,20 @@ body.light .projects-empty-state__desc {
     .project-body {
         padding-block: 100px 60px;
     }
+
+    .projects-page-header {
+        gap: 1rem;
+        padding: 2rem 1rem 1.75rem;
+    }
+
+    .projects-page-desc {
+        max-width: 42rem;
+        font-size: 0.95rem;
+    }
+
+    .ph-search-input {
+        font-size: 16px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -820,5 +843,30 @@ body.light .projects-empty-state__desc {
 
     .project-card__img-wrap {
         height: 180px;
+    }
+
+    .filter-tabs {
+        width: 100%;
+        gap: 0.5rem;
+    }
+
+    .filter-tab {
+        flex: 1 1 auto;
+        justify-content: center;
+        padding-right: 0.75rem;
+        padding-left: 0.75rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .projects-badge__dot {
+        animation: none;
+    }
+
+    .project-card,
+    .project-card__img,
+    .filter-tab,
+    .ph-search-bar {
+        transition: none;
     }
 }

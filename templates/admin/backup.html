@@ -346,6 +346,26 @@
   <!-- 2. Primary Action Cards -->
   <div class="bk-grid">
 
+    <!-- Complete backup including uploaded files -->
+    <div class="bk-card">
+      <div>
+        <div class="bk-card__head">
+          <div class="bk-card__icon">🖼️</div>
+          <div>
+            <h3 class="bk-card__title">Complete Backup with Images &amp; Files</h3>
+            <p class="bk-card__desc">
+              Download one ZIP containing a portable database export and all uploaded images and files. The media paths are preserved for restoration.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="bk-card__actions">
+        <a href="{% url 'admin_backup_download_bundle' %}" class="bk-btn bk-btn--primary">
+          <span>📦</span> Download Complete Backup (.zip)
+        </a>
+      </div>
+    </div>
+
     <!-- Card 1: Complete JSON Snapshot -->
     <div class="bk-card">
       <div>

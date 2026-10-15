@@ -5,7 +5,7 @@ from django.views.static import serve
 from django.views.generic.base import RedirectView
 from core.views import (
     admin_guide_view, toggle_guide_note, admin_assets_view, admin_asset_delete_view,
-    admin_backup_view, admin_backup_download_json, admin_backup_download_db,
+    admin_backup_view, admin_backup_download_json, admin_backup_download_db, admin_backup_download_bundle,
     admin_backup_sync_initial, admin_backup_restore, admin_backup_fetch, admin_apply_migrations,
     admin_nav_menus_view, admin_plugins_view, admin_settings_view, admin_quick_edit_api,
     error_400, error_404, error_500
@@ -32,6 +32,7 @@ urlpatterns = [
     path('admin/api/quick-edit/', admin_quick_edit_api, name='admin_quick_edit_api'),
     path('admin/backup/download-json/', admin_backup_download_json, name='admin_backup_download_json'),
     path('admin/backup/download-db/', admin_backup_download_db, name='admin_backup_download_db'),
+    path('admin/backup/download-bundle/', admin_backup_download_bundle, name='admin_backup_download_bundle'),
     path('admin/backup/sync-initial/', admin_backup_sync_initial, name='admin_backup_sync_initial'),
     path('admin/backup/restore/', admin_backup_restore, name='admin_backup_restore'),
     path('admin/backup/fetch/', admin_backup_fetch, name='admin_backup_fetch'),

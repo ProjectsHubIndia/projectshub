@@ -7,7 +7,7 @@
 {% block nav_how_we_help %}active{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/ai_integration.css' %}?v=3">
+<link rel="stylesheet" href="{% static 'css/ai_integration.css' %}?v=4">
 {% endblock %} {% block content %}
 
 <!-- ══════════════════════════════════════
@@ -1034,7 +1034,7 @@
     </div>
 
     <!-- hidden extra cards -->
-    <div class="aic-tech-extra" id="aicTechExtra">
+    <div class="aic-tech-extra" id="aicTechExtra" aria-hidden="true">
       <div class="aic-tech-grid" style="margin-top: 0.9rem">
         <div class="aic-tech-card">
           <div class="aic-tech-box" style="background: #ff7a59">
@@ -1214,6 +1214,8 @@
       <button
         class="aic-tech-toggle-btn"
         id="aicMoreBtn"
+        aria-controls="aicTechExtra"
+        aria-expanded="false"
         onclick="aicToggleTech()"
       >
         <svg
@@ -1233,6 +1235,8 @@
       <button
         class="aic-tech-toggle-btn aic-tech-less-btn"
         id="aicLessBtn"
+        aria-controls="aicTechExtra"
+        aria-expanded="false"
         onclick="aicToggleTech()"
         style="display: none"
       >
@@ -1933,24 +1937,42 @@
     var isOpen = extra.classList.contains("open");
     if (isOpen) {
       extra.classList.remove("open");
+      extra.setAttribute("aria-hidden", "true");
+      moreBtn.setAttribute("aria-expanded", "false");
+      lessBtn.setAttribute("aria-expanded", "false");
       moreBtn.style.display = "";
       lessBtn.style.display = "none";
     } else {
       extra.classList.add("open");
+      extra.setAttribute("aria-hidden", "false");
+      moreBtn.setAttribute("aria-expanded", "true");
+      lessBtn.setAttribute("aria-expanded", "true");
       moreBtn.style.display = "none";
       lessBtn.style.display = "";
     }
   }
 
   (function () {
-    document.querySelectorAll(".aic-faq-btn").forEach(function (btn) {
+    document.querySelectorAll(".aic-faq-btn").forEach(function (btn, index) {
+      var answer = btn.nextElementSibling;
+      var answerId = "aicFaqAnswer" + (index + 1);
+      answer.id = answerId;
+      answer.setAttribute("aria-hidden", "true");
+      btn.setAttribute("aria-controls", answerId);
+      btn.setAttribute("aria-expanded", "false");
       btn.addEventListener("click", function () {
         var item = this.closest(".aic-faq-item");
         var isOpen = item.classList.contains("open");
         document.querySelectorAll(".aic-faq-item.open").forEach(function (el) {
           el.classList.remove("open");
+          el.querySelector(".aic-faq-btn").setAttribute("aria-expanded", "false");
+          el.querySelector(".aic-faq-ans").setAttribute("aria-hidden", "true");
         });
-        if (!isOpen) item.classList.add("open");
+        if (!isOpen) {
+          item.classList.add("open");
+          this.setAttribute("aria-expanded", "true");
+          answer.setAttribute("aria-hidden", "false");
+        }
       });
     });
   })();
