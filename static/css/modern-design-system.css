@@ -263,14 +263,14 @@ body:not(.light) .logo-picture--dark { display: inline-flex !important; }
 body:not(.light) .logo-picture--light { display: none !important; }
 
 body .logo-combined {
-  height: 48px;
+  height: 64px;
   width: auto;
-  max-width: 175px;
+  max-width: 230px;
   object-fit: contain;
   image-rendering: auto;
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
-body.light .logo-combined--light { height: 48px; }
+body.light .logo-combined--light { height: 64px; }
 body.light .logo-combined--light { image-rendering: auto; }
 body:not(.light) .logo-combined--dark { image-rendering: auto; }
 .logo-combined--light { display: block !important; }
@@ -281,8 +281,8 @@ body:not(.light) .logo-combined--dark { display: block !important; }
 body:not(.light) .logo-combined--light { display: none !important; }
 
 @media (max-width: 576px) {
-  body .logo-combined { width: min(160px, 52vw); height: 52px; max-width: 52vw; }
-  body.light .logo-combined--light { width: min(160px, 52vw); height: 52px; max-width: 52vw; }
+  body .logo-combined { width: min(190px, 60vw); height: 58px; max-width: 60vw; }
+  body.light .logo-combined--light { width: min(190px, 60vw); height: 58px; max-width: 60vw; }
   .hamburger,
   body.light .hamburger {
     width: 44px;
