@@ -153,7 +153,7 @@ h4 {
 
 /* ── Header Section ── */
 .header-section {
-  padding: 120px 20px 60px;
+  padding: 88px 20px 36px;
   text-align: center;
   position: relative;
   z-index: 10;
@@ -166,7 +166,7 @@ h4 {
   font-weight: 800;
   letter-spacing: -1.2px;
   color: #0f172a;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
   line-height: 1.15;
 }
 
@@ -468,7 +468,7 @@ h4 {
   display: flex;
   align-items: center;
   max-width: 1060px;
-  margin: 0 auto 36px auto;
+  margin: 0 auto 28px auto;
   position: sticky;
   top: 80px;
   z-index: 100;
@@ -1015,15 +1015,15 @@ h4 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 10px;
-  margin-top: 22px;
+  gap: 8px;
+  margin-top: 18px;
 }
 
 .header-meta-item {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  padding: 6px 14px;
+  padding: 6px 12px;
   border-radius: 999px;
   background: #ffffff;
   border: 1px solid #e2e8f0;
@@ -1038,17 +1038,17 @@ h4 {
   font-size: 0.8rem;
 }
 
-/* ── Toolbar: search + progress ── */
+/* ── Toolbar: search ── */
 .roadmap-toolbar {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 320px);
+  grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
-    "search progress"
-    "count  progress";
+    "search"
+    "count";
   align-items: start;
-  gap: 8px 24px;
+  gap: 8px 20px;
   max-width: 820px;
-  margin: 32px auto 0;
+  margin: 24px auto 0;
   text-align: left;
 }
 
@@ -1069,7 +1069,7 @@ h4 {
 
 .roadmap-search-input {
   width: 100%;
-  padding: 13px 44px 13px 42px;
+  padding: 12px 44px 12px 42px;
   border-radius: 14px;
   border: 1px solid #e2e8f0;
   background: #ffffff;
@@ -1116,77 +1116,14 @@ h4 {
   color: #6366f1;
 }
 
-.roadmap-progress {
-  grid-area: progress;
-  padding: 14px 18px;
-  border-radius: 16px;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+.roadmap-search-count:empty {
+  display: none;
 }
-
-.roadmap-progress-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 10px;
-}
-
-.roadmap-progress-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 0.84rem;
-  color: #475569;
-  font-weight: 500;
-}
-
-.roadmap-progress-label i { color: #10b981; }
-.roadmap-progress-label strong { color: #0f172a; font-weight: 700; }
-
-.roadmap-progress-pct {
-  font-size: 0.84rem;
-  font-weight: 800;
-  color: #4f46e5;
-  font-variant-numeric: tabular-nums;
-}
-
-.roadmap-progress-meter {
-  height: 7px;
-  border-radius: 999px;
-  background: #eef2f7;
-  overflow: hidden;
-}
-
-.roadmap-progress-bar {
-  display: block;
-  height: 100%;
-  width: 0;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #10b981, #06b6d4);
-  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.roadmap-progress-reset {
-  margin-top: 10px;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: #94a3b8;
-  font-size: 0.76rem;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.roadmap-progress-reset:hover { color: #ef4444; }
 
 @media (max-width: 760px) {
   .roadmap-toolbar {
     grid-template-columns: 1fr;
-    grid-template-areas: "search" "count" "progress";
+    grid-template-areas: "search" "count";
     gap: 8px;
     padding: 0 4px;
   }

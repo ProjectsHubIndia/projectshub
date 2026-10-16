@@ -308,7 +308,7 @@
     writeDone(doneKeys());
     syncDoneToggle(key);
     paintDone();
-    renderProgress();
+    updateChapterCompletion();
   }
 
   function paintDone() {
@@ -317,21 +317,7 @@
     });
   }
 
-  function renderProgress() {
-    var total = Object.keys(TOPICS).length;
-    var done = doneKeys().length;
-    var pct = total ? Math.round((done / total) * 100) : 0;
-
-    setText("roadmapDoneCount", String(done));
-    setText("roadmapDoneTotal", String(total));
-    var bar = document.getElementById("roadmapDoneBar");
-    if (bar) {
-      bar.style.width = pct + "%";
-      var meter = bar.parentElement;
-      if (meter) meter.setAttribute("aria-valuenow", String(pct));
-    }
-    setText("roadmapDonePct", pct + "%");
-
+  function updateChapterCompletion() {
     document.querySelectorAll(".timeline-item").forEach(function (item) {
       var tags = item.querySelectorAll(".tag[data-topic]");
       var complete = tags.length > 0;
@@ -342,15 +328,6 @@
       var step = document.querySelector('.stepper-step[data-node="' + item.id + '"]');
       if (step) step.classList.toggle("is-complete", complete);
     });
-  }
-
-  function resetProgress() {
-    doneSet = Object.create(null);
-    writeDone([]);
-    paintDone();
-    renderProgress();
-    var key = overlay && overlay.dataset.topic;
-    if (key) syncDoneToggle(key);
   }
 
   // ── Topic search ────────────────────────────────────────────────────────
@@ -598,9 +575,6 @@
     if (doneToggle) doneToggle.addEventListener("click", toggleDone);
     if (dialog) dialog.addEventListener("click", function (e) { e.stopPropagation(); });
 
-    var reset = document.getElementById("roadmapResetProgress");
-    if (reset) reset.addEventListener("click", resetProgress);
-
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape") closeRoadmapModal();
       trapFocus(e);
@@ -610,7 +584,7 @@
     initSearch();
     initScrollEffects();
     paintDone();
-    renderProgress();
+    updateChapterCompletion();
 
     // Deep link: /ai-roadmap/#rag_term opens that topic.
     var hash = decodeURIComponent(window.location.hash.replace("#", ""));

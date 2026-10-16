@@ -142,7 +142,7 @@
     if (agent) return avatar(agent);
     if (S.team.agents && S.team.agents.length) return S.team.agents.map(function (a) { return avatar(a); }).join('');
     if (showWordmark) {
-      return '<span class="phc-brand-wordmark"><img src="/static/image/logo/projectshub-logo-dark.png" alt="ProjectsHub — Connect, Collaborate, Achieve"></span>';
+      return '<span class="phc-brand-wordmark"><img src="/static/image/logo/projectshub-logo-light.svg" alt="ProjectsHub — Connect, Collaborate, Achieve"></span>';
     }
     return '<span class="phc-av phc-av--brand" aria-hidden="true"><img src="/static/image/Favicon-new/android-chrome-192x192.png" alt=""></span>';
   }

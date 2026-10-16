@@ -79,12 +79,12 @@ students and businesses. No signup needed.{% endblock %}
 Hero image preload — only on homepage
 ═══════════════════════════════════════ #}
 {% block extra_preload %}
-<link rel="preload" href="{% static 'css/hero-visual.css' %}?v=14" as="style" />
+<link rel="preload" href="{% static 'css/hero-visual.css' %}?v=15" as="style" />
 <script src="{% static 'js/aara-robot.js' %}?v=1" defer></script>
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/hero-visual.css' %}?v=14" />
+<link rel="stylesheet" href="{% static 'css/hero-visual.css' %}?v=15" />
 {% endblock %}
 
 {# ═══════════════════════════════════════
@@ -167,16 +167,17 @@ CONTENT
                                     <canvas id="robot-canvas" class="hvc-robot-canvas" role="button" tabindex="0" aria-label="Aara 3D robot. Hover to open her eyes or click a body part to move it and explain code."></canvas>
                                     <aside class="hvc-robot-bubble" aria-label="Code explanation by Aara">
                                         <div class="hvc-robot-bubble__topline">
-                                            <span id="robot-lesson-count" class="hvc-robot-bubble__count" aria-label="Lesson 1 of 3">01 / 03</span>
+                                            <span id="robot-lesson-count" class="hvc-robot-bubble__count" aria-label="Lesson 1 of 6">01 / 06</span>
                                         </div>
                                         <p id="robot-explanation" class="hvc-robot-bubble__text" data-index="0" aria-live="polite">
-                                            This prepares the neural network to learn using the Adam optimizer.
+                                            Configure the model's optimizer, loss function, and evaluation metrics before training.
                                         </p>
                                         <pre class="hvc-robot-bubble__code"><code id="robot-code">model.compile(
     optimizer="adam",
+    loss="sparse_categorical_crossentropy",
     metrics=["accuracy"]
 )</code></pre>
-                                        <p id="robot-action-status" class="hvc-robot-bubble__status-text" aria-live="polite">Hover over Aara to open her eyes; click her to explore.</p>
+                                        <p id="robot-action-status" class="hvc-robot-bubble__status-text" aria-live="polite">Explore each step with Next lesson, or select Aara to see her in action.</p>
                                         <button id="robot-next-lesson" class="hvc-robot-bubble__button" type="button">
                                             <span>Next lesson</span>
                                             <span aria-hidden="true">&rarr;</span>

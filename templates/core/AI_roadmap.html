@@ -56,8 +56,8 @@
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
 />
-<link rel="stylesheet" href="{% static 'css/ai_roadmap.css' %}?v=10" />
-<link rel="stylesheet" href="{% static 'css/ai_roadmapresponsive.css' %}?v=9" />
+<link rel="stylesheet" href="{% static 'css/ai_roadmap.css' %}?v=12" />
+<link rel="stylesheet" href="{% static 'css/ai_roadmapresponsive.css' %}?v=10" />
 
 <style>
   html, body {
@@ -121,27 +121,6 @@
       </button>
     </div>
     <p class="roadmap-search-count" id="roadmapSearchCount" role="status" aria-live="polite"></p>
-
-    <div class="roadmap-progress">
-      <div class="roadmap-progress-head">
-        <span class="roadmap-progress-label">
-          <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
-          <strong id="roadmapDoneCount">0</strong> of <span id="roadmapDoneTotal">{{ topic_count }}</span> done
-        </span>
-        <span class="roadmap-progress-pct" id="roadmapDonePct">0%</span>
-      </div>
-      <div
-        class="roadmap-progress-meter"
-        role="progressbar"
-        aria-label="Topics completed"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        aria-valuenow="0"
-      >
-        <span class="roadmap-progress-bar" id="roadmapDoneBar"></span>
-      </div>
-      <button type="button" class="roadmap-progress-reset" id="roadmapResetProgress">Reset progress</button>
-    </div>
   </div>
   {% endif %}
 </div>

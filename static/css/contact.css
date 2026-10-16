@@ -850,6 +850,7 @@ body.light .contact-status-pill {
   justify-content: space-between;
   gap: clamp(1.5rem, 4vw, 3rem);
   position: relative;
+  isolation: isolate;
   overflow: hidden;
   box-shadow: 0 24px 56px rgba(30, 27, 75, 0.28);
 }
@@ -864,6 +865,40 @@ body.light .contact-status-pill {
   background: radial-gradient(circle, rgba(167, 139, 250, 0.25) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
+  z-index: -1;
+}
+
+.contact-cta-content,
+.contact-cta-actions {
+  position: relative;
+  z-index: 1;
+}
+
+.contact-cta-content {
+  max-width: 620px;
+}
+
+.contact-cta-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 0.85rem;
+  color: #c7d2fe;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.contact-cta-eyebrow::before {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.75);
 }
 
 .contact-cta-content h2 {
@@ -877,7 +912,7 @@ body.light .contact-status-pill {
 
 .contact-cta-content p {
   font-size: 0.98rem;
-  color: rgba(238, 242, 255, 0.88);
+  color: rgba(238, 242, 255, 0.88) !important;
   margin: 0;
   max-width: 560px;
   line-height: 1.6;
@@ -895,20 +930,21 @@ body.light .contact-status-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.65rem;
-  padding: 0.85rem 1.65rem;
+  min-height: 50px;
+  padding: 0.8rem 1.4rem;
   background: #25d366;
-  color: #ffffff !important;
+  color: #052e16 !important;
   font-weight: 700;
   font-size: 0.98rem;
   border-radius: 9999px;
   text-decoration: none;
-  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
-  transition: all 0.25s ease;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.28);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .contact-cta-btn-wa:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(37, 211, 102, 0.55);
+  box-shadow: 0 10px 28px rgba(37, 211, 102, 0.4);
 }
 
 .contact-cta-btn-phone {
@@ -927,7 +963,7 @@ body.light .contact-status-pill {
   text-decoration: none;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  transition: all 0.25s ease;
+  transition: transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
 }
 
 .contact-cta-btn-phone:hover {
