@@ -130,7 +130,7 @@
   <link rel="stylesheet" href="{% static 'css/modern-design-system.css' %}?v=41" />
 
   <!-- Secondary Component Stylesheets (Live Chat, Modals, Cookie Consent) -->
-  <link rel="stylesheet" href="{% static 'css/live-chat.css' %}?v=12" />
+  <link rel="stylesheet" href="{% static 'css/live-chat.css' %}?v=15" />
   <link rel="stylesheet" href="{% static 'css/idea-modal.css' %}?v=11" />
   <link rel="stylesheet" href="{% static 'css/cookie-consent.css' %}?v=2" />
 
@@ -240,9 +240,10 @@
 
   <!-- ── Scripts ── -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+  {{ live_chat_config|json_script:"ph-live-chat-config" }}
   {% compress js %}
   <script src="{% static 'js/cookie-consent.js' %}?v=1" defer></script>
-  <script src="{% static 'js/live-chat.js' %}?v=6" defer></script>
+  <script src="{% static 'js/live-chat.js' %}?v=14" defer></script>
   <script src="{% static 'js/script.js' %}?v=21" defer></script>
   <script src="{% static 'js/idea-modal.js' %}?v=10" defer></script>
   {% endcompress %}

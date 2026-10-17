@@ -1,0 +1,246 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Live Chat Settings | ProjectsHub Admin{% endblock %}
+{% block content_title %}⚙ Live Chat Settings{% endblock %}
+
+{% block breadcrumbs %}
+<div class="wp-breadcrumbs" aria-label="Breadcrumb">
+  <a href="{% url 'admin:index' %}">Dashboard</a>
+  <span class="wp-breadcrumb-sep">›</span>
+  <a href="{% url 'admin_live_chat' %}">Live Chat</a>
+  <span class="wp-breadcrumb-sep">›</span>
+  <span>Settings</span>
+</div>
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+  .lc-settings { max-width: 900px; }
+  .lc-settings-intro { color: #646970; margin: 0 0 20px; }
+  .lc-settings-section { background: #fff; border: 1px solid #dcdcde; border-radius: 8px; margin: 0 0 16px; padding: 20px 24px; }
+  .lc-settings-section h2 { margin: 0 0 16px; font-size: 16px; }
+  .lc-settings-field { margin: 0 0 18px; }
+  .lc-settings-field:last-child { margin-bottom: 0; }
+  .lc-settings-field label { display: block; font-weight: 600; margin-bottom: 6px; }
+  .lc-settings-field input[type="text"], .lc-settings-field input[type="url"], .lc-settings-field textarea { box-sizing: border-box; max-width: 100%; width: 100%; }
+  .lc-settings-field textarea { min-height: 74px; }
+  .lc-settings-field .description { color: #646970; display: block; margin-top: 5px; }
+  .lc-settings-errors { color: #b32d2e; margin: 5px 0 0; }
+  .lc-settings-enabled { align-items: center; display: flex; gap: 8px; }
+  .lc-settings-enabled label { margin: 0; }
+  .lc-suggested-header { align-items: center; display: flex; justify-content: space-between; gap: 12px; }
+  .lc-suggested-row { border: 1px solid #dcdcde; border-radius: 6px; margin: 0 0 12px; padding: 14px; }
+  .lc-suggested-row[hidden] { display: none; }
+  .lc-suggested-grid { display: grid; gap: 12px; grid-template-columns: minmax(130px, 1fr) minmax(150px, 1fr) minmax(220px, 2fr) 75px auto auto; align-items: start; }
+  .lc-suggested-grid .lc-settings-field { margin: 0; }
+  .lc-suggested-grid input[type="number"] { width: 75px; }
+  .lc-suggested-grid textarea { min-height: 52px; }
+  .lc-suggested-delete { color: #b32d2e; white-space: nowrap; }
+  @media (max-width: 800px) { .lc-suggested-grid { grid-template-columns: 1fr; } }
+  .lc-suggested-help { color: #646970; margin: 0 0 14px; }
+  .lc-settings-field input[type="text"], .lc-settings-field textarea, .lc-settings-field select { box-sizing: border-box; max-width: 100%; width: 100%; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="lc-settings">
+  <p class="lc-settings-intro">Manage the visitor-facing chat widget, its links and the contact details shown to visitors.</p>
+
+  {% if form.non_field_errors %}
+    <div class="notice notice-error"><p>{{ form.non_field_errors }}</p></div>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <section class="lc-settings-section" aria-labelledby="lcSettingsGeneral">
+      <h2 id="lcSettingsGeneral">Widget</h2>
+      <div class="lc-settings-field lc-settings-enabled">
+        {{ form.enabled }}<label for="{{ form.enabled.id_for_label }}">{{ form.enabled.label }}</label>
+        {% if form.enabled.errors %}<p class="lc-settings-errors">{{ form.enabled.errors|join:", " }}</p>{% endif %}
+      </div>
+      <div class="lc-settings-field">
+        <label for="{{ form.team_name.id_for_label }}">{{ form.team_name.label }}</label>
+        {{ form.team_name }}
+        {% if form.team_name.errors %}<p class="lc-settings-errors">{{ form.team_name.errors|join:", " }}</p>{% endif %}
+      </div>
+      <div class="lc-settings-field">
+        <label for="{{ form.suggested_buttons_heading.id_for_label }}">{{ form.suggested_buttons_heading.label }}</label>
+        {{ form.suggested_buttons_heading }}
+        <span class="description">Leave blank to hide the heading above the visitor buttons.</span>
+        {% if form.suggested_buttons_heading.errors %}<p class="lc-settings-errors">{{ form.suggested_buttons_heading.errors|join:", " }}</p>{% endif %}
+      </div>
+    </section>
+
+    <section class="lc-settings-section" aria-labelledby="lcSettingsMessages">
+      <h2 id="lcSettingsMessages">Visitor messages</h2>
+      {% for field in form %}
+        {% if field.name == 'online_greeting' or field.name == 'offline_greeting' or field.name == 'contact_followup' or field.name == 'response_time' %}
+          <div class="lc-settings-field">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.name == 'contact_followup' %}<span class="description">Use <code>{response_time}</code> to insert the estimate configured below.</span>{% endif %}
+            {% if field.errors %}<p class="lc-settings-errors">{{ field.errors|join:", " }}</p>{% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </section>
+
+    <section class="lc-settings-section" aria-labelledby="lcSettingsLinks">
+      <h2 id="lcSettingsLinks">Links and contact</h2>
+      {% for field in form %}
+        {% if field.name == 'projects_url' or field.name == 'privacy_url' or field.name == 'whatsapp_number' or field.name == 'whatsapp_message' %}
+          <div class="lc-settings-field">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.name == 'projects_url' or field.name == 'privacy_url' %}
+              <span class="description">Use a site path such as <code>/projects/</code> or a complete HTTP(S) URL.</span>
+            {% elif field.name == 'whatsapp_number' %}
+              <span class="description">Include the country code; spaces and a leading + are okay.</span>
+            {% endif %}
+            {% if field.errors %}<p class="lc-settings-errors">{{ field.errors|join:", " }}</p>{% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </section>
+
+    <section class="lc-settings-section" aria-labelledby="lcSettingsSuggested">
+      <div class="lc-suggested-header">
+        <h2 id="lcSettingsSuggested">Suggested buttons</h2>
+        <button type="button" class="button" id="lcAddSuggestedButton">+ Add button</button>
+      </div>
+      <p class="lc-suggested-help">Add as many buttons as you need. Each button can send a question to chat or request a person. Visitors can also type their own message.</p>
+      {{ button_formset.management_form }}
+      {% if button_formset.non_form_errors %}
+        <p class="lc-settings-errors">{{ button_formset.non_form_errors|join:", " }}</p>
+      {% endif %}
+      <div id="lcSuggestedButtons" data-form-prefix="{{ button_formset.prefix }}">
+        {% for button_form in button_formset %}
+          <div class="lc-suggested-row" data-suggested-row>
+            <div class="lc-suggested-grid">
+            {% for hidden in button_form.hidden_fields %}{{ hidden }}{% endfor %}
+              <div class="lc-settings-field">
+                <label for="{{ button_form.label.id_for_label }}">Button label</label>
+                {{ button_form.label }}
+                {% if button_form.label.errors %}<p class="lc-settings-errors">{{ button_form.label.errors|join:", " }}</p>{% endif %}
+              </div>
+              <div class="lc-settings-field">
+                <label for="{{ button_form.kind.id_for_label }}">Button action</label>
+                {{ button_form.kind }}
+                {% if button_form.kind.errors %}<p class="lc-settings-errors">{{ button_form.kind.errors|join:", " }}</p>{% endif %}
+              </div>
+              <div class="lc-settings-field">
+                <label for="{{ button_form.prompt.id_for_label }}">Question sent to chat</label>
+                {{ button_form.prompt }}
+                {% if button_form.prompt.errors %}<p class="lc-settings-errors">{{ button_form.prompt.errors|join:", " }}</p>{% endif %}
+              </div>
+              <div class="lc-settings-field">
+                <label for="{{ button_form.order.id_for_label }}">Order</label>
+                {{ button_form.order }}
+                {% if button_form.order.errors %}<p class="lc-settings-errors">{{ button_form.order.errors|join:", " }}</p>{% endif %}
+              </div>
+              <div class="lc-settings-field">
+                <label for="{{ button_form.is_active.id_for_label }}">Visible</label>
+                {{ button_form.is_active }}
+                {% if button_form.is_active.errors %}<p class="lc-settings-errors">{{ button_form.is_active.errors|join:", " }}</p>{% endif %}
+              </div>
+              <div class="lc-settings-field">
+                <label>&nbsp;</label>
+                {{ button_form.DELETE }}
+                <button type="button" class="button lc-suggested-delete" data-remove-suggested>Remove</button>
+              </div>
+            </div>
+            {% if button_form.non_field_errors %}<p class="lc-settings-errors">{{ button_form.non_field_errors|join:", " }}</p>{% endif %}
+          </div>
+        {% endfor %}
+      </div>
+      <template id="lcSuggestedButtonTemplate">
+        <div class="lc-suggested-row" data-suggested-row>
+          {% for hidden in button_formset.empty_form.hidden_fields %}{{ hidden }}{% endfor %}
+          <div class="lc-suggested-grid">
+            <div class="lc-settings-field">
+              <label for="{{ button_formset.empty_form.label.id_for_label }}">Button label</label>
+              {{ button_formset.empty_form.label }}
+            </div>
+            <div class="lc-settings-field">
+              <label for="{{ button_formset.empty_form.kind.id_for_label }}">Button action</label>
+              {{ button_formset.empty_form.kind }}
+            </div>
+            <div class="lc-settings-field">
+              <label for="{{ button_formset.empty_form.prompt.id_for_label }}">Question sent to chat</label>
+              {{ button_formset.empty_form.prompt }}
+            </div>
+            <div class="lc-settings-field">
+              <label for="{{ button_formset.empty_form.order.id_for_label }}">Order</label>
+              {{ button_formset.empty_form.order }}
+            </div>
+            <div class="lc-settings-field">
+              <label for="{{ button_formset.empty_form.is_active.id_for_label }}">Visible</label>
+              {{ button_formset.empty_form.is_active }}
+            </div>
+            <div class="lc-settings-field">
+              <label>&nbsp;</label>
+              {{ button_formset.empty_form.DELETE }}
+              <button type="button" class="button lc-suggested-delete" data-remove-suggested>Remove</button>
+            </div>
+          </div>
+        </div>
+      </template>
+    </section>
+
+    <p><button type="submit" class="button button-primary">Save Live Chat Settings</button></p>
+  </form>
+</div>
+<script>
+  (function () {
+    var list = document.getElementById('lcSuggestedButtons');
+    var template = document.getElementById('lcSuggestedButtonTemplate');
+    var addButton = document.getElementById('lcAddSuggestedButton');
+    var total = document.getElementById('id_' + list.dataset.formPrefix + '-TOTAL_FORMS');
+    function activeRows() {
+      return Array.prototype.filter.call(list.querySelectorAll('[data-suggested-row]'), function (row) {
+        var deleted = row.querySelector('input[name$="-DELETE"]');
+        return !deleted || !deleted.checked;
+      });
+    }
+    list.addEventListener('click', function (event) {
+      var remove = event.target.closest('[data-remove-suggested]');
+      if (!remove) return;
+      var row = remove.closest('[data-suggested-row]');
+      var deleteInput = row.querySelector('input[name$="-DELETE"]');
+      if (deleteInput) deleteInput.checked = true;
+      row.hidden = true;
+    });
+    addButton.addEventListener('click', function () {
+      var index = parseInt(total.value, 10);
+      var html = template.innerHTML.replace(/__prefix__/g, String(index));
+      var holder = document.createElement('div');
+      holder.innerHTML = html;
+      var row = holder.firstElementChild;
+      var orderValues = activeRows().map(function (activeRow) {
+        return parseInt(activeRow.querySelector('[name$="-order"]').value, 10) || 0;
+      });
+      row.querySelector('[name$="-order"]').value = String(Math.max.apply(Math, orderValues.concat([0])) + 1);
+      list.appendChild(row);
+      total.value = String(index + 1);
+      row.querySelector('[name$="-label"]').focus();
+    });
+    function updateActionLabel(row) {
+      var kind = row.querySelector('select[name$="-kind"]');
+      if (!kind) return;
+      var label = row.querySelector('label[for$="-prompt"]');
+      var prompt = row.querySelector('textarea[name$="-prompt"]');
+      var handoff = kind.value === 'handoff';
+      label.textContent = handoff ? 'Message that requests a person' : 'Question sent to chat';
+      prompt.placeholder = handoff
+        ? 'Message sent when a visitor requests a person'
+        : 'Question sent when a visitor clicks this button';
+    }
+    list.addEventListener('change', function (event) {
+      if (!event.target.matches('select[name$="-kind"]')) return;
+      updateActionLabel(event.target.closest('[data-suggested-row]'));
+    });
+    Array.prototype.forEach.call(list.querySelectorAll('[data-suggested-row]'), updateActionLabel);
+  }());
+</script>
+{% endblock %}

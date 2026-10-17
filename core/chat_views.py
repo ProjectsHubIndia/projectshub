@@ -201,9 +201,24 @@ def chat_message(request):
     _touch_visitor(conv)
     ChatbotConversation.objects.filter(pk=conv.pk).update(visitor_typing_until=None)
 
-    replies = lc.handle_visitor_message(
-        conv, text, first_user_message=first, contact_captured=contact_captured,
-    )
+    if data.get('request_human') is True and conv.mode != 'human':
+        agents = lc.online_agents()
+        conv.mode = 'waiting'
+        conv.waiting_since = timezone.now()
+        conv.followup_prompted = False
+        conv.save(update_fields=['mode', 'waiting_since', 'followup_prompted'])
+        if agents:
+            reply_text = f"Got it — {agents[0].public_name} from the team will join this chat shortly."
+        elif conv.user_email or conv.user_phone:
+            reply_text = 'The team is offline right now. A real ProjectsHub team member will get back to you within 24 hours.'
+        else:
+            reply_text = 'The team is offline right now. Leave your email or WhatsApp number and a real team member will get back to you within 24 hours.'
+        replies = [lc.add_message(conv, 'system', reply_text)]
+        lc.notify_team(conv, reason='new' if first else 'message')
+    else:
+        replies = lc.handle_visitor_message(
+            conv, text, first_user_message=first, contact_captured=contact_captured,
+        )
     payload = {
         'success': True,
         'message': lc.serialize_message(msg),

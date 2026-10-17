@@ -41,6 +41,7 @@
     </label>
     <div class="lc-spacer"></div>
     <div class="lc-team" id="lcTeam"></div>
+    <a class="lc-notify-btn" href="{% url 'admin_live_chat_settings' %}">⚙ Chat settings</a>
     <button type="button" class="lc-notify-btn" id="lcNotifyBtn" hidden>🔔 Enable desktop alerts</button>
   </div>
 
@@ -79,7 +80,7 @@
             <button type="button" data-text="Hi{name}! Thanks for reaching out. How can I help you today?">👋 Greeting</button>
             <button type="button" data-text="Could you tell me a bit more about your project: topic, tech stack and deadline?">❓ Ask details</button>
             <button type="button" data-text="Could you share your email or WhatsApp number so I can send you the details?">📧 Ask contact</button>
-            <button type="button" data-text="You can browse all projects with source code here: https://projectshub.co.in/projects/">🚀 Projects link</button>
+            <button type="button" data-text="You can browse all projects with source code here: {{ live_chat_widget_settings.projects_url|escape }}">🚀 Projects link</button>
             <button type="button" data-text="Thanks for chatting with us! Message here any time.">✅ Wrap up</button>
           </div>
           <div class="lc-compose-row">

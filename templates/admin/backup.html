@@ -354,7 +354,7 @@
           <div>
             <h3 class="bk-card__title">Complete Backup with Images &amp; Files</h3>
             <p class="bk-card__desc">
-              Download one ZIP containing a portable database export and all uploaded images and files. The media paths are preserved for restoration.
+              Download one ZIP with all database records, a consistent raw SQLite snapshot when available, every uploaded image/file, and SHA-256 integrity checks. Media paths are preserved for restoration.
             </p>
           </div>
         </div>
@@ -400,7 +400,7 @@
           <div>
             <h3 class="bk-card__title">Physical SQLite Database File</h3>
             <p class="bk-card__desc">
-              Download the exact binary <code>{{ db_name }}</code> file ({{ db_size_mb }} MB).
+              Download the raw <code>{{ db_name }}</code> file ({{ db_size_mb }} MB).
               Can be opened with DB Browser for SQLite or stored offline as a raw database snapshot.
             </p>
           </div>

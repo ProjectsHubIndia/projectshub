@@ -1,5 +1,6 @@
 """Backup restore robustness, admin database updates, and the SEO dashboard."""
 import json
+import hashlib
 import io
 import os
 import shutil
@@ -119,10 +120,64 @@ class BackupRestoreTests(TestCase):
         self.assertEqual(response['Content-Type'], 'application/zip')
         with zipfile.ZipFile(io.BytesIO(b''.join(response.streaming_content))) as bundle:
             self.assertIn('database.json', bundle.namelist())
+            self.assertIn('database.sqlite3', bundle.namelist())
             self.assertIn('media/blog/cover.png', bundle.namelist())
             self.assertIn('README.txt', bundle.namelist())
+            self.assertIn('manifest.json', bundle.namelist())
             self.assertEqual(bundle.read('media/blog/cover.png'), b'test image bytes')
             self.assertIsInstance(json.loads(bundle.read('database.json')), list)
+            self.assertTrue(bundle.read('database.sqlite3').startswith(b'SQLite format 3\x00'))
+            manifest = json.loads(bundle.read('manifest.json'))
+            self.assertEqual(
+                manifest['files']['media/blog/cover.png']['sha256'],
+                hashlib.sha256(b'test image bytes').hexdigest(),
+            )
+
+    def test_zip_restore_rejects_bad_manifest_before_writing_files_or_data(self):
+        fixture = json.dumps([
+            {'model': 'core.redirect', 'pk': 1, 'fields': {
+                'old_path': '/checksum/', 'new_path': '/target/', 'status_code': 301,
+                'is_active': True, 'notes': '',
+            }},
+        ]).encode()
+        manifest = {
+            'format': 'projectshub-full-backup',
+            'version': 1,
+            'files': {
+                'database.json': {'size': len(fixture), 'sha256': 'incorrect'},
+                'media/pages/logo.png': {
+                    'size': len(b'bad image'),
+                    'sha256': hashlib.sha256(b'bad image').hexdigest(),
+                },
+            },
+        }
+        res = self.upload_zip({
+            'database.json': fixture,
+            'media/pages/logo.png': b'bad image',
+            'manifest.json': json.dumps(manifest),
+        })
+        messages = ' '.join(str(message) for message in res.context['messages'])
+        self.assertIn('SHA-256 check', messages)
+        self.assertFalse(Redirect.objects.filter(old_path='/checksum/').exists())
+        self.assertFalse(os.path.exists(os.path.join(self.tmp, 'media', 'pages', 'logo.png')))
+
+    def test_zip_restore_rolls_back_media_if_database_restore_fails(self):
+        destination = os.path.join(self.tmp, 'media', 'pages', 'logo.png')
+        os.makedirs(os.path.dirname(destination), exist_ok=True)
+        with open(destination, 'wb') as existing:
+            existing.write(b'previous image')
+        backup = [{'model': 'core.redirect', 'pk': 1, 'fields': {
+            'old_path': '/restore-failure/', 'new_path': '/target/', 'status_code': 301,
+            'is_active': True, 'notes': '',
+        }}]
+        with mock.patch('core.backup_tools.restore_backup', side_effect=backup_tools.RestoreError('failed')):
+            self.upload_zip({
+                'database.json': json.dumps(backup),
+                'media/pages/logo.png': b'replacement image',
+            })
+        with open(destination, 'rb') as restored:
+            self.assertEqual(restored.read(), b'previous image')
+        self.assertFalse(Redirect.objects.filter(old_path='/restore-failure/').exists())
 
     def test_invalid_files_are_rejected_without_changes(self):
         res = self.client.post('/admin/backup/restore/', {'backup_file': SimpleUploadedFile('b.json', b'not json')}, follow=True)

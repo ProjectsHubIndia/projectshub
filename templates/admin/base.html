@@ -191,10 +191,15 @@
         {% endfor %}
 
         <li class="admin-nav-caption">Workspace tools</li>
-        <li class="admin-nav-app{% if '/admin/live-chat/' in request.path %} current{% endif %}">
+        <li class="admin-nav-app{% if request.path == '/admin/live-chat/' %} current{% endif %}">
           <a class="admin-nav-utility-link wp-menu-link" href="/admin/live-chat/" title="Live chat">
             <span class="wp-menu-icon" aria-hidden="true">◉</span><span class="wp-menu-name">Live chat</span>
             {% if live_chat_waiting %}<span class="wp-menu-count red">{{ live_chat_waiting }}</span>{% endif %}
+          </a>
+        </li>
+        <li class="admin-nav-app{% if request.path == '/admin/live-chat/settings/' %} current{% endif %}">
+          <a class="admin-nav-utility-link wp-menu-link" href="{% url 'admin_live_chat_settings' %}" title="Live Chat Settings">
+            <span class="wp-menu-icon" aria-hidden="true">⚙</span><span class="wp-menu-name">Chat settings</span>
           </a>
         </li>
         <li class="admin-nav-app{% if '/admin/assets/' in request.path %} current{% endif %}">

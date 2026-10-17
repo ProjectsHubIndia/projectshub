@@ -5,7 +5,7 @@ from django.core.cache import cache
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, Permission
 from core.models import (
-    SiteSettings, NavigationItem, MegaMenuTag, SocialLink, StatItem,
+    SiteSettings, ChatWidgetSettings, NavigationItem, MegaMenuTag, SocialLink, StatItem,
     Project, ProjectCategory, Technology, ProjectImage, ProjectHighlight,
     ProjectDiagram, ProjectTimelinePhase, ProjectFeature,
     AITool, ToolCategory,
@@ -39,6 +39,23 @@ def site_context(request):
         )
     except Exception:
         settings_obj = None
+
+    chat_settings = ChatWidgetSettings()
+    try:
+        chat_settings = cache.get_or_set(
+            'live_chat_widget_settings',
+            lambda: ChatWidgetSettings.get_settings(),
+            60,
+        )
+        live_chat_config = chat_settings.public_config(
+            getattr(settings_obj, 'whatsapp_number', ''),
+            getattr(settings_obj, 'response_time', 'Within 24 hours'),
+        )
+    except Exception:
+        live_chat_config = chat_settings.public_config(
+            getattr(settings_obj, 'whatsapp_number', ''),
+            getattr(settings_obj, 'response_time', 'Within 24 hours'),
+        )
 
     # Cache social links for 1 minute  
     try:
@@ -97,6 +114,8 @@ def site_context(request):
 
     context = {
         'site_settings': settings_obj,
+        'live_chat_config': live_chat_config,
+        'live_chat_widget_settings': chat_settings,
         'social_links': social_links,
         'hero_stats': hero_stats,
         'mega_work_items': mega_work_items,

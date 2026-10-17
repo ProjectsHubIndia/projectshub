@@ -10,7 +10,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import Http404, JsonResponse, HttpResponse, HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
-from django.db import models
+from django.db import connection, models
 from django.db.models import Q, Count
 from django.core.mail import send_mail
 from django.core import signing
@@ -1985,13 +1985,15 @@ def admin_backup_download_db(request):
 
 @superuser_required
 def admin_backup_download_bundle(request):
-    """Download a portable database export and all uploaded media as one ZIP."""
+    """Download a portable data export, SQLite snapshot when available, and uploaded media."""
+    import hashlib
     import os
     import tempfile
     import zipfile
+    import json
     from django.http import FileResponse
     from django.utils import timezone
-    from .backup_tools import dump_data, pending_migrations
+    from .backup_tools import create_sqlite_snapshot, dump_data, pending_migrations
 
     if pending_migrations(use_cache=False):
         return HttpResponse(
@@ -2006,34 +2008,77 @@ def admin_backup_download_bundle(request):
         data, skipped = dump_data(['core', 'auth.user'])
         media_root = os.path.abspath(settings.MEDIA_ROOT)
         media_count = 0
-        with zipfile.ZipFile(archive, mode='w', compression=zipfile.ZIP_DEFLATED) as bundle:
-            bundle.writestr('database.json', data)
-            if os.path.isdir(media_root):
-                for root, directories, filenames in os.walk(media_root, followlinks=False):
-                    directories[:] = [
-                        name for name in directories
-                        if not os.path.islink(os.path.join(root, name))
-                    ]
-                    for name in filenames:
-                        path = os.path.join(root, name)
-                        if os.path.islink(path) or not os.path.isfile(path):
-                            continue
-                        relative_path = os.path.relpath(path, media_root)
-                        archive_name = 'media/' + relative_path.replace(os.sep, '/')
-                        bundle.write(path, archive_name)
-                        media_count += 1
+        database_json = data.encode('utf-8')
+        manifest_files = {
+            'database.json': {
+                'size': len(database_json),
+                'sha256': hashlib.sha256(database_json).hexdigest(),
+            }
+        }
+        with tempfile.TemporaryDirectory(prefix='projectshub-backup-') as temp_dir:
+            sqlite_path = os.path.join(temp_dir, 'database.sqlite3')
+            has_sqlite = create_sqlite_snapshot(sqlite_path)
+            with zipfile.ZipFile(archive, mode='w', compression=zipfile.ZIP_DEFLATED) as bundle:
+                bundle.writestr('database.json', data)
+                if has_sqlite:
+                    bundle.write(sqlite_path, 'database.sqlite3')
+                    sqlite_digest = hashlib.sha256()
+                    sqlite_size = 0
+                    with open(sqlite_path, 'rb') as sqlite_file:
+                        for chunk in iter(lambda: sqlite_file.read(1024 * 1024), b''):
+                            sqlite_digest.update(chunk)
+                            sqlite_size += len(chunk)
+                    manifest_files['database.sqlite3'] = {
+                        'size': sqlite_size,
+                        'sha256': sqlite_digest.hexdigest(),
+                    }
+                if os.path.isdir(media_root):
+                    for root, directories, filenames in os.walk(media_root, followlinks=False):
+                        directories[:] = [
+                            name for name in directories
+                            if not os.path.islink(os.path.join(root, name))
+                        ]
+                        for name in filenames:
+                            path = os.path.join(root, name)
+                            if os.path.islink(path) or not os.path.isfile(path):
+                                continue
+                            relative_path = os.path.relpath(path, media_root)
+                            archive_name = 'media/' + relative_path.replace(os.sep, '/')
+                            digest = hashlib.sha256()
+                            size = 0
+                            with open(path, 'rb') as media_file:
+                                for chunk in iter(lambda: media_file.read(1024 * 1024), b''):
+                                    digest.update(chunk)
+                                    size += len(chunk)
+                            bundle.write(path, archive_name)
+                            manifest_files[archive_name] = {
+                                'size': size,
+                                'sha256': digest.hexdigest(),
+                            }
+                            media_count += 1
 
-            readme = (
-                "ProjectsHub backup\n"
-                "==================\n"
-                "database.json: portable Django data export.\n"
-                "media/: uploaded images and files; paths match the database export.\n"
-                f"Media files included: {media_count}\n"
-            )
-            if skipped:
-                readme += "Models skipped because their database tables are unavailable: "
-                readme += ', '.join(skipped) + '\n'
-            bundle.writestr('README.txt', readme)
+                readme = (
+                    "ProjectsHub full backup\n"
+                    "=======================\n"
+                    "database.json: portable Django data export used by the restore page.\n"
+                    "database.sqlite3: consistent raw SQLite snapshot, included when SQLite is used.\n"
+                    "media/: uploaded images and files; paths match the database export.\n"
+                    "manifest.json: file sizes and SHA-256 checksums for integrity verification.\n"
+                    f"Media files included: {media_count}\n"
+                )
+                if skipped:
+                    readme += "Models skipped because their database tables are unavailable: "
+                    readme += ', '.join(skipped) + '\n'
+                bundle.writestr('README.txt', readme)
+                manifest = {
+                    'format': 'projectshub-full-backup',
+                    'version': 1,
+                    'created_at': timezone.now().isoformat(),
+                    'database_engine': connection.vendor,
+                    'media_files': media_count,
+                    'files': manifest_files,
+                }
+                bundle.writestr('manifest.json', json.dumps(manifest, indent=2))
         archive.seek(0)
     except Exception:
         archive.close()
@@ -2139,6 +2184,10 @@ def _restore_summary(report, source_label):
         summary += f" Skipped data for models this site doesn't have: {skipped}."
     if report.get('media_restored'):
         summary += f" Restored {report['media_restored']} media file(s)."
+    if report.get('sqlite_database_included'):
+        summary += " A raw SQLite snapshot was included in the ZIP; portable restore used database.json."
+    if report.get('manifest_verified'):
+        summary += " Archive SHA-256 checksums were verified."
     summary += f" A safety snapshot of the previous data was saved as backups/{os.path.basename(report['snapshot'])}."
     return summary
 

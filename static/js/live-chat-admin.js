@@ -30,7 +30,9 @@
   }
   function esc(s) { var d = document.createElement('div'); d.textContent = s == null ? '' : String(s); return d.innerHTML; }
   function linkify(s) {
-    return esc(s).replace(/(https?:\/\/[^\s<]+[^\s<.,;:!?)])/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
+    return esc(s)
+      .replace(/(https?:\/\/[^\s<]+[^\s<.,;:!?)])/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')
+      .replace(/(^|\s)(\/[a-z0-9][a-z0-9\-\/]*\/?)(?=\s|$|[.,!?])/gi, '$1<a href="$2" target="_blank" rel="noopener noreferrer">$2</a>');
   }
   function timeAgo(iso) {
     var d = new Date(iso), s = (Date.now() - d.getTime()) / 1000;

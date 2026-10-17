@@ -9,9 +9,13 @@ core/backup_tools.py — database maintenance helpers used by the admin Backup p
   snapshot first, runs in one transaction and resets Postgres sequences afterwards.
 """
 import io
+import hashlib
 import json
 import logging
 import os
+import posixpath
+import shutil
+import stat
 import tempfile
 from datetime import datetime
 
@@ -25,6 +29,8 @@ logger = logging.getLogger(__name__)
 
 PENDING_CACHE_KEY = 'ph_pending_migrations'
 BACKUP_DIR_NAME = 'backups'
+MAX_BUNDLE_FILES = 100000
+MAX_BUNDLE_UNCOMPRESSED_BYTES = 2 * 1024 * 1024 * 1024
 
 
 # ── Migrations ────────────────────────────────────────────────────────────────
@@ -128,10 +134,36 @@ def snapshot_db_file(reason='pre-update'):
     return dest
 
 
+def create_sqlite_snapshot(path):
+    """Write a transaction-consistent copy of the active SQLite database to path."""
+    if connection.vendor != 'sqlite':
+        return False
+    connection.ensure_connection()
+    if connection.connection is None:
+        raise RuntimeError('The SQLite database connection is not available.')
+    import sqlite3
+    target = sqlite3.connect(path)
+    try:
+        connection.connection.backup(target)
+    finally:
+        target.close()
+    return True
+
+
 # ── Restore ───────────────────────────────────────────────────────────────────
 
 class RestoreError(Exception):
     pass
+
+
+def _zip_member_sha256(zf, info):
+    digest = hashlib.sha256()
+    size = 0
+    with zf.open(info) as source:
+        for chunk in iter(lambda: source.read(1024 * 1024), b''):
+            digest.update(chunk)
+            size += len(chunk)
+    return size, digest.hexdigest()
 
 
 def _parse(raw_bytes):
@@ -275,36 +307,120 @@ def restore_backup(raw_bytes):
 
 
 def restore_bundle(raw_bytes):
-    """Restore a full .zip backup (database.json + media/) made by the download-bundle view.
-    Loads the data through restore_backup (snapshot + one transaction), then writes the media
-    files back into MEDIA_ROOT. Returns the restore report with a 'media_restored' count."""
-    import shutil
+    """Validate a full ZIP, stage media, then restore its portable database and files."""
     import zipfile
     try:
         zf = zipfile.ZipFile(io.BytesIO(raw_bytes))
     except zipfile.BadZipFile:
         raise RestoreError('The uploaded file is not a valid .zip archive.')
-    names = set(zf.namelist())
-    data_name = next((n for n in ('database.json', 'initial_data.json') if n in names), None)
-    if not data_name:
-        raise RestoreError('The .zip has no database.json — is it a full ProjectsHub backup?')
+    with zf:
+        infos = zf.infolist()
+        if len(infos) > MAX_BUNDLE_FILES:
+            raise RestoreError('The archive contains too many files.')
+        names = [info.filename for info in infos]
+        if len(names) != len(set(names)):
+            raise RestoreError('The archive contains duplicate file paths.')
+        if sum(info.file_size for info in infos) > MAX_BUNDLE_UNCOMPRESSED_BYTES:
+            raise RestoreError('The archive expands beyond the 2 GB restore limit.')
+        if zf.testzip() is not None:
+            raise RestoreError('The archive is corrupt: a file failed its CRC check.')
 
-    report = restore_backup(zf.read(data_name))
+        media_infos = []
+        for info in infos:
+            if info.is_dir() or not info.filename.startswith('media/'):
+                continue
+            relative = info.filename[len('media/'):]
+            normalized = posixpath.normpath(relative)
+            file_type = stat.S_IFMT(info.external_attr >> 16)
+            if (
+                not relative or normalized != relative or normalized.startswith('../')
+                or normalized == '..' or '\\' in relative or ':' in relative
+                or relative.startswith('/') or file_type == stat.S_IFLNK
+            ):
+                raise RestoreError(f'The archive contains an unsafe media path: {info.filename!r}.')
+            media_infos.append((info, relative))
 
-    media_root = os.path.abspath(settings.MEDIA_ROOT)
-    os.makedirs(media_root, exist_ok=True)
-    count = 0
-    for info in zf.infolist():
-        if info.is_dir() or not info.filename.startswith('media/'):
-            continue
-        rel = info.filename[len('media/'):]
-        dest = os.path.abspath(os.path.join(media_root, rel))
-        # zip-slip guard: never write outside MEDIA_ROOT
-        if not rel or os.path.commonpath([dest, media_root]) != media_root:
-            continue
-        os.makedirs(os.path.dirname(dest), exist_ok=True)
-        with zf.open(info) as src, open(dest, 'wb') as out:
-            shutil.copyfileobj(src, out)
-        count += 1
-    report['media_restored'] = count
-    return report
+        data_name = next((n for n in ('database.json', 'initial_data.json') if n in names), None)
+        if not data_name:
+            raise RestoreError('The .zip has no database.json — is it a full ProjectsHub backup?')
+
+        manifest = None
+        if 'manifest.json' in names:
+            try:
+                manifest = json.loads(zf.read('manifest.json').decode('utf-8'))
+            except (UnicodeDecodeError, ValueError) as exc:
+                raise RestoreError(f'The backup manifest is invalid: {exc}.') from exc
+            if (
+                not isinstance(manifest, dict)
+                or manifest.get('format') != 'projectshub-full-backup'
+                or manifest.get('version') != 1
+                or not isinstance(manifest.get('files'), dict)
+            ):
+                raise RestoreError('The backup manifest has an unsupported format.')
+
+        database_bytes = zf.read(data_name)
+        objects = _parse(database_bytes)
+        if manifest is not None:
+            file_entries = {data_name: zf.getinfo(data_name)}
+            file_entries.update({f'media/{relative}': info for info, relative in media_infos})
+            if 'database.sqlite3' in names:
+                file_entries['database.sqlite3'] = zf.getinfo('database.sqlite3')
+            for name, info in file_entries.items():
+                expected = manifest['files'].get(name)
+                actual_size, actual_digest = _zip_member_sha256(zf, info)
+                if (
+                    not isinstance(expected, dict)
+                    or expected.get('size') != actual_size
+                    or expected.get('sha256') != actual_digest
+                ):
+                    raise RestoreError(f'The backup file failed its SHA-256 check: {name}.')
+            if set(manifest['files']) != set(file_entries):
+                raise RestoreError('The manifest file list does not match the backup contents.')
+
+        media_root = os.path.realpath(settings.MEDIA_ROOT)
+        parent = os.path.dirname(media_root)
+        os.makedirs(parent, exist_ok=True)
+        installed = []
+        with tempfile.TemporaryDirectory(prefix='ph-backup-restore-', dir=parent) as staging:
+            staged_media = os.path.join(staging, 'media')
+            rollback_media = os.path.join(staging, 'previous')
+            os.makedirs(staged_media)
+            for info, relative in media_infos:
+                staged_path = os.path.join(staged_media, *relative.split('/'))
+                os.makedirs(os.path.dirname(staged_path), exist_ok=True)
+                with zf.open(info) as src, open(staged_path, 'wb') as out:
+                    shutil.copyfileobj(src, out)
+
+            try:
+                for _info, relative in media_infos:
+                    destination = os.path.realpath(os.path.join(media_root, *relative.split('/')))
+                    if os.path.commonpath([destination, media_root]) != media_root:
+                        raise RestoreError(f'The media destination escapes MEDIA_ROOT: {relative!r}.')
+                    staged_path = os.path.join(staged_media, *relative.split('/'))
+                    if os.path.lexists(destination):
+                        if os.path.islink(destination) or not os.path.isfile(destination):
+                            raise RestoreError(f'The media destination is not a regular file: {relative!r}.')
+                        backup_path = os.path.join(rollback_media, *relative.split('/'))
+                        os.makedirs(os.path.dirname(backup_path), exist_ok=True)
+                        os.makedirs(os.path.dirname(destination), exist_ok=True)
+                        os.replace(destination, backup_path)
+                    else:
+                        backup_path = None
+                        os.makedirs(os.path.dirname(destination), exist_ok=True)
+                    installed.append((destination, backup_path))
+                    shutil.copy2(staged_path, destination)
+
+                report = restore_backup(database_bytes)
+            except Exception:
+                for destination, backup_path in reversed(installed):
+                    if os.path.lexists(destination):
+                        os.remove(destination)
+                    if backup_path and os.path.exists(backup_path):
+                        os.makedirs(os.path.dirname(destination), exist_ok=True)
+                        os.replace(backup_path, destination)
+                raise
+
+        report['media_restored'] = len(media_infos)
+        report['sqlite_database_included'] = 'database.sqlite3' in names
+        report['manifest_verified'] = manifest is not None
+        return report

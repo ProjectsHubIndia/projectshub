@@ -86,6 +86,37 @@ class LiveChatFlowTests(TestCase):
         self.assertIn('Python, XGBoost, Pandas', bot['text'])
         self.assertIn(project.get_absolute_url(), bot['text'])
 
+    def test_quick_human_request_returns_one_offline_handoff_notice(self):
+        response = post(self.client, '/api/chat/message/', {
+            'message': "I'd like to talk to a person, please.",
+            'client_id': 'human-handoff',
+            'page_url': '/projects/',
+            'request_human': True,
+        })
+
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data['state']['mode'], 'waiting')
+        self.assertEqual(len(data['replies']), 1)
+        self.assertEqual(data['replies'][0]['sender'], 'system')
+        self.assertIn('team is offline', data['replies'][0]['text'])
+
+        self.go_online()
+        response = post(self.client, '/api/chat/message/', {
+            **data['session'],
+            'message': "I'd like to talk to a person, please.",
+            'client_id': 'human-handoff-online',
+            'page_url': '/projects/',
+            'request_human': True,
+        })
+
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data['state']['mode'], 'waiting')
+        self.assertEqual(len(data['replies']), 1)
+        self.assertEqual(data['replies'][0]['sender'], 'system')
+        self.assertIn('will join this chat shortly', data['replies'][0]['text'])
+
     def test_contact_details_get_a_24_hour_human_followup_confirmation(self):
         data = self.start('Hi, I need help choosing a project')
         sess = data['session']

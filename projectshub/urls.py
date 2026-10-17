@@ -12,7 +12,7 @@ from core.views import (
 )
 
 from django.shortcuts import render
-from core import chat_views, seo_views
+from core import chat_views, chat_settings_views, seo_views
 
 # Seamlessly render custom admin 404 template even in local dev with DEBUG=True
 admin.site.catch_all_view = lambda request, url: render(request, 'admin/404.html', status=404)
@@ -42,6 +42,7 @@ urlpatterns = [
     path('admin/seo/run/', seo_views.admin_seo_run_audit, name='admin_seo_run_audit'),
     path('admin/seo/export.csv', seo_views.admin_seo_export, name='admin_seo_export'),
     path('admin/live-chat/', chat_views.admin_live_chat_view, name='admin_live_chat'),
+    path('admin/live-chat/settings/', chat_settings_views.admin_live_chat_settings_view, name='admin_live_chat_settings'),
     path('admin/api/chat/inbox/', chat_views.admin_chat_inbox, name='admin_chat_inbox'),
     path('admin/api/chat/presence/', chat_views.admin_chat_presence, name='admin_chat_presence'),
     path('admin/api/chat/<int:pk>/messages/', chat_views.admin_chat_thread, name='admin_chat_thread'),

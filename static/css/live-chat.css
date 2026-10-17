@@ -294,16 +294,37 @@ body.live-chat-teaser-visible .back-to-top {
   padding: 10px 14px 4px;
   background: var(--phc-canvas);
 }
+.phc-quick-label {
+  flex: 0 0 100%;
+  color: var(--phc-muted);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+}
 .phc .phc-quick button {
+  min-height: 34px;
   padding: 6px 11px;
   border-radius: 99px;
-  border: 1px solid #c7d2fe;
+  border: 1px solid var(--phc-line);
   background: #fff;
   color: var(--phc-accent) !important;
   font-size: 12.5px; font-weight: 600;
-  transition: background-color .15s ease, border-color .15s ease;
+  line-height: 1.2;
+  transition: background-color .15s ease, border-color .15s ease, transform .15s ease;
 }
-.phc-quick button:hover { background: var(--phc-accent-soft); border-color: var(--phc-accent); }
+.phc-quick button:hover { background: var(--phc-accent-soft); border-color: var(--phc-accent); transform: translateY(-1px); }
+.phc-quick button:active { transform: translateY(0); }
+.phc .phc-quick [data-action="handoff"] {
+  border-color: var(--phc-accent);
+  background: var(--phc-accent);
+  color: #fff !important;
+}
+.phc .phc-quick [data-action="handoff"]:hover { background: var(--phc-accent-hover); border-color: var(--phc-accent-hover); }
+@media (prefers-reduced-motion: reduce) {
+  .phc-quick button { transition: none; }
+  .phc-quick button:hover,
+  .phc-quick button:active { transform: none; }
+}
 
 /* ── Composer ─────────────────────────────────────────────────────────── */
 .phc-composer {

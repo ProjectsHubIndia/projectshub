@@ -1863,3 +1863,91 @@ class RoadmapResource(models.Model):
     @property
     def display_label(self):
         return self.label or self.get_resource_type_display()
+
+
+class ChatWidgetSettings(models.Model):
+    """Visitor-facing configuration for the live chat widget."""
+    enabled = models.BooleanField(default=True)
+    team_name = models.CharField(max_length=80, default='ProjectsHub team')
+    suggested_buttons_heading = models.CharField(max_length=60, default='Suggested topics', blank=True)
+    online_greeting = models.TextField(
+        default="Hi 👋 You're chatting with real people at ProjectsHub. Ask us anything about AI projects, custom development or workshops."
+    )
+    offline_greeting = models.TextField(
+        default="Hi 👋 Ask me about a project, its tech stack, our workshops or custom AI work. A real team member can follow up if you leave your email or WhatsApp."
+    )
+    contact_followup = models.TextField(
+        default="Leave your email or WhatsApp. A real ProjectsHub team member will get back to you {response_time}, even if you close this chat."
+    )
+    whatsapp_message = models.CharField(
+        max_length=200, default='Hi ProjectsHub team, I came from your website chat.'
+    )
+    projects_url = models.CharField(max_length=500, default='/projects/')
+    privacy_url = models.CharField(max_length=500, default='/privacy/')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Live Chat Settings'
+        verbose_name_plural = 'Live Chat Settings'
+
+    def __str__(self):
+        return f"Live Chat Settings ({self.team_name})"
+
+    @classmethod
+    def get_settings(cls):
+        obj, _ = cls.objects.get_or_create(pk=1)
+        return obj
+
+    def public_config(self, whatsapp_number='', response_time='Within 24 hours'):
+        return {
+            'enabled': self.enabled,
+            'team_name': self.team_name,
+            'online_greeting': self.online_greeting,
+            'offline_greeting': self.offline_greeting,
+            'contact_followup': self.contact_followup,
+            'whatsapp_message': self.whatsapp_message,
+            'whatsapp_number': ''.join(char for char in whatsapp_number if char.isdigit()),
+            'response_time': response_time,
+            'projects_url': self.projects_url,
+            'privacy_url': self.privacy_url,
+            'suggested_buttons_heading': self.suggested_buttons_heading,
+            'suggested_buttons': (
+                list(
+                    self.suggested_buttons.filter(is_active=True)
+                    .exclude(label='')
+                    .values('label', 'prompt', 'kind')
+                ) if self.pk else []
+            ),
+        }
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super().save(*args, **kwargs)
+        from django.core.cache import cache
+        cache.delete('live_chat_widget_settings')
+
+
+class ChatWidgetSuggestedButton(models.Model):
+    """A visitor-facing suggested prompt shown in the live-chat widget."""
+    ACTION_CHOICES = [
+        ('question', 'Send question to chat'),
+        ('handoff', 'Request a person'),
+    ]
+
+    settings = models.ForeignKey(
+        ChatWidgetSettings, on_delete=models.CASCADE, related_name='suggested_buttons',
+    )
+    label = models.CharField(max_length=40)
+    prompt = models.CharField(max_length=500)
+    kind = models.CharField(max_length=12, choices=ACTION_CHOICES, default='question')
+    order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['order', 'id']
+        verbose_name = 'Live Chat Suggested Button'
+        verbose_name_plural = 'Live Chat Suggested Buttons'
+
+    def __str__(self):
+        return self.label
