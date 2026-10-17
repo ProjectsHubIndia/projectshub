@@ -417,7 +417,57 @@ body.light .faq-section {
   background: linear-gradient(135deg, #ffffff 38%, rgba(8, 121, 209, 0.035) 68%, rgba(8, 185, 232, 0.07) 100%) !important;
 }
 
+.footer-bottom-bar {
+  gap: 0.75rem 1.5rem;
+  padding-right: 4.5rem;
+}
+
+.footer-copy-text {
+  flex: 1 1 320px;
+}
+
+.footer-legal-links {
+  flex: 0 1 auto;
+  justify-content: flex-end;
+  column-gap: 1rem;
+  row-gap: 0.25rem;
+}
+
+.footer-legal-link {
+  min-height: 40px;
+  white-space: nowrap;
+}
+
+.footer-cookie-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+}
+
+.footer-legal-link:focus-visible {
+  outline: 2px solid var(--ph-primary);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
 @media (max-width: 480px) {
+  .footer-bottom-bar {
+    align-items: flex-start;
+    padding-right: 3.75rem;
+  }
+
+  .footer-legal-links {
+    width: 100%;
+    justify-content: flex-start;
+    column-gap: 0.75rem;
+  }
+
+  .footer-legal-link {
+    font-size: 0.8rem;
+  }
+
   #why-projectshub {
     margin-block: 1rem !important;
   }

@@ -200,23 +200,19 @@
 
     </div>
 
-    <!-- Bottom Bar: Copyright, Legal Navigation & Back to Top -->
+    <!-- Bottom Bar: Copyright and Legal Navigation -->
     <div class="footer-bottom-bar">
       <p class="footer-copy-text">
         &copy; {% now "Y" %} {{ site_settings.site_name|default:'ProjectsHub' }}. All rights reserved. Built for learners &amp; innovators.
       </p>
       
-      <div class="footer-legal-links">
+      <nav class="footer-legal-links" aria-label="Legal and site links">
         <a href="{% url 'privacy' %}" class="footer-legal-link">Privacy Policy</a>
         <a href="{% url 'terms' %}" class="footer-legal-link">Terms of Service</a>
         <a href="{% url 'refund' %}" class="footer-legal-link">Refund Policy</a>
-        <button type="button" class="footer-legal-link footer-cookie-link" onclick="window.ProjectsHubCookieConsent && window.ProjectsHubCookieConsent.openPreferences()" style="background:none;border:none;padding:0;font:inherit;cursor:pointer;color:inherit;">Cookie Preferences</button>
+        <button type="button" class="footer-legal-link footer-cookie-link" onclick="window.ProjectsHubCookieConsent && window.ProjectsHubCookieConsent.openPreferences()">Cookie Preferences</button>
         <a href="{% url 'html_sitemap' %}" class="footer-legal-link">Sitemap</a>
-        <button type="button" class="footer-top-btn" id="footerTopBtn" onclick="window.phScrollToTop ? window.phScrollToTop(event) : (window.scrollTo({top: 0, behavior: 'smooth'}), document.documentElement.scrollTop = 0, document.body.scrollTop = 0)" aria-label="Scroll back to top of page">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
-          Top
-        </button>
-      </div>
+      </nav>
     </div>
   </div>
 </footer>
