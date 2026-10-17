@@ -111,7 +111,7 @@ def backups_dir():
 
 def snapshot(reason='pre-restore'):
     """Save a full JSON snapshot of the current data (not web-accessible). Returns the file path."""
-    text, _ = dump_data(['core', 'auth.user'])
+    text, _ = dump_data(['core', 'auth'])
     name = f"{reason}_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.json"
     path = os.path.join(backups_dir(), name)
     with open(path, 'w', encoding='utf-8') as fh:
@@ -137,6 +137,9 @@ def snapshot_db_file(reason='pre-update'):
 def create_sqlite_snapshot(path):
     """Write a transaction-consistent copy of the active SQLite database to path."""
     if connection.vendor != 'sqlite':
+        return False
+    if connection.in_atomic_block:
+        logger.warning('Omitting the raw SQLite snapshot because the backup runs inside a database transaction.')
         return False
     connection.ensure_connection()
     if connection.connection is None:
@@ -334,7 +337,7 @@ def restore_bundle(raw_bytes):
             file_type = stat.S_IFMT(info.external_attr >> 16)
             if (
                 not relative or normalized != relative or normalized.startswith('../')
-                or normalized == '..' or '\\' in relative or ':' in relative
+                or normalized in ('.', '..') or '\\' in relative or ':' in relative
                 or relative.startswith('/') or file_type == stat.S_IFLNK
             ):
                 raise RestoreError(f'The archive contains an unsafe media path: {info.filename!r}.')

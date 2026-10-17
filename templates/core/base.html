@@ -169,7 +169,16 @@
   <script>
     window.addEventListener("error", function (e) {
       var img = e.target;
-      if (!img || img.tagName !== "IMG" || img.dataset.imgFailed) return;
+      if (!img || img.tagName !== "IMG") return;
+      var placeholder = "{% static 'image/placeholder-image.svg' %}";
+      if (img.dataset.imgFailed) {
+        if (img.dataset.inlinePlaceholderApplied || img.currentSrc.indexOf(placeholder) === -1) return;
+        img.dataset.inlinePlaceholderApplied = "1";
+        img.src = "data:image/svg+xml," + encodeURIComponent(
+          '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500"><rect width="800" height="500" fill="#f1f5f9"/><path d="M0 390 220 190l140 130 120-100 320 250v30H0z" fill="#c7d2fe"/><circle cx="590" cy="145" r="54" fill="#bfdbfe"/><text x="400" y="455" text-anchor="middle" fill="#475569" font-family="Arial,sans-serif" font-size="24">Image unavailable</text></svg>'
+        );
+        return;
+      }
       var src = img.getAttribute("src") || "";
       // Empty src = placeholder populated later by JS; not a broken asset
       if (!src.trim()) return;
@@ -180,7 +189,14 @@
         chip.textContent = (img.getAttribute("alt") || "Tool").trim();
         img.replaceWith(chip);
       } else {
-        img.classList.add("img-failed");
+        var picture = img.closest("picture");
+        if (picture) {
+          picture.querySelectorAll("source").forEach(function (source) {
+            source.removeAttribute("srcset");
+          });
+        }
+        img.removeAttribute("srcset");
+        img.src = placeholder;
       }
     }, true);
   </script>

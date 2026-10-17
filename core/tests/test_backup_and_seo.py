@@ -10,13 +10,13 @@ from unittest import mock
 
 from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase, override_settings
+from django.test import TestCase, TransactionTestCase, override_settings
 
 from core import backup_tools, seo_audit
 from core.models import BlogPost, Redirect, SEOData
 
 
-class BackupRestoreTests(TestCase):
+class BackupRestoreTests(TransactionTestCase):
     def setUp(self):
         self.tmp = tempfile.mkdtemp()
         self.override = override_settings(
@@ -160,6 +160,39 @@ class BackupRestoreTests(TestCase):
         self.assertIn('SHA-256 check', messages)
         self.assertFalse(Redirect.objects.filter(old_path='/checksum/').exists())
         self.assertFalse(os.path.exists(os.path.join(self.tmp, 'media', 'pages', 'logo.png')))
+
+    def test_zip_restore_accepts_valid_manifest_and_restores_media(self):
+        fixture = json.dumps([
+            {'model': 'core.redirect', 'pk': 1, 'fields': {
+                'old_path': '/verified/', 'new_path': '/target/', 'status_code': 301,
+                'is_active': True, 'notes': '',
+            }},
+        ]).encode()
+        media = b'verified image'
+        manifest = {
+            'format': 'projectshub-full-backup',
+            'version': 1,
+            'files': {
+                'database.json': {
+                    'size': len(fixture),
+                    'sha256': hashlib.sha256(fixture).hexdigest(),
+                },
+                'media/pages/logo.png': {
+                    'size': len(media),
+                    'sha256': hashlib.sha256(media).hexdigest(),
+                },
+            },
+        }
+        res = self.upload_zip({
+            'database.json': fixture,
+            'media/pages/logo.png': media,
+            'manifest.json': json.dumps(manifest),
+        })
+        messages = ' '.join(str(message) for message in res.context['messages'])
+        self.assertIn('Archive SHA-256 checksums were verified', messages)
+        self.assertTrue(Redirect.objects.filter(old_path='/verified/').exists())
+        with open(os.path.join(self.tmp, 'media', 'pages', 'logo.png'), 'rb') as restored:
+            self.assertEqual(restored.read(), media)
 
     def test_zip_restore_rolls_back_media_if_database_restore_fails(self):
         destination = os.path.join(self.tmp, 'media', 'pages', 'logo.png')

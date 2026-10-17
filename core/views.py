@@ -1937,7 +1937,7 @@ def admin_backup_download_json(request):
     timestamp = timezone.now().strftime('%Y-%m-%d_%H-%M')
     
     scope_map = {
-        'all': ['core', 'auth.user'],
+        'all': ['core', 'auth'],
         'settings': ['core.sitesettings', 'core.navigationitem', 'core.sociallink', 'core.statitem'],
         'projects': ['core.project', 'core.projectcategory', 'core.technology', 'core.projecthighlight', 'core.projectdiagram', 'core.projecttimelinephase', 'core.projectfeature'],
         'blog': ['core.blogpost', 'core.blogsection', 'core.blogcategory', 'core.tag'],
@@ -2005,7 +2005,7 @@ def admin_backup_download_bundle(request):
 
     archive = tempfile.TemporaryFile(mode='w+b')
     try:
-        data, skipped = dump_data(['core', 'auth.user'])
+        data, skipped = dump_data(['core', 'auth'])
         media_root = os.path.abspath(settings.MEDIA_ROOT)
         media_count = 0
         database_json = data.encode('utf-8')
@@ -2061,11 +2061,13 @@ def admin_backup_download_bundle(request):
                     "ProjectsHub full backup\n"
                     "=======================\n"
                     "database.json: portable Django data export used by the restore page.\n"
-                    "database.sqlite3: consistent raw SQLite snapshot, included when SQLite is used.\n"
+                    "database.sqlite3: consistent raw SQLite snapshot, included when supported and safe.\n"
                     "media/: uploaded images and files; paths match the database export.\n"
                     "manifest.json: file sizes and SHA-256 checksums for integrity verification.\n"
                     f"Media files included: {media_count}\n"
                 )
+                if connection.vendor == 'sqlite' and not has_sqlite:
+                    readme += "Raw SQLite snapshot omitted because this backup ran inside a database transaction.\n"
                 if skipped:
                     readme += "Models skipped because their database tables are unavailable: "
                     readme += ', '.join(skipped) + '\n'
