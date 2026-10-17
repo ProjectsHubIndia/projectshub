@@ -1,10 +1,12 @@
-from django.test import TestCase, Client, RequestFactory
+from django.test import TestCase, Client, RequestFactory, override_settings
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from core.models import (
+    AudienceCard,
     ChatbotConversation,
     ContactInquiry,
     BlogPost,
+    BlogSection,
     FAQ,
     Page,
     Project,
@@ -46,6 +48,27 @@ class ViewTests(TestCase):
         self.assertNotContains(res, 'rel="modulepreload"')
         self.assertNotContains(res, 'rel="preload" href="https://fonts.gstatic.com')
 
+    @override_settings(STATICFILES_STORAGE='django.contrib.staticfiles.storage.StaticFilesStorage')
+    def test_site_settings_logos_are_used_in_header_and_footer(self):
+        settings = SiteSettings.objects.create()
+
+        response = self.client.get(reverse('index'))
+
+        self.assertContains(response, 'src="/static/image/logo/projectshub-logo-light.png"', count=2)
+        self.assertContains(response, 'src="/static/image/logo/projectshub-logo-dark.png"', count=2)
+
+        settings.logo_dark = 'branding/custom-dark.png'
+        settings.logo_light = 'branding/custom-light.png'
+        settings.save(update_fields=['logo_dark', 'logo_light'])
+        cache.delete('site_context_settings')
+
+        response = self.client.get(reverse('index'))
+
+        self.assertContains(response, 'src="/media/branding/custom-light.png"', count=2)
+        self.assertContains(response, 'src="/media/branding/custom-dark.png"', count=2)
+        self.assertNotContains(response, 'src="/static/image/logo/projectshub-logo-light.png"')
+        self.assertNotContains(response, 'src="/static/image/logo/projectshub-logo-dark.png"')
+
     def test_public_admin_toolbar_is_hidden_from_visitors_and_regular_users(self):
         response = self.client.get(reverse('index'))
         self.assertNotContains(response, 'site-admin-toolbar')
@@ -58,11 +81,26 @@ class ViewTests(TestCase):
         response = self.client.get(reverse('index'))
         self.assertNotContains(response, 'site-admin-toolbar')
 
+    @override_settings(STATICFILES_STORAGE='django.contrib.staticfiles.storage.StaticFilesStorage')
     def test_staff_can_edit_homepage_settings_and_home_hero_uses_saved_values(self):
         settings = SiteSettings.objects.create(
             hero_headline_prefix='Editor headline',
             hero_headline_highlight='Editable highlight',
             hero_subtitle='Updated homepage description',
+            hero_primary_cta_text='View all projects',
+            hero_primary_cta_url='/projects/all/',
+            hero_secondary_cta_text='Open tools',
+            hero_secondary_cta_url='https://tools.example.com/',
+            about_badge_text='About our team',
+            about_title='Custom AI services',
+            about_title_highlight='For Everyone',
+            about_description='Updated about section copy.',
+            projects_heading_prefix='Browse Our Work',
+            projects_heading_highlight='Projects and Tools',
+            featured_projects_title='Our Featured Work',
+            featured_projects_description='Updated featured projects copy.',
+            projects_browse_all_text='See every project',
+            projects_browse_all_url='/projects/everything/',
         )
         staff_user = get_user_model().objects.create_superuser(
             username='homepageeditor',
@@ -79,6 +117,20 @@ class ViewTests(TestCase):
         self.assertContains(response, 'Editor headline')
         self.assertContains(response, 'Editable highlight')
         self.assertContains(response, 'Updated homepage description')
+        self.assertContains(response, 'View all projects')
+        self.assertContains(response, 'href="/projects/all/"')
+        self.assertContains(response, 'Open tools')
+        self.assertContains(response, 'https://tools.example.com/')
+        self.assertContains(response, 'About our team')
+        self.assertContains(response, 'Custom AI services')
+        self.assertContains(response, 'For Everyone')
+        self.assertContains(response, 'Updated about section copy.')
+        self.assertContains(response, 'Browse Our Work')
+        self.assertContains(response, 'Projects and Tools')
+        self.assertContains(response, 'Our Featured Work')
+        self.assertContains(response, 'Updated featured projects copy.')
+        self.assertContains(response, 'See every project')
+        self.assertContains(response, 'href="/projects/everything/"')
         self.assertContains(response, 'Pages and page builder')
         self.assertContains(response, 'Site and homepage settings')
 
@@ -94,6 +146,20 @@ class ViewTests(TestCase):
             'hero_headline_prefix': 'Saved directly from admin',
             'hero_headline_highlight': 'Fresh homepage copy',
             'hero_subtitle': 'The updated copy appears immediately.',
+            'hero_primary_cta_text': settings.hero_primary_cta_text,
+            'hero_primary_cta_url': settings.hero_primary_cta_url,
+            'hero_secondary_cta_text': settings.hero_secondary_cta_text,
+            'hero_secondary_cta_url': settings.hero_secondary_cta_url,
+            'about_badge_text': settings.about_badge_text,
+            'about_title': settings.about_title,
+            'about_title_highlight': settings.about_title_highlight,
+            'about_description': settings.about_description,
+            'projects_heading_prefix': settings.projects_heading_prefix,
+            'projects_heading_highlight': settings.projects_heading_highlight,
+            'featured_projects_title': settings.featured_projects_title,
+            'featured_projects_description': settings.featured_projects_description,
+            'projects_browse_all_text': settings.projects_browse_all_text,
+            'projects_browse_all_url': settings.projects_browse_all_url,
             'mega_popular_label': settings.mega_popular_label,
             'mega_browse_all_text': settings.mega_browse_all_text,
             'mega_browse_all_url': settings.mega_browse_all_url,
@@ -112,6 +178,60 @@ class ViewTests(TestCase):
         self.assertContains(response, 'Saved directly from admin')
         self.assertContains(response, 'Fresh homepage copy')
         self.assertContains(response, 'The updated copy appears immediately.')
+
+    @override_settings(STATICFILES_STORAGE='django.contrib.staticfiles.storage.StaticFilesStorage')
+    def test_staff_can_edit_homepage_audience_card_and_its_features_from_admin(self):
+        card = AudienceCard.objects.get(audience='students')
+        features = list(card.features.all())
+        staff_user = get_user_model().objects.create_superuser(
+            username='audienceeditor',
+            email='audienceeditor@example.com',
+            password='testpass123',
+        )
+        self.client.force_login(staff_user)
+
+        change_url = reverse('admin:core_audiencecard_change', args=[card.pk])
+        admin_response = self.client.get(change_url)
+        self.assertEqual(admin_response.status_code, 200)
+        self.assertContains(admin_response, 'Final Year Projects &amp; Tech Placements')
+
+        form_data = {
+            'audience': card.audience,
+            'badge_text': 'Updated student badge',
+            'title': 'Future Builders',
+            'subtitle': 'Updated student subtitle',
+            'description': 'Updated student card description.',
+            'cta_text': 'Browse updated projects',
+            'cta_url': '/projects/updated/',
+            'is_active': 'on',
+            'order': str(card.order),
+            'features-TOTAL_FORMS': str(len(features)),
+            'features-INITIAL_FORMS': str(len(features)),
+            'features-MIN_NUM_FORMS': '0',
+            'features-MAX_NUM_FORMS': '1000',
+            '_save': 'Save',
+        }
+        for index, feature in enumerate(features):
+            form_data.update({
+                f'features-{index}-id': str(feature.pk),
+                f'features-{index}-card': str(card.pk),
+                f'features-{index}-text': 'Updated feature' if index == 0 else feature.text,
+                f'features-{index}-url': feature.url,
+                f'features-{index}-icon': feature.icon,
+                f'features-{index}-order': str(feature.order),
+            })
+
+        save_response = self.client.post(change_url, form_data)
+        self.assertEqual(save_response.status_code, 302)
+
+        homepage_response = self.client.get(reverse('index'))
+        self.assertContains(homepage_response, 'Updated student badge')
+        self.assertContains(homepage_response, 'Future Builders')
+        self.assertContains(homepage_response, 'Updated student subtitle')
+        self.assertContains(homepage_response, 'Updated student card description.')
+        self.assertContains(homepage_response, 'Browse updated projects')
+        self.assertContains(homepage_response, 'Updated feature')
+        self.assertContains(homepage_response, 'href="/projects/updated/"')
 
     def test_staff_can_add_homepage_faq_from_admin_and_it_appears_on_homepage(self):
         staff_user = get_user_model().objects.create_superuser(
@@ -321,6 +441,28 @@ class ViewTests(TestCase):
         api_slugs = {post['slug'] for post in api_response.json()['posts']}
         self.assertIn(published_post.slug, api_slugs)
         self.assertNotIn('unpublished-api-draft', api_slugs)
+
+    def test_blog_article_contents_are_collapsible_and_link_to_sections(self):
+        post = BlogPost.objects.create(
+            title='Readable AI guide',
+            slug='readable-ai-guide',
+            is_active=True,
+            is_published=True,
+        )
+        sections = [
+            BlogSection.objects.create(post=post, heading=f'Guide section {index}', order=index)
+            for index in range(1, 4)
+        ]
+
+        response = self.client.get(reverse('blog_detail', args=[post.slug]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<details class="bd-toc bd-toc--index">')
+        self.assertContains(response, '<summary class="bd-toc__title bd-toc__summary">In this article</summary>')
+        for index, section in enumerate(sections, start=1):
+            self.assertContains(response, f'href="#section-{index}"')
+            self.assertContains(response, f'id="section-{index}"')
+            self.assertContains(response, section.heading)
 
     def test_unpublished_blog_post_is_not_accessible_by_direct_url(self):
         post = BlogPost.objects.create(

@@ -27,6 +27,30 @@ class SiteSettings(models.Model):
     hero_subtitle = models.TextField(
         default='Real-world AI and machine learning projects with source code and mentorship for students, plus custom AI development and automation for businesses.'
     )
+    hero_primary_cta_text = models.CharField(max_length=100, default='Explore Projects')
+    hero_primary_cta_url = models.CharField(max_length=255, default='/projects/')
+    hero_secondary_cta_text = models.CharField(max_length=100, default='Try Free Tools')
+    hero_secondary_cta_url = models.CharField(
+        max_length=255,
+        default='https://tools.projectshub.co.in/',
+    )
+    about_badge_text = models.CharField(max_length=100, default='Who We Are')
+    about_title = models.CharField(max_length=150, default='AI Projects & Custom Development')
+    about_title_highlight = models.CharField(max_length=100, default='Made Simple')
+    about_description = models.TextField(
+        default="We're a team of AI engineers, developers and mentors who help students "
+        "launch real AI projects with source code, and help businesses automate "
+        "workflows with custom AI development — clean code, clear docs, real support."
+    )
+    projects_heading_prefix = models.CharField(max_length=100, default='Explore Real-World')
+    projects_heading_highlight = models.CharField(max_length=150, default='AI Projects & Free Tools')
+    featured_projects_title = models.CharField(max_length=150, default='Featured Live Projects')
+    featured_projects_description = models.TextField(
+        default='Production-ready Machine Learning models, Django/FastAPI backends, and full-stack AI solutions '
+        'with source code and documentation.'
+    )
+    projects_browse_all_text = models.CharField(max_length=100, default='Browse All 50+ Projects →')
+    projects_browse_all_url = models.CharField(max_length=255, default='/projects/')
     logo_dark = models.ImageField(upload_to='branding/', blank=True, null=True)
     logo_light = models.ImageField(upload_to='branding/', blank=True, null=True)
 
@@ -79,6 +103,63 @@ class SiteSettings(models.Model):
     def get_settings(cls):
         obj, _ = cls.objects.get_or_create(id=1)
         return obj
+
+
+class AudienceCard(models.Model):
+    AUDIENCE_CHOICES = [
+        ('students', 'Students'),
+        ('businesses', 'Businesses'),
+    ]
+
+    audience = models.CharField(max_length=20, choices=AUDIENCE_CHOICES, unique=True)
+    badge_text = models.CharField(max_length=100)
+    title = models.CharField(max_length=80)
+    subtitle = models.CharField(max_length=150)
+    description = models.TextField()
+    cta_text = models.CharField(max_length=100)
+    cta_url = models.CharField(
+        max_length=255,
+        blank=True,
+        default='',
+        help_text='Optional link path or URL. Leave blank for the businesses card to open the idea enquiry form.',
+    )
+    is_active = models.BooleanField(default=True)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', 'audience']
+        verbose_name = 'Homepage Audience Card'
+        verbose_name_plural = 'Homepage Audience Cards'
+
+    def __str__(self):
+        return self.get_audience_display()
+
+
+class AudienceCardFeature(models.Model):
+    ICON_CHOICES = [
+        ('projects', 'Projects folder'),
+        ('code', 'Code'),
+        ('mentorship', 'Mentorship'),
+        ('tools', 'AI tools'),
+        ('ai', 'AI chip'),
+        ('automation', 'Automation'),
+        ('delivery', 'Project delivery'),
+        ('support', 'Support'),
+    ]
+
+    card = models.ForeignKey(AudienceCard, on_delete=models.CASCADE, related_name='features')
+    text = models.CharField(max_length=120)
+    url = models.CharField(max_length=255, help_text='Link path or URL')
+    icon = models.CharField(max_length=20, choices=ICON_CHOICES)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', 'pk']
+        verbose_name = 'Audience Card Feature'
+        verbose_name_plural = 'Audience Card Features'
+
+    def __str__(self):
+        return self.text
 
 
 class NavigationItem(models.Model):

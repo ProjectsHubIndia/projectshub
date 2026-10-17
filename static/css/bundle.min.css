@@ -2733,6 +2733,10 @@ body.light .marquee-fade--right {
     width: 100%
 }
 
+#projects > .projects-grid {
+    margin: 0
+}
+
 @media (min-width:768px) {
     .projects-grid {
         display: grid;
@@ -2767,6 +2771,11 @@ body.light .marquee-fade--right {
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     transition: border-color 0.3s, transform 0.3s;
+    opacity: 1;
+    transform: none
+}
+
+.project-card.reveal-pending {
     opacity: 0;
     transform: translateY(20px)
 }
@@ -9483,7 +9492,7 @@ body:not(.light) .pcard2 .project-card__desc {
     border-radius: 20px;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
     display: flex;
-    margin: 2rem 0;
+    margin: 0;
     overflow: hidden
 }
 
@@ -9597,7 +9606,6 @@ body:not(.light) .pcard2 .project-card__desc {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.25rem;
-    margin-bottom: 1.75rem;
     position: relative;
     z-index: 1
 }

@@ -7,7 +7,7 @@ from django.db.models import Count
 from django.http import HttpResponse
 from django.utils.html import format_html
 from .models import (
-    SiteSettings, NavigationItem, MegaMenuTag, SocialLink, StatItem,
+    SiteSettings, AudienceCard, AudienceCardFeature, NavigationItem, MegaMenuTag, SocialLink, StatItem,
     ProjectCategory, Technology, Project, ProjectImage, ProjectHighlight,
     ProjectDiagram, ProjectTimelinePhase, ProjectFeature,
     ToolCategory, AITool,
@@ -130,19 +130,58 @@ class BlogSectionInline(admin.StackedInline):
 
 # ── Core & Site Settings ──────────────────────────────────────────────────────
 
+class AudienceCardFeatureInline(admin.TabularInline):
+    model = AudienceCardFeature
+    extra = 0
+    fields = ('text', 'url', 'icon', 'order')
+
+
+@admin.register(AudienceCard)
+class AudienceCardAdmin(admin.ModelAdmin):
+    list_display = ('audience', 'title', 'is_active', 'order')
+    list_editable = ('is_active', 'order')
+    inlines = [AudienceCardFeatureInline]
+    fieldsets = (
+        ('Card Content', {
+            'fields': ('audience', 'badge_text', 'title', 'subtitle', 'description'),
+        }),
+        ('Call to Action', {
+            'fields': ('cta_text', 'cta_url'),
+        }),
+        ('Visibility & Ordering', {
+            'fields': ('is_active', 'order'),
+        }),
+    )
+
+
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):
     list_display = ('site_name', 'primary_email', 'phone', 'location', 'updated_at')
     readonly_fields = ('created_at', 'updated_at')
     fieldsets = (
-        ('Branding & Titles', {
-            'fields': ('site_name', 'tagline', 'hero_headline_prefix', 'hero_headline_highlight', 'hero_subtitle')
+        ('Homepage — Hero', {
+            'fields': (
+                'site_name', 'tagline', 'hero_headline_prefix', 'hero_headline_highlight',
+                'hero_subtitle', 'hero_primary_cta_text', 'hero_primary_cta_url',
+                'hero_secondary_cta_text', 'hero_secondary_cta_url',
+            ),
+        }),
+        ('Homepage — About Section', {
+            'fields': ('about_badge_text', 'about_title', 'about_title_highlight', 'about_description'),
+        }),
+        ('Homepage — Projects Section', {
+            'fields': (
+                'projects_heading_prefix', 'projects_heading_highlight',
+                'featured_projects_title', 'featured_projects_description',
+                'projects_browse_all_text', 'projects_browse_all_url',
+            ),
         }),
         ('Contact Info', {
             'fields': ('primary_email', 'phone', 'whatsapp_number', 'location', 'response_time')
         }),
         ('Logos', {
-            'fields': ('logo_dark', 'logo_light')
+            'fields': ('logo_dark', 'logo_light'),
+            'description': 'These logos appear in both the top navigation and footer. Uploaded logos replace the bundled defaults for the matching theme.',
         }),
         ('Mega Menu "Our Work" Footer Bar', {
             'fields': ('mega_popular_label', 'mega_browse_all_text', 'mega_browse_all_url'),

@@ -23,7 +23,7 @@ from django.contrib.auth.decorators import user_passes_test
 superuser_required = user_passes_test(lambda u: u.is_active and u.is_superuser, login_url='admin:login')
 
 from .models import (
-    SiteSettings, NavigationItem, StatItem,
+    SiteSettings, AudienceCard, NavigationItem, StatItem,
     ProjectCategory, Technology, Project,
     ToolCategory, AITool,
     Service,
@@ -282,6 +282,10 @@ def index(request):
     # Stats
     stat_items_numbers = StatItem.objects.filter(section='numbers', is_active=True).order_by('order')
     stat_items_about = StatItem.objects.filter(section='about', is_active=True).order_by('order')
+    audience_cards = {
+        card.audience: card
+        for card in AudienceCard.objects.filter(is_active=True).prefetch_related('features')
+    }
 
     # Services split
     services_student = Service.objects.filter(
@@ -303,6 +307,8 @@ def index(request):
         'faqs': faqs,
         'stat_items_numbers': stat_items_numbers,
         'stat_items_about': stat_items_about,
+        'student_audience_card': audience_cards.get('students'),
+        'business_audience_card': audience_cards.get('businesses'),
         'services_student': services_student,
         'services_business': services_business,
         'pricing_plans': pricing_plans,

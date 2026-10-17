@@ -11,7 +11,7 @@
 {% block nav_resources %}active{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/blog.css' %}?v=3" />
+<link rel="stylesheet" href="{% static 'css/blog.css' %}?v=4" />
 {% endblock %}
 
 {% block content %}
@@ -58,8 +58,8 @@
   <!-- Table of Contents (if multiple sections with headings) -->
   {% with sections_with_headings=post.sections.all %}
   {% if sections_with_headings|length > 2 %}
-  <nav class="bd-toc" aria-label="Table of contents">
-    <div class="bd-toc__title">In this article</div>
+  <details class="bd-toc bd-toc--index">
+    <summary class="bd-toc__title bd-toc__summary">In this article</summary>
     <ol class="bd-toc__list">
       {% for section in post.sections.all %}
       {% if section.heading %}
@@ -69,7 +69,7 @@
       {% endif %}
       {% endfor %}
     </ol>
-  </nav>
+  </details>
   {% endif %}
   {% endwith %}
 

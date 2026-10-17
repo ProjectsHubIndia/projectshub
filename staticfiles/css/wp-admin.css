@@ -1691,12 +1691,51 @@ body.login #wpbody-content {
   background: #ffffff;
   border: 1px solid #dcdcde;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
-  padding: 28px 26px 22px;
+  padding: 24px 26px 20px;
   border-radius: 8px;
 }
 
+.login-form-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 21px;
+}
+.login-form-heading h1 {
+  margin: 0;
+  color: #1d2327;
+  font-size: 20px;
+  font-weight: 650;
+  line-height: 1.25;
+}
+.login-form-heading p {
+  margin: 4px 0 0;
+  color: #646970;
+  font-size: 12px;
+}
+.login-heading-mark {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: #eef6fc;
+  color: #2271b1;
+}
+.login-heading-mark svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .login-form-group {
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 .login-form-group label {
   font-size: 13px;
@@ -1738,15 +1777,25 @@ body.login #wpbody-content {
   position: absolute;
   right: 12px;
   color: #8c8f94;
-  font-size: 14px;
   pointer-events: none;
+  display: grid;
+  place-items: center;
+}
+.login-input-icon svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .wp-hide-pw-btn {
   position: absolute;
-  right: 6px;
-  height: 32px;
-  width: 32px;
+  right: 4px;
+  height: 36px;
+  width: 36px;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -1758,8 +1807,29 @@ body.login #wpbody-content {
   color: #646970;
   transition: background-color 0.15s ease;
 }
-.wp-hide-pw-btn:hover {
+.wp-hide-pw-btn:hover,
+.wp-hide-pw-btn:focus-visible {
   background-color: #f0f0f1;
+}
+.wp-hide-pw-btn:focus-visible {
+  outline: 2px solid #2271b1;
+  outline-offset: 1px;
+}
+.wp-hide-pw-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.wp-hide-pw-btn .pw-icon-hide,
+.wp-hide-pw-btn[aria-pressed="true"] .pw-icon-show {
+  display: none;
+}
+.wp-hide-pw-btn[aria-pressed="true"] .pw-icon-hide {
+  display: block;
 }
 
 .login-options-row {
@@ -1821,11 +1891,26 @@ body.login #wpbody-content {
 }
 
 .login-security-pill {
-  padding-top: 14px;
+  padding-top: 12px;
   border-top: 1px solid #f0f0f1;
   text-align: center;
   font-size: 11px;
   color: #646970;
+}
+.login-security-pill span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.login-security-pill svg {
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke: #2271b1;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 #login_error {

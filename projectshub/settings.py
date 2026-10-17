@@ -323,8 +323,8 @@ STATICFILES_FINDERS = [
     'compressor.finders.CompressorFinder',
 ]
 
-COMPRESS_ENABLED = not any('test' in arg for arg in sys.argv)
-COMPRESS_OFFLINE = not DEBUG and COMPRESS_ENABLED  # Pre-compress in production, on-the-fly in dev
+COMPRESS_ENABLED = not DEBUG and not any('test' in arg for arg in sys.argv)
+COMPRESS_OFFLINE = not DEBUG and COMPRESS_ENABLED
 COMPRESS_CSS_FILTERS = [
     'compressor.filters.css_default.CssAbsoluteFilter',
     'compressor.filters.cssmin.rCSSMinFilter',

@@ -126,7 +126,7 @@
           '<textarea id="phcInput" rows="1" maxlength="' + MAX_LEN + '" placeholder="Type your message…" enterkeyhint="send"></textarea>' +
           '<button type="submit" class="phc-send" id="phcSend" aria-label="Send message" disabled>' + ICON_SEND + '</button>' +
         '</form>' +
-        '<p class="phc-foot"><span id="phcCounter" class="phc-counter"></span>Real people reply here · automated answers are labelled · <a href="' + attrEsc(CONFIG.privacy_url || '/privacy/') + '">Privacy</a></p>' +
+        '<p class="phc-foot"><span id="phcCounter" class="phc-counter"></span>Real people reply here · automated answers are labelled</p>' +
       '</div>' +
       '<button type="button" class="phc-launcher" id="phcLauncher" aria-controls="phcPanel" aria-expanded="false" aria-label="Chat with ' + esc(CONFIG.team_name || 'the ProjectsHub team') + '">' +
         '<span class="phc-launcher-icon phc-launcher-icon--chat">' + ICON_CHAT + '</span>' +
@@ -262,12 +262,10 @@
   }
 
   function renderQuick() {
-    var state = S.state || {};
-    var handoffDisabled = state.mode === 'human' || state.mode === 'waiting';
     var visibleCount = 0;
     el.phcQuick.querySelectorAll('button[data-action]').forEach(function (button) {
-      button.hidden = handoffDisabled && button.dataset.action === 'handoff';
-      if (!button.hidden) visibleCount += 1;
+      button.hidden = false;
+      visibleCount += 1;
     });
     el.phcQuick.hidden = visibleCount === 0;
   }

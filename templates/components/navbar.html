@@ -5,18 +5,14 @@
     <div class="logo">
       <a href="/" aria-label="ProjectsHub Home" class="logo-link">
         <picture class="logo-picture logo-picture--light">
-          <source srcset="{% static 'image/logo/projectshub-logo-light.svg' %}" type="image/svg+xml">
-          <source srcset="{% static 'image/logo/projectshub-logo-light.webp' %}" type="image/webp">
-          <img src="{% static 'image/logo/projectshub-logo-light.png' %}"
+          <img src="{% if site_settings.logo_light %}{{ site_settings.logo_light.url }}{% else %}{% static 'image/logo/projectshub-logo-light.png' %}{% endif %}"
             alt="ProjectsHub"
             class="logo-combined logo-combined--light"
             width="187" height="64"
             loading="eager" decoding="async" />
         </picture>
         <picture class="logo-picture logo-picture--dark">
-          <source srcset="{% static 'image/logo/projectshub-logo-dark.svg' %}" type="image/svg+xml">
-          <source srcset="{% static 'image/logo/projectshub-logo-dark.webp' %}" type="image/webp">
-          <img src="{% static 'image/logo/projectshub-logo-dark.png' %}"
+          <img src="{% if site_settings.logo_dark %}{{ site_settings.logo_dark.url }}{% else %}{% static 'image/logo/projectshub-logo-dark.png' %}{% endif %}"
             alt="ProjectsHub"
             class="logo-combined logo-combined--dark"
             width="187" height="64"

@@ -330,7 +330,7 @@ body.light .hero-section .hero-title {
 .hvc-blob--blue {
   width: 340px;
   height: 340px;
-  background: rgba(99, 102, 241, 0.12);
+  background: rgba(8, 145, 220, 0.12);
   top: -40px;
   right: -40px;
 }
@@ -338,7 +338,7 @@ body.light .hero-section .hero-title {
 .hvc-blob--purple {
   width: 280px;
   height: 280px;
-  background: rgba(139, 92, 246, 0.1);
+  background: rgba(8, 185, 232, 0.1);
   bottom: 20px;
   left: 10px;
 }
@@ -350,10 +350,10 @@ body.light .hero-section .hero-title {
   border-radius: 20px;
   overflow: hidden;
   background: #ffffff;
-  border: 1.5px solid rgba(99, 102, 241, 0.18);
+  border: 1.5px solid rgba(8, 145, 220, 0.2);
   box-shadow:
     0 32px 80px -12px rgba(15, 23, 42, 0.18),
-    0 12px 28px -6px rgba(99, 102, 241, 0.14),
+    0 12px 28px -6px rgba(8, 145, 220, 0.14),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
   animation: windowFloat 7s ease-in-out infinite;
 }
@@ -413,7 +413,7 @@ body.light .hero-section .hero-title {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(190px, 0.78fr);
   align-items: stretch;
-  background: radial-gradient(circle at 50% 30%, rgba(96, 165, 250, 0.18), rgba(248, 250, 252, 0.96) 52%, rgba(255, 255, 255, 0.96) 100%);
+  background: radial-gradient(circle at 50% 30%, rgba(8, 185, 232, 0.16), rgba(239, 248, 255, 0.96) 52%, rgba(255, 255, 255, 0.96) 100%);
   overflow: hidden;
 }
 
@@ -440,7 +440,7 @@ body.light .hero-section .hero-title {
   z-index: 2;
   align-self: stretch;
   padding: 18px 16px 14px;
-  border-left: 1px solid rgba(148, 163, 184, 0.2);
+  border-left: 1px solid rgba(8, 145, 220, 0.2);
   background: rgba(255, 255, 255, 0.84);
   color: #334155;
   line-height: 1.5;
@@ -458,10 +458,10 @@ body.light .hero-section .hero-title {
 .hvc-robot-bubble__count {
   flex: 0 0 auto;
   padding: 4px 7px;
-  border: 1px solid rgba(99, 102, 241, 0.16);
+  border: 1px solid rgba(8, 145, 220, 0.2);
   border-radius: 7px;
-  background: #f5f3ff;
-  color: #5b4bd8;
+  background: #edf8ff;
+  color: #0756ad;
   font-family: var(--ph-font-mono, monospace);
   font-size: 0.61rem;
   font-weight: 700;
@@ -479,7 +479,7 @@ body.light .hero-section .hero-title {
 .hvc-robot-bubble__code {
   margin: 0;
   padding: 9px 10px;
-  border: 1px solid rgba(148, 163, 184, 0.2);
+  border: 1px solid rgba(8, 145, 220, 0.18);
   border-radius: 9px;
   background: #f8fafc;
   color: #1e293b;
@@ -499,21 +499,21 @@ body.light .hero-section .hero-title {
   min-height: 36px;
   margin-top: 6px;
   padding: 8px 10px;
-  border: 1px solid rgba(79, 70, 229, 0.22);
+  border: 1px solid rgba(8, 145, 220, 0.36);
   border-radius: 8px;
-  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  background: linear-gradient(110deg, #0b2f91, #0879d1 62%, #08b9e8);
   color: #fff;
   font: inherit;
   font-size: 0.72rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 5px 12px rgba(79, 70, 229, 0.16);
+  box-shadow: 0 5px 12px rgba(8, 92, 180, 0.2);
   transition: transform 140ms ease, box-shadow 140ms ease, background-color 140ms ease;
 }
 
 .hvc-robot-bubble__button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 7px 16px rgba(79, 70, 229, 0.24);
+  box-shadow: 0 7px 16px rgba(8, 92, 180, 0.28);
 }
 
 .hvc-robot-bubble__button span[aria-hidden="true"] {
@@ -528,6 +528,11 @@ body.light .hero-section .hero-title {
   color: #64748b;
   font-size: 0.62rem;
   line-height: 1.4;
+}
+
+.hvc-robot-bubble__button:focus-visible {
+  outline: 3px solid rgba(8, 145, 220, 0.45);
+  outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -9,13 +9,16 @@
   'use strict';
   if (window.phLiveChat) return;
 
-  var WHATSAPP = '919213472954';
+  var configElement = document.getElementById('ph-live-chat-config');
+  var CONFIG = {};
+  try { CONFIG = configElement ? JSON.parse(configElement.textContent) : {}; } catch (e) {}
+  if (CONFIG.enabled === false) return;
+  var WHATSAPP = String(CONFIG.whatsapp_number || '').replace(/\D/g, '');
   var STORE_KEY = 'phc_session_v1';
   var MAX_LEN = 1000;
   var POLL_OPEN = 2500, POLL_CLOSED = 15000, POLL_HIDDEN = 30000, PRESENCE_EVERY = 60000;
 
   // Drop data from the old scripted bot so it never resurfaces.
-  try { localStorage.removeItem('ai-chatbot-messages'); localStorage.removeItem('projectshub_chat_session'); } catch (e) {}
 
   var S = {
     open: false, session: null, messages: [], state: null,
@@ -64,10 +67,23 @@
   var ICON_WA = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>';
   var ICON_BOT = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3" fill="currentColor" opacity=".9"/><circle cx="9.5" cy="13.5" r="1.4" fill="#fff"/><circle cx="14.5" cy="13.5" r="1.4" fill="#fff"/><path d="M12 4v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
 
+  function attrEsc(s) {
+    return esc(s).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function suggestedButtonsMarkup() {
+    return (Array.isArray(CONFIG.suggested_buttons) ? CONFIG.suggested_buttons : []).map(function (button) {
+      return '<button type="button" data-q="' + attrEsc(button.prompt) + '" data-action="' + attrEsc(button.kind) + '">' + esc(button.label) + '</button>';
+    }).join('');
+  }
+
   function build() {
     var wrap = document.createElement('div');
     wrap.className = 'phc';
     wrap.id = 'phChat';
+    var whatsappLink = WHATSAPP
+      ? '<a class="phc-icon-btn phc-wa" href="https://wa.me/' + encodeURIComponent(WHATSAPP) + '?text=' + encodeURIComponent(CONFIG.whatsapp_message || '') + '" target="_blank" rel="noopener noreferrer" aria-label="Continue on WhatsApp" title="Continue on WhatsApp">' + ICON_WA + '</a>'
+      : '';
     wrap.innerHTML =
       '<div class="phc-teaser" id="phcTeaser" hidden>' +
         '<button type="button" class="phc-teaser-close" aria-label="Dismiss">' + ICON_CLOSE + '</button>' +
@@ -80,10 +96,10 @@
         '<div class="phc-head">' +
           '<span class="phc-avatars" id="phcHeadAvatars"></span>' +
           '<div class="phc-head-text">' +
-            '<h2 class="phc-title" id="phcTitle">ProjectsHub team</h2>' +
+            '<h2 class="phc-title" id="phcTitle">' + esc(CONFIG.team_name || 'ProjectsHub team') + '</h2>' +
             '<p class="phc-status" id="phcStatus"><span class="phc-dot"></span><span id="phcStatusText">Checking who is online…</span></p>' +
           '</div>' +
-          '<a class="phc-icon-btn phc-wa" href="https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent('Hi ProjectsHub team, I came from your website chat.') + '" target="_blank" rel="noopener noreferrer" aria-label="Continue on WhatsApp" title="Continue on WhatsApp">' + ICON_WA + '</a>' +
+          whatsappLink +
           '<button type="button" class="phc-icon-btn" id="phcMinimize" aria-label="Minimise chat" title="Minimise">' + ICON_DOWN + '</button>' +
         '</div>' +
         '<div class="phc-body" id="phcBody">' +
@@ -93,7 +109,7 @@
           '<div class="phc-typing" id="phcTyping" hidden><span class="phc-typing-dots"><i></i><i></i><i></i></span><span id="phcTypingText"></span></div>' +
           '<form class="phc-contact" id="phcContact" hidden novalidate>' +
             '<p class="phc-contact-title">Want a person to follow up?</p>' +
-            '<p class="phc-contact-sub">Leave your email or WhatsApp. A real ProjectsHub team member will get back to you within 24 hours, even if you close this chat.</p>' +
+            '<p class="phc-contact-sub">' + esc((CONFIG.contact_followup || '').replace(/\{response_time\}/g, CONFIG.response_time || 'Within 24 hours')) + '</p>' +
             '<label class="phc-field"><span>Name</span><input name="name" type="text" autocomplete="name" maxlength="150" placeholder="Your name"></label>' +
             '<label class="phc-field"><span>Email</span><input name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com"></label>' +
             '<label class="phc-field"><span>WhatsApp / phone <em>(optional)</em></span><input name="phone" type="tel" autocomplete="tel" maxlength="25" placeholder="+91 …"></label>' +
@@ -101,21 +117,18 @@
             '<div class="phc-contact-actions"><button type="submit" class="phc-btn">Save details</button><button type="button" class="phc-link" id="phcContactSkip">Not now</button></div>' +
           '</form>' +
         '</div>' +
-        '<div class="phc-quick" id="phcQuick">' +
-          '<button type="button" data-q="I\'m looking for an AI project with source code.">🚀 AI projects</button>' +
-          '<button type="button" data-q="I need custom AI development for my business.">💼 Custom AI</button>' +
-          '<button type="button" data-q="Tell me about your workshops.">🎓 Workshops</button>' +
-          '<button type="button" data-q="What does it cost?">💰 Pricing</button>' +
-          '<button type="button" data-human="1">🙋 Talk to a person</button>' +
+        '<div class="phc-quick" id="phcQuick" role="group" aria-label="' + attrEsc(CONFIG.suggested_buttons_heading || 'Quick reply buttons') + '">' +
+          '<span class="phc-quick-label">' + esc(CONFIG.suggested_buttons_heading || '') + '</span>' +
+          suggestedButtonsMarkup() +
         '</div>' +
         '<form class="phc-composer" id="phcComposer" autocomplete="off">' +
           '<label class="phc-sr" for="phcInput">Message</label>' +
           '<textarea id="phcInput" rows="1" maxlength="' + MAX_LEN + '" placeholder="Type your message…" enterkeyhint="send"></textarea>' +
           '<button type="submit" class="phc-send" id="phcSend" aria-label="Send message" disabled>' + ICON_SEND + '</button>' +
         '</form>' +
-        '<p class="phc-foot"><span id="phcCounter" class="phc-counter"></span>Real people reply here · automated answers are labelled · <a href="/privacy/">Privacy</a></p>' +
+        '<p class="phc-foot"><span id="phcCounter" class="phc-counter"></span>Real people reply here · automated answers are labelled</p>' +
       '</div>' +
-      '<button type="button" class="phc-launcher" id="phcLauncher" aria-controls="phcPanel" aria-expanded="false" aria-label="Chat with the ProjectsHub team">' +
+      '<button type="button" class="phc-launcher" id="phcLauncher" aria-controls="phcPanel" aria-expanded="false" aria-label="Chat with ' + esc(CONFIG.team_name || 'the ProjectsHub team') + '">' +
         '<span class="phc-launcher-icon phc-launcher-icon--chat">' + ICON_CHAT + '</span>' +
         '<span class="phc-launcher-icon phc-launcher-icon--close">' + ICON_CLOSE + '</span>' +
         '<span class="phc-launcher-online" id="phcLauncherOnline" hidden></span>' +
@@ -142,7 +155,7 @@
     if (agent) return avatar(agent);
     if (S.team.agents && S.team.agents.length) return S.team.agents.map(function (a) { return avatar(a); }).join('');
     if (showWordmark) {
-      return '<span class="phc-brand-wordmark"><img src="/static/image/logo/projectshub-logo-dark.png" alt="ProjectsHub — Connect, Collaborate, Achieve"></span>';
+      return '<span class="phc-brand-wordmark"><img src="/static/image/logo/projectshub-logo-light.svg" alt="ProjectsHub — Connect, Collaborate, Achieve"></span>';
     }
     return '<span class="phc-av phc-av--brand" aria-hidden="true"><img src="/static/image/Favicon-new/android-chrome-192x192.png" alt=""></span>';
   }
@@ -154,13 +167,15 @@
     if (agent) {
       title = agent.name;
       online = !!agent.online;
-      text = online ? 'ProjectsHub team · Active now' : 'ProjectsHub team · Away. We\'ll reply here or by email';
+      text = online
+        ? (CONFIG.team_name || 'ProjectsHub team') + ' · Active now'
+        : (CONFIG.team_name || 'ProjectsHub team') + ' · Away. We\'ll reply here or by email';
     } else if (S.team.online) {
-      title = 'ProjectsHub team';
+      title = CONFIG.team_name || 'ProjectsHub team';
       online = true;
       text = 'Online now · usually replies in a few minutes';
     } else {
-      title = 'ProjectsHub team';
+      title = CONFIG.team_name || 'ProjectsHub team';
       online = false;
       text = 'Away · we reply ' + (S.team.offline_response_time || 'within 24 hours').toLowerCase();
     }
@@ -169,15 +184,15 @@
     el.phcStatus.classList.toggle('is-online', online);
     el.phcHeadAvatars.innerHTML = teamAvatars(true);
     el.phcLauncherOnline.hidden = !S.team.online;
-    el.phcLauncher.setAttribute('aria-label', 'Chat with the ProjectsHub team' + (S.team.online ? ' (online now)' : ''));
+    el.phcLauncher.setAttribute('aria-label', 'Chat with ' + (CONFIG.team_name || 'the ProjectsHub team') + (S.team.online ? ' (online now)' : ''));
   }
 
   function renderIntro() {
     var names = (S.team.agents || []).map(function (a) { return a.name; });
     var who = names.length ? names.slice(0, 2).join(' & ') : '';
     var text = S.team.online
-      ? 'Hi 👋 You\'re chatting with real people at ProjectsHub' + (who ? ', ' + who + (names.length > 1 ? ' are' : ' is') + ' online' : '') + '. Ask us anything about AI projects, custom development or workshops.'
-      : 'Hi 👋 Ask me about a project, its tech stack, our workshops or custom AI work. I can share details from ProjectsHub, and a real team member can follow up within 24 hours if you leave your email or WhatsApp.';
+      ? (CONFIG.online_greeting || 'Hi 👋 You\'re chatting with real people at ProjectsHub.') + (who ? ' ' + who + (names.length > 1 ? ' are' : ' is') + ' online.' : '')
+      : (CONFIG.offline_greeting || 'Hi 👋 Ask me about our projects, workshops or custom AI work.');
     el.phcIntro.innerHTML = '<div class="phc-intro-card">' + teamAvatars() + '<p>' + esc(text) + '</p></div>';
   }
 
@@ -190,16 +205,27 @@
     var nearBottom = el.phcBody.scrollHeight - el.phcBody.scrollTop - el.phcBody.clientHeight < 120;
     var st = S.state || {};
     var lastUserIdx = -1;
-    S.messages.forEach(function (m, i) { if (m.sender === 'user') lastUserIdx = i; });
+    S.messages.forEach(function (m, i) {
+      if (m.sender === 'user') lastUserIdx = i;
+    });
+    el.phcIntro.hidden = lastUserIdx > -1;
     var html = [];
+    var lastOfflineSystemHtmlIndex = -1;
     for (var i = 0; i < S.messages.length; i++) {
       var m = S.messages[i], prev = S.messages[i - 1], next = S.messages[i + 1];
       var first = !prev || groupKey(prev) !== groupKey(m);
       var last = !next || groupKey(next) !== groupKey(m);
       if (m.sender === 'system') {
-        html.push('<div class="phc-sys">' + linkify(m.text) + '</div>');
+        var systemHtml = '<div class="phc-sys">' + linkify(m.text) + '</div>';
+        if (/team is offline/i.test(m.text) && lastOfflineSystemHtmlIndex > -1) {
+          html[lastOfflineSystemHtmlIndex] = systemHtml;
+          continue;
+        }
+        html.push(systemHtml);
+        lastOfflineSystemHtmlIndex = /team is offline/i.test(m.text) ? html.length - 1 : -1;
         continue;
       }
+      lastOfflineSystemHtmlIndex = -1;
       var cls = 'phc-msg phc-msg--' + m.sender + (first ? ' is-first' : '') + (last ? ' is-last' : '') +
         (m._pending ? ' is-pending' : '') + (m._failed ? ' is-failed' : '');
       var side = m.sender === 'user' ? '' :
@@ -236,8 +262,12 @@
   }
 
   function renderQuick() {
-    var hasUserMsg = S.messages.some(function (m) { return m.sender === 'user'; });
-    el.phcQuick.hidden = hasUserMsg;
+    var visibleCount = 0;
+    el.phcQuick.querySelectorAll('button[data-action]').forEach(function (button) {
+      button.hidden = false;
+      visibleCount += 1;
+    });
+    el.phcQuick.hidden = visibleCount === 0;
   }
 
   function renderContact() {
@@ -387,15 +417,15 @@
     text = (text || '').trim();
     if (!text) return Promise.resolve();
     var m = { id: 0, sender: 'user', text: text.slice(0, MAX_LEN), client_id: uid(), timestamp: new Date().toISOString(), _pending: true };
+    if (opts.requestHuman) m.requestHuman = true;
     S.messages.push(m);
     renderLog(true);
-    return postMessage(m).then(function (ok) {
-      if (ok && opts.requestHuman) return requestHuman();
-    });
+    return postMessage(m);
   }
 
   function postMessage(m, isRetry) {
     var body = { message: m.text, client_id: m.client_id, page_url: location.pathname + location.search };
+    if (m.requestHuman) body.request_human = true;
     if (S.session) { body.session_id = S.session.session_id; body.token = S.session.token; }
     return request('POST', '/api/chat/message/', body).then(function (d) {
       if (d._status === 403 && d.reset && !isRetry) {
@@ -422,14 +452,6 @@
       m._pending = false; m._failed = true; renderLog();
       return false;
     });
-  }
-
-  function requestHuman() {
-    if (!S.session) return Promise.resolve();
-    return request('POST', '/api/chat/request-human/', creds()).then(function (d) {
-      if (handleExpiredSession(d)) return;
-      if (d.success) { mergeMessages(d.replies); applyState(d.state); markSeen(); renderLog(true); }
-    }).catch(function () {});
   }
 
   var localNoticeTimer;
@@ -550,7 +572,7 @@
 
     el.phcQuick.addEventListener('click', function (e) {
       var b = e.target.closest('button'); if (!b) return;
-      if (b.dataset.human) sendText('I\'d like to talk to a person, please.', { requestHuman: true });
+      if (b.dataset.action === 'handoff') sendText(b.dataset.q, { requestHuman: true });
       else sendText(b.dataset.q);
     });
 

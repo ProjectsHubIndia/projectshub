@@ -365,7 +365,7 @@
 
   function initProjectCards() {
     var cards = document.querySelectorAll(".project-card");
-    if (!cards.length) return;
+    if (!cards.length || !("IntersectionObserver" in window)) return;
 
     var observer = new IntersectionObserver(
       function (entries) {
@@ -373,6 +373,7 @@
           if (!entry.isIntersecting) return;
           var index = Array.from(cards).indexOf(entry.target);
           setTimeout(function () {
+            entry.target.classList.remove("reveal-pending");
             entry.target.classList.add("visible");
           }, index * 100);
           observer.unobserve(entry.target);
@@ -382,6 +383,7 @@
     );
 
     cards.forEach(function (card) {
+      card.classList.add("reveal-pending");
       observer.observe(card);
     });
   }

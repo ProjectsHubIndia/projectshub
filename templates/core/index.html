@@ -123,17 +123,17 @@ CONTENT
 
                             <!-- CTAs -->
                             <div class="hero-actions">
-                                <a href="/projects/" class="btn-hero-primary">
+                                <a href="{{ site_settings.hero_primary_cta_url }}" class="btn-hero-primary">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                                         aria-hidden="true">
                                         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
                                     </svg>
-                                    Explore Projects
+                                    {{ site_settings.hero_primary_cta_text }}
                                 </a>
-                                <a href="https://tools.projectshub.co.in/" target="_blank" rel="noopener noreferrer"
+                                <a href="{{ site_settings.hero_secondary_cta_url }}" target="_blank" rel="noopener noreferrer"
                                     class="btn-hero-ghost">
-                                    Try Free Tools
+                                    {{ site_settings.hero_secondary_cta_text }}
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                                         aria-hidden="true">
@@ -263,16 +263,14 @@ CONTENT
             <div class="about-header">
                 <div class="about-badge">
                     <span class="about-badge__dot"></span>
-                    Who We Are
+                    {{ site_settings.about_badge_text }}
                 </div>
                 <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-4 gap-lg-5 mt-3">
-                    <h2 class="about-title">AI Projects &amp; Custom Development
-                        <span class="gradient-word">Made Simple</span>
+                    <h2 class="about-title">{{ site_settings.about_title }}
+                        <span class="gradient-word">{{ site_settings.about_title_highlight }}</span>
                     </h2>
                     <p class="about-desc mb-0">
-                        We're a team of AI engineers, developers and mentors who help students
-                        launch real AI projects with source code, and help businesses automate
-                        workflows with custom AI development — clean code, clear docs, real support.
+                        {{ site_settings.about_description }}
                     </p>
                 </div>
             </div>
@@ -281,6 +279,7 @@ CONTENT
             <div class="about-audience-grid">
 
                 <!-- ── Students Card ── -->
+                {% if student_audience_card %}
                 <div class="audience-card audience-card--students pcard pcard--students">
 
                     <!-- Real photo banner (Crystal-clear, no cloudy overlay) -->
@@ -300,7 +299,7 @@ CONTENT
                                     <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
                                     <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
                                 </svg>
-                                For Students &amp; Developers
+                                {{ student_audience_card.badge_text }}
                             </span>
                         </div>
                     </div>
@@ -317,98 +316,25 @@ CONTENT
                             </div>
                             <div>
                                 <h3 class="audience-card__title pcard__title">
-                                    For <span class="pcard__title-accent pcard__title-accent--purple">Students</span>
+                                    For <span class="pcard__title-accent pcard__title-accent--purple">{{ student_audience_card.title }}</span>
                                 </h3>
-                                <span class="pcard__subtitle">Final Year Projects &amp; Tech Placements</span>
+                                <span class="pcard__subtitle">{{ student_audience_card.subtitle }}</span>
                             </div>
                         </div>
 
                         <!-- Description -->
-                        <p class="audience-card__desc pcard__desc">
-                            Build real AI and machine learning projects with complete source code, clear documentation
-                            and 1-on-1 mentorship — perfect for your college project and campus placements.
-                        </p>
+                        <p class="audience-card__desc pcard__desc">{{ student_audience_card.description }}</p>
 
                         <!-- Feature list tiles -->
                         <ul class="audience-card__list pcard__list">
-                            <li>
-                                <a href="/projects/" class="pcard__feature-link">
-                                    <div class="pcard__feature-left">
-                                        <span class="pcard__feat-icon pcard__feat-icon--purple">
-                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-                                            </svg>
-                                        </span>
-                                        <span class="pcard__feat-text">Final year &amp; mini AI projects</span>
-                                    </div>
-                                    <span class="pcard__feat-arrow">
-                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="9 18 15 12 9 6" />
-                                        </svg>
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/projects/" class="pcard__feature-link">
-                                    <div class="pcard__feature-left">
-                                        <span class="pcard__feat-icon pcard__feat-icon--purple">
-                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <polyline points="16 18 22 12 16 6" />
-                                                <polyline points="8 6 2 12 8 18" />
-                                            </svg>
-                                        </span>
-                                        <span class="pcard__feat-text">Full source code + documentation</span>
-                                    </div>
-                                    <span class="pcard__feat-arrow">
-                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="9 18 15 12 9 6" />
-                                        </svg>
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/workshop/" class="pcard__feature-link">
-                                    <div class="pcard__feature-left">
-                                        <span class="pcard__feat-icon pcard__feat-icon--purple">
-                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                                                <circle cx="9" cy="7" r="4" />
-                                                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                                            </svg>
-                                        </span>
-                                        <span class="pcard__feat-text">1-on-1 project mentorship</span>
-                                    </div>
-                                    <span class="pcard__feat-arrow">
-                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="9 18 15 12 9 6" />
-                                        </svg>
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/tools/" class="pcard__feature-link">
-                                    <div class="pcard__feature-left">
-                                        <span class="pcard__feat-icon pcard__feat-icon--purple">
-                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
-                                                <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
-                                            </svg>
-                                        </span>
-                                        <span class="pcard__feat-text">Free AI tools for students</span>
-                                    </div>
-                                    <span class="pcard__feat-arrow">
-                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="9 18 15 12 9 6" />
-                                        </svg>
-                                    </span>
-                                </a>
-                            </li>
+                            {% for feature in student_audience_card.features.all %}
+                            {% include "core/partials/audience_card_feature.html" with feature=feature color="purple" %}
+                            {% endfor %}
                         </ul>
 
                         <!-- CTA Button -->
-                        <a href="/projects/" class="audience-card__btn pcard__btn pcard__btn--purple">
-                            <span>Explore Projects</span>
+                        <a href="{{ student_audience_card.cta_url }}" class="audience-card__btn pcard__btn pcard__btn--purple">
+                            <span>{{ student_audience_card.cta_text }}</span>
                             <svg class="pcard__btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                                 <polyline points="12 5 19 12 12 19"></polyline>
@@ -416,8 +342,10 @@ CONTENT
                         </a>
                     </div>
                 </div>
+                {% endif %}
 
                 <!-- ── Businesses Card ── -->
+                {% if business_audience_card %}
                 <div class="audience-card audience-card--business pcard pcard--business">
 
                     <!-- Real photo banner (Crystal-clear, no cloudy overlay) -->
@@ -438,7 +366,7 @@ CONTENT
                                     <line x1="8" y1="21" x2="16" y2="21"></line>
                                     <line x1="12" y1="17" x2="12" y2="21"></line>
                                 </svg>
-                                For Businesses &amp; Teams
+                                {{ business_audience_card.badge_text }}
                             </span>
                         </div>
                     </div>
@@ -456,107 +384,40 @@ CONTENT
                             </div>
                             <div>
                                 <h3 class="audience-card__title pcard__title">
-                                    For <span class="pcard__title-accent pcard__title-accent--blue">Businesses</span>
+                                    For <span class="pcard__title-accent pcard__title-accent--blue">{{ business_audience_card.title }}</span>
                                 </h3>
-                                <span class="pcard__subtitle">Custom AI Automation &amp; Scalable APIs</span>
+                                <span class="pcard__subtitle">{{ business_audience_card.subtitle }}</span>
                             </div>
                         </div>
 
                         <!-- Description -->
-                        <p class="audience-card__desc pcard__desc">
-                            Automate workflows and scale faster with custom AI development and API
-                            integration — built specifically for your team, industry and business goals.
-                        </p>
+                        <p class="audience-card__desc pcard__desc">{{ business_audience_card.description }}</p>
 
                         <!-- Feature list tiles -->
                         <ul class="audience-card__list pcard__list">
-                            <li>
-                                <a href="{% url 'ai_development' %}" class="pcard__feature-link">
-                                    <div class="pcard__feature-left">
-                                        <span class="pcard__feat-icon pcard__feat-icon--blue">
-                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <rect x="4" y="4" width="16" height="16" rx="2" />
-                                                <rect x="9" y="9" width="6" height="6" />
-                                                <path d="M15 2v2M9 2v2M15 20v2M9 20v2M2 9h2M2 15h2M20 9h2M20 15h2" />
-                                            </svg>
-                                        </span>
-                                        <span class="pcard__feat-text">Custom AI &amp; ML development</span>
-                                    </div>
-                                    <span class="pcard__feat-arrow">
-                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="9 18 15 12 9 6" />
-                                        </svg>
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{% url 'ai_automation' %}" class="pcard__feature-link">
-                                    <div class="pcard__feature-left">
-                                        <span class="pcard__feat-icon pcard__feat-icon--blue">
-                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                                            </svg>
-                                        </span>
-                                        <span class="pcard__feat-text">AI automation &amp; API integration</span>
-                                    </div>
-                                    <span class="pcard__feat-arrow">
-                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="9 18 15 12 9 6" />
-                                        </svg>
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{% url 'ai_integration' %}" class="pcard__feature-link">
-                                    <div class="pcard__feature-left">
-                                        <span class="pcard__feat-icon pcard__feat-icon--blue">
-                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <polyline points="9 11 12 14 22 4" />
-                                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
-                                            </svg>
-                                        </span>
-                                        <span class="pcard__feat-text">End-to-end project delivery</span>
-                                    </div>
-                                    <span class="pcard__feat-arrow">
-                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="9 18 15 12 9 6" />
-                                        </svg>
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/#contact" class="pcard__feature-link">
-                                    <div class="pcard__feature-left">
-                                        <span class="pcard__feat-icon pcard__feat-icon--blue">
-                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <circle cx="12" cy="12" r="10" />
-                                                <polyline points="12 6 12 12 16 14" />
-                                            </svg>
-                                        </span>
-                                        <span class="pcard__feat-text">24/7 post-delivery support</span>
-                                    </div>
-                                    <span class="pcard__feat-arrow">
-                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="9 18 15 12 9 6" />
-                                        </svg>
-                                    </span>
-                                </a>
-                            </li>
+                            {% for feature in business_audience_card.features.all %}
+                            {% include "core/partials/audience_card_feature.html" with feature=feature color="blue" %}
+                            {% endfor %}
                         </ul>
 
                         <!-- CTA Button -->
+                        {% if business_audience_card.cta_url %}
+                        <a href="{{ business_audience_card.cta_url }}" class="audience-card__btn pcard__btn pcard__btn--blue">
+                        {% else %}
                         <button type="button" id="openIdeaModal" class="audience-card__btn pcard__btn pcard__btn--blue">
+                        {% endif %}
                             <svg class="pcard__btn-phone" width="17" height="17" viewBox="0 0 24 24" fill="currentColor" stroke="none">
                                 <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z" />
                             </svg>
-                            <span>Get a Custom AI Solution</span>
+                            <span>{{ business_audience_card.cta_text }}</span>
                             <svg class="pcard__btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                                 <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
-                        </button>
+                        {% if business_audience_card.cta_url %}</a>{% else %}</button>{% endif %}
                     </div>
                 </div>
+                {% endif %}
 
             </div>
         </section><!-- /#about -->
@@ -564,8 +425,7 @@ CONTENT
         <!-- ── Projects ── -->
         <section id="projects">
             <div class="projects-header">
-                <h2 class="projects-title">Explore Real-World<br><span class="projects-title__gradient">AI Projects
-                        &amp; Free Tools</span></h2>
+                <h2 class="projects-title">{{ site_settings.projects_heading_prefix }}<br><span class="projects-title__gradient">{{ site_settings.projects_heading_highlight }}</span></h2>
             </div>
 
             <!-- Marquee -->
@@ -889,16 +749,15 @@ CONTENT
 
             {% if index_projects %}
             <!-- Featured Projects (admin-managed via show_on_index) -->
-            <div class="featured-projects-section" style="margin: 4.5rem 0 3rem;">
+            <div class="featured-projects-section" style="margin: 0;">
                 <div style="text-align: center; margin-bottom: 2.5rem;">
                     <span class="badge"
                         style="background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); padding: 0.35rem 0.9rem; border-radius: 999px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; display: inline-block; margin-bottom: 0.75rem;">Verified
                         Portfolio</span>
                     <h3 style="font-size: 2.2rem; font-weight: 800; color: var(--ph-text-primary); margin: 0 0 0.5rem;">
-                        Featured Live Projects</h3>
+                        {{ site_settings.featured_projects_title }}</h3>
                     <p style="color: var(--ph-text-secondary); max-width: 600px; margin: 0 auto; font-size: 1rem;">
-                        Production-ready Machine Learning models, Django/FastAPI backends, and full-stack AI solutions
-                        with source code and documentation.
+                        {{ site_settings.featured_projects_description }}
                     </p>
                 </div>
                 <div class="projects-grid"
@@ -906,9 +765,9 @@ CONTENT
                     {% include 'core/partials/project_cards_grid.html' with projects=index_projects %}
                 </div>
                 <div style="text-align: center;">
-                    <a href="/projects/" class="btn-hero-primary"
+                    <a href="{{ site_settings.projects_browse_all_url }}" class="btn-hero-primary"
                         style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; padding: 0.75rem 1.75rem; font-size: 0.95rem; font-weight: 700; border-radius: 999px;">
-                        Browse All 50+ Projects &rarr;
+                        {{ site_settings.projects_browse_all_text }}
                     </a>
                 </div>
             </div>

@@ -114,8 +114,8 @@
       menu.setAttribute("aria-hidden", isOpen ? "false" : "true");
     }
 
-    toggle.addEventListener("click", function (event) {
-      setDropdownState(event.detail > 0 || !dropdown.classList.contains("is-open"));
+    toggle.addEventListener("click", function () {
+      setDropdownState(!dropdown.classList.contains("is-open"));
     });
 
     dropdown.addEventListener("pointerenter", function (event) {
@@ -365,7 +365,7 @@
 
   function initProjectCards() {
     var cards = document.querySelectorAll(".project-card");
-    if (!cards.length) return;
+    if (!cards.length || !("IntersectionObserver" in window)) return;
 
     var observer = new IntersectionObserver(
       function (entries) {
@@ -373,6 +373,7 @@
           if (!entry.isIntersecting) return;
           var index = Array.from(cards).indexOf(entry.target);
           setTimeout(function () {
+            entry.target.classList.remove("reveal-pending");
             entry.target.classList.add("visible");
           }, index * 100);
           observer.unobserve(entry.target);
@@ -382,6 +383,7 @@
     );
 
     cards.forEach(function (card) {
+      card.classList.add("reveal-pending");
       observer.observe(card);
     });
   }
@@ -721,16 +723,28 @@
 
     var lessons = [
       {
-        explanation: "model.compile() configures how the network learns. The Adam optimizer updates weights to reduce prediction error.",
-        code: 'model.compile(\n    optimizer="adam",\n    metrics=["accuracy"]\n)',
+        explanation: "Configure the optimizer, loss function, and metrics to define how the model learns and how progress is measured.",
+        code: 'model.compile(\n    optimizer="adam",\n    loss="sparse_categorical_crossentropy",\n    metrics=["accuracy"]\n)',
       },
       {
-        explanation: "model.fit() trains the network on examples. An epoch is one complete pass through the training data.",
-        code: "model.fit(\n    train_data,\n    epochs=10\n)",
+        explanation: "Train the model with representative examples. Each epoch is one complete pass through the training data.",
+        code: "history = model.fit(\n    train_data,\n    epochs=10,\n    validation_data=val_data\n)",
       },
       {
-        explanation: "model.evaluate() checks how well the trained model performs on data it has not seen before.",
-        code: "loss, accuracy = model.evaluate(\n    test_data\n)",
+        explanation: "Configure early stopping to monitor validation loss and retain the best-performing model weights.",
+        code: "early_stopping = EarlyStopping(\n    monitor=\"val_loss\",\n    patience=3,\n    restore_best_weights=True\n)",
+      },
+      {
+        explanation: "Pass early stopping to model.fit() to stop when validation performance no longer improves.",
+        code: "history = model.fit(\n    train_data,\n    validation_data=val_data,\n    callbacks=[early_stopping]\n)",
+      },
+      {
+        explanation: "Evaluate the final model on a separate test set to estimate its performance on data it has not seen before.",
+        code: "test_loss, test_accuracy = model.evaluate(\n    test_data\n)",
+      },
+      {
+        explanation: "Use the trained model to generate predictions, then interpret them in the context of your application.",
+        code: "predictions = model.predict(\n    new_data\n)",
       },
     ];
     function showBubble() {

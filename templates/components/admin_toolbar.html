@@ -38,6 +38,9 @@
         {% if perms.core.view_sitesettings %}
           <a href="{% url 'admin:core_sitesettings_changelist' %}">Site and homepage settings</a>
         {% endif %}
+        {% if perms.core.view_audiencecard %}
+          <a href="{% url 'admin:core_audiencecard_changelist' %}">Homepage audience cards</a>
+        {% endif %}
         {% if perms.core.view_service %}
           <a href="{% url 'admin:core_service_changelist' %}">Services</a>
         {% endif %}

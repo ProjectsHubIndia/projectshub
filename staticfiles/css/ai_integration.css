@@ -37,7 +37,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #0242cd, #096dfc);
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
   display: inline-block;
 }
 
@@ -100,9 +100,9 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  background: rgba(2, 66, 205, 0.15);
-  border: 1px solid rgba(2, 66, 205, 0.3);
-  color: #096dfc;
+  background: rgba(79, 70, 229, 0.15);
+  border: 1px solid rgba(79, 70, 229, 0.3);
+  color: #6366f1;
   padding: 0.35rem 0.9rem;
   border-radius: 99px;
   margin-bottom: 1.2rem;
@@ -116,11 +116,11 @@
   margin-bottom: 1.2rem;
 }
 .aic-hero h1 .g1 {
-  color: #096dfc;
+  color: #6366f1;
   display: block;
 }
 .aic-hero h1 .g2 {
-  color: #60a5fa;
+  color: #818cf8;
   display: block;
 }
 .aic-hero h1 .g3 {
@@ -140,7 +140,7 @@
   flex-wrap: wrap;
 }
 .aic-btn-primary {
-  background: linear-gradient(135deg, #0242cd, #096dfc);
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
   color: #fff !important;
   border: none;
   border-radius: 8px;
@@ -178,8 +178,8 @@
     transform 0.2s;
 }
 .aic-btn-outline:hover {
-  border-color: #0242cd;
-  color: #096dfc;
+  border-color: #4f46e5;
+  color: #6366f1;
   transform: translateY(-2px);
 }
 
@@ -409,14 +409,15 @@
 ══════════════════════════════════════════ */
 .aic-svc-grid {
   display: grid;
-  grid-template-columns: repeat(9, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 1rem;
 }
 .aic-svc-card {
   background: #fff;
   border: 1px solid #e8edf5;
   border-radius: 14px;
-  padding: 1.3rem 0.6rem;
+  padding: 1.15rem 0.75rem;
+  min-height: 132px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -448,7 +449,7 @@
   color: #7c3aed;
 }
 .aic-svc-card span {
-  font-size: 0.68rem;
+  font-size: 0.82rem;
   font-weight: 700;
   color: #374151;
   line-height: 1.3;
@@ -483,7 +484,7 @@
   font-size: 0.65rem;
   font-weight: 800;
   color: #fff;
-  background: linear-gradient(135deg, #7c3aed, #5b8af5);
+  background: linear-gradient(135deg, #7c3aed, #818cf8);
   width: 28px;
   height: 28px;
   border-radius: 8px;
@@ -516,7 +517,7 @@
   margin-bottom: 0.4rem;
 }
 .aic-step-card p {
-  font-size: 0.76rem;
+  font-size: 0.84rem;
   color: #64748b;
   line-height: 1.55;
   margin: 0;
@@ -685,13 +686,13 @@ body:not(.light) .aic-tech-toggle-btn:hover {
 }
 .aic-ben-item h3,
 .aic-ben-item h5 {
-  font-size: 0.77rem;
+  font-size: 0.86rem;
   font-weight: 800;
   color: #1e293b;
   line-height: 1.3;
 }
 .aic-ben-item p {
-  font-size: 0.69rem;
+  font-size: 0.8rem;
   color: #64748b;
   line-height: 1.45;
   margin: 0;
@@ -787,7 +788,7 @@ body:not(.light) .aic-inditem {
 ══════════════════════════════════════════ */
 .aic-why-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.1rem;
 }
 .aic-why-card2 {
@@ -826,13 +827,13 @@ body:not(.light) .aic-inditem {
 }
 .aic-why-card2 h3,
 .aic-why-card2 h4 {
-  font-size: 0.8rem;
+  font-size: 0.92rem;
   font-weight: 800;
   color: #0f172a;
   line-height: 1.3;
 }
 .aic-why-card2 p {
-  font-size: 0.72rem;
+  font-size: 0.84rem;
   color: #64748b;
   line-height: 1.5;
   margin: 0;
@@ -881,7 +882,7 @@ body:not(.light) .aic-inditem {
   border: none;
   padding: 1rem 1.1rem;
   text-align: left;
-  font-size: 0.84rem;
+  font-size: 0.92rem;
   font-weight: 700;
   color: #0f172a;
   cursor: pointer;
@@ -922,7 +923,7 @@ body:not(.light) .aic-inditem {
   transition:
     max-height 0.35s ease,
     padding 0.35s;
-  font-size: 0.81rem;
+  font-size: 0.88rem;
   color: #64748b;
   line-height: 1.65;
   padding: 0 1.1rem;
@@ -947,7 +948,7 @@ body:not(.light) .aic-inditem {
   inset: 0;
   background: radial-gradient(
     ellipse at 80% 50%,
-    rgba(91, 138, 245, 0.15) 0%,
+    rgba(129, 140, 248, 0.15) 0%,
     transparent 65%
   );
   pointer-events: none;
@@ -1027,6 +1028,16 @@ body:not(.light) .aic-inditem {
 .aic-btn-ghost:hover {
   background: rgba(255, 255, 255, 0.18);
   transform: translateY(-2px);
+}
+
+.aic-btn-primary:focus-visible,
+.aic-btn-outline:focus-visible,
+.aic-btn-white:focus-visible,
+.aic-btn-ghost:focus-visible,
+.aic-tech-toggle-btn:focus-visible,
+.aic-faq-btn:focus-visible {
+  outline: 3px solid #0879d1;
+  outline-offset: 3px;
 }
 
 /* ══════════════════════════════════════════
@@ -1166,7 +1177,7 @@ body:not(.light) .aic-faq-ans {
 ══════════════════════════════════════════ */
 @media (max-width: 1100px) {
   .aic-svc-grid {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
   .aic-tech-grid {
     grid-template-columns: repeat(6, 1fr);
@@ -1200,11 +1211,11 @@ body:not(.light) .aic-faq-ans {
   }
   .aic-hero-right {
     display: flex;
-    min-height: 280px;
+    min-height: clamp(220px, 38vw, 300px);
     margin-top: -0.5rem;
   }
   .aic-hero-right img {
-    height: 300px;
+    height: clamp(220px, 38vw, 300px);
     object-fit: contain;
   }
   .aic-hero-btns {
@@ -1234,7 +1245,7 @@ body:not(.light) .aic-faq-ans {
     padding: 52px 0;
   }
   .aic-hero {
-    padding: 80px 0 0;
+    padding: 92px 0 0;
   }
   .aic-svc-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -1246,7 +1257,7 @@ body:not(.light) .aic-faq-ans {
     grid-template-columns: repeat(4, 1fr);
   }
   .aic-why-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .aic-ben-inner {
     grid-template-columns: 1fr;
@@ -1282,8 +1293,33 @@ body:not(.light) .aic-faq-ans {
   .aic-cta-btns {
     flex-direction: column;
   }
+  .aic-hero-inner {
+    gap: 0.5rem;
+  }
+  .aic-hero-btns {
+    gap: 0.7rem;
+  }
 }
 @media (max-width: 480px) {
+  .aic-hero {
+    padding-top: 92px;
+  }
+  .aic-hero h1 {
+    font-size: clamp(1.8rem, 8vw, 2.25rem);
+  }
+  .aic-hero-right {
+    min-height: 190px;
+  }
+  .aic-hero-right img {
+    height: 220px;
+  }
+  .aic-hero-btns > a {
+    min-height: 46px;
+    justify-content: center;
+  }
+  .aic-faq-btn {
+    min-height: 48px;
+  }
   .aic-bi2-grid {
     grid-template-columns: 1fr;
   }

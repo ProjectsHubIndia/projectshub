@@ -56,7 +56,7 @@ body.light .pd-back:hover {
 .pd-wrapper {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 75px 24px 80px;
+  padding: 96px 24px 80px;
 }
 
 @media (max-width: 768px) {

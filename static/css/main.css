@@ -2973,6 +2973,10 @@ body.light .marquee-fade--right {
   /* padding: 0 1rem; */
 }
 
+#projects > .projects-grid {
+  margin: 0;
+}
+
 @media (min-width: 768px) {
   .projects-grid {
     display: grid;
@@ -3011,6 +3015,11 @@ body.light .marquee-fade--right {
   transition:
     border-color 0.3s,
     transform 0.3s;
+  opacity: 1;
+  transform: none;
+}
+
+.project-card.reveal-pending {
   opacity: 0;
   transform: translateY(20px);
 }

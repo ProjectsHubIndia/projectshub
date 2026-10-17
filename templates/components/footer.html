@@ -7,18 +7,14 @@
       <div class="footer-brand-col">
         <a href="/" class="footer-brand-logo-wrap" aria-label="ProjectsHub Home">
           <picture class="footer-logo-picture footer-logo-picture--dark">
-            <source srcset="{% static 'image/logo/projectshub-logo-dark.svg' %}" type="image/svg+xml">
-            <source srcset="{% static 'image/logo/projectshub-logo-dark.webp' %}" type="image/webp">
-            <img src="{% static 'image/logo/projectshub-logo-dark.png' %}"
+            <img src="{% if site_settings.logo_dark %}{{ site_settings.logo_dark.url }}{% else %}{% static 'image/logo/projectshub-logo-dark.png' %}{% endif %}"
                  alt="ProjectsHub" 
                  class="footer-brand-logo footer-brand-logo--dark"
                  width="156" height="52"
                  loading="lazy" decoding="async" />
           </picture>
           <picture class="footer-logo-picture footer-logo-picture--light">
-            <source srcset="{% static 'image/logo/projectshub-logo-light.svg' %}" type="image/svg+xml">
-            <source srcset="{% static 'image/logo/projectshub-logo-light.webp' %}" type="image/webp">
-            <img src="{% static 'image/logo/projectshub-logo-light.png' %}"
+            <img src="{% if site_settings.logo_light %}{{ site_settings.logo_light.url }}{% else %}{% static 'image/logo/projectshub-logo-light.png' %}{% endif %}"
                  alt="ProjectsHub" 
                  class="footer-brand-logo footer-brand-logo--light"
                  width="156" height="52"

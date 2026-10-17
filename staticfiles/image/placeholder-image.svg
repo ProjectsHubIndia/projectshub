@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500" role="img" aria-labelledby="title">
+  <title id="title">Image unavailable</title>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#e0e7ff"/>
+    </linearGradient>
+    <linearGradient id="mountains" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#818cf8"/>
+      <stop offset="1" stop-color="#38bdf8"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" rx="24" fill="url(#background)"/>
+  <circle cx="600" cy="150" r="54" fill="#bfdbfe"/>
+  <path d="m0 390 220-200 140 130 120-110 320 250v40H0z" fill="url(#mountains)" opacity=".72"/>
+  <path d="m82 420 148-134 94 88 47-42 165 138H82z" fill="#6366f1" opacity=".56"/>
+  <text x="400" y="460" fill="#334155" font-family="Arial,sans-serif" font-size="24" text-anchor="middle">Image unavailable</text>
+</svg>
