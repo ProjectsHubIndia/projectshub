@@ -310,10 +310,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# WhiteNoise storage: serves compressed static assets with high-performance caching
-# Uses CompressedStaticFilesStorage to serve Brotli + Gzip compressed files reliably
-# without crashing on missing manifest entries (as CompressedManifestStaticFilesStorage does).
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+# Content-hashed names ensure browsers and CDNs fetch updated CSS/JS after each deploy.
+# Non-manifest references remain usable while legacy assets are migrated.
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_MANIFEST_STRICT = False
 WHITENOISE_MAX_AGE = 31536000 if not DEBUG else 0
 
