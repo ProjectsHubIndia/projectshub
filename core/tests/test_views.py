@@ -45,6 +45,10 @@ class ViewTests(TestCase):
         self.assertContains(res, "ProjectsHub")
         self.assertContains(res, "Smart Fraud Detection")
         self.assertContains(res, 'href="/static/css/hero-visual.css?v=14" as="style"')
+        self.assertContains(res, 'href="/static/pdf/ProjectsHub-Catalogue-Students.pdf"')
+        self.assertContains(res, 'href="/static/pdf/ProjectsHub-Catalogue-Business.pdf"')
+        self.assertContains(res, 'Download Student Catalogue')
+        self.assertContains(res, 'Download Business Catalogue')
         self.assertNotContains(res, 'rel="modulepreload"')
         self.assertNotContains(res, 'rel="preload" href="https://fonts.gstatic.com')
 
@@ -229,9 +233,9 @@ class ViewTests(TestCase):
         self.assertContains(homepage_response, 'Future Builders')
         self.assertContains(homepage_response, 'Updated student subtitle')
         self.assertContains(homepage_response, 'Updated student card description.')
-        self.assertContains(homepage_response, 'Browse updated projects')
+        self.assertContains(homepage_response, 'Download Student Catalogue')
         self.assertContains(homepage_response, 'Updated feature')
-        self.assertContains(homepage_response, 'href="/projects/updated/"')
+        self.assertContains(homepage_response, 'href="/static/pdf/ProjectsHub-Catalogue-Students.pdf"')
 
     def test_staff_can_add_homepage_faq_from_admin_and_it_appears_on_homepage(self):
         staff_user = get_user_model().objects.create_superuser(

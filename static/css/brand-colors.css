@@ -377,6 +377,10 @@ body.light .filter-tab:hover {
   background: #0879d1 !important;
 }
 
+body.light .faq-section {
+  background: transparent !important;
+}
+
 .faq-section::after {
   background: #08b9e8 !important;
 }
@@ -400,13 +404,38 @@ body.light .filter-tab:hover {
   stroke: #0879d1 !important;
 }
 
-.num-stats-card,
-.achievements-block {
+.num-stats-card {
   border-color: rgba(8, 145, 220, 0.16) !important;
+}
+
+#why-projectshub {
+  border-color: transparent !important;
+  margin-block: 2rem !important;
 }
 
 .achievements-block {
   background: linear-gradient(135deg, #ffffff 38%, rgba(8, 121, 209, 0.035) 68%, rgba(8, 185, 232, 0.07) 100%) !important;
+}
+
+@media (max-width: 480px) {
+  #why-projectshub {
+    margin-block: 1rem !important;
+  }
+
+  #why-projectshub .num-stat-item {
+    flex: 1 1 50%;
+    min-width: 0;
+    padding: 1.25rem 0.5rem;
+  }
+
+  #why-projectshub .num-stat-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  #why-projectshub .num-stat-value {
+    font-size: clamp(1.5rem, 7vw, 2rem) !important;
+  }
 }
 
 .hvc-robot-bubble__button {

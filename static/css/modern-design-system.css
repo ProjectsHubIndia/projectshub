@@ -3336,13 +3336,8 @@ body:not(.light) .pcard__feat-text {
   transform: translateX(4px) !important;
 }
 
-.pcard__btn-phone {
+.pcard__btn-download {
   flex-shrink: 0 !important;
-  transition: transform 0.25s ease !important;
-}
-
-.audience-card__btn.pcard__btn:hover .pcard__btn-phone {
-  transform: scale(1.15) rotate(-10deg) !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════

@@ -333,8 +333,8 @@ CONTENT
                         </ul>
 
                         <!-- CTA Button -->
-                        <a href="{{ student_audience_card.cta_url }}" class="audience-card__btn pcard__btn pcard__btn--purple">
-                            <span>{{ student_audience_card.cta_text }}</span>
+                        <a href="{% static 'pdf/ProjectsHub-Catalogue-Students.pdf' %}" class="audience-card__btn pcard__btn pcard__btn--purple" download>
+                            <span>Download Student Catalogue</span>
                             <svg class="pcard__btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                                 <polyline points="12 5 19 12 12 19"></polyline>
@@ -401,20 +401,18 @@ CONTENT
                         </ul>
 
                         <!-- CTA Button -->
-                        {% if business_audience_card.cta_url %}
-                        <a href="{{ business_audience_card.cta_url }}" class="audience-card__btn pcard__btn pcard__btn--blue">
-                        {% else %}
-                        <button type="button" id="openIdeaModal" class="audience-card__btn pcard__btn pcard__btn--blue">
-                        {% endif %}
-                            <svg class="pcard__btn-phone" width="17" height="17" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                                <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z" />
+                        <a href="{% static 'pdf/ProjectsHub-Catalogue-Business.pdf' %}" class="audience-card__btn pcard__btn pcard__btn--blue" download>
+                            <svg class="pcard__btn-download" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
                             </svg>
-                            <span>{{ business_audience_card.cta_text }}</span>
+                            <span>Download Business Catalogue</span>
                             <svg class="pcard__btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                                 <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
-                        {% if business_audience_card.cta_url %}</a>{% else %}</button>{% endif %}
+                        </a>
                     </div>
                 </div>
                 {% endif %}
@@ -1089,7 +1087,7 @@ CONTENT
         </section>
 
         <!-- ── ProjectsHub in Numbers ── -->
-        <div id="why-projectshub" class="achievements-block container">
+        <section id="why-projectshub" class="achievements-block container" aria-labelledby="why-projectshub-title">
             <div class="achievements-grid-texture"></div>
             <!-- Decorative background -->
             <div class="num-bg-deco" aria-hidden="true">
@@ -1133,7 +1131,7 @@ CONTENT
                     </svg>
                     Trusted &amp; Reliable
                 </span>
-                <h2 class="achievements-title">ProjectsHub in <span class="num-title-accent">Numbers</span></h2>
+                <h2 id="why-projectshub-title" class="achievements-title">ProjectsHub in <span class="num-title-accent">Numbers</span></h2>
                 <p class="achievements-desc">Trusted by students, developers, and businesses to learn, build, and
                     ship AI-powered products faster — with real tools and real support.</p>
             </div>
@@ -1236,7 +1234,7 @@ CONTENT
                     </div>
                     <div class="num-feat-body">
                         <div>
-                            <<p class="num-feat-title">Custom AI Development</p>
+                            <p class="num-feat-title">Custom AI Development</p>
                                 <p class="num-feat-desc">Built for startups, students &amp; growing businesses in
                                     India</p>
                         </div>
@@ -1299,7 +1297,7 @@ CONTENT
                     ✓ AI Agents
                 </span>
             </div>
-        </div>
+        </section>
 
         <!-- ── Testimonials Section ── -->
         <section id="testimonials" class="testimonials-section">
