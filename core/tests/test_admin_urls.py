@@ -211,10 +211,16 @@ class AdminURLSmokeTests(TestCase):
         self.assertNotContains(response, 'All Pages (8)')
 
     def test_page_editor_exposes_status_and_draft_preview_controls(self):
+        page_author = User.objects.create_user(
+            username='pageauthor',
+            email='author@test.com',
+            password='testpass123',
+        )
         page = Page.objects.create(
             title='Draft page',
             slug='custom-page-url',
             status='draft',
+            author=page_author,
         )
 
         response = self.client.get(f'/admin/core/page/{page.pk}/change/')
@@ -224,10 +230,30 @@ class AdminURLSmokeTests(TestCase):
         self.assertContains(response, 'Save as Draft')
         self.assertContains(response, 'Move to Trash')
         self.assertContains(response, 'custom-page-url/?preview=true')
+        self.assertContains(response, 'Draft preview only')
+        self.assertContains(response, 'Created:')
+        self.assertContains(response, 'Last updated:')
+        self.assertContains(response, 'pageauthor')
+        self.assertContains(response, 'Page URL:')
         self.assertRegex(
             response.content.decode(),
             r'css/page-editor-layout(?:\.[a-f0-9]+)?\.css',
         )
+
+    def test_published_page_editor_shows_public_visibility(self):
+        page = Page.objects.create(
+            title='Public page',
+            slug='public-page',
+            status='published',
+        )
+
+        response = self.client.get(f'/admin/core/page/{page.pk}/change/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Public')
+        self.assertContains(response, 'Created:')
+        self.assertContains(response, 'Last updated:')
+        self.assertContains(response, '/public-page/')
 
     def test_page_quick_edit_preserves_custom_slug_and_validates_status(self):
         page = Page.objects.create(

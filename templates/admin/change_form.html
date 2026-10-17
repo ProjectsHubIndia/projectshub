@@ -305,14 +305,33 @@
                       <!-- Visibility -->
                       <div class="misc-pub-section misc-pub-visibility">
                         <span class="dashicons dashicons-visibility">👁️</span> Visibility:
-                        <span id="post-visibility-display" style="font-weight:700;">Public</span>
+                        <span id="post-visibility-display" style="font-weight:700;">
+                          {% if opts.model_name == 'page' %}
+                            {% with page_status=adminform.form.status.value|default:'published' %}{% if page_status == 'published' %}Public{% elif page_status == 'draft' %}Draft preview only{% else %}Not public{% endif %}{% endwith %}
+                          {% else %}Public{% endif %}
+                        </span>
                       </div>
 
-                      <!-- Published Date -->
+                      <!-- Page record details -->
                       <div class="misc-pub-section curtime misc-pub-curtime">
-                        <span class="dashicons dashicons-calendar">📅</span> Published:
-                        <span style="font-weight:600;">{% if original.created_at %}{{ original.created_at|date:"M j, Y" }}{% else %}Immediately{% endif %}</span>
+                        <span class="dashicons dashicons-calendar">📅</span>
+                        {% if opts.model_name == 'page' %}Created:{% else %}Published:{% endif %}
+                        <span style="font-weight:600;">{% if original.created_at %}{{ original.created_at|date:"M j, Y" }}{% else %}Not saved{% endif %}</span>
                       </div>
+                      {% if opts.model_name == 'page' %}
+                        <div class="misc-pub-section">
+                          <span class="dashicons dashicons-calendar-alt">🕒</span> Last updated:
+                          <span style="font-weight:600;">{% if original.updated_at %}{{ original.updated_at|date:"M j, Y" }}{% else %}Not saved{% endif %}</span>
+                        </div>
+                        <div class="misc-pub-section">
+                          <span class="dashicons dashicons-admin-users">👤</span> Author:
+                          <span style="font-weight:600;">{% if original.author %}{{ original.author.username }}{% else %}Not assigned{% endif %}</span>
+                        </div>
+                        <div class="misc-pub-section">
+                          <span class="dashicons dashicons-admin-links">🔗</span> Page URL:
+                          {% if original.get_absolute_url %}<a href="{{ original.get_absolute_url }}" target="_blank" rel="noopener">{{ original.get_absolute_url }}</a>{% else %}<span style="font-weight:600;">Available after saving</span>{% endif %}
+                        </div>
+                      {% endif %}
 
                     </div>
                     <div class="clear"></div>
