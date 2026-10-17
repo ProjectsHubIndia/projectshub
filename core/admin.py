@@ -1519,20 +1519,24 @@ class AdminGuideNoteAdmin(admin.ModelAdmin):
 
 @admin.register(Page)
 class PageAdmin(admin.ModelAdmin):
-    list_display = ('title_display', 'slug_display', 'author_name', 'blocks_badge', 'template_badge', 'status_badge', 'date_display')
+    list_display = ('title_display', 'site_path_display', 'slug_display', 'author_name', 'blocks_badge', 'template_badge', 'status_badge', 'date_display')
     list_filter = ('status', 'template', 'is_front_page')
-    search_fields = ('title', 'slug', 'meta_title', 'content')
+    search_fields = ('title', 'slug', 'site_path', 'meta_title', 'content')
     prepopulated_fields = {'slug': ('title',)}
+    readonly_fields = ('site_path',)
     list_per_page = 20
     actions = ['make_published', 'make_draft', 'move_to_trash', 'duplicate_page', export_as_csv_action()]
     fieldsets = (
         (None, {
-            'fields': ('title', 'slug')
+            'fields': ('title', 'slug', 'site_path')
         }),
         ('ACF Blocks & Flexible Content', {
             'fields': ('acf_blocks',),
             'classes': ('acf-blocks-fieldset',),
-            'description': 'Configure, add, and reorder ACF blocks for this page.'
+            'description': (
+                'Configure, add, and reorder ACF blocks. Managed site routes keep their existing page '
+                'until blocks or classic body content are added.'
+            )
         }),
         ('Classic Body Content (Fallback)', {
             'fields': ('content',),
@@ -1563,6 +1567,27 @@ class PageAdmin(admin.ModelAdmin):
         }
         return super().changelist_view(request, extra_context=extra_context)
 
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        actions.pop('delete_selected', None)
+        return actions
+
+    def get_readonly_fields(self, request, obj=None):
+        fields = super().get_readonly_fields(request, obj)
+        if obj is not None and obj.site_path:
+            return (*fields, 'slug')
+        return fields
+
+    def get_prepopulated_fields(self, request, obj=None):
+        if obj is not None and obj.site_path:
+            return {}
+        return super().get_prepopulated_fields(request, obj)
+
+    def has_delete_permission(self, request, obj=None):
+        if obj is not None and obj.site_path:
+            return False
+        return super().has_delete_permission(request, obj)
+
     def title_display(self, obj):
         front_badge = ''
         if obj.is_front_page:
@@ -1577,6 +1602,12 @@ class PageAdmin(admin.ModelAdmin):
     def slug_display(self, obj):
         return obj.slug
     slug_display.short_description = 'URL Slug'
+
+    def site_path_display(self, obj):
+        if not obj.site_path:
+            return 'Custom page'
+        return format_html('<a href="{}" target="_blank" rel="noopener">{}</a>', obj.site_path, obj.site_path)
+    site_path_display.short_description = 'Site Route'
 
     def author_name(self, obj):
         return obj.author.username if obj.author else 'Admin'
@@ -1640,6 +1671,7 @@ class PageAdmin(admin.ModelAdmin):
             orig_slug = p.slug or 'page'
             p.pk = None
             p.title = f"{orig_title} (Copy)"
+            p.site_path = None
             base_slug = f"{orig_slug}-copy"
             new_slug = base_slug
             idx = 1

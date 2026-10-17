@@ -7,7 +7,7 @@ import random
 import html
 import re
 from django.shortcuts import render, get_object_or_404
-from django.http import JsonResponse, HttpResponse, HttpResponsePermanentRedirect, HttpResponseRedirect
+from django.http import Http404, JsonResponse, HttpResponse, HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from django.db import models
@@ -193,6 +193,71 @@ def _rate_limited(request, bucket, limit=5, window=3600):
 
 # ── Pages ──────────────────────────────────────────────────────────────────────
 
+def _render_acf_page(request, page):
+    raw_blocks = page.acf_blocks
+    if isinstance(raw_blocks, str):
+        try:
+            blocks = json.loads(raw_blocks)
+        except json.JSONDecodeError:
+            blocks = []
+    elif isinstance(raw_blocks, list):
+        blocks = raw_blocks
+    else:
+        blocks = []
+
+    block_types = {block.get('type') for block in blocks if isinstance(block, dict)}
+    if page.site_path == '/contact/' and 'acf/contact-form' not in block_types:
+        blocks.append({'type': 'acf/contact-form', 'data': {}})
+        block_types.add('acf/contact-form')
+
+    context = {
+        'page': page,
+        'acf_blocks': blocks,
+        'meta_title': page.meta_title or f"{page.title} | ProjectsHub",
+        'meta_description': page.meta_description or (page.content[:160] if page.content else ''),
+    }
+
+    data_sources = {
+        'acf/projects-grid': (
+            'featured_projects',
+            Project.objects.filter(is_published=True, is_active=True).order_by('-featured', '-created_at')[:8],
+        ),
+        'acf/services-grid': (
+            'services_list',
+            Service.objects.filter(is_published=True).order_by('sort_order')[:6],
+        ),
+        'acf/tools-directory': (
+            'tools_list',
+            AITool.objects.filter(is_published=True).order_by('sort_order')[:6],
+        ),
+        'acf/testimonials': (
+            'testimonials_list',
+            Testimonial.objects.filter(is_published=True).order_by('sort_order')[:6],
+        ),
+        'acf/faq-accordion': (
+            'faqs_list',
+            FAQ.objects.filter(is_published=True).order_by('sort_order')[:8],
+        ),
+    }
+    for block_type, (context_key, queryset) in data_sources.items():
+        if block_type in block_types:
+            context[context_key] = list(queryset)
+
+    return render(request, 'core/page_detail.html', context)
+
+
+def _render_site_page(request, site_path, fallback_template, context=None):
+    page = Page.objects.filter(site_path=site_path).first()
+    if page is None or (not page.acf_blocks and not page.content.strip()):
+        return render(request, fallback_template, context or {})
+
+    is_preview = request.user.is_staff and request.GET.get('preview') == 'true'
+    if page.status != 'published' and not is_preview:
+        raise Http404
+
+    return _render_acf_page(request, page)
+
+
 @ensure_csrf_cookie
 def index(request):
     """Homepage — passes dynamic, database-backed content to the template."""
@@ -242,7 +307,7 @@ def index(request):
         'services_business': services_business,
         'pricing_plans': pricing_plans,
     }
-    return render(request, 'core/index.html', context)
+    return _render_site_page(request, '/', 'core/index.html', context)
 
 
 def projects_page(request):
@@ -281,7 +346,7 @@ def projects_page(request):
         'active_tech': tech_slug or 'all',
         'search_query': query,
     }
-    return render(request, 'core/projects.html', context)
+    return _render_site_page(request, '/projects/', 'core/projects.html', context)
 
 
 def project_detail(request, project_id=None, slug=None):
@@ -347,7 +412,7 @@ def tools_page(request):
         'featured_tools': featured_tools,
         'total_count': len(tools),
     }
-    return render(request, 'core/tools.html', context)
+    return _render_site_page(request, '/tools/', 'core/tools.html', context)
 
 
 def case_studies_page(request):
@@ -356,7 +421,7 @@ def case_studies_page(request):
     context = {
         'case_studies': case_studies,
     }
-    return render(request, 'core/case_studies.html', context)
+    return _render_site_page(request, '/case-studies/', 'core/case_studies.html', context)
 
 
 def _roadmap_resource_payload(resource):
@@ -423,26 +488,26 @@ def ai_roadmap(request):
             'workshopUrl': config.workshop_url,
         },
     }
-    return render(request, 'core/AI_roadmap.html', context)
+    return _render_site_page(request, '/ai-roadmap/', 'core/AI_roadmap.html', context)
 
 
 def ai_development(request):
     service = Service.objects.filter(slug='ai-development').prefetch_related('features').first()
-    return render(request, 'core/ai_development.html', {'service': service})
+    return _render_site_page(request, '/services/ai-development/', 'core/ai_development.html', {'service': service})
 
 
 def ai_automation(request):
     service = Service.objects.filter(slug='ai-automation').prefetch_related('features').first()
-    return render(request, 'core/ai_automation.html', {'service': service})
+    return _render_site_page(request, '/services/ai-automation/', 'core/ai_automation.html', {'service': service})
 
 
 def ai_integration(request):
     service = Service.objects.filter(slug='ai-integration').prefetch_related('features').first()
-    return render(request, 'core/ai_integration.html', {'service': service})
+    return _render_site_page(request, '/services/ai-integration/', 'core/ai_integration.html', {'service': service})
 
 
 def industries(request):
-    return render(request, 'core/industries.html')
+    return _render_site_page(request, '/industries/', 'core/industries.html')
 
 
 def workshop_page(request):
@@ -452,7 +517,7 @@ def workshop_page(request):
         'workshops': workshops,
         'workshop': featured,
     }
-    return render(request, 'core/workshop.html', context)
+    return _render_site_page(request, '/workshop/', 'core/workshop.html', context)
 
 
 def workshop_detail(request, workshop_id):
@@ -493,7 +558,7 @@ def blog_page(request):
     posts = BlogPost.objects.filter(is_active=True, is_published=True).order_by(
         '-is_featured', 'order', '-published_at', '-created_at'
     )
-    return render(request, 'core/blog.html', {'posts': posts})
+    return _render_site_page(request, '/blog/', 'core/blog.html', {'posts': posts})
 
 
 def blog_detail(request, slug):
@@ -514,19 +579,19 @@ def blog_detail(request, slug):
 
 
 def terms(request):
-    return render(request, 'core/terms.html')
+    return _render_site_page(request, '/terms/', 'core/terms.html')
 
 
 def refund(request):
-    return render(request, 'core/refund.html')
+    return _render_site_page(request, '/refund/', 'core/refund.html')
 
 
 def privacy(request):
-    return render(request, 'core/privacy.html')
+    return _render_site_page(request, '/privacy/', 'core/privacy.html')
 
 
 def html_sitemap(request):
-    return render(request, 'core/sitemap.html')
+    return _render_site_page(request, '/sitemap/', 'core/sitemap.html')
 
 
 # ── Form Endpoints ─────────────────────────────────────────────────────────────
@@ -621,7 +686,7 @@ def contact_page(request):
     context = {
         'contact_faqs': contact_faqs,
     }
-    return render(request, 'core/contact.html', context)
+    return _render_site_page(request, '/contact/', 'core/contact.html', context)
 
 
 @require_POST
@@ -2509,7 +2574,6 @@ def page_detail_view(request, slug):
     Renders custom WordPress Page dynamically based on its configured ACF Blocks.
     Supports staff preview for drafts via ?preview=true.
     """
-    import json
     if request.user.is_staff and request.GET.get('preview') == 'true':
         page = get_object_or_404(Page, slug=slug)
     else:
@@ -2520,40 +2584,4 @@ def page_detail_view(request, slug):
         from .views import index
         return index(request)
 
-    # Safe parsing of acf_blocks (list or JSON string)
-    raw_blocks = page.acf_blocks
-    if isinstance(raw_blocks, str):
-        try:
-            blocks = json.loads(raw_blocks)
-        except Exception:
-            blocks = []
-    elif isinstance(raw_blocks, list):
-        blocks = raw_blocks
-    else:
-        blocks = []
-
-    block_types = {b.get('type') for b in blocks if isinstance(b, dict)}
-
-    context = {
-        'page': page,
-        'acf_blocks': blocks,
-        'meta_title': page.meta_title or f"{page.title} | ProjectsHub",
-        'meta_description': page.meta_description or (page.content[:160] if page.content else ''),
-    }
-
-    if 'acf/projects-grid' in block_types:
-        context['featured_projects'] = list(Project.objects.filter(is_published=True, is_active=True).order_by('-featured', '-created_at')[:8])
-
-    if 'acf/services-grid' in block_types:
-        context['services_list'] = list(Service.objects.filter(is_published=True).order_by('sort_order')[:6])
-
-    if 'acf/tools-directory' in block_types:
-        context['tools_list'] = list(AITool.objects.filter(is_published=True).order_by('sort_order')[:6])
-
-    if 'acf/testimonials' in block_types:
-        context['testimonials_list'] = list(Testimonial.objects.filter(is_published=True).order_by('sort_order')[:6])
-
-    if 'acf/faq-accordion' in block_types:
-        context['faqs_list'] = list(FAQ.objects.filter(is_published=True).order_by('sort_order')[:8])
-
-    return render(request, 'core/page_detail.html', context)
+    return _render_acf_page(request, page)

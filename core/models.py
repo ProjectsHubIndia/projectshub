@@ -1571,6 +1571,13 @@ class Page(models.Model):
 
     title = models.CharField(max_length=255, help_text="Page title displayed in WordPress admin and browser tab")
     slug = models.SlugField(max_length=255, unique=True, blank=True, help_text="URL slug (e.g. 'about', 'contact', or 'home')")
+    site_path = models.CharField(
+        max_length=255,
+        unique=True,
+        null=True,
+        blank=True,
+        help_text="Existing site route managed by this page, such as /contact/. Leave blank for a custom page.",
+    )
     content = models.TextField(blank=True, default='', help_text="Classic content or fallback HTML body")
     template = models.CharField(max_length=50, choices=TEMPLATE_CHOICES, default='default')
     acf_blocks = models.JSONField(
@@ -1603,6 +1610,8 @@ class Page(models.Model):
         return self.title
 
     def get_absolute_url(self):
+        if self.site_path:
+            return self.site_path
         if self.is_front_page or self.slug in ['home', 'front-page']:
             return '/'
         return f"/{self.slug}/"
