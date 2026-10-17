@@ -114,8 +114,8 @@
       menu.setAttribute("aria-hidden", isOpen ? "false" : "true");
     }
 
-    toggle.addEventListener("click", function (event) {
-      setDropdownState(event.detail > 0 || !dropdown.classList.contains("is-open"));
+    toggle.addEventListener("click", function () {
+      setDropdownState(!dropdown.classList.contains("is-open"));
     });
 
     dropdown.addEventListener("pointerenter", function (event) {
