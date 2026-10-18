@@ -6,8 +6,8 @@ block (~45 items under "Core"). `admin_nav_groups` regroups those same
 permission-filtered models into curated, labelled sections with icons, the way
 wp-admin groups Posts / Pages / Appearance / Tools. It stays permission-aware
 (it reads `admin.site.get_app_list(request)`, so a model the user can't see
-never appears) and loses nothing: any model not named in a group falls into a
-final "More" section.
+never appears). Models that are normally edited inline stay available in an
+"Advanced records" section instead of crowding the everyday navigation.
 """
 from django import template
 from django.contrib import admin
@@ -51,15 +51,22 @@ def admin_nav_groups(context):
         for m in app['models']:
             models[m['object_name']] = m
 
+    inline_models = {
+        inline.model.__name__
+        for model_admin in admin.site._registry.values()
+        for inline in model_admin.inlines
+    }
+
     sections, used = [], set()
     for label, icon, names in GROUPS:
-        items = [models[n] for n in names if n in models]
-        used.update(n for n in names if n in models)
+        everyday_names = [n for n in names if n in models and n not in inline_models]
+        items = [models[n] for n in everyday_names]
+        used.update(everyday_names)
         if items:
             sections.append({'label': label, 'icon': icon, 'items': items})
 
     leftover = [m for name, m in models.items() if name not in used]
     if leftover:
-        sections.append({'label': 'More', 'icon': '▦',
+        sections.append({'label': 'Advanced records', 'icon': '▦',
                          'items': sorted(leftover, key=lambda m: m['name'])})
     return sections

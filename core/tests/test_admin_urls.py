@@ -84,18 +84,29 @@ class AdminURLSmokeTests(TestCase):
         response = self.client.get('/admin/core/page/')
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Find a section')
+        self.assertContains(response, 'Find a section or record')
         self.assertContains(response, 'admin-nav-app')
         self.assertContains(response, 'href="/admin/core/page/"')
         self.assertContains(response, 'aria-label="Add Pages"')
         self.assertContains(response, 'Close navigation menu')
         # Models are grouped into WordPress-style sections, not one flat "Core" list.
-        self.assertContains(response, 'title="Pages"')
         self.assertContains(response, 'title="Appearance"')
+        self.assertContains(response, 'title="Advanced records"')
+        self.assertContains(response, 'href="/admin/core/projectfeature/"')
         self.assertContains(response, 'Workspace tools')
+        self.assertContains(
+            response,
+            'class="admin-nav-single-link admin-nav-utility-link" href="/admin/core/page/" title="Pages" aria-label="Pages"',
+        )
+        self.assertNotContains(response, '<summary title="Pages"')
         self.assertNotContains(response, 'class="admin-nav-info"')
         self.assertNotContains(response, 'aria-label="About Pages"')
         self.assertNotContains(response, 'Manage Pages records here.')
+        page_html = response.content.decode()
+        projects_section = page_html.split('<summary title="Projects"', 1)[1].split('</details>', 1)[0]
+        advanced_section = page_html.split('<summary title="Advanced records"', 1)[1].split('</details>', 1)[0]
+        self.assertNotIn('href="/admin/core/projectfeature/"', projects_section)
+        self.assertIn('href="/admin/core/projectfeature/"', advanced_section)
         # The legacy hardcoded (non-permission-aware) "Plugins" menu must stay gone.
         self.assertNotContains(response, 'Plugins')
 
@@ -235,6 +246,11 @@ class AdminURLSmokeTests(TestCase):
         self.assertContains(response, 'Last updated:')
         self.assertContains(response, 'pageauthor')
         self.assertContains(response, 'Page URL:')
+        self.assertContains(response, 'class="postbox closed"')
+        self.assertContains(response, 'class="module aligned">')
+        self.assertNotContains(response, 'class="module aligned collapse')
+        self.assertContains(response, 'aria-expanded="false" onclick="togglePostbox(this)"')
+        self.assertContains(response, 'class="toggle-indicator">▸</span>')
         self.assertRegex(
             response.content.decode(),
             r'css/page-editor-layout(?:\.[a-f0-9]+)?\.css',

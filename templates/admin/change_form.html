@@ -14,7 +14,7 @@
 {{ block.super }}
 <script src="{% url 'admin:jsi18n' %}"></script>
 {{ media.js }}
-<script src="{% static 'js/wp-acf-blocks.js' %}?v=3"></script>
+<script src="{% static 'js/wp-acf-blocks.js' %}?v=5"></script>
 {% endblock %}
 
 {% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-form wp-editor-page{% endblock %}
@@ -215,8 +215,8 @@
                 <div class="postbox {% if 'collapse' in fieldset.classes %}closed{% endif %}" id="postbox-fieldset-{{ forloop.counter }}">
                   <div class="postbox-header">
                     <h2>{{ fieldset.name|default:'Item Details' }}</h2>
-                    <button type="button" class="handlediv" aria-expanded="true" onclick="togglePostbox(this)">
-                      <span class="toggle-indicator">▾</span>
+                    <button type="button" class="handlediv" aria-expanded="{% if 'collapse' in fieldset.classes %}false{% else %}true{% endif %}" onclick="togglePostbox(this)">
+                      <span class="toggle-indicator">{% if 'collapse' in fieldset.classes %}▸{% else %}▾{% endif %}</span>
                     </button>
                   </div>
                   <div class="inside">

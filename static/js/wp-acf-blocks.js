@@ -15,13 +15,13 @@
       category: 'headers',
       desc: 'Large prominent hero banner with badge, headline, subtitle, and dual CTA buttons.',
       defaultData: {
-        badge: '⚡ Next-Gen AI Engineering',
-        headline: 'Real-World AI Projects & Production Systems',
-        subheadline: 'Production-ready machine learning solutions, automated workflows, and comprehensive student mentorship.',
+        badge: 'From Ideas to AI-Powered Products',
+        headline: 'Real-World AI Projects & Free Tools for Students',
+        subheadline: 'Real-world AI and machine learning projects with source code and mentorship for students, plus custom AI development and automation for businesses.',
         primary_cta_text: 'Explore Projects →',
         primary_cta_url: '/projects/',
-        secondary_cta_text: '3-Day AI Bootcamp',
-        secondary_cta_url: '/workshop/',
+        secondary_cta_text: 'Try Free Tools',
+        secondary_cta_url: 'https://tools.projectshub.co.in/',
         style: 'glow-dark'
       },
       render: function(b, idx) {
@@ -70,14 +70,46 @@
       }
     },
 
+    'acf/audience-cards': {
+      name: 'Who We Help',
+      icon: '👥',
+      category: 'content',
+      desc: 'Student and business audience cards managed from Homepage Audience Cards.',
+      defaultData: {
+        badge: 'Who We Are',
+        section_title: 'AI Projects & Custom Development Made Simple',
+        subtitle: 'Real-world AI projects for students and practical AI solutions for businesses.'
+      },
+      render: function(b, idx) {
+        var d = b.data || {};
+        return `
+          <div class="acf-fields-grid">
+            <div class="acf-field-row">
+              <label class="acf-field-label">Eyebrow Label</label>
+              <input type="text" class="acf-input" value="${escapeHtml(d.badge || '')}" oninput="window.AcfBuilder.updateField(${idx}, 'badge', this.value)">
+            </div>
+            <div class="acf-field-row full-width">
+              <label class="acf-field-label">Section Title</label>
+              <input type="text" class="acf-input" value="${escapeHtml(d.section_title || '')}" oninput="window.AcfBuilder.updateField(${idx}, 'section_title', this.value)">
+            </div>
+            <div class="acf-field-row full-width">
+              <label class="acf-field-label">Section Description</label>
+              <textarea class="acf-input" rows="2" oninput="window.AcfBuilder.updateField(${idx}, 'subtitle', this.value)">${escapeHtml(d.subtitle || '')}</textarea>
+            </div>
+            <p class="acf-field-help full-width">The cards and feature links are edited under Homepage Audience Cards in the admin menu.</p>
+          </div>
+        `;
+      }
+    },
+
     'acf/projects-grid': {
       name: 'Featured Projects Grid',
       icon: '🚀',
       category: 'content',
       desc: 'Dynamic grid of real-world AI projects with filter tags, live demo links, and tech badges.',
       defaultData: {
-        section_title: 'Featured AI Projects & Case Studies',
-        subtitle: 'Production-grade codebases, models, and interactive web demos.',
+        section_title: 'Explore Real-World AI Projects & Free Tools',
+        subtitle: 'Build and learn with documented AI and machine learning projects, complete source code, and practical examples.',
         category_filter: 'all',
         max_items: 6,
         layout: 'grid-3-col',
@@ -107,6 +139,32 @@
             <div class="acf-field-row">
               <label class="acf-field-label">Max Projects to Display</label>
               <input type="number" class="acf-input" min="1" max="24" value="${escapeHtml(d.max_items || 6)}" oninput="window.AcfBuilder.updateField(${idx}, 'max_items', parseInt(this.value)||6)">
+            </div>
+          </div>
+        `;
+      }
+    },
+
+    'acf/case-studies': {
+      name: 'Real-World Case Studies',
+      icon: '📈',
+      category: 'content',
+      desc: 'Published case studies with their real-world challenge, solution, and results.',
+      defaultData: {
+        section_title: 'Real-World Case Studies',
+        subtitle: 'See how practical AI solutions help teams solve real problems.'
+      },
+      render: function(b, idx) {
+        var d = b.data || {};
+        return `
+          <div class="acf-fields-grid">
+            <div class="acf-field-row full-width">
+              <label class="acf-field-label">Section Title</label>
+              <input type="text" class="acf-input" value="${escapeHtml(d.section_title || '')}" oninput="window.AcfBuilder.updateField(${idx}, 'section_title', this.value)">
+            </div>
+            <div class="acf-field-row full-width">
+              <label class="acf-field-label">Subtitle</label>
+              <input type="text" class="acf-input" value="${escapeHtml(d.subtitle || '')}" oninput="window.AcfBuilder.updateField(${idx}, 'subtitle', this.value)">
             </div>
           </div>
         `;
@@ -155,8 +213,8 @@
       category: 'content',
       desc: 'Interactive web tools directory with instant live search and browser utilities.',
       defaultData: {
-        section_title: 'Interactive AI Utilities & Developer Tools',
-        subtitle: 'Browser-based utilities designed to supercharge your workflow.',
+        section_title: 'Free AI Tools — Use Instantly',
+        subtitle: 'Useful AI tools for students and developers, ready to try without signing up.',
         enable_search: true,
         max_items: 6
       },
@@ -190,7 +248,7 @@
       desc: 'Spotlight banner for the intensive 3-Day Autonomous Multi-Agent AI Bootcamp.',
       defaultData: {
         section_title: '3-Day Hands-on Autonomous Agents Bootcamp',
-        subtitle: 'Learn to architect, evaluate, and deploy multi-agent LLM systems from scratch.',
+        subtitle: 'Learn to build, evaluate, and deploy autonomous AI agents through practical, hands-on sessions.',
         cta_text: 'View Curriculum & Claim Spot',
         cta_url: '/workshop/'
       },
@@ -225,14 +283,17 @@
       category: 'proof',
       desc: '4-card metric counter bar displaying projects deployed, engineers mentored, and system uptime.',
       defaultData: {
+        section_title: 'ProjectsHub in Numbers',
+        subtitle: 'Trusted by students, developers, and businesses to learn, build, and ship AI-powered products faster.',
         items: [
-          { number: '25+', label: 'Production AI Projects', accent: '#38bdf8' },
-          { number: '1,200+', label: 'Engineers Mentored', accent: '#818cf8' },
-          { number: '99.4%', label: 'System Accuracy', accent: '#34d399' },
-          { number: '24/7', label: 'Community Support', accent: '#fbbf24' }
+          { number: '10+', label: 'Free AI Tools', accent: '#38bdf8' },
+          { number: '50+', label: 'Projects Showcased', accent: '#818cf8' },
+          { number: '500+', label: 'Happy Users', accent: '#34d399' },
+          { number: '< 24h', label: 'Support Response', accent: '#fbbf24' }
         ]
       },
       render: function(b, idx) {
+        var d = b.data || {};
         var items = (b.data && b.data.items) || [];
         var rowsHtml = '';
         for (var i = 0; i < 4; i++) {
@@ -247,9 +308,19 @@
           `;
         }
         return `
-          <div class="acf-field-row full-width">
+          <div class="acf-fields-grid">
+            <div class="acf-field-row full-width">
+              <label class="acf-field-label">Section Title</label>
+              <input type="text" class="acf-input" value="${escapeHtml(d.section_title || '')}" oninput="window.AcfBuilder.updateField(${idx}, 'section_title', this.value)">
+            </div>
+            <div class="acf-field-row full-width">
+              <label class="acf-field-label">Section Description</label>
+              <textarea class="acf-input" rows="2" oninput="window.AcfBuilder.updateField(${idx}, 'subtitle', this.value)">${escapeHtml(d.subtitle || '')}</textarea>
+            </div>
+            <div class="acf-field-row full-width">
             <label class="acf-field-label">Metric Counter Items (4 Cards)</label>
             ${rowsHtml}
+            </div>
           </div>
         `;
       }
@@ -261,8 +332,8 @@
       category: 'proof',
       desc: 'Customer proof quotes, reviewer avatars, company roles, and rating stars.',
       defaultData: {
-        section_title: 'Trusted by Developers & Industry Innovators',
-        subtitle: 'Real feedback from engineers building real-world AI applications.',
+        section_title: 'What Our Users Say',
+        subtitle: 'Join thousands of developers, students, and businesses building the future with our tools.',
         rating: '5.0',
         layout: 'carousel'
       },
@@ -297,6 +368,7 @@
       desc: 'Expandable question & answer accordions with category filtering.',
       defaultData: {
         section_title: 'Frequently Asked Questions',
+        subtitle: 'Everything you need to know about ProjectsHub, our free AI tools, and custom solutions.',
         category: 'general',
         show_search: false
       },
@@ -307,6 +379,10 @@
             <div class="acf-field-row">
               <label class="acf-field-label">Section Title</label>
               <input type="text" class="acf-input" value="${escapeHtml(d.section_title || '')}" oninput="window.AcfBuilder.updateField(${idx}, 'section_title', this.value)">
+            </div>
+            <div class="acf-field-row full-width">
+              <label class="acf-field-label">Section Description</label>
+              <textarea class="acf-input" rows="2" oninput="window.AcfBuilder.updateField(${idx}, 'subtitle', this.value)">${escapeHtml(d.subtitle || '')}</textarea>
             </div>
             <div class="acf-field-row">
               <label class="acf-field-label">Target FAQ Category</label>
@@ -491,6 +567,9 @@
     }
 
     blocks = safeParseBlocks(rawVal);
+    blocks.forEach(function(block) {
+      block._isCollapsed = true;
+    });
 
     renderAllBlocks();
     renderModalGrid('all');
@@ -507,7 +586,12 @@
   function syncJson() {
     var rawTextarea = document.getElementById('id_acf_blocks');
     if (rawTextarea) {
-      rawTextarea.value = JSON.stringify(blocks, null, 2);
+      var savedBlocks = blocks.map(function(block) {
+        var savedBlock = Object.assign({}, block);
+        delete savedBlock._isCollapsed;
+        return savedBlock;
+      });
+      rawTextarea.value = JSON.stringify(savedBlocks, null, 2);
     }
     var badge = document.getElementById('acf-blocks-badge-count');
     if (badge) {

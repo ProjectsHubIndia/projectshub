@@ -13,6 +13,11 @@
   border-radius: 5px;
 }
 
+#adminmenumain #adminmenu li.admin-nav-app.admin-nav-single {
+  display: flex !important;
+  align-items: center;
+}
+
 #adminmenumain #adminmenu .admin-nav-home > a,
 #adminmenumain #adminmenu .admin-nav-utility-link {
   min-height: 40px;
@@ -20,9 +25,33 @@
 }
 
 #adminmenumain #adminmenu .admin-nav-home.current > a,
-#adminmenumain #adminmenu .admin-nav-app.current > .admin-nav-utility-link {
+#adminmenumain #adminmenu .admin-nav-app.current > .admin-nav-utility-link,
+#adminmenumain #adminmenu .admin-nav-app.current > .admin-nav-single-link {
   background: #254f66;
   color: #fff !important;
+}
+
+#adminmenumain #adminmenu .admin-nav-single-link {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 9px;
+  padding: 0 10px;
+  color: #f0f4f6;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+#adminmenumain #adminmenu .admin-nav-single-link:hover,
+#adminmenumain #adminmenu .admin-nav-single-link:focus-visible {
+  background: #303b43;
+  color: #fff;
+}
+
+#adminmenumain #adminmenu .admin-nav-single-link.is-current {
+  font-weight: 700;
 }
 
 #adminmenumain #adminmenu .admin-nav-caption {
@@ -206,6 +235,10 @@
   text-decoration: none;
 }
 
+#adminmenumain #adminmenu .admin-nav-single > .admin-nav-add {
+  margin-right: 8px;
+}
+
 #adminmenumain #adminmenu .admin-nav-add:hover,
 #adminmenumain #adminmenu .admin-nav-add:focus {
   border-color: #9bc2d5;
@@ -236,6 +269,10 @@
 #wpwrap.folded #adminmenumain #adminmenu .admin-nav-app-label,
 #wpwrap.folded #adminmenumain #adminmenu .admin-nav-app .admin-nav-chevron {
   display: none !important;
+}
+
+#wpwrap.folded #adminmenumain #adminmenu .admin-nav-single > .admin-nav-add {
+  display: none;
 }
 
 #wpwrap.folded #adminmenumain #adminmenu .admin-nav-app-icon {

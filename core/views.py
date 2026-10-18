@@ -217,10 +217,21 @@ def _render_acf_page(request, page):
         'meta_description': page.meta_description or (page.content[:160] if page.content else ''),
     }
 
+    if 'acf/audience-cards' in block_types:
+        context['audience_cards'] = list(
+            AudienceCard.objects.filter(is_active=True)
+            .prefetch_related('features')
+            .order_by('order', 'audience')
+        )
+
     data_sources = {
         'acf/projects-grid': (
             'featured_projects',
             Project.objects.filter(is_published=True, is_active=True).order_by('-featured', '-created_at')[:8],
+        ),
+        'acf/case-studies': (
+            'case_studies',
+            CaseStudy.objects.filter(is_published=True).order_by('sort_order')[:6],
         ),
         'acf/services-grid': (
             'services_list',
@@ -247,7 +258,12 @@ def _render_acf_page(request, page):
 
 
 def _render_site_page(request, site_path, fallback_template, context=None):
-    page = Page.objects.filter(site_path=site_path).first()
+    if site_path == '/':
+        page = Page.objects.filter(is_front_page=True).first()
+        if page is None:
+            page = Page.objects.filter(site_path=site_path).first()
+    else:
+        page = Page.objects.filter(site_path=site_path).first()
     if page is None or (not page.acf_blocks and not page.content.strip()):
         return render(request, fallback_template, context or {})
 
@@ -313,7 +329,9 @@ def index(request):
         'services_business': services_business,
         'pricing_plans': pricing_plans,
     }
-    return _render_site_page(request, '/', 'core/index.html', context)
+    if request.user.is_staff and request.GET.get('preview') == 'true':
+        return _render_site_page(request, '/', 'core/index.html', context)
+    return render(request, 'core/index.html', context)
 
 
 def projects_page(request):

@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 from core.models import (
     AudienceCard,
+    CaseStudy,
     ChatbotConversation,
     ContactInquiry,
     BlogPost,
@@ -19,6 +20,7 @@ from django.core.cache import cache
 from core.seo import get_seo_for_request
 
 
+@override_settings(STATICFILES_STORAGE='django.contrib.staticfiles.storage.StaticFilesStorage')
 class ViewTests(TestCase):
     def setUp(self):
         cache.clear()
@@ -44,9 +46,18 @@ class ViewTests(TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertContains(res, "ProjectsHub")
         self.assertContains(res, "Smart Fraud Detection")
-        self.assertContains(res, 'href="/static/css/hero-visual.css?v=14" as="style"')
-        self.assertContains(res, 'href="/static/pdf/ProjectsHub-Catalogue-Students.pdf"')
-        self.assertContains(res, 'href="/static/pdf/ProjectsHub-Catalogue-Business.pdf"')
+        self.assertRegex(
+            res.content.decode(),
+            r'href="/static/css/hero-visual(?:\.[a-f0-9]+)?\.css\?v=15" as="style"',
+        )
+        self.assertRegex(
+            res.content.decode(),
+            r'href="/static/pdf/ProjectsHub-Catalogue-Students(?:\.[a-f0-9]+)?\.pdf"',
+        )
+        self.assertRegex(
+            res.content.decode(),
+            r'href="/static/pdf/ProjectsHub-Catalogue-Business(?:\.[a-f0-9]+)?\.pdf"',
+        )
         self.assertContains(res, 'Download Student Catalogue')
         self.assertContains(res, 'Download Business Catalogue')
         self.assertNotContains(res, 'rel="modulepreload"')
@@ -235,7 +246,10 @@ class ViewTests(TestCase):
         self.assertContains(homepage_response, 'Updated student card description.')
         self.assertContains(homepage_response, 'Download Student Catalogue')
         self.assertContains(homepage_response, 'Updated feature')
-        self.assertContains(homepage_response, 'href="/static/pdf/ProjectsHub-Catalogue-Students.pdf"')
+        self.assertRegex(
+            homepage_response.content.decode(),
+            r'href="/static/pdf/ProjectsHub-Catalogue-Students(?:\.[a-f0-9]+)?\.pdf"',
+        )
 
     def test_staff_can_add_homepage_faq_from_admin_and_it_appears_on_homepage(self):
         staff_user = get_user_model().objects.create_superuser(
@@ -802,6 +816,95 @@ class PageDetailViewTests(TestCase):
     def setUp(self):
         cache.clear()
         self.client = Client()
+
+    @override_settings(STATICFILES_STORAGE='django.contrib.staticfiles.storage.StaticFilesStorage')
+    def test_public_homepage_uses_live_template_and_staff_can_preview_front_page(self):
+        page = Page.objects.filter(is_front_page=True).first()
+        if page is None:
+            page = Page.objects.create(
+                title='CMS Homepage',
+                slug='cms-homepage-test',
+                is_front_page=True,
+            )
+        page.site_path = None
+        page.status = 'published'
+        page.content = ''
+        page.acf_blocks = [{
+            'type': 'acf/hero-section',
+            'data': {'headline': 'CMS homepage route works'},
+            'visible': True,
+        }]
+        page.save()
+
+        response = self.client.get('/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'class="hero-section"')
+        self.assertNotContains(response, 'CMS homepage route works')
+
+        staff_user = get_user_model().objects.create_superuser(
+            username='frontpagepreview',
+            email='frontpagepreview@example.com',
+            password='testpass123',
+        )
+        self.client.force_login(staff_user)
+        response = self.client.get('/?preview=true')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'CMS homepage route works')
+        self.assertContains(response, 'acf-hero-title')
+        self.assertContains(response, 'id="robot-canvas"')
+        self.assertNotContains(response, 'id="topic-image" src=""')
+
+    def test_audience_cards_block_renders_active_homepage_audiences(self):
+        AudienceCard.objects.update_or_create(
+            audience='students',
+            defaults={
+                'badge_text': 'For Students & Developers',
+                'title': 'Students',
+                'subtitle': 'Final Year Projects & Tech Placements',
+                'description': 'Build real AI projects with source code and mentorship.',
+                'cta_text': 'Explore Projects',
+                'cta_url': '/projects/',
+                'is_active': True,
+            },
+        )
+        CaseStudy.objects.create(
+            title='Homepage Test Case Study',
+            slug='homepage-test-case-study',
+            summary='A practical AI delivery example.',
+            is_published=True,
+        )
+        page = Page.objects.create(
+            title='Audience Cards Page',
+            slug='audience-cards-page',
+            status='published',
+            acf_blocks=[{
+                'type': 'acf/audience-cards',
+                'data': {
+                    'section_title': 'Who We Help',
+                    'subtitle': 'Support for students and businesses.',
+                },
+                'visible': True,
+            }, {
+                'type': 'acf/case-studies',
+                'data': {
+                    'section_title': 'Real-World Case Studies',
+                },
+                'visible': True,
+            }],
+        )
+
+        response = self.client.get(f'/pages/{page.slug}/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'id="about"')
+        self.assertContains(response, 'Who We Help')
+        self.assertContains(response, 'For Students &amp; Developers')
+        self.assertContains(response, 'Final Year Projects &amp; Tech Placements')
+        self.assertContains(response, 'href="/projects/"')
+        self.assertContains(response, 'id="case-studies"')
+        self.assertContains(response, 'Homepage Test Case Study')
 
     def test_page_detail_renders_acf_blocks_with_modern_styling(self):
         """Verify that dynamic WordPress/ACF Pages render with modern light styling without dark inline styles."""

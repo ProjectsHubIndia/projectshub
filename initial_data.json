@@ -8705,25 +8705,37 @@
           "label": "Homepage Hero Banner",
           "visible": true,
           "data": {
-            "badge": "⚡ Next-Gen AI Engineering & Mentorship",
-            "headline": "Real-World AI Projects & Production Systems",
-            "subheadline": "Production-ready machine learning architectures, automated intelligence workflows, and hands-on guidance for developers and ambitious teams.",
+            "badge": "From Ideas to AI-Powered Products",
+            "headline": "Real-World AI Projects & Free Tools for Students",
+            "subheadline": "Real-world AI and machine learning projects with source code and mentorship for students, plus custom AI development and automation for businesses.",
             "primary_cta_text": "Explore Projects →",
             "primary_cta_url": "/projects/",
-            "secondary_cta_text": "3-Day AI Bootcamp",
-            "secondary_cta_url": "/workshop/",
+            "secondary_cta_text": "Try Free Tools",
+            "secondary_cta_url": "https://tools.projectshub.co.in/",
             "style": "glow-dark"
           }
         },
         {
-          "id": "block_projects_2",
-          "type": "acf/projects-grid",
-          "name": "Featured Projects Grid",
-          "label": "Curated Showcase",
+          "id": "block_audiences_2",
+          "type": "acf/audience-cards",
+          "name": "Who We Help",
+          "label": "Students & Businesses",
           "visible": true,
           "data": {
-            "section_title": "Featured AI Projects & Case Studies",
-            "subtitle": "Verified computer vision, generative AI, and NLP repositories built for scale.",
+            "badge": "Who We Are",
+            "section_title": "AI Projects & Custom Development Made Simple",
+            "subtitle": "We're a team of AI engineers, developers and mentors who help students launch real AI projects with source code, and help businesses automate workflows with custom AI development — clean code, clear docs, real support."
+          }
+        },
+        {
+          "id": "block_projects_3",
+          "type": "acf/projects-grid",
+          "name": "Featured Projects Grid",
+          "label": "Explore Real-World AI Projects",
+          "visible": true,
+          "data": {
+            "section_title": "Explore Real-World AI Projects & Free Tools",
+            "subtitle": "Build and learn with documented AI and machine learning projects, complete source code, and practical examples.",
             "category_filter": "all",
             "max_items": 6,
             "layout": "grid-3-col",
@@ -8731,125 +8743,135 @@
           }
         },
         {
-          "id": "block_services_3",
+          "id": "block_case_studies_4",
+          "type": "acf/case-studies",
+          "name": "Real-World Case Studies",
+          "label": "Real-World Case Studies",
+          "visible": true,
+          "data": {
+            "section_title": "Real-World Case Studies",
+            "subtitle": "See how practical AI solutions help teams solve real problems."
+          }
+        },
+        {
+          "id": "block_services_5",
           "type": "acf/services-grid",
           "name": "Services & Solutions",
-          "label": "Enterprise Offerings",
+          "label": "Business AI & Mentorship",
           "visible": true,
           "data": {
             "section_title": "Enterprise AI Engineering & Automation",
-            "subtitle": "Custom AI agents, LLM pipelines, and automated intelligence integrations.",
+            "subtitle": "Custom AI development, workflow automation, API integration, and hands-on project guidance.",
             "columns": "3",
             "style": "gradient-border"
           }
         },
         {
-          "id": "block_tools_4",
+          "id": "block_tools_6",
           "type": "acf/tools-directory",
           "name": "AI Tools Showcase",
-          "label": "Live Interactive Utilities",
+          "label": "Free AI Tools",
           "visible": true,
           "data": {
-            "section_title": "Interactive AI Utilities & Developer Tools",
-            "subtitle": "Browser-based tools designed to supercharge your AI engineering workflow.",
+            "section_title": "Free AI Tools — Use Instantly",
+            "subtitle": "Useful AI tools for students and developers, ready to try without signing up.",
             "enable_search": true,
             "max_items": 6
           }
         },
         {
-          "id": "block_workshop_5",
+          "id": "block_workshop_7",
           "type": "acf/workshop-teaser",
           "name": "Bootcamp / Workshop Teaser",
-          "label": "3-Day Intensive Spotlight",
+          "label": "3-Day AI Bootcamp",
           "visible": true,
           "data": {
             "section_title": "3-Day Hands-on Autonomous Agents Bootcamp",
-            "subtitle": "Learn to architect, evaluate, and deploy multi-agent LLM systems from scratch.",
+            "subtitle": "Learn to build, evaluate, and deploy autonomous AI agents through practical, hands-on sessions.",
             "cta_text": "View Curriculum & Claim Spot",
             "cta_url": "/workshop/"
           }
         },
         {
-          "id": "block_stats_6",
-          "type": "acf/stats-counter",
-          "name": "Live Statistics & KPIs",
-          "label": "Proof & Trust Numbers",
+          "id": "block_trust_8",
+          "type": "acf/rich-text",
+          "name": "Why ProjectsHub",
+          "label": "Why Students & Teams Trust Us",
           "visible": true,
           "data": {
+            "heading": "Why 500+ Trust ProjectsHub",
+            "html_content": "<p>From final-year students to growing businesses across India — here's why they choose us for AI projects, free tools and custom development.</p><ul><li><strong>Real Projects, Real Results</strong> — custom-built for your exact requirement, not templates.</li><li><strong>Free AI Tools, Zero Signup</strong> — try before you trust.</li><li><strong>24/7 After-delivery Support</strong> — we don't disappear after delivery.</li><li><strong>Free First Consultation</strong> — no commitment, no pressure.</li></ul>"
+          }
+        },
+        {
+          "id": "block_stats_9",
+          "type": "acf/stats-counter",
+          "name": "Live Statistics & KPIs",
+          "label": "ProjectsHub in Numbers",
+          "visible": true,
+          "data": {
+            "section_title": "ProjectsHub in Numbers",
+            "subtitle": "Trusted by students, developers, and businesses to learn, build, and ship AI-powered products faster — with real tools and real support.",
             "items": [
               {
-                "number": "100+",
-                "label": "Production AI Projects",
-                "accent": "#fe06bc"
+                "number": "10+",
+                "label": "Free AI Tools",
+                "accent": "#38bdf8"
               },
               {
-                "number": "1,200+",
-                "label": "Engineers Mentored",
+                "number": "50+",
+                "label": "Projects Showcased",
                 "accent": "#818cf8"
               },
               {
-                "number": "99.4%",
-                "label": "System Accuracy",
+                "number": "500+",
+                "label": "Happy Users",
                 "accent": "#34d399"
               },
               {
-                "number": "24/7",
-                "label": "Community Mentorship",
+                "number": "< 24h",
+                "label": "Support Response",
                 "accent": "#fbbf24"
               }
             ]
           }
         },
         {
-          "id": "block_testimonials_7",
+          "id": "block_testimonials_10",
           "type": "acf/testimonials",
           "name": "Client Testimonials Carousel",
           "label": "Industry Endorsements",
           "visible": true,
           "data": {
-            "section_title": "Trusted by Developers & Industry Innovators",
-            "subtitle": "Real feedback from engineers building real-world AI applications.",
+            "section_title": "What Our Users Say",
+            "subtitle": "Join thousands of developers, students, and businesses building the future with our tools.",
             "rating": "5.0",
             "layout": "carousel"
           }
         },
         {
-          "id": "block_faq_8",
+          "id": "block_faq_11",
           "type": "acf/faq-accordion",
           "name": "FAQ Accordion",
           "label": "General Questions",
           "visible": true,
           "data": {
             "section_title": "Frequently Asked Questions",
+            "subtitle": "Everything you need to know about ProjectsHub, our free AI tools, and custom solutions.",
             "category": "general",
             "show_search": false
           }
         },
         {
-          "id": "block_cta_9",
-          "type": "acf/cta-banner",
-          "name": "Call To Action Banner",
-          "label": "Bottom Conversion Banner",
+          "id": "block_contact_12",
+          "type": "acf/contact-form",
+          "name": "Contact & Lead Form",
+          "label": "Let's Build Something Amazing Together",
           "visible": true,
           "data": {
-            "headline": "Ready to Engineer Next-Generation AI?",
-            "description": "Access production-grade code, interactive tools, and direct guidance from veteran machine learning engineers.",
-            "button_text": "Explore All Projects Now →",
-            "button_url": "/projects/",
-            "style": "cyan-glow"
-          }
-        },
-        {
-          "id": "block_1789827833613_290",
-          "type": "acf/faq-accordion",
-          "name": "FAQ Accordion",
-          "label": "FAQ Accordion",
-          "visible": true,
-          "_isCollapsed": false,
-          "data": {
-            "section_title": "Frequently Asked Questions",
-            "category": "general",
-            "show_search": false
+            "heading": "Let's Build Something Amazing Together",
+            "subheading": "Have a project idea, question, or just want to say hello? Fill out the form and we'll get back to you within 24 hours.",
+            "form_type": "general"
           }
         }
       ],
@@ -8858,8 +8880,8 @@
       "order": 1,
       "is_front_page": true,
       "featured_image": "",
-      "meta_title": "ProjectsHub - From Ideas to AI-Powered Products",
-      "meta_description": "Real-world AI and machine learning projects with source code and mentorship.",
+      "meta_title": "AI Projects for Students & Custom AI Development | ProjectsHub",
+      "meta_description": "Real-world AI and machine learning projects with source code and mentorship for students, plus custom AI development and automation for businesses.",
       "created_at": "2026-09-18T11:19:00.943Z",
       "updated_at": "2026-09-19T15:20:39.459Z"
     }

@@ -4,8 +4,19 @@
 {% block title %}{{ meta_title }}{% endblock %}
 {% block meta_description %}{{ meta_description }}{% endblock %}
 
+{% block extra_preload %}
+  {{ block.super }}
+  {% if page.is_front_page %}
+    <link rel="preload" href="{% static 'css/hero-visual.css' %}?v=15" as="style" />
+    <script src="{% static 'js/aara-robot.js' %}?v=1" defer></script>
+  {% endif %}
+{% endblock %}
+
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/page_detail.css' %}?v=16" />
+<link rel="stylesheet" href="{% static 'css/page_detail.css' %}?v=18" />
+{% if page.is_front_page %}
+<link rel="stylesheet" href="{% static 'css/hero-visual.css' %}?v=15" />
+{% endif %}
 {% if page.site_path == '/contact/' %}
 <link rel="stylesheet" href="{% static 'css/contact.css' %}?v=5" />
 {% endif %}
@@ -39,45 +50,84 @@
 
       {# ── 1. ACF / HERO SECTION ── #}
       {% if blk.type == 'acf/hero-section' %}
-        <section class="acf-block-hero acf-hero-{{ blk.data.style|default:'glow-cyan' }}">
+        <section class="acf-block-hero acf-hero-{{ blk.data.style|default:'glow-cyan' }}{% if page.is_front_page %} acf-home-hero{% endif %}" {% if page.is_front_page %}id="home-hero"{% endif %}>
           <div class="acf-container">
-            {% if blk.data.badge %}
-              <div class="acf-hero-badge">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                </svg>
-                <span>{{ blk.data.badge }}</span>
-              </div>
-            {% endif %}
-
-            <h1 class="acf-hero-title">
-              {{ blk.data.headline|default:page.title }}
-            </h1>
-
-            {% if blk.data.subheadline %}
-              <p class="acf-hero-subtitle">
-                {{ blk.data.subheadline }}
-              </p>
-            {% endif %}
-
-            {% if blk.data.primary_cta_text or blk.data.secondary_cta_text %}
-              <div class="acf-hero-ctas">
-                {% if blk.data.primary_cta_text %}
-                  <a href="{{ blk.data.primary_cta_url|default:'/projects/' }}" class="acf-btn acf-btn-primary">
-                    <span>{{ blk.data.primary_cta_text }}</span>
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <line x1="5" y1="12" x2="19" y2="12"></line>
-                      <polyline points="12 5 19 12 12 19"></polyline>
+            <div class="{% if page.is_front_page %}acf-home-hero-grid{% endif %}">
+              <div class="acf-home-hero-copy">
+                {% if blk.data.badge %}
+                  <div class="acf-hero-badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
                     </svg>
-                  </a>
+                    <span>{{ blk.data.badge }}</span>
+                  </div>
                 {% endif %}
-                {% if blk.data.secondary_cta_text %}
-                  <a href="{{ blk.data.secondary_cta_url|default:'/workshop/' }}" class="acf-btn acf-btn-secondary">
-                    <span>{{ blk.data.secondary_cta_text }}</span>
-                  </a>
+
+                <h1 class="acf-hero-title">
+                  {{ blk.data.headline|default:page.title }}
+                </h1>
+
+                {% if blk.data.subheadline %}
+                  <p class="acf-hero-subtitle">
+                    {{ blk.data.subheadline }}
+                  </p>
+                {% endif %}
+
+                {% if blk.data.primary_cta_text or blk.data.secondary_cta_text %}
+                  <div class="acf-hero-ctas">
+                    {% if blk.data.primary_cta_text %}
+                      <a href="{{ blk.data.primary_cta_url|default:'/projects/' }}" class="acf-btn acf-btn-primary">
+                        <span>{{ blk.data.primary_cta_text }}</span>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <line x1="5" y1="12" x2="19" y2="12"></line>
+                          <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                      </a>
+                    {% endif %}
+                    {% if blk.data.secondary_cta_text %}
+                      <a href="{{ blk.data.secondary_cta_url|default:'/workshop/' }}" class="acf-btn acf-btn-secondary">
+                        <span>{{ blk.data.secondary_cta_text }}</span>
+                      </a>
+                    {% endif %}
+                  </div>
                 {% endif %}
               </div>
-            {% endif %}
+              {% if page.is_front_page and forloop.first %}
+                <div class="hero-visual-col acf-home-hero-visual">
+                  <div class="hero-visual-card">
+                    <div class="hvc-blob hvc-blob--blue" aria-hidden="true"></div>
+                    <div class="hvc-blob hvc-blob--purple" aria-hidden="true"></div>
+                    <div class="hvc-window">
+                      <div class="hvc-chrome">
+                        <span class="hvc-dot hvc-dot--red"></span>
+                        <span class="hvc-dot hvc-dot--yellow"></span>
+                        <span class="hvc-dot hvc-dot--green"></span>
+                        <span class="hvc-chrome__url">projectshub.co.in</span>
+                      </div>
+                      <div class="hvc-iframe-wrap hvc-robot-shell">
+                        <canvas id="robot-canvas" class="hvc-robot-canvas" role="button" tabindex="0" aria-label="Aara 3D robot. Hover to open her eyes or click a body part to move it and explain code."></canvas>
+                        <aside class="hvc-robot-bubble" aria-label="Code explanation by Aara">
+                          <div class="hvc-robot-bubble__topline">
+                            <span id="robot-lesson-count" class="hvc-robot-bubble__count" aria-label="Lesson 1 of 6">01 / 06</span>
+                          </div>
+                          <p id="robot-explanation" class="hvc-robot-bubble__text" data-index="0" aria-live="polite">Configure the model's optimizer, loss function, and evaluation metrics before training.</p>
+                          <pre class="hvc-robot-bubble__code"><code id="robot-code">model.compile(
+    optimizer="adam",
+    loss="sparse_categorical_crossentropy",
+    metrics=["accuracy"]
+)</code></pre>
+                          <p id="robot-action-status" class="hvc-robot-bubble__status-text" aria-live="polite">Explore each step with Next lesson, or select Aara to see her in action.</p>
+                          <button id="robot-next-lesson" class="hvc-robot-bubble__button" type="button">
+                            <span>Next lesson</span>
+                            <span aria-hidden="true">→</span>
+                          </button>
+                        </aside>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+            </div>
           </div>
         </section>
 
@@ -85,6 +135,16 @@
       {% elif blk.type == 'acf/stats-counter' %}
         <section class="acf-section acf-section-alt acf-block-stats">
           <div class="acf-container">
+            {% if blk.data.section_title or blk.data.subtitle %}
+              <div class="acf-section-header">
+                {% if blk.data.section_title %}
+                  <h2 class="acf-section-title" id="why-projectshub-title">{{ blk.data.section_title }}</h2>
+                {% endif %}
+                {% if blk.data.subtitle %}
+                  <p class="acf-section-subtitle">{{ blk.data.subtitle }}</p>
+                {% endif %}
+              </div>
+            {% endif %}
             <div class="acf-stats-grid">
               {% for item in blk.data.items %}
                 <div class="acf-stat-card">
@@ -151,6 +211,41 @@
                   <polyline points="12 5 19 12 12 19"></polyline>
                 </svg>
               </a>
+            </div>
+          </div>
+        </section>
+
+      {# ── ACF / CASE STUDIES GRID ── #}
+      {% elif blk.type == 'acf/case-studies' %}
+        <section class="acf-section acf-section-alt acf-block-case-studies" id="case-studies">
+          <div class="acf-container">
+            <div class="acf-section-header">
+              <h2 class="acf-section-title">{{ blk.data.section_title|default:'Real-World Case Studies' }}</h2>
+              {% if blk.data.subtitle %}
+                <p class="acf-section-subtitle">{{ blk.data.subtitle }}</p>
+              {% endif %}
+            </div>
+            {% if case_studies %}
+              <div class="acf-case-studies-grid">
+                {% for case_study in case_studies %}
+                  <article class="acf-card acf-case-study-card">
+                    {% if case_study.featured_image %}
+                      <img class="acf-case-study-image" src="{{ case_study.featured_image.url }}" alt="{{ case_study.title }}" loading="lazy">
+                    {% else %}
+                      <span class="acf-case-study-icon" aria-hidden="true">{{ case_study.icon_emoji }}</span>
+                    {% endif %}
+                    {% if case_study.industry %}
+                      <span class="acf-card-badge">{{ case_study.industry }}</span>
+                    {% endif %}
+                    <h3 class="acf-card-title">{{ case_study.title }}</h3>
+                    <p class="acf-card-desc">{{ case_study.summary|default:case_study.solution|truncatewords:24 }}</p>
+                    <a class="acf-card-link" href="{{ case_study.get_absolute_url }}">Explore Case Study <span aria-hidden="true">→</span></a>
+                  </article>
+                {% endfor %}
+              </div>
+            {% endif %}
+            <div class="acf-case-studies-cta">
+              <a href="/case-studies/" class="acf-btn acf-btn-secondary">Browse All Case Studies</a>
             </div>
           </div>
         </section>
@@ -423,12 +518,15 @@
 
       {# ── 8. ACF / FAQ ACCORDION ── #}
       {% elif blk.type == 'acf/faq-accordion' %}
-        <section class="acf-section acf-block-faq">
+        <section class="acf-section acf-block-faq" id="faq">
           <div class="acf-container-narrow">
             <div class="acf-section-header">
               <h2 class="acf-section-title">
                 {{ blk.data.section_title|default:'Frequently Asked Questions' }}
               </h2>
+              {% if blk.data.subtitle %}
+                <p class="acf-section-subtitle">{{ blk.data.subtitle }}</p>
+              {% endif %}
             </div>
 
             <div class="acf-accordion-wrap">
@@ -502,7 +600,7 @@
 
       {# ── 10. ACF / RICH TEXT BODY ── #}
       {% elif blk.type == 'acf/rich-text' %}
-        <section class="acf-section acf-block-richtext">
+        <section class="acf-section acf-block-richtext" {% if page.is_front_page %}id="why-projectshub"{% endif %}>
           <div class="acf-container-narrow">
             {% if blk.data.heading %}
               <h2 class="acf-section-title" style="text-align:left;margin-bottom:20px;">
@@ -515,9 +613,53 @@
           </div>
         </section>
 
+      {# ── HOMEPAGE / AUDIENCE CARDS ── #}
+      {% elif blk.type == 'acf/audience-cards' %}
+        <section class="acf-section acf-block-audiences" id="about">
+          <div class="acf-container">
+            <div class="acf-section-header">
+              {% if blk.data.badge %}
+                <span class="acf-card-badge acf-audience-section-badge">{{ blk.data.badge }}</span>
+              {% endif %}
+              <h2 class="acf-section-title">{{ blk.data.section_title|default:'AI Projects & Custom Development Made Simple' }}</h2>
+              {% if blk.data.subtitle %}
+                <p class="acf-section-subtitle">{{ blk.data.subtitle }}</p>
+              {% endif %}
+            </div>
+            <div class="acf-audience-grid">
+              {% for card in audience_cards %}
+                <article class="acf-card acf-audience-card">
+                  {% if card.badge_text %}
+                    <span class="acf-card-badge">{{ card.badge_text }}</span>
+                  {% endif %}
+                  <h3 class="acf-card-title">{{ card.title }}</h3>
+                  {% if card.subtitle %}
+                    <p class="acf-audience-subtitle">{{ card.subtitle }}</p>
+                  {% endif %}
+                  <p class="acf-card-desc">{{ card.description }}</p>
+                  {% if card.features.all %}
+                    <ul class="acf-audience-features">
+                      {% for feature in card.features.all %}
+                        <li><a href="{{ feature.url }}">{{ feature.text }}<span aria-hidden="true">→</span></a></li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                  {% if card.cta_text %}
+                    <a class="acf-btn acf-btn-primary acf-audience-cta" href="{{ card.cta_url|default:'/contact/' }}">{{ card.cta_text }}</a>
+                  {% endif %}
+                </article>
+              {% empty %}
+                {% if blk.data.empty_message %}
+                  <p class="acf-section-subtitle">{{ blk.data.empty_message }}</p>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </section>
+
       {# ── 11. ACF / CONTACT & LEAD FORM ── #}
       {% elif blk.type == 'acf/contact-form' %}
-        <section class="acf-section acf-section-alt acf-block-contact">
+        <section class="acf-section acf-section-alt acf-block-contact" id="contact">
           <div class="acf-container">
             <div class="acf-contact-box">
               <div style="text-align:center;margin-bottom:32px;">

@@ -250,6 +250,7 @@ class LiveChatFlowTests(TestCase):
         self.assertNotEqual(restarted.json()['session']['session_id'], session['session_id'])
 
 
+@override_settings(STATICFILES_STORAGE='django.contrib.staticfiles.storage.StaticFilesStorage')
 class LiveChatSecurityTests(TestCase):
     def setUp(self):
         cache.clear()
@@ -297,9 +298,15 @@ class LiveChatSecurityTests(TestCase):
         self.client.force_login(su)
         res = self.client.get('/admin/live-chat/')
         self.assertEqual(res.status_code, 200)
-        self.assertContains(res, 'live-chat-admin.js')
+        self.assertRegex(
+            res.content.decode(),
+            r'live-chat-admin(?:\.[a-f0-9]+)?\.js',
+        )
 
     def test_widget_is_loaded_on_public_pages(self):
         res = self.client.get('/')
-        self.assertContains(res, 'js/live-chat.js')
+        self.assertRegex(
+            res.content.decode(),
+            r'js/live-chat(?:\.[a-f0-9]+)?\.js',
+        )
         self.assertNotContains(res, 'js/ai-chatbot.js')

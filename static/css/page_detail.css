@@ -63,6 +63,161 @@
   line-height: 1.65;
 }
 
+.acf-audience-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.acf-home-hero .acf-container {
+  max-width: 1320px;
+}
+
+.acf-home-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: clamp(36px, 5vw, 76px);
+}
+
+.acf-home-hero-copy {
+  min-width: 0;
+}
+
+.acf-home-hero .acf-hero-badge {
+  justify-content: flex-start;
+}
+
+.acf-home-hero .acf-hero-title {
+  font-size: clamp(38px, 4.6vw, 62px);
+  line-height: 1.08;
+  overflow-wrap: anywhere;
+}
+
+.acf-home-hero .acf-hero-subtitle {
+  max-width: 620px;
+  margin: 0 0 28px;
+}
+
+.acf-home-hero .acf-hero-ctas {
+  justify-content: flex-start;
+}
+
+.acf-home-hero-visual {
+  min-width: 0;
+}
+
+.acf-home-hero-visual .hero-visual-card {
+  max-width: 620px;
+  margin-left: auto;
+}
+
+@media (max-width: 991px) {
+  .acf-home-hero-grid {
+    grid-template-columns: 1fr;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .acf-home-hero-copy {
+    text-align: center;
+  }
+
+  .acf-home-hero .acf-hero-badge,
+  .acf-home-hero .acf-hero-ctas {
+    justify-content: center;
+  }
+
+  .acf-home-hero .acf-hero-subtitle {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .acf-home-hero-visual {
+    display: none;
+  }
+}
+
+.acf-audience-section-badge {
+  margin-bottom: 12px;
+}
+
+.acf-audience-card .acf-card-badge {
+  align-self: flex-start;
+}
+
+.acf-audience-subtitle {
+  margin: -4px 0 14px;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.acf-audience-features {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 22px;
+  padding: 0;
+  list-style: none;
+}
+
+.acf-audience-features a {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #f8fafc;
+  color: #334155;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.acf-audience-features a:hover {
+  background: #eff6ff;
+  color: #0369a1;
+}
+
+.acf-audience-cta {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+.acf-case-studies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 22px;
+}
+
+.acf-case-study-icon {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 14px;
+  place-items: center;
+  border-radius: 14px;
+  background: #eff6ff;
+  font-size: 26px;
+}
+
+.acf-case-study-image {
+  height: 150px;
+  margin: -26px -26px 20px;
+  width: calc(100% + 52px);
+  object-fit: cover;
+}
+
+.acf-case-studies-cta {
+  margin-top: 30px;
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .acf-audience-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ── 1. Hero Block Styles ── */
 .acf-block-hero {
   padding: clamp(70px, 10vw, 110px) 0 clamp(48px, 7vw, 72px);

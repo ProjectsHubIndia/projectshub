@@ -424,13 +424,17 @@
         // Trigger pill slider update
         window.dispatchEvent(new Event("updateNavPill"));
 
+        const topicImage = document.getElementById("topic-image");
         if (data.image) {
           document.getElementById("topic-image-container").style.display =
             "block";
-          document.getElementById("topic-image").src = data.image;
+          topicImage.src = data.image;
+          topicImage.alt = data.image_alt || (data.title ? data.title + " illustration" : "Topic illustration");
         } else {
           document.getElementById("topic-image-container").style.display =
             "none";
+          topicImage.removeAttribute("src");
+          topicImage.alt = "";
         }
 
         if (data.icon) {

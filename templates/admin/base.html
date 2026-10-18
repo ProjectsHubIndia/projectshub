@@ -9,8 +9,8 @@
   <!-- WordPress System Typography & Icon Fonts -->
   <link rel="stylesheet" href="{% static 'admin/css/base.css' %}">
   <link rel="stylesheet" href="{% static 'admin/css/responsive.css' %}">
-  <link rel="stylesheet" href="{% static 'css/wp-admin.css' %}?v=12">
-  <link rel="stylesheet" href="{% static 'css/django-admin-navigation.css' %}?v=3">
+  <link rel="stylesheet" href="{% static 'css/wp-admin.css' %}?v=13">
+  <link rel="stylesheet" href="{% static 'css/django-admin-navigation.css' %}?v=4">
   {% block extrastyle %}{% endblock %}
   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'image/Favicon-new/favicon-32x32.png' %}">
   
@@ -158,36 +158,57 @@
         </li>
 
         <li class="admin-nav-search">
-          <label for="admin-nav-search">Find a section</label>
-          <input type="search" id="admin-nav-search" placeholder="Search admin..." autocomplete="off">
+          <label for="admin-nav-search">Find a section or record</label>
+          <input type="search" id="admin-nav-search" placeholder="Search pages, projects, settings..." autocomplete="off">
         </li>
 
         <li class="admin-nav-caption">Content</li>
         {% admin_nav_groups as nav_groups %}
         {% for group in nav_groups %}
-          <li class="admin-nav-app">
-            <details>
-              <summary title="{{ group.label }}" aria-label="{{ group.label }}">
-                <span class="admin-nav-app-icon" aria-hidden="true">{{ group.icon }}</span>
-                <span class="admin-nav-app-label">{{ group.label }}</span>
-                <span class="admin-nav-chevron" aria-hidden="true">›</span>
-              </summary>
-              <ul class="admin-nav-models">
-                {% for model in group.items %}
-                  <li class="admin-nav-model">
-                    {% if model.admin_url %}
-                      <a class="admin-nav-link" href="{{ model.admin_url }}">{{ model.name }}</a>
-                    {% else %}
-                      <span class="admin-nav-link disabled">{{ model.name }}</span>
-                    {% endif %}
-                    {% if model.add_url %}
-                      <a class="admin-nav-add" href="{{ model.add_url }}" aria-label="Add {{ model.name }}" title="Add {{ model.name }}">+</a>
-                    {% endif %}
-                  </li>
-                {% endfor %}
-              </ul>
-            </details>
-          </li>
+          {% if group.items|length == 1 %}
+            {% with model=group.items.0 %}
+              <li class="admin-nav-app admin-nav-single">
+                {% if model.admin_url %}
+                  <a class="admin-nav-single-link admin-nav-utility-link" href="{{ model.admin_url }}" title="{{ model.name }}" aria-label="{{ model.name }}">
+                    <span class="admin-nav-app-icon" aria-hidden="true">{{ group.icon }}</span>
+                    <span class="admin-nav-app-label">{{ model.name }}</span>
+                  </a>
+                {% else %}
+                  <span class="admin-nav-single-link disabled">
+                    <span class="admin-nav-app-icon" aria-hidden="true">{{ group.icon }}</span>
+                    <span class="admin-nav-app-label">{{ model.name }}</span>
+                  </span>
+                {% endif %}
+                {% if model.add_url %}
+                  <a class="admin-nav-add" href="{{ model.add_url }}" aria-label="Add {{ model.name }}" title="Add {{ model.name }}">+</a>
+                {% endif %}
+              </li>
+            {% endwith %}
+          {% else %}
+            <li class="admin-nav-app">
+              <details>
+                <summary title="{{ group.label }}" aria-label="{{ group.label }}">
+                  <span class="admin-nav-app-icon" aria-hidden="true">{{ group.icon }}</span>
+                  <span class="admin-nav-app-label">{{ group.label }}</span>
+                  <span class="admin-nav-chevron" aria-hidden="true">›</span>
+                </summary>
+                <ul class="admin-nav-models">
+                  {% for model in group.items %}
+                    <li class="admin-nav-model">
+                      {% if model.admin_url %}
+                        <a class="admin-nav-link" href="{{ model.admin_url }}">{{ model.name }}</a>
+                      {% else %}
+                        <span class="admin-nav-link disabled">{{ model.name }}</span>
+                      {% endif %}
+                      {% if model.add_url %}
+                        <a class="admin-nav-add" href="{{ model.add_url }}" aria-label="Add {{ model.name }}" title="Add {{ model.name }}">+</a>
+                      {% endif %}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </details>
+            </li>
+          {% endif %}
         {% endfor %}
 
         <li class="admin-nav-caption">Workspace tools</li>
@@ -418,6 +439,15 @@
             if (otherSection !== section) otherSection.open = false;
           });
         });
+      });
+
+      document.querySelectorAll('#adminmenu .admin-nav-single-link[href]').forEach(function(link) {
+        var href = link.getAttribute('href');
+        if (href && currentPath.indexOf(href) === 0) {
+          link.classList.add('is-current');
+          link.setAttribute('aria-current', 'page');
+          link.parentElement.classList.add('current');
+        }
       });
 
       var navSearch = document.getElementById('admin-nav-search');

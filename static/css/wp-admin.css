@@ -3541,3 +3541,50 @@ label.required::after,
   background: #2271b1 !important;
   color: #ffffff !important;
 }
+
+/* Give dual-list controls the full form-row width instead of squeezing them
+   beside their label. */
+.form-row:has(.selector) > .flex-container {
+  display: block !important;
+}
+.form-row:has(.selector) .field-label-group {
+  min-width: 0 !important;
+  max-width: none !important;
+  margin-bottom: 8px !important;
+}
+.form-row:has(.selector) .field-widget-wrapper,
+.form-row:has(.selector) .related-widget-wrapper {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+.form-row:has(.selector) .related-widget-wrapper {
+  float: none !important;
+}
+.form-row:has(.selector) .selector {
+  max-width: 100% !important;
+}
+.form-row:has(.selector) .selector .selector-available,
+.form-row:has(.selector) .selector .selector-chosen {
+  min-width: 0 !important;
+}
+
+@media (max-width: 600px) {
+  .form-row:has(.selector) .selector {
+    flex-wrap: wrap !important;
+  }
+  .form-row:has(.selector) .selector .selector-available,
+  .form-row:has(.selector) .selector .selector-chosen {
+    flex: 1 1 100% !important;
+  }
+  .form-row:has(.selector) .selector .selector-available {
+    order: 1 !important;
+  }
+  .form-row:has(.selector) .selector .selector-chooser {
+    order: 2 !important;
+    flex: 0 0 100% !important;
+    flex-direction: row !important;
+  }
+  .form-row:has(.selector) .selector .selector-chosen {
+    order: 3 !important;
+  }
+}
