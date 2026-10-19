@@ -105,6 +105,139 @@ class SiteSettings(models.Model):
         return obj
 
 
+class MenuConfig(models.Model):
+    """Global menu configuration for visual style and logo layout (singleton)."""
+    VISUAL_STYLE_CHOICES = [
+        ('standard', 'Standard Navigation'),
+        ('floating_pill', 'Floating Pill Style'),
+    ]
+    
+    LOGO_LAYOUT_CHOICES = [
+        ('logo_left', 'Logo Left'),
+        ('logo_center', 'Logo Center'),
+    ]
+    
+    visual_style = models.CharField(
+        max_length=30,
+        choices=VISUAL_STYLE_CHOICES,
+        default='standard',
+        help_text='Menu visual style for frontend display'
+    )
+    logo_layout = models.CharField(
+        max_length=30,
+        choices=LOGO_LAYOUT_CHOICES,
+        default='logo_left',
+        help_text='Logo positioning in navigation bar'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name = 'Menu Configuration'
+        verbose_name_plural = 'Menu Configuration'
+    
+    def __str__(self):
+        return 'Menu Configuration'
+    
+    @classmethod
+    def get_config(cls):
+        """Return singleton menu configuration instance."""
+        obj, _ = cls.objects.get_or_create(id=1)
+        return obj
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        from django.core.cache import cache
+        cache.delete('menu_config')
+
+
+class Menu(models.Model):
+    """Named menu container (e.g., 'Header Menu', 'Footer Menu', 'QA Menu')."""
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=120, unique=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    order = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['order', 'name']
+        verbose_name = 'Menu'
+        verbose_name_plural = 'Menus'
+    
+    def __str__(self):
+        return self.name
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.name) or f"menu-{self.pk or 'item'}"
+            unique_slug = base_slug
+            num = 1
+            while Menu.objects.filter(slug=unique_slug).exclude(pk=self.pk).exists():
+                unique_slug = f"{base_slug}-{num}"
+                num += 1
+            self.slug = unique_slug
+        super().save(*args, **kwargs)
+        from django.core.cache import cache
+        cache.delete('admin_menus')
+
+
+class MenuItem(models.Model):
+    """Menu item with support for unlimited nesting via parent FK."""
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, related_name='items')
+    parent = models.ForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='children',
+        help_text='Parent item for nested sub-menus'
+    )
+    label = models.CharField(max_length=120)
+    destination = models.CharField(
+        max_length=255,
+        help_text='URL path or external link'
+    )
+    icon = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text='Emoji, icon class, or SimpleIcon slug'
+    )
+    is_dropdown = models.BooleanField(
+        default=False,
+        help_text='Mark as dropdown container'
+    )
+    order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['order']
+        unique_together = [('menu', 'label', 'parent')]
+        verbose_name = 'Menu Item'
+        verbose_name_plural = 'Menu Items'
+    
+    def __str__(self):
+        parent_indicator = f" (child of {self.parent.label})" if self.parent else ""
+        return f"{self.menu.name}: {self.label}{parent_indicator}"
+    
+    def get_depth(self):
+        """Return nesting level (0=root, 1=first child, 2=grandchild, etc.)."""
+        depth = 0
+        current = self.parent
+        while current:
+            depth += 1
+            current = current.parent
+        return depth
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        from django.core.cache import cache
+        cache.delete('admin_menus')
+        cache.delete(f'menu_{self.menu.slug}')
+
+
 class AudienceCard(models.Model):
     AUDIENCE_CHOICES = [
         ('students', 'Students'),
@@ -162,6 +295,8 @@ class AudienceCardFeature(models.Model):
         return self.text
 
 
+# DEPRECATED: Use Menu and MenuItem models instead.
+# Kept for backward compatibility with existing templates and views.
 class NavigationItem(models.Model):
     """Dynamic navigation link or mega-menu section with full UI/UX control."""
     GROUP_CHOICES = [
