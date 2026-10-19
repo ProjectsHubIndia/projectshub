@@ -2415,6 +2415,51 @@ def admin_nav_menus_view(request):
 
 
 @staff_member_required(login_url='admin:login')
+def menu_preview(request, menu_id):
+    """
+    Preview menu structure with nested items and visual style display.
+    Shows complete menu hierarchy with nesting and configuration options.
+    """
+    from django.shortcuts import render, get_object_or_404
+    from .models import Menu, MenuItem, MenuConfig
+    
+    menu = get_object_or_404(Menu, pk=menu_id)
+    config = MenuConfig.get_config()
+    
+    def build_tree(parent=None):
+        """Recursively build nested menu structure."""
+        items = MenuItem.objects.filter(
+            menu=menu, 
+            parent=parent, 
+            is_active=True
+        ).order_by('order')
+        result = []
+        for item in items:
+            result.append({
+                'id': item.id,
+                'label': item.label,
+                'destination': item.destination,
+                'icon': item.icon,
+                'is_dropdown': item.is_dropdown,
+                'depth': item.get_depth(),
+                'children': build_tree(item)
+            })
+        return result
+    
+    items_tree = build_tree()
+    
+    context = {
+        'title': f'Preview: {menu.name}',
+        'menu': menu,
+        'config': config,
+        'items_tree': items_tree,
+        'visual_style': config.visual_style,
+        'logo_layout': config.logo_layout,
+    }
+    return render(request, 'admin/core/menu_preview.html', context)
+
+
+@staff_member_required(login_url='admin:login')
 def admin_plugins_view(request):
     """
     WordPress Plugins > Installed Plugins (plugins.php emulation).

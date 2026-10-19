@@ -1,0 +1,36 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}Preview: {{ menu.name }} | ProjectsHub Admin{% endblock %}
+{% block content_title %}Menu Preview: {{ menu.name }}{% endblock %}
+
+{% block content %}
+<div class="menu-admin-toolbar" style="margin-bottom:20px;padding:16px;background:#f8f9fa;border-radius:8px;">
+  <div style="display:flex;justify-content:space-between;align-items:center;">
+    <div class="style-badges">
+      <span class="visual-style-badge" style="display:inline-block;padding:6px 12px;border-radius:16px;font-size:12px;font-weight:600;background:#e0f2fe;color:#0284c7;margin-right:8px;">
+        Style: {{ config.get_visual_style_display }}
+      </span>
+      <span class="logo-layout-indicator" style="display:inline-block;padding:6px 12px;border-radius:16px;font-size:12px;font-weight:600;background:#ecfdf5;color:#059669;">
+        Logo: {{ config.get_logo_layout_display }}
+      </span>
+    </div>
+    <div class="toolbar-actions">
+      <a href="{% url 'admin:core_menu_change' menu.id %}" class="button">Edit Menu</a>
+      <a href="{% url 'admin:core_menu_changelist' %}" class="button">Back to Menu List</a>
+    </div>
+  </div>
+</div>
+
+<div class="menu-preview-container" style="max-width:1200px;margin:20px auto;padding:24px;background:#f8f9fa;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+  <h3>Menu Structure</h3>
+  {% if items_tree %}
+    {% include "admin/core/menu_preview_recursive.html" with items=items_tree %}
+  {% else %}
+    <p style="padding:30px;text-align:center;color:#646970;background:#fff;border:1px dashed #c3c4c7;border-radius:4px;">
+      No items in this menu yet.
+    </p>
+  {% endif %}
+</div>
+
+{% endblock %}

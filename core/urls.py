@@ -4,6 +4,9 @@ from . import views, chat_views
 urlpatterns = [
     # Health Check
     path('health/', views.health_check, name='health_check'),
+    
+    # Admin Custom Views
+    path('admin/menu-preview/<int:menu_id>/', views.menu_preview, name='admin_menu_preview'),
 
     # Pages
     path('', views.index, name='index'),
