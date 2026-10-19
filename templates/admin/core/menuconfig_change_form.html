@@ -1,0 +1,236 @@
+{% extends "admin/change_form.html" %}
+{% load static %}
+
+{% block extrahead %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'admin/css/menu-admin.css' %}">
+<style>
+    /* Enhanced visual style previews */
+    .form-row.field-visual_style,
+    .form-row.field-logo_layout {
+        margin-bottom: 24px;
+    }
+    
+    .radiolist label {
+        display: block;
+        margin: 12px 0;
+        padding: 16px;
+        border: 2px solid #dcdcde;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: white;
+    }
+    
+    .radiolist label:hover {
+        border-color: #0073aa;
+        box-shadow: 0 2px 8px rgba(0,115,170,0.1);
+    }
+    
+    .radiolist input[type="radio"]:checked + label,
+    .radiolist label:has(input[type="radio"]:checked) {
+        border-color: #0073aa;
+        background: #f0f9ff;
+        box-shadow: 0 0 0 3px rgba(0,115,170,0.1);
+    }
+    
+    .style-preview-visual {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+    
+    .style-mockup {
+        width: 200px;
+        height: 60px;
+        border-radius: 6px;
+        background: #f0f0f1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        color: #646970;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .style-mockup.standard {
+        background: linear-gradient(to bottom, #2c3338 0%, #2c3338 40%, #f6f7f7 40%, #f6f7f7 100%);
+    }
+    
+    .style-mockup.standard::after {
+        content: 'Home  About  Services  Contact';
+        position: absolute;
+        top: 10px;
+        color: white;
+        font-size: 9px;
+        font-weight: 600;
+    }
+    
+    .style-mockup.floating_pill {
+        background: #f6f7f7;
+    }
+    
+    .style-mockup.floating_pill::after {
+        content: '';
+        position: absolute;
+        width: 180px;
+        height: 32px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+    
+    .style-mockup.floating_pill::before {
+        content: 'Home  About  Services';
+        position: absolute;
+        z-index: 1;
+        font-size: 9px;
+        font-weight: 600;
+        color: #2c3338;
+    }
+    
+    .style-mockup.logo-left {
+        justify-content: flex-start;
+        padding-left: 12px;
+    }
+    
+    .style-mockup.logo-left::before {
+        content: '◆ Logo';
+        color: #0073aa;
+        font-weight: 700;
+    }
+    
+    .style-mockup.logo-left::after {
+        content: 'Home  About  Contact';
+        position: absolute;
+        right: 12px;
+        font-size: 9px;
+    }
+    
+    .style-mockup.logo-center {
+        flex-direction: column;
+        padding-top: 8px;
+    }
+    
+    .style-mockup.logo-center::before {
+        content: '◆ Logo';
+        color: #0073aa;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+    
+    .style-mockup.logo-center::after {
+        content: 'Home  About  Services  Contact';
+        font-size: 9px;
+    }
+    
+    .style-details {
+        flex: 1;
+    }
+    
+    .style-title {
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 4px;
+        color: #2c3338;
+    }
+    
+    .style-description {
+        font-size: 12px;
+        color: #646970;
+        line-height: 1.5;
+    }
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Enhance visual style radio buttons with previews
+        const visualStyleField = document.querySelector('.form-row.field-visual_style');
+        if (visualStyleField) {
+            const radioList = visualStyleField.querySelector('.radiolist, ul');
+            if (radioList) {
+                radioList.querySelectorAll('label').forEach(label => {
+                    const input = label.querySelector('input[type="radio"]');
+                    const value = input ? input.value : '';
+                    const text = label.textContent.trim();
+                    
+                    // Create enhanced label with visual preview
+                    const preview = document.createElement('div');
+                    preview.className = 'style-preview-visual';
+                    
+                    const mockup = document.createElement('div');
+                    mockup.className = `style-mockup ${value}`;
+                    
+                    const details = document.createElement('div');
+                    details.className = 'style-details';
+                    
+                    const title = document.createElement('div');
+                    title.className = 'style-title';
+                    title.textContent = text;
+                    
+                    const desc = document.createElement('div');
+                    desc.className = 'style-description';
+                    if (value === 'standard') {
+                        desc.textContent = 'Traditional horizontal menu bar with dropdowns';
+                    } else if (value === 'floating_pill') {
+                        desc.textContent = 'Modern rounded pill-shaped menu items';
+                    }
+                    
+                    details.appendChild(title);
+                    details.appendChild(desc);
+                    preview.appendChild(mockup);
+                    preview.appendChild(details);
+                    
+                    // Replace label content but keep input
+                    label.innerHTML = '';
+                    label.appendChild(input);
+                    label.appendChild(preview);
+                });
+            }
+        }
+        
+        // Enhance logo layout radio buttons
+        const logoLayoutField = document.querySelector('.form-row.field-logo_layout');
+        if (logoLayoutField) {
+            const radioList = logoLayoutField.querySelector('.radiolist, ul');
+            if (radioList) {
+                radioList.querySelectorAll('label').forEach(label => {
+                    const input = label.querySelector('input[type="radio"]');
+                    const value = input ? input.value : '';
+                    const text = label.textContent.trim();
+                    
+                    const preview = document.createElement('div');
+                    preview.className = 'style-preview-visual';
+                    
+                    const mockup = document.createElement('div');
+                    mockup.className = `style-mockup ${value}`;
+                    
+                    const details = document.createElement('div');
+                    details.className = 'style-details';
+                    
+                    const title = document.createElement('div');
+                    title.className = 'style-title';
+                    title.textContent = text;
+                    
+                    const desc = document.createElement('div');
+                    desc.className = 'style-description';
+                    if (value === 'logo_left') {
+                        desc.textContent = 'Logo aligned to the left with menu items on the right';
+                    } else if (value === 'logo_center') {
+                        desc.textContent = 'Logo centered above menu items';
+                    }
+                    
+                    details.appendChild(title);
+                    details.appendChild(desc);
+                    preview.appendChild(mockup);
+                    preview.appendChild(details);
+                    
+                    label.innerHTML = '';
+                    label.appendChild(input);
+                    label.appendChild(preview);
+                });
+            }
+        }
+    });
+</script>
+{% endblock %}

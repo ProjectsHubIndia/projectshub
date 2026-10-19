@@ -1,0 +1,106 @@
+{% extends "admin/change_form.html" %}
+{% load static %}
+
+{% block extrahead %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'admin/css/menu-admin.css' %}">
+<script src="{% static 'admin/js/menu-admin.js' %}"></script>
+<style>
+    /* Enhanced inline form styling */
+    .inline-related {
+        position: relative;
+        margin-bottom: 16px;
+        border: 1px solid #dcdcde;
+        border-radius: 6px;
+        padding: 12px;
+        background: #fff;
+        transition: all 0.2s;
+    }
+    
+    .inline-related:hover {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    
+    .inline-related h3 {
+        margin-top: 0;
+        padding: 8px 12px;
+        background: #f6f7f7;
+        border-radius: 4px;
+        cursor: move;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    /* Depth-based indentation */
+    .inline-related[data-depth="1"] {
+        margin-left: 24px;
+        border-left: 3px solid #0073aa;
+    }
+    
+    .inline-related[data-depth="2"] {
+        margin-left: 48px;
+        border-left: 3px solid #0ea5e9;
+    }
+    
+    .inline-related[data-depth="3"] {
+        margin-left: 72px;
+        border-left: 3px solid #22c55e;
+    }
+    
+    .inline-related[data-depth="4"] {
+        margin-left: 96px;
+        border-left: 3px solid #eab308;
+    }
+    
+    /* Help text for nesting */
+    .inline-group::before {
+        content: 'Drag items to reorder. Use the Parent field to create nested sub-menus. Items are ordered numerically.';
+        display: block;
+        padding: 12px;
+        margin-bottom: 12px;
+        background: #e0f2fe;
+        border-left: 3px solid #0284c7;
+        border-radius: 4px;
+        color: #075985;
+        font-size: 13px;
+    }
+    
+    /* Drag indicator */
+    .dragging {
+        opacity: 0.5;
+        background: #f0f0f1;
+    }
+    
+    .drag-over {
+        border-top: 3px solid #0073aa;
+    }
+</style>
+{% endblock %}
+
+{% block after_field_sets %}
+{{ block.super }}
+<script>
+    // Additional initialization specific to menu change form
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Menu change form loaded - drag-and-drop enabled');
+        
+        // Add visual feedback for parent selection
+        const parentSelects = document.querySelectorAll('select[name*="-parent"]');
+        parentSelects.forEach(select => {
+            select.addEventListener('change', function() {
+                const row = this.closest('.inline-related');
+                if (row) {
+                    if (this.value) {
+                        row.style.borderLeftWidth = '3px';
+                        row.style.borderLeftStyle = 'solid';
+                    } else {
+                        row.style.borderLeftWidth = '1px';
+                        row.style.borderLeftStyle = 'solid';
+                    }
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

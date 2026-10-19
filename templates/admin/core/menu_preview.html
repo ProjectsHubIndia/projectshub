@@ -4,6 +4,11 @@
 {% block title %}Preview: {{ menu.name }} | ProjectsHub Admin{% endblock %}
 {% block content_title %}Menu Preview: {{ menu.name }}{% endblock %}
 
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'admin/css/menu-admin.css' %}">
+<script src="{% static 'admin/js/menu-admin.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 <div class="menu-admin-toolbar" style="margin-bottom:20px;padding:16px;background:#f8f9fa;border-radius:8px;">
   <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -16,13 +21,15 @@
       </span>
     </div>
     <div class="toolbar-actions">
+      <button type="button" class="button style-switch-btn" onclick="previewStyleSwitch('standard')">Preview: Standard</button>
+      <button type="button" class="button style-switch-btn" onclick="previewStyleSwitch('floating_pill')">Preview: Floating Pill</button>
       <a href="{% url 'admin:core_menu_change' menu.id %}" class="button">Edit Menu</a>
       <a href="{% url 'admin:core_menu_changelist' %}" class="button">Back to Menu List</a>
     </div>
   </div>
 </div>
 
-<div class="menu-preview-container" style="max-width:1200px;margin:20px auto;padding:24px;background:#f8f9fa;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+<div class="menu-preview-container" data-style="{{ visual_style }}" data-layout="{{ logo_layout }}">
   <h3>Menu Structure</h3>
   {% if items_tree %}
     {% include "admin/core/menu_preview_recursive.html" with items=items_tree %}
