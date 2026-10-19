@@ -152,6 +152,7 @@ def health_check(request):
     db_ok = True
     try:
         with connection.cursor() as cursor:
+            # Safe: Hardcoded health check query with no user input
             cursor.execute("SELECT 1")
     except Exception:
         db_ok = False
@@ -672,6 +673,7 @@ def generate_captcha_svg(code):
         )
         
     return (
+        # risk-firewall-ignore-next-line network/insecure-http-url
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">'
         f'<rect width="{width}" height="{height}" fill="#f1f5f9" rx="10" />'
         f'{"".join(lines_svg)}'
@@ -716,6 +718,13 @@ def contact_page(request):
 @require_POST
 def contact_submit(request):
     """Handle contact form submission with lead recording & email notification."""
+    # Rate limiting to prevent spam
+    if _rate_limited(request, 'contact_rate', limit=5, window=3600):
+        return JsonResponse({
+            'success': False,
+            'message': 'Too many submissions. Please try again in an hour.'
+        }, status=429)
+    
     try:
         data = _parse_request_data(request)
         name = (data.get('full_name') or data.get('name') or '').strip()
@@ -1067,6 +1076,7 @@ Use the linked pages as the source of truth for current content and offerings.
 def sitemap_xml(request):
     base_url = get_base_url(request)
     xml = ['<?xml version="1.0" encoding="UTF-8"?>']
+    # risk-firewall-ignore-next-line network/insecure-http-url
     xml.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
 
     static_pages = [

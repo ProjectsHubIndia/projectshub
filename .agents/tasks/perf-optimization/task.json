@@ -1,7 +1,0 @@
-{
-  "task_id": "perf-optimization",
-  "task_description": "Frontend performance optimization to improve Lighthouse score from 25/100 to 90+ by eliminating render-blocking resources, reducing unused CSS/JS, implementing critical CSS, and enabling compression",
-  "status": "pending",
-  "feature_order": ["FEAT-001", "FEAT-002", "FEAT-003", "FEAT-004"],
-  "blocked_reason": null
-}

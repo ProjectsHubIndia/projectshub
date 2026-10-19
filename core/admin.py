@@ -1,9 +1,10 @@
 import csv
+import sys
 from django.contrib import admin
-from django.contrib.admin.sites import AdminSite
+from django.contrib.admin.sites import AdminSite as BaseAdminSite
 from django.contrib.auth.models import User, Permission
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.http import HttpResponse
 from django.utils.html import format_html
 from .models import (
@@ -26,12 +27,102 @@ from .models import (
     Asset,
 )
 
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# CUSTOM ADMIN SITE WITH DASHBOARD CONTEXT
+# ═══════════════════════════════════════════════════════════════════════════════
+
+class ProjectsHubAdminSite(BaseAdminSite):
+    """Custom admin site that injects dashboard statistics and context."""
+    site_header = "ProjectsHub Administration"
+    site_title = "ProjectsHub Admin"
+    index_title = "ProjectsHub Control Dashboard"
+    
+    def each_context(self, request):
+        """Inject custom context for dashboard template variables."""
+        context = super().each_context(request)
+        
+        # Admin statistics for dashboard KPIs
+        context['admin_stats'] = {
+            'total_projects': Project.objects.count(),
+            'active_projects': Project.objects.filter(is_active=True).count(),
+            'published_blogs': BlogPost.objects.filter(is_published=True, is_active=True).count(),
+            'new_inquiries': ContactInquiry.objects.filter(status='new').count(),
+        }
+        
+        # Model counts
+        context['model_counts'] = {
+            'page': Page.objects.count(),
+        }
+        
+        # Recent content for activity feed
+        context['recent_blogs'] = list(BlogPost.objects.filter(is_active=True).order_by('-created_at')[:5])
+        context['recent_projects'] = list(Project.objects.filter(is_active=True).order_by('-created_at')[:5])
+        context['recent_inquiries'] = list(ContactInquiry.objects.order_by('-created_at')[:5])
+        
+        # System information
+        from django.conf import settings
+        from django.db import connection
+        context['system_info'] = {
+            'django_version': f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
+            'python_version': f"{sys.version_info.major}.{sys.version_info.minor}",
+            'db_engine': connection.vendor.title() if connection.vendor else 'Unknown',
+            'debug_mode': settings.DEBUG,
+        }
+        
+        # Live chat waiting count (placeholder for future feature)
+        context['live_chat_waiting'] = 0
+        
+        return context
+
+
+# Customize default admin site (don't replace it, models are already registered)
 admin.site.site_header = "ProjectsHub Administration"
 admin.site.site_title = "ProjectsHub Admin"
 admin.site.index_title = "ProjectsHub Control Dashboard"
 
-# Removed custom admin index to prevent recursion issues
-# The default Django admin index works fine
+# Store the original index method
+_original_admin_index = admin.site.index
+
+def enhanced_admin_index(self, request, extra_context=None):
+    """Enhanced admin index with dashboard statistics."""
+    extra_context = extra_context or {}
+    
+    # Admin statistics for dashboard KPIs
+    extra_context['admin_stats'] = {
+        'total_projects': Project.objects.count(),
+        'active_projects': Project.objects.filter(is_active=True).count(),
+        'published_blogs': BlogPost.objects.filter(is_published=True, is_active=True).count(),
+        'new_inquiries': ContactInquiry.objects.filter(status='new').count(),
+    }
+    
+    # Model counts
+    extra_context['model_counts'] = {
+        'page': Page.objects.count(),
+    }
+    
+    # Recent content for activity feed
+    extra_context['recent_blogs'] = list(BlogPost.objects.filter(is_active=True).order_by('-created_at')[:5])
+    extra_context['recent_projects'] = list(Project.objects.filter(is_active=True).order_by('-created_at')[:5])
+    extra_context['recent_inquiries'] = list(ContactInquiry.objects.order_by('-created_at')[:5])
+    
+    # System information
+    from django.conf import settings
+    from django.db import connection
+    extra_context['system_info'] = {
+        'django_version': f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
+        'python_version': f"{sys.version_info.major}.{sys.version_info.minor}",
+        'db_engine': connection.vendor.title() if connection.vendor else 'Unknown',
+        'debug_mode': settings.DEBUG,
+    }
+    
+    # Live chat waiting count (placeholder for future feature)
+    extra_context['live_chat_waiting'] = 0
+    
+    return _original_admin_index(request, extra_context)
+
+# Replace admin.site.index with enhanced version
+admin.site.index = lambda request, extra_context=None: enhanced_admin_index(admin.site, request, extra_context)
 
 
 def export_as_csv_action(description="Export selected to CSV", fields=None, exclude=None):
@@ -54,6 +145,55 @@ def export_as_csv_action(description="Export selected to CSV", fields=None, excl
         return response
     export_as_csv.short_description = description
     return export_as_csv
+
+
+def export_as_excel_action(description="Export selected to Excel", fields=None, exclude=None):
+    """Reusable Excel export action generator for any ModelAdmin."""
+    def export_as_excel(modeladmin, request, queryset):
+        try:
+            from openpyxl import Workbook
+            from openpyxl.styles import Font
+        except ImportError:
+            from django.contrib import messages
+            messages.error(
+                request,
+                "Excel export requires openpyxl. Install it with: pip install openpyxl",
+                extra_tags='safe'
+            )
+            return None
+        
+        opts = modeladmin.model._meta
+        field_names = fields or [f.name for f in opts.fields if not exclude or f.name not in exclude]
+        
+        # Create workbook
+        wb = Workbook()
+        ws = wb.active
+        ws.title = opts.model_name[:31]  # Excel sheet name limit
+        
+        # Header row with bold font
+        header_font = Font(bold=True)
+        for col_num, field in enumerate(field_names, 1):
+            cell = ws.cell(row=1, column=col_num, value=field)
+            cell.font = header_font
+        
+        # Data rows
+        for row_num, obj in enumerate(queryset, 2):
+            for col_num, field in enumerate(field_names, 1):
+                val = getattr(obj, field, '')
+                if callable(val):
+                    val = val()
+                ws.cell(row=row_num, column=col_num, value=str(val) if val is not None else '')
+        
+        # Create response
+        response = HttpResponse(
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+        response['Content-Disposition'] = f'attachment; filename={opts.model_name}_export.xlsx'
+        wb.save(response)
+        return response
+    
+    export_as_excel.short_description = description
+    return export_as_excel
 
 
 # ── Inlines ───────────────────────────────────────────────────────────────────
@@ -1399,13 +1539,9 @@ class ChatbotMessageAdmin(admin.ModelAdmin):
 
 # ── User Management & Permissions ─────────────────────────────────────────────
 
-try:
-    admin.site.unregister(User)
-except admin.sites.NotRegistered:
-    pass
+# Note: User is not pre-registered in our custom admin site, so no need to unregister
 
 
-@admin.register(User)
 class CustomUserAdmin(BaseUserAdmin):
     list_display = ('user_badge', 'email', 'role_badge', 'groups_summary', 'permissions_badge', 'is_active', 'last_login')
     list_filter = ('is_superuser', 'is_staff', 'is_active', 'groups')
@@ -1987,3 +2123,11 @@ class AssetAdmin(admin.ModelAdmin):
 
 # All models are registered using @admin.register decorators above
 # No need for custom admin site - using Django's default admin.site
+
+
+# Register CustomUserAdmin manually after unregistering the default
+try:
+    admin.site.unregister(User)
+except admin.sites.NotRegistered:
+    pass
+admin.site.register(User, CustomUserAdmin)

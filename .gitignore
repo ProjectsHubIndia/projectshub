@@ -52,3 +52,9 @@ vibe_images/
 
 # Admin safety snapshots (contain customer data)
 backups/
+
+# Agent task files
+.agents/tasks/
+
+# Temporary directories
+.kilo/

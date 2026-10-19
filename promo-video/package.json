@@ -1,0 +1,16 @@
+{
+  "name": "projectshub-promo-video",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "studio": "remotion studio src/index.jsx",
+    "render": "remotion render src/index.jsx ProjectHubPromo out/projectshub-promo.mp4 --codec=h264 --crf=18"
+  },
+  "dependencies": {
+    "@fontsource-variable/space-grotesk": "^5.3.0",
+    "@remotion/cli": "4.0.536",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "remotion": "4.0.536"
+  }
+}

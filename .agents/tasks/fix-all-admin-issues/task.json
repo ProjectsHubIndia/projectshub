@@ -1,7 +1,0 @@
-{
-  "task_id": "fix-all-admin-issues",
-  "task_description": "Fix all critical Django issues including security warnings, admin interface errors, code quality problems, and deployment readiness gaps",
-  "status": "pending",
-  "feature_order": ["FEAT-001", "FEAT-002", "FEAT-003", "FEAT-004"],
-  "blocked_reason": null
-}

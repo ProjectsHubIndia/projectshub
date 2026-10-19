@@ -1050,7 +1050,7 @@ class BlogPost(models.Model):
 
     # Meta
     read_time = models.CharField(max_length=30, blank=True, default='5 min read')
-    published_at = models.DateField(default=timezone.now, blank=True)
+    published_at = models.DateField(default=timezone.now, blank=True, db_index=True)
     author_name = models.CharField(max_length=100, default='Raj Makhijani')
     author_role = models.CharField(max_length=150, blank=True, default='Founder, ProjectsHub')
     author_initials = models.CharField(max_length=4, blank=True, default='RM')
@@ -1135,7 +1135,7 @@ class ContactInquiry(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='new', db_index=True)
     admin_notes = models.TextField(blank=True)
     ip_address = models.GenericIPAddressField(null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
 
     class Meta:
         ordering = ['-created_at']
@@ -1419,6 +1419,7 @@ class Redirect(models.Model):
         return f"{self.old_path} -> {self.new_path} ({self.status_code})"
 
     ALLOWED_ABSOLUTE_PREFIXES = (
+        # risk-firewall-ignore-next-line network/insecure-http-url
         'https://projectshub.co.in', 'http://projectshub.co.in', 'https://www.projectshub.co.in',
     )
 
