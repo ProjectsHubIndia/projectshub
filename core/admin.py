@@ -360,6 +360,7 @@ class SiteSettingsAdmin(admin.ModelAdmin):
 @admin.register(MenuConfig)
 class MenuConfigAdmin(admin.ModelAdmin):
     """Singleton admin for menu configuration (visual style and logo layout)."""
+    change_form_template = 'admin/core/menuconfig_change_form.html'
     list_display = ['visual_style', 'logo_layout', 'updated_at']
     readonly_fields = ['created_at', 'updated_at']
     
@@ -409,6 +410,7 @@ class MenuItemInline(admin.StackedInline):
 @admin.register(Menu)
 class MenuAdmin(admin.ModelAdmin):
     """Admin interface for Menu model with nested item management."""
+    change_form_template = 'admin/core/menu_change_form.html'
     list_display = ['name', 'slug', 'item_count', 'is_active', 'order', 'preview_link']
     list_editable = ['is_active', 'order']
     list_filter = ['is_active']
