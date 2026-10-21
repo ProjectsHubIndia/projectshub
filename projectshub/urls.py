@@ -8,6 +8,7 @@ from core.views import (
     admin_backup_view, admin_backup_download_json, admin_backup_download_db, admin_backup_download_bundle,
     admin_backup_sync_initial, admin_backup_restore, admin_backup_fetch, admin_apply_migrations,
     admin_nav_menus_view, admin_plugins_view, admin_settings_view, admin_quick_edit_api,
+    menu_preview,
     error_400, error_404, error_500
 )
 
@@ -25,6 +26,7 @@ urlpatterns = [
     path('admin/assets/delete/', admin_asset_delete_view, name='admin_asset_delete'),
     path('admin/assets/', admin_assets_view, name='admin_assets'),
     path('admin/appearance/menus/', admin_nav_menus_view, name='admin_nav_menus'),
+    path('admin/menu-preview/<int:menu_id>/', menu_preview, name='admin_menu_preview'),
     path('admin/plugins/', admin_plugins_view, name='admin_plugins'),
     path('admin/settings/', admin_settings_view, name='admin_settings'),
     path('admin/pages/', RedirectView.as_view(url='/admin/core/page/', permanent=False)),

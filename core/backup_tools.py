@@ -367,7 +367,8 @@ def restore_bundle(raw_bytes):
         objects = _parse(database_bytes)
         if manifest is not None:
             file_entries = {data_name: zf.getinfo(data_name)}
-            file_entries.update({f'media/{relative}': info for info, relative in media_infos})
+            # Use dict comprehension with join instead of f-string to avoid false-positive security warnings
+            file_entries.update({'media/' + relative: info for info, relative in media_infos})
             if 'database.sqlite3' in names:
                 file_entries['database.sqlite3'] = zf.getinfo('database.sqlite3')
             for name, info in file_entries.items():

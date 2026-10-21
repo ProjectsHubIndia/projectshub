@@ -2425,27 +2425,39 @@ def menu_preview(request, menu_id):
     
     menu = get_object_or_404(Menu, pk=menu_id)
     config = MenuConfig.get_config()
-    
-    def build_tree(parent=None):
-        """Recursively build nested menu structure."""
-        items = MenuItem.objects.filter(
-            menu=menu, 
-            parent=parent, 
-            is_active=True
-        ).order_by('order')
+
+    # Load the whole menu once, then assemble the tree in memory. The previous
+    # version issued a query per node plus one per ancestor for depth, and
+    # recursed through parent links with no cycle guard.
+    all_items = list(
+        MenuItem.objects.filter(menu=menu, is_active=True).order_by('order', 'label')
+    )
+    children_of = {}
+    for item in all_items:
+        children_of.setdefault(item.parent_id, []).append(item)
+
+    def build_tree(parent_id=None, depth=0, seen=frozenset()):
+        """Build the nested structure from the preloaded rows.
+
+        `seen` tracks the current branch so malformed data containing a parent
+        cycle truncates instead of recursing until the stack blows.
+        """
         result = []
-        for item in items:
+        for item in children_of.get(parent_id, []):
+            if item.pk in seen:
+                continue
             result.append({
                 'id': item.id,
                 'label': item.label,
                 'destination': item.destination,
                 'icon': item.icon,
                 'is_dropdown': item.is_dropdown,
-                'depth': item.get_depth(),
-                'children': build_tree(item)
+                'depth': depth,
+                'indent': depth * 24,
+                'children': build_tree(item.pk, depth + 1, seen | {item.pk}),
             })
         return result
-    
+
     items_tree = build_tree()
     
     context = {

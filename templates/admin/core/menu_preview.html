@@ -5,8 +5,9 @@
 {% block content_title %}Menu Preview: {{ menu.name }}{% endblock %}
 
 {% block extrahead %}
+{{ block.super }}
 <link rel="stylesheet" href="{% static 'admin/css/menu-admin.css' %}">
-<script src="{% static 'admin/js/menu-admin.js' %}"></script>
+<script src="{% static 'admin/js/menu-admin.js' %}" defer></script>
 {% endblock %}
 
 {% block content %}

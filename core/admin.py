@@ -1,11 +1,14 @@
 import csv
 import sys
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.admin.sites import AdminSite as BaseAdminSite
 from django.contrib.auth.models import User, Permission
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.db import transaction
 from django.db.models import Count, Q
 from django.http import HttpResponse
+from django.shortcuts import redirect
+from django.urls import reverse
 from django.utils.html import format_html
 from .models import (
     SiteSettings, MenuConfig, Menu, MenuItem, AudienceCard, AudienceCardFeature, NavigationItem, MegaMenuTag, SocialLink, StatItem,
@@ -363,6 +366,9 @@ class MenuConfigAdmin(admin.ModelAdmin):
     change_form_template = 'admin/core/menuconfig_change_form.html'
     list_display = ['visual_style', 'logo_layout', 'updated_at']
     readonly_fields = ['created_at', 'updated_at']
+    # Renders both fields as a .radiolist, which is what the change-form
+    # template's style mockups hook onto. As plain selects they never appear.
+    radio_fields = {'visual_style': admin.VERTICAL, 'logo_layout': admin.VERTICAL}
     
     fieldsets = (
         ('Visual Settings', {
@@ -377,13 +383,19 @@ class MenuConfigAdmin(admin.ModelAdmin):
     
     def has_add_permission(self, request):
         return not MenuConfig.objects.exists()
-    
+
+    def has_delete_permission(self, request, obj=None):
+        # The singleton is read through MenuConfig.get_config(); deleting it
+        # from the changelist would silently recreate a default on next read.
+        return False
+
     def changelist_view(self, request, extra_context=None):
-        obj = MenuConfig.objects.first()
-        if obj:
-            from django.shortcuts import redirect
-            return redirect(f'/admin/core/menuconfig/{obj.pk}/change/')
-        return super().changelist_view(request, extra_context=extra_context)
+        # get_config() creates the row if missing, so the settings page is
+        # always reachable instead of showing an empty changelist.
+        obj = MenuConfig.get_config()
+        return redirect(
+            reverse('admin:core_menuconfig_change', args=[obj.pk])
+        )
 
 
 class MenuItemInline(admin.StackedInline):
@@ -395,14 +407,23 @@ class MenuItemInline(admin.StackedInline):
     classes = ('menu-item-inline',)
     
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        """Filter parent choices to only show items from the same menu."""
+        """Scope parent choices to items in the menu being edited.
+
+        resolver_match is None outside normal URL resolution, so read it
+        defensively rather than indexing kwargs directly.
+        """
         if db_field.name == "parent":
-            # Get menu_id from URL if editing existing menu
-            if 'object_id' in request.resolver_match.kwargs:
-                menu_id = request.resolver_match.kwargs['object_id']
-                kwargs["queryset"] = MenuItem.objects.filter(menu_id=menu_id)
+            match = getattr(request, 'resolver_match', None)
+            object_id = (match.kwargs.get('object_id') if match else None)
+            if object_id:
+                kwargs["queryset"] = (
+                    MenuItem.objects
+                    .filter(menu_id=object_id)
+                    .select_related('parent')
+                    .order_by('parent__order', 'order', 'label')
+                )
             else:
-                # Adding new menu - show no parent options until saved
+                # On the add page there is no menu yet, so nothing can be a parent.
                 kwargs["queryset"] = MenuItem.objects.none()
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
@@ -433,9 +454,13 @@ class MenuAdmin(admin.ModelAdmin):
         }),
     )
     
-    @admin.display(description='Items')
+    def get_queryset(self, request):
+        # Annotated so the changelist does not run a COUNT per row.
+        return super().get_queryset(request).annotate(_item_count=Count('items'))
+
+    @admin.display(description='Items', ordering='_item_count')
     def item_count(self, obj):
-        return obj.items.count()
+        return obj._item_count
     
     def item_count_detail(self, obj):
         root_count = obj.items.filter(parent=None).count()
@@ -448,18 +473,18 @@ class MenuAdmin(admin.ModelAdmin):
     
     def preview_link(self, obj):
         return format_html(
-            '<a href="/admin/menu-preview/{}/" target="_blank" '
+            '<a href="{}" target="_blank" '
             'style="display:inline-flex;align-items:center;gap:3px;font-size:11px;'
             'font-weight:700;color:#059669;background:#ecfdf5;padding:3px 8px;'
             'border-radius:6px;text-decoration:none;border:1px solid #a7f3d0;">'
             '👁 Preview</a>',
-            obj.pk
+            reverse('admin_menu_preview', args=[obj.pk])
         )
     preview_link.short_description = 'Preview'
     
+    @transaction.atomic
     def duplicate_menu(self, request, queryset):
-        """Duplicate selected menus with all nested items preserving structure."""
-        from django.contrib import messages
+        """Duplicate selected menus, preserving the nested item structure."""
         count = 0
         for menu in queryset:
             orig_items = list(menu.items.all())
@@ -474,37 +499,39 @@ class MenuAdmin(admin.ModelAdmin):
                 num += 1
             menu.slug = unique_slug
             menu.save()
-            
-            # Duplicate items preserving parent relationships
+
+            # First pass: copy every item flat, recording old pk -> new item.
+            # Parents are attached afterwards because a child may be copied
+            # before its parent exists.
             item_map = {}
+            parent_of = {}
             for item in orig_items:
                 old_id = item.pk
-                old_parent_id = item.parent_id
+                parent_of[old_id] = item.parent_id
                 item.pk = None
                 item.id = None
                 item.menu = menu
-                item.parent = None  # Set later
+                item.parent = None
                 item.save()
-                item_map[old_id] = (item, old_parent_id)
-            
-            # Second pass: restore parent relationships
-            for new_item, old_parent_id in item_map.values():
-                if old_parent_id:
-                    # Find the new parent item
-                    for old_id, (potential_parent, _) in item_map.items():
-                        if old_id == old_parent_id:
-                            new_item.parent = potential_parent
-                            new_item.save()
-                            break
+                item_map[old_id] = item
+
+            # Second pass: re-link parents via direct lookup.
+            for old_id, new_item in item_map.items():
+                old_parent_id = parent_of[old_id]
+                new_parent = item_map.get(old_parent_id) if old_parent_id else None
+                if new_parent is not None:
+                    new_item.parent = new_parent
+                    new_item.save(update_fields=['parent'])
             count += 1
-        messages.success(request, f"Duplicated {count} menu(s) with all nested items.")
+        self.message_user(
+            request, f"Duplicated {count} menu(s) with all nested items.", messages.SUCCESS
+        )
     duplicate_menu.short_description = "Duplicate selected menu(s)"
     
     def export_menu_json(self, request, queryset):
         """Export menu structure as JSON with nested children."""
-        import json
         from django.http import JsonResponse
-        
+
         def build_tree(menu):
             def get_children(parent_id):
                 items = menu.items.filter(parent_id=parent_id).order_by('order')
@@ -527,8 +554,11 @@ class MenuAdmin(admin.ModelAdmin):
             }
         
         menus = [build_tree(m) for m in queryset]
+        filename = (
+            f'menu-{queryset[0].slug}.json' if len(menus) == 1 else 'menus-export.json'
+        )
         response = JsonResponse({'menus': menus}, safe=False)
-        response['Content-Disposition'] = f'attachment; filename="menus_export.json"'
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
         return response
     export_menu_json.short_description = "Export menu structure as JSON"
 
@@ -540,12 +570,55 @@ class MenuItemAdmin(admin.ModelAdmin):
     list_filter = ['menu', 'is_dropdown', 'is_active']
     search_fields = ['label', 'destination']
     list_editable = ['is_active', 'order']
-    
+    list_select_related = ['menu', 'parent']
+
+    fieldsets = (
+        ('Item', {
+            'fields': ('menu', 'label', 'destination', 'icon'),
+            'description': (
+                'Destination accepts a site path such as /projects/ or a full '
+                'external URL such as https://example.com.'
+            ),
+        }),
+        ('Nesting & Behaviour', {
+            'fields': ('parent', 'is_dropdown', 'order', 'is_active'),
+            'description': (
+                'Leave Parent empty for a top-level item. Parent must be in the '
+                'same menu, and an item cannot sit under one of its own sub-items.'
+            ),
+        }),
+    )
+
+    def get_queryset(self, request):
+        # parent is walked by depth_indicator; select_related keeps that from
+        # issuing a query per ancestor on every row.
+        return super().get_queryset(request).select_related('menu', 'parent')
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        """Limit parent choices to the same menu as the item being edited.
+
+        Without this the dropdown lists every item on the site, which is how
+        cross-menu parents (a broken tree) get saved.
+        """
+        if db_field.name == 'parent':
+            match = getattr(request, 'resolver_match', None)
+            object_id = (match.kwargs.get('object_id') if match else None)
+            qs = MenuItem.objects.select_related('menu')
+            if object_id:
+                try:
+                    item = MenuItem.objects.get(pk=object_id)
+                except (MenuItem.DoesNotExist, ValueError, TypeError):
+                    pass
+                else:
+                    # Same menu, never the item itself.
+                    qs = qs.filter(menu_id=item.menu_id).exclude(pk=item.pk)
+            kwargs['queryset'] = qs.order_by('menu__name', 'order', 'label')
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    @admin.display(description='Label (nested)', ordering='label')
     def depth_indicator(self, obj):
-        depth = obj.get_depth()
-        indent = '→ ' * depth
+        indent = '─ ' * obj.get_depth()
         return f"{indent}{obj.label}"
-    depth_indicator.short_description = 'Label (nested)'
     
     def icon_preview(self, obj):
         if obj.icon:

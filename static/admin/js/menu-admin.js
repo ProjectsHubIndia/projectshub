@@ -1,319 +1,305 @@
 /**
  * Menu Management Admin JavaScript
- * Handles drag-and-drop sorting, depth indicators, and style switching
+ *
+ * Drag-and-drop reordering, nesting depth indicators, and the preview style
+ * switcher for the Menu / MenuConfig admin screens.
+ *
+ * DOM contract (Django stacked inline):
+ *   .menu-item-inline            the <fieldset> wrapping every row
+ *   .inline-related              one row; the last is .empty-form, the blank
+ *                                "add another" template
+ *   input[name$="-id"]           a saved row's primary key
+ *   select[name$="-parent"]      the chosen parent's primary key
  */
 
-(function() {
+(function () {
     'use strict';
 
-    /**
-     * Initialize drag-and-drop sorting for menu items
-     */
+    // Rows live inside the fieldset. Treating '.menu-item-inline' as a row
+    // makes the whole group a drop target, which moves rows out of the
+    // formset, so scope queries to real rows and skip the blank template.
+    var ROW_SELECTOR = '.menu-item-inline .inline-related:not(.empty-form)';
+
+    var draggedElement = null;
+    var observer = null;
+
+    function rows() {
+        return Array.prototype.slice.call(document.querySelectorAll(ROW_SELECTOR));
+    }
+
+    function fieldValue(row, suffix) {
+        var el = row.querySelector('[name$="' + suffix + '"]');
+        return el ? el.value : '';
+    }
+
+    /* --- Drag and drop ---------------------------------------------------- */
+
     function initMenuItemSorting() {
-        const inlineRows = document.querySelectorAll('.menu-item-inline, .inline-related');
-        
-        inlineRows.forEach(row => {
-            // Add drag handle if not already present
-            if (!row.querySelector('.drag-handle')) {
-                const dragHandle = document.createElement('span');
-                dragHandle.className = 'drag-handle';
-                dragHandle.textContent = '☰';
-                dragHandle.draggable = true;
-                dragHandle.title = 'Drag to reorder';
-                
-                const firstChild = row.querySelector('h3, .inline-group');
-                if (firstChild) {
-                    firstChild.insertBefore(dragHandle, firstChild.firstChild);
-                }
-                
-                // Attach event listeners
-                dragHandle.addEventListener('dragstart', handleDragStart);
-                row.addEventListener('dragover', handleDragOver);
-                row.addEventListener('drop', handleDrop);
-                row.addEventListener('dragend', handleDragEnd);
+        rows().forEach(function (row) {
+            if (row.querySelector('.drag-handle')) {
+                return;
             }
+            var header = row.querySelector('h3');
+            if (!header) {
+                return;
+            }
+
+            var handle = document.createElement('span');
+            handle.className = 'drag-handle';
+            handle.textContent = '☰';
+            handle.draggable = true;
+            handle.title = 'Drag to reorder';
+            header.insertBefore(handle, header.firstChild);
+
+            handle.addEventListener('dragstart', handleDragStart);
+            row.addEventListener('dragover', handleDragOver);
+            row.addEventListener('dragleave', handleDragLeave);
+            row.addEventListener('drop', handleDrop);
+            row.addEventListener('dragend', handleDragEnd);
         });
     }
 
-    let draggedElement = null;
-
     function handleDragStart(e) {
-        draggedElement = this.closest('.menu-item-inline, .inline-related');
+        draggedElement = this.closest('.inline-related');
         e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('text/html', draggedElement.innerHTML);
+        // Some browsers abort the drag unless data is set; the payload is unused.
+        e.dataTransfer.setData('text/plain', draggedElement.id || 'menu-item');
         draggedElement.classList.add('dragging');
     }
 
     function handleDragOver(e) {
-        if (e.preventDefault) {
-            e.preventDefault();
-        }
+        e.preventDefault();
         e.dataTransfer.dropEffect = 'move';
-        
-        const targetRow = this.closest('.menu-item-inline, .inline-related');
-        if (targetRow && targetRow !== draggedElement) {
-            targetRow.classList.add('drag-over');
+        var target = this.closest('.inline-related');
+        if (target && target !== draggedElement) {
+            target.classList.add('drag-over');
         }
-        return false;
+    }
+
+    function handleDragLeave() {
+        // Without this the highlight stays on every row the cursor crossed.
+        var target = this.closest('.inline-related');
+        if (target) {
+            target.classList.remove('drag-over');
+        }
     }
 
     function handleDrop(e) {
-        if (e.stopPropagation) {
-            e.stopPropagation();
-        }
-        
-        const targetRow = this.closest('.menu-item-inline, .inline-related');
-        
-        // Remove drag-over class from all rows
-        document.querySelectorAll('.drag-over').forEach(el => {
-            el.classList.remove('drag-over');
-        });
-        
-        if (targetRow && draggedElement && targetRow !== draggedElement) {
-            // Insert dragged element before target
-            targetRow.parentNode.insertBefore(draggedElement, targetRow);
-            
-            // Update order fields
+        // The default drop action navigates away, discarding unsaved edits.
+        e.preventDefault();
+        e.stopPropagation();
+        clearDragClasses();
+
+        var target = this.closest('.inline-related');
+        if (target && draggedElement && target !== draggedElement) {
+            target.parentNode.insertBefore(draggedElement, target);
             updateOrderFields();
         }
-        
         return false;
     }
 
-    function handleDragEnd(e) {
-        document.querySelectorAll('.dragging').forEach(el => {
-            el.classList.remove('dragging');
-        });
-        document.querySelectorAll('.drag-over').forEach(el => {
-            el.classList.remove('drag-over');
+    function handleDragEnd() {
+        clearDragClasses();
+        draggedElement = null;
+    }
+
+    function clearDragClasses() {
+        document.querySelectorAll('.dragging, .drag-over').forEach(function (el) {
+            el.classList.remove('dragging', 'drag-over');
         });
     }
 
     /**
-     * Update order fields after drag-and-drop
+     * Renumber order fields to match DOM order.
+     *
+     * Only real rows are numbered; writing into the .empty-form template makes
+     * Django treat the blank row as filled in and try to validate it.
      */
     function updateOrderFields() {
-        const rows = document.querySelectorAll('.menu-item-inline, .inline-related');
-        rows.forEach((row, index) => {
-            const orderField = row.querySelector('input[name*="-order"]');
+        rows().forEach(function (row, index) {
+            var orderField = row.querySelector('[name$="-order"]');
             if (orderField) {
                 orderField.value = index;
             }
         });
     }
 
+    /* --- Nesting depth ---------------------------------------------------- */
+
     /**
-     * Toggle nested item visibility
+     * Map each saved row's pk to its selected parent's pk.
+     *
+     * The old code looked for select[name*="-parent"][id*="<pk>"], but inline
+     * ids carry the form index (id_items-0-parent), never the pk, so that
+     * lookup matched the wrong row or nothing at all.
      */
-    function toggleNestedItems(parentId) {
-        const children = document.querySelectorAll(`[data-parent="${parentId}"]`);
-        children.forEach(child => {
-            child.style.display = child.style.display === 'none' ? 'block' : 'none';
+    function buildParentMap() {
+        var parentOf = {};
+        rows().forEach(function (row) {
+            var pk = fieldValue(row, '-id');
+            if (pk) {
+                parentOf[pk] = fieldValue(row, '-parent');
+            }
+        });
+        return parentOf;
+    }
+
+    function depthOf(pk, parentOf) {
+        var depth = 0;
+        var seen = {};
+        var current = parentOf[pk];
+        // Guard against a parent cycle in existing data.
+        while (current && !seen[current] && depth < 10) {
+            seen[current] = true;
+            depth += 1;
+            current = parentOf[current];
+        }
+        return depth;
+    }
+
+    function applyDepths() {
+        var parentOf = buildParentMap();
+        rows().forEach(function (row) {
+            var pk = fieldValue(row, '-id');
+            var depth;
+            if (pk) {
+                depth = depthOf(pk, parentOf);
+            } else {
+                // Unsaved row: depth follows the parent it points at, if any.
+                var parentPk = fieldValue(row, '-parent');
+                depth = parentPk ? depthOf(parentPk, parentOf) + 1 : 0;
+            }
+            row.dataset.depth = depth;
+            row.dataset.depthLabel = depth ? '└' : '';
         });
     }
 
-    /**
-     * Update depth indicators based on parent selection
-     */
-    function updateDepthIndicators() {
-        const parentSelects = document.querySelectorAll('select[name*="-parent"]');
-        
-        parentSelects.forEach(select => {
-            select.addEventListener('change', function() {
-                const row = this.closest('.menu-item-inline, .inline-related');
-                if (!row) return;
-                
-                const parentId = this.value;
-                let depth = 0;
-                
-                if (parentId) {
-                    // Find parent row and calculate depth
-                    const allRows = Array.from(document.querySelectorAll('.menu-item-inline, .inline-related'));
-                    const parentRow = allRows.find(r => {
-                        const pkField = r.querySelector('input[name*="-id"]');
-                        return pkField && pkField.value === parentId;
-                    });
-                    
-                    if (parentRow) {
-                        const parentDepth = parseInt(parentRow.dataset.depth || 0);
-                        depth = parentDepth + 1;
-                    }
-                }
-                
-                row.dataset.depth = depth;
-                row.style.paddingLeft = `${depth * 24}px`;
-                
-                // Update depth label
-                const depthLabel = '→ '.repeat(depth);
-                row.dataset.depthLabel = depthLabel;
-            });
+    function watchParentSelects() {
+        var selects = document.querySelectorAll(
+            '.menu-item-inline select[name$="-parent"]'
+        );
+        selects.forEach(function (select) {
+            if (select.dataset.depthWatched) {
+                return;
+            }
+            select.dataset.depthWatched = '1';
+            select.addEventListener('change', applyDepths);
         });
     }
 
-    /**
-     * Preview style switcher
-     */
+    /* --- Preview style switcher ------------------------------------------- */
+
     function previewStyleSwitch(style) {
-        const container = document.querySelector('.menu-preview-container');
-        if (container) {
-            container.dataset.style = style;
-            
-            // Update active button state
-            document.querySelectorAll('.toolbar-actions .button').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.textContent.toLowerCase().includes(style.replace('_', ' '))) {
-                    btn.classList.add('active');
-                }
-            });
+        var container = document.querySelector('.menu-preview-container');
+        if (!container) {
+            return;
         }
+        container.dataset.style = style;
+        document.querySelectorAll('.style-switch-btn').forEach(function (btn) {
+            btn.classList.toggle('active', btn.dataset.style === style);
+        });
     }
 
     /**
-     * Auto-populate slug from menu name
-     */
-    function autoPopulateSlug() {
-        const nameField = document.querySelector('input[name="name"]');
-        const slugField = document.querySelector('input[name="slug"]');
-        
-        if (nameField && slugField && !slugField.value) {
-            nameField.addEventListener('input', function() {
-                const slug = this.value
-                    .toLowerCase()
-                    .replace(/[^a-z0-9]+/g, '-')
-                    .replace(/^-|-$/g, '');
-                slugField.value = slug;
-            });
-        }
-    }
-
-    /**
-     * Add style switcher buttons to preview page
+     * Tag the preview buttons with the style each one selects.
+     *
+     * Matching on button text broke as soon as a label changed, so read the
+     * style from the onclick target and mark the current one active on load.
      */
     function initStyleSwitcher() {
-        const toolbar = document.querySelector('.toolbar-actions');
-        if (toolbar && document.querySelector('.menu-preview-container')) {
-            // Check if buttons already exist
-            if (!toolbar.querySelector('.style-switch-btn')) {
-                const standardBtn = document.createElement('button');
-                standardBtn.type = 'button';
-                standardBtn.className = 'button style-switch-btn';
-                standardBtn.textContent = 'Preview: Standard';
-                standardBtn.onclick = () => previewStyleSwitch('standard');
-                
-                const pillBtn = document.createElement('button');
-                pillBtn.type = 'button';
-                pillBtn.className = 'button style-switch-btn';
-                pillBtn.textContent = 'Preview: Floating Pill';
-                pillBtn.onclick = () => previewStyleSwitch('floating_pill');
-                
-                // Insert before other buttons
-                const firstBtn = toolbar.firstElementChild;
-                toolbar.insertBefore(pillBtn, firstBtn);
-                toolbar.insertBefore(standardBtn, pillBtn);
-            }
+        var container = document.querySelector('.menu-preview-container');
+        if (!container) {
+            return;
         }
-    }
-
-    /**
-     * Initialize collapsible inline groups
-     */
-    function initCollapsibleInlines() {
-        const inlineGroups = document.querySelectorAll('.inline-group');
-        
-        inlineGroups.forEach(group => {
-            const header = group.querySelector('h3');
-            if (header && !header.querySelector('.collapse-toggle')) {
-                const toggle = document.createElement('button');
-                toggle.type = 'button';
-                toggle.className = 'collapse-toggle';
-                toggle.textContent = '▼';
-                toggle.style.cssText = 'margin-left: 8px; background: none; border: none; cursor: pointer; font-size: 12px;';
-                
-                toggle.addEventListener('click', function() {
-                    const inlines = group.querySelector('.inline-related');
-                    if (inlines) {
-                        const isHidden = inlines.style.display === 'none';
-                        inlines.style.display = isHidden ? 'block' : 'none';
-                        this.textContent = isHidden ? '▼' : '▶';
-                    }
-                });
-                
-                header.appendChild(toggle);
-            }
-        });
-    }
-
-    /**
-     * Calculate and display depth for existing items
-     */
-    function calculateInitialDepth() {
-        const parentSelects = document.querySelectorAll('select[name*="-parent"]');
-        
-        parentSelects.forEach(select => {
-            const row = select.closest('.menu-item-inline, .inline-related');
-            if (!row) return;
-            
-            const parentId = select.value;
-            let depth = 0;
-            
-            if (parentId) {
-                // Calculate depth by counting ancestors
-                let currentParentId = parentId;
-                while (currentParentId && depth < 10) { // Max depth safety
-                    depth++;
-                    const parentSelect = document.querySelector(`select[name*="-parent"][id*="${currentParentId}"]`);
-                    currentParentId = parentSelect ? parentSelect.value : null;
+        document.querySelectorAll('.style-switch-btn').forEach(function (btn) {
+            if (!btn.dataset.style) {
+                var match = /previewStyleSwitch\(.([^'"]+)./.exec(
+                    btn.getAttribute('onclick') || ''
+                );
+                if (match) {
+                    btn.dataset.style = match[1];
                 }
             }
-            
-            row.dataset.depth = depth;
-            row.style.paddingLeft = `${depth * 24}px`;
+            btn.classList.toggle(
+                'active',
+                btn.dataset.style === container.dataset.style
+            );
         });
     }
 
-    /**
-     * Initialize all menu admin functionality
-     */
+    /* --- Collapsible inline group ----------------------------------------- */
+
+    function initCollapsibleInlines() {
+        document.querySelectorAll('.inline-group').forEach(function (group) {
+            var header = group.querySelector('h2, h3');
+            if (!header || header.querySelector('.collapse-toggle')) {
+                return;
+            }
+
+            var toggle = document.createElement('button');
+            toggle.type = 'button';
+            toggle.className = 'collapse-toggle';
+            toggle.textContent = '▼';
+            toggle.title = 'Show or hide these items';
+
+            toggle.addEventListener('click', function () {
+                // querySelector returns only the first row, so the original
+                // toggle hid one item and left the rest visible.
+                var items = group.querySelectorAll('.inline-related');
+                var collapsed = group.dataset.collapsed === '1';
+                items.forEach(function (item) {
+                    item.style.display = collapsed ? '' : 'none';
+                });
+                group.dataset.collapsed = collapsed ? '0' : '1';
+                this.textContent = collapsed ? '▼' : '▶';
+            });
+
+            header.appendChild(toggle);
+        });
+    }
+
+    /* --- Init ------------------------------------------------------------- */
+
+    function refresh() {
+        initMenuItemSorting();
+        watchParentSelects();
+        applyDepths();
+    }
+
     function init() {
-        // Wait for DOM to be fully loaded
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', init);
             return;
         }
 
-        // Initialize features
-        autoPopulateSlug();
-        initMenuItemSorting();
-        updateDepthIndicators();
+        // Slug prepopulation is Django's job (MenuAdmin.prepopulated_fields).
+        // A second handler here fought it and overwrote manual slug edits.
+        refresh();
         initStyleSwitcher();
         initCollapsibleInlines();
-        calculateInitialDepth();
 
-        // Re-initialize when new inline forms are added
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.addedNodes.length) {
-                    initMenuItemSorting();
-                    updateDepthIndicators();
-                    calculateInitialDepth();
-                }
-            });
-        });
-
-        const inlineContainer = document.querySelector('.inline-group');
-        if (inlineContainer) {
-            observer.observe(inlineContainer, {
-                childList: true,
-                subtree: true
-            });
+        var container = document.querySelector('.menu-item-inline');
+        if (!container) {
+            return;
         }
+
+        // refresh() inserts handles into the observed subtree, which would
+        // re-trigger the observer; disconnect while mutating.
+        observer = new MutationObserver(function (mutations) {
+            var added = mutations.some(function (m) {
+                return m.addedNodes.length > 0;
+            });
+            if (!added) {
+                return;
+            }
+            observer.disconnect();
+            refresh();
+            observer.observe(container, { childList: true, subtree: true });
+        });
+        observer.observe(container, { childList: true, subtree: true });
     }
 
-    // Expose functions globally for inline onclick handlers
     window.previewStyleSwitch = previewStyleSwitch;
-    window.toggleNestedItems = toggleNestedItems;
 
-    // Auto-initialize
     init();
-
 })();

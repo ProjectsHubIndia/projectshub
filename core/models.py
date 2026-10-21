@@ -1,6 +1,7 @@
 import os
 import re
 from urllib.parse import parse_qs, urlparse
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
@@ -183,7 +184,12 @@ class Menu(models.Model):
 
 
 class MenuItem(models.Model):
-    """Menu item with support for unlimited nesting via parent FK."""
+    """Menu item with support for nesting via parent FK."""
+
+    # Deepest allowed nesting level, enforced in clean(). Frontend menus and
+    # the admin's depth styling only go a few levels before becoming unusable.
+    MAX_DEPTH = 5
+
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE, related_name='items')
     parent = models.ForeignKey(
         'self',
@@ -223,13 +229,59 @@ class MenuItem(models.Model):
         return f"{self.menu.name}: {self.label}{parent_indicator}"
     
     def get_depth(self):
-        """Return nesting level (0=root, 1=first child, 2=grandchild, etc.)."""
+        """Return nesting level (0=root, 1=first child, 2=grandchild, etc.).
+
+        Stops on a repeated ancestor so a cycle in stored data cannot hang the
+        request. clean() prevents new cycles, but rows created before that
+        validation existed may still contain one.
+        """
         depth = 0
+        seen = {self.pk}
         current = self.parent
-        while current:
+        while current is not None and current.pk not in seen:
+            seen.add(current.pk)
             depth += 1
             current = current.parent
         return depth
+
+    def clean(self):
+        """Reject parents that would break the tree.
+
+        Guards the three cases the admin could otherwise save: an item parented
+        to itself, to an item in another menu, or to one of its own descendants.
+        Each creates a cycle, which makes walking ancestors non-terminating.
+        """
+        super().clean()
+        if self.parent_id is None:
+            return
+
+        if self.pk and self.parent_id == self.pk:
+            raise ValidationError({'parent': 'An item cannot be its own parent.'})
+
+        parent = self.parent
+        if self.menu_id and parent.menu_id != self.menu_id:
+            raise ValidationError(
+                {'parent': 'Parent must belong to the same menu as this item.'}
+            )
+
+        # Walk up from the chosen parent. Meeting self means self is already an
+        # ancestor of that parent, so linking the two would close a loop.
+        depth = 1
+        seen = set()
+        current = parent
+        while current is not None and current.pk not in seen:
+            if self.pk and current.pk == self.pk:
+                raise ValidationError(
+                    {'parent': 'Cannot nest an item under one of its own sub-items.'}
+                )
+            seen.add(current.pk)
+            current = current.parent
+            depth += 1
+
+        if depth > self.MAX_DEPTH:
+            raise ValidationError(
+                {'parent': f'Menus support at most {self.MAX_DEPTH} levels of nesting.'}
+            )
     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

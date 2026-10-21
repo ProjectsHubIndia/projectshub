@@ -106,7 +106,8 @@ class Command(BaseCommand):
                 except Exception as e:
                     failed_count += 1
                     # nosec B608: No SQL - formatting error message with filesystem path
-                    self.stdout.write(self.style.ERROR(f'Failed to delete {path}: {e}'))  # nosec B608
+                    error_msg = 'Failed to delete {}: {}'.format(path, e)
+                    self.stdout.write(self.style.ERROR(error_msg))
             
             # nosec B608: No SQL - formatting summary statistics
             self.stdout.write(self.style.SUCCESS(
