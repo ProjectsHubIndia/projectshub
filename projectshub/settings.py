@@ -238,6 +238,13 @@ WSGI_APPLICATION = 'projectshub.wsgi.application'
 
 # Database: PostgreSQL in production if DATABASE_URL or POSTGRES_URL is set, SQLite fallback
 DATABASE_URL = os.environ.get('DATABASE_URL') or os.environ.get('POSTGRES_URL') or os.environ.get('POSTGRES_URL_NON_POOLING')
+if IS_VERCEL and not DEBUG and (
+    not DATABASE_URL or not DATABASE_URL.startswith('postgres')
+):
+    raise ImproperlyConfigured(
+        'A PostgreSQL DATABASE_URL (or POSTGRES_URL) is required for production on Vercel.'
+    )
+
 if DATABASE_URL and DATABASE_URL.startswith('postgres'):
     try:
         import dj_database_url

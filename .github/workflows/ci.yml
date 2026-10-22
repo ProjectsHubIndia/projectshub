@@ -1,0 +1,46 @@
+name: Django CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Check Django configuration
+        run: python manage.py check
+
+      - name: Check migrations
+        run: python manage.py makemigrations --check --dry-run
+
+      - name: Validate deployment script syntax
+        run: bash -n build_files.sh
+
+      - name: Check production security settings
+        env:
+          DEBUG: "False"
+          ENVIRONMENT: production
+          SECRET_KEY: ci-only-not-a-production-secret-key-1234567890-abcdefghijklmnopqrstuvwxyz
+        run: python manage.py check --deploy
+
+      - name: Run tests
+        run: python manage.py test

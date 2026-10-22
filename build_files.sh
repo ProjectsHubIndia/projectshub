@@ -1,4 +1,6 @@
 #!/bin/bash
+set -euo pipefail
+
 # Vercel Build Script for ProjectsHub Django App
 echo "=== Building ProjectsHub for Vercel Deployment ==="
 
@@ -11,8 +13,8 @@ else
     python3 -m pip install --break-system-packages -r requirements.txt || python3 -m pip install -r requirements.txt
 fi
 
-# Run migrations if database is accessible
-python3 manage.py migrate --noinput || true
+# Apply migrations to the configured database. A failed migration must fail the build.
+python3 manage.py migrate --noinput
 
 # Collect static files into staticfiles directory
 python3 manage.py collectstatic --noinput --clear

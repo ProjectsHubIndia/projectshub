@@ -1,5 +1,7 @@
 # DNGO Production Readiness Report
 
+> **Historical report — not a current production approval.** This document contains contradictory readiness scores and findings that have not been revalidated against the current repository. Do not use its earlier “READY” or “NOT READY” verdicts as a deployment decision. The latest repository audit and verification results are reported separately with the current changes.
+
 ## Executive Summary
 
 A comprehensive engineering and security audit and subsequent remediation of the **DNGO** codebase (operating under repository `ProjectsHub`) was conducted across architecture, security, code quality, testing, performance, database schemas, configuration, and deployment infrastructure.

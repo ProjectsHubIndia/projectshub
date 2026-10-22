@@ -3,7 +3,7 @@
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![Django](https://img.shields.io/badge/Django-4.2%20LTS-092E20.svg?logo=django&logoColor=white)](https://www.djangoproject.com/)
 [![Database](https://img.shields.io/badge/Database-SQLite%20%7C%20PostgreSQL-336791.svg?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Tests](https://img.shields.io/badge/Tests-55%20Passed-success.svg)](#testing--verification)
+[![Tests](https://img.shields.io/badge/Tests-211%20Passed-success.svg)](#testing--verification)
 [![License](https://img.shields.io/badge/License-Proprietary-orange.svg)](#)
 
 > **From Ideas to AI-Powered Products**  
@@ -84,7 +84,7 @@ projectsHub/
 ├── core/                           # Primary application module
 │   ├── management/commands/        # Custom CLI commands (seeding, SEO, audits)
 │   ├── migrations/                 # Database schema migrations
-│   ├── tests/                      # Automated test suite (55 unit & view tests)
+│   ├── tests/                      # Automated Django test suite
 │   ├── admin.py                    # Advanced admin dashboard, inlines & CSV exports
 │   ├── context_processors.py       # Global site settings, metrics & telemetry
 │   ├── middleware.py               # Security headers & dynamic redirect engine
@@ -276,11 +276,11 @@ python manage.py test
 # Verify Django configuration and system checks
 python manage.py check
 
-# Verify Python syntax across the entire tree
-python -m compileall -q .
+# Verify Python syntax in the application packages
+python -m compileall -q core projectshub
 ```
 
-All 55 core tests run in isolated temporary databases with full coverage across public views and API endpoints.
+The suite currently discovers 211 tests and runs them against an isolated test database.
 
 ---
 
@@ -308,7 +308,7 @@ See **[PRODUCTION_SETUP.md](PRODUCTION_SETUP.md)** for complete deployment instr
    ```
    SECRET_KEY=<your-generated-key>
    DEBUG=False
-   DATABASE_URL=<postgres-url>  # Optional but recommended
+   DATABASE_URL=<postgres-url>  # Required for persistent production data
    ```
 
 4. **Deploy and verify**
@@ -329,6 +329,7 @@ CSRF_TRUSTED_ORIGINS=https://yourdomain.com,https://www.yourdomain.com
 - Never use `django-insecure-` prefixed keys in production
 - SECRET_KEY must be at least 50 characters long
 - Use PostgreSQL for production (SQLite doesn't persist on serverless platforms)
+- Configure `DATABASE_URL` for persistent production data; production Vercel settings fail fast without PostgreSQL
 - Always set DEBUG=False in production
 
 ### Static & Media Handling

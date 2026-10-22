@@ -98,7 +98,7 @@ After setting variables:
 
 ---
 
-## 🗃️ Step 4: Database Setup (Optional but Recommended)
+## 🗃️ Step 4: Database Setup (Required for Persistent Production Data)
 
 For production, use PostgreSQL instead of SQLite:
 

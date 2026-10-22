@@ -1,35 +1,35 @@
 # ProjectsHub — Vercel Deployment Guide
 
-This guide explains how to deploy **ProjectsHub** to [Vercel](https://vercel.com) with high performance, WhiteNoise compressed static assets, and automated database loading.
+This guide explains how to deploy **ProjectsHub** to [Vercel](https://vercel.com) with WhiteNoise-compressed static assets and a persistent PostgreSQL database.
 
 ---
 
 ## What Has Been Configured For You
 
 1. **`vercel.json`**: Configured `@vercel/python` serverless WSGI runtime and `@vercel/static-build` with `/static/` routing.
-2. **`build_files.sh`**: Automated build script that installs dependencies, runs migrations, auto-populates `initial_data.json` (460 objects), and runs `collectstatic`.
+2. **`build_files.sh`**: Build script that installs dependencies, applies migrations, collects static files, and builds the compressor manifest. A failed migration or asset build fails the deployment.
 3. **`requirements.txt`**: Added `whitenoise`, `dj-database-url`, `psycopg2-binary`, and `gunicorn`.
 4. **`projectshub/wsgi.py`**: Exported `app = application` callable for Vercel's serverless runtime.
 5. **`projectshub/settings.py`**:
    - Automated detection of Vercel environment (`IS_VERCEL`).
    - WhiteNoise static asset compression with 1-year immutable caching.
    - `CSRF_TRUSTED_ORIGINS` for `*.vercel.app` so all forms, modals, and API calls work smoothly.
-   - Dual database support: PostgreSQL (Neon / Supabase / Vercel Postgres) or writable serverless SQLite in `/tmp/db.sqlite3`.
+   - PostgreSQL is supported through `DATABASE_URL`. SQLite is only a temporary, non-persistent fallback and must not be used for production data.
 6. **`.vercelignore`**: Excludes temporary files, scrapers, and large local archives from the lambda package, keeping the function payload lightweight (~2-3 MB).
-7. **`initial_data.json`**: Complete database fixture containing all 10 projects, categories, navigation items, FAQs, and site settings.
+7. **`initial_data.json`**: A project data fixture; the deployment build does not load it automatically or reset database content.
 
 ---
 
 ## Method 1: Deploy via GitHub (Recommended)
 
-### Step 1: Initialize Git and Commit
-In your terminal (inside the `projectsHub` project directory):
+### Step 1: Commit Reviewed Changes
+The project is already a Git repository. Review the worktree and commit only the files intended for deployment; do not initialize a nested repository or stage every file indiscriminately.
 
 ```bash
-git init
-git add .
-git commit -m "Configure ProjectsHub for Vercel deployment with WhiteNoise and initial data"
+git status --short
 ```
+
+Use your normal reviewed-file staging and commit workflow before pushing.
 
 ### Step 2: Push to GitHub
 Create a new repository on [GitHub](https://github.com/new), then run:
@@ -52,10 +52,10 @@ git push -u origin main
    |---|---|---|
    | `SECRET_KEY` | *(A long random string)* | Django security key |
    | `DEBUG` | `False` | Production mode |
-   | `DATABASE_URL` | *(Optional - Neon/Supabase)* | PostgreSQL connection URL |
+   | `DATABASE_URL` | *(Required for production)* | Persistent PostgreSQL connection URL |
 6. Click **"Deploy"**.
 
-Vercel will run `build_files.sh`, collect all static files, initialize the database, and launch your site with a live `*.vercel.app` URL in under 2 minutes!
+Vercel runs `build_files.sh`, which applies migrations to the configured database and collects static assets. It does not populate the database from `initial_data.json`. If seed content is needed, run the documented `seed_data` command deliberately and once against the configured database. Do not rely on the serverless SQLite fallback for data that must persist.
 
 ---
 
@@ -81,10 +81,10 @@ vercel --prod
 
 ## Database Best Practice for Vercel (PostgreSQL)
 
-Vercel functions are stateless and serverless. While your project includes an automatic writable SQLite fallback in `/tmp/db.sqlite3`, a free managed PostgreSQL database is recommended for persistent admin edits and submissions:
+Vercel functions are stateless and serverless. The SQLite fallback is temporary and may be discarded between invocations or deployments; configure PostgreSQL before using the site for persistent admin edits or submissions:
 
 1. Create a free PostgreSQL database at **[Neon.tech](https://neon.tech)** or **[Supabase.com](https://supabase.com)**.
 2. Copy the connection string (e.g. `postgres://user:pass@ep-xyz.us-east-2.aws.neon.tech/neondb?sslmode=require`).
 3. Add it as an environment variable in **Vercel Dashboard → Project Settings → Environment Variables**:
    - `DATABASE_URL = postgres://...`
-4. Re-deploy. The build script will automatically run migrations and populate all project data!
+4. Re-deploy. The build script applies migrations; initialize seed content explicitly if needed. Existing database records are not overwritten by deployment.
