@@ -87,6 +87,10 @@ Hero image preload — only on homepage
 <link rel="stylesheet" href="{% static 'css/hero-visual.css' %}?v=15" />
 {% endblock %}
 
+{% block extra_brand_css %}
+<link rel="stylesheet" href="{% static 'css/homepage-refresh.css' %}?v=4" />
+{% endblock %}
+
 {# ═══════════════════════════════════════
 CONTENT
 ═══════════════════════════════════════ #}
@@ -156,17 +160,17 @@ CONTENT
 
                             <!-- Main robot preview window -->
                             <div class="hvc-window">
-                                <!-- Fake browser chrome -->
+                                <!-- Preview header -->
                                 <div class="hvc-chrome">
-                                    <span class="hvc-dot hvc-dot--red"></span>
-                                    <span class="hvc-dot hvc-dot--yellow"></span>
-                                    <span class="hvc-dot hvc-dot--green"></span>
-                                    <span class="hvc-chrome__url">projectshub.co.in</span>
+                                    <img class="hvc-chrome__brand" src="{% static 'image/logo/projectshub-logo-light.webp' %}" alt="ProjectsHub — Connect, Collaborate, Achieve" />
+                                    <span class="hvc-chrome__title">AI Learning Studio</span>
+                                    <span class="hvc-preview-badge">Interactive preview</span>
                                 </div>
                                 <div class="hvc-iframe-wrap hvc-robot-shell">
                                     <canvas id="robot-canvas" class="hvc-robot-canvas" role="button" tabindex="0" aria-label="Aara 3D robot. Hover to open her eyes or click a body part to move it and explain code."></canvas>
                                     <aside class="hvc-robot-bubble" aria-label="Code explanation by Aara">
                                         <div class="hvc-robot-bubble__topline">
+                                            <span class="hvc-robot-bubble__label">Guided lesson</span>
                                             <span id="robot-lesson-count" class="hvc-robot-bubble__count" aria-label="Lesson 1 of 6">01 / 06</span>
                                         </div>
                                         <p id="robot-explanation" class="hvc-robot-bubble__text" data-index="0" aria-live="polite">
@@ -177,7 +181,7 @@ CONTENT
     loss="sparse_categorical_crossentropy",
     metrics=["accuracy"]
 )</code></pre>
-                                        <p id="robot-action-status" class="hvc-robot-bubble__status-text" aria-live="polite">Explore each step with Next lesson, or select Aara to see her in action.</p>
+                                        <p id="robot-action-status" class="hvc-robot-bubble__status-text" aria-live="polite">Choose a lesson or interact with Aara.</p>
                                         <button id="robot-next-lesson" class="hvc-robot-bubble__button" type="button">
                                             <span>Next lesson</span>
                                             <span aria-hidden="true">&rarr;</span>

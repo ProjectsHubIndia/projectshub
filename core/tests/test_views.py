@@ -46,6 +46,14 @@ class ViewTests(TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertContains(res, "ProjectsHub")
         self.assertContains(res, "Smart Fraud Detection")
+        self.assertContains(res, 'href="/static/css/homepage-refresh.css?v=4"')
+        self.assertContains(res, 'alt="ProjectsHub — Connect, Collaborate, Achieve"')
+        self.assertContains(res, 'AI Learning Studio')
+        self.assertContains(res, 'Guided lesson')
+        self.assertLess(
+            res.content.decode().index("brand-colors.css"),
+            res.content.decode().index("homepage-refresh.css"),
+        )
         self.assertRegex(
             res.content.decode(),
             r'href="/static/css/hero-visual(?:\.[a-f0-9]+)?\.css\?v=15" as="style"',
